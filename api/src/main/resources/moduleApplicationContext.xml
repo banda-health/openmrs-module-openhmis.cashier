@@ -24,16 +24,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.OpenHMISCashierModuleService</value>
+				<value>${project.parent.groupId}.${project.parent.artifactId}.api.CashierModuleService</value>
 				<bean
 					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager" />
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.OpenHMISCashierModuleServiceImpl">
+						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.CashierModuleServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateOpenHMISCashierModuleDAO">
+								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateCashierModuleDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory" />
 									</property>
