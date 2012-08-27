@@ -13,11 +13,10 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
-import org.openmrs.api.impl.BaseOpenmrsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.openhmis.cashier.api.CashierModuleService;
-import org.openmrs.module.openhmis.cashier.api.IDaoService;
 import org.openmrs.module.openhmis.cashier.api.db.CashierModuleDAO;
 
 /**
