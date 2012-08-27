@@ -1,6 +1,6 @@
-/**
+/*
  * The contents of this file are subject to the OpenMRS Public License
- * Version 1.0 (the "License"); you may not use this file except in
+ * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://license.openmrs.org
  *
@@ -11,15 +11,9 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 package org.openmrs.module.openhmis.cashier.api.db;
 
-/**
- *  Database methods for {@link org.openmrs.module.openhmis.cashier.api.CashierModuleService}.
- */
-public interface CashierModuleDAO {
-	
-	/*
-	 * Add DAO methods here
-	 */
-}
+public interface IBillingItemDAO {
 
+}
