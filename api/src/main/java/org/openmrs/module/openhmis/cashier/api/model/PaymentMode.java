@@ -27,7 +27,6 @@ public class PaymentMode extends BaseOpenmrsMetadata {
 	private Integer paymentModeId;
 	private String name;
 	private String description;
-	private Boolean active;
 	private Set<PaymentModeAttribute> attributes;
 	
 	// Getters & setters
@@ -50,12 +49,6 @@ public class PaymentMode extends BaseOpenmrsMetadata {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public Boolean getActive() {
-		return active;
-	}
-	public void setActive(Boolean active) {
-		this.active = active;
 	}
 	public Set<PaymentModeAttribute> getAttributes() {
 		return attributes;
