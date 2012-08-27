@@ -12,16 +12,25 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api.util;
+package org.openmrs.module.openhmis.cashier.api.impl;
 
-import org.openmrs.annotation.AddOnStartup;
+import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.openhmis.cashier.api.IDaoService;
 
-public class CashierPrivilegeConstants {
-	@AddOnStartup(description = "Able to add/edit/delete billing items", core = false)
-	public static final String MANAGE_ITEMS = "Manage Billing Items";
+public class BaseDaoServiceImpl<T> extends BaseOpenmrsService implements IDaoService<T> {
+	private T dao;
 
-	@AddOnStartup(description = "Able to view billing items", core = false)
-	public static final String VIEW_ITEMS = "View Billing Items";
+	/**
+	 * @param dao the dao to set
+	 */
+	public void setDao(T dao) {
+		this.dao = dao;
+	}
 
-	public static final String PURGE_ITEMS = "Purge Locations";
+	/**
+	 * @return the dao
+	 */
+	public T getDao() {
+		return dao;
+	}
 }

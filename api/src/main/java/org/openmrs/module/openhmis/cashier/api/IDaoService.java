@@ -21,7 +21,7 @@ public interface IDaoService<T> extends OpenmrsService {
 	 * Set the data access object that the service will use to interact with the database. This is
 	 * set by spring in the applicationContext-service.xml file
 	 *
-	 * @param dao
+	 * @param dao The data access object that the service will use
 	 */
-	void setDAO(T dao);
+	void setDao(T dao);
 }

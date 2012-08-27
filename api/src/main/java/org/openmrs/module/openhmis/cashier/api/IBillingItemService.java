@@ -31,6 +31,7 @@ public interface IBillingItemService extends IDaoService<IBillingItemDAO> {
 	 *
 	 * @param item The {@link Item} to be saved to the database
 	 * @return The saved {@link Item}.
+	 * @should throw IllegalArgumentException if the item is null
 	 * @should throw APIException if the item has no name
 	 * @should throw APIException if the item has no department
 	 * @should throw APIException if the item name is longer than 255 characters
@@ -42,6 +43,40 @@ public interface IBillingItemService extends IDaoService<IBillingItemDAO> {
 	 */
 	@Authorized( {CashierPrivilegeConstants.MANAGE_ITEMS})
 	Item saveItem(Item item) throws APIException;
+
+	/**
+	 * Retires the specified {@link Item}. This effectively removes the item from circulation or use.
+	 *
+	 * @param item {@link Item} to be retired
+	 * @param reason   is the reason why the item is being retired
+	 * @should retire the item successfully
+	 * @should throw IllegalArgumentException when the item is null
+	 * @should throw IllegalArgumentException when no reason is given
+	 */
+	@Authorized( { CashierPrivilegeConstants.MANAGE_ITEMS })
+	Item retireLocation(Item item, String reason) throws APIException;
+
+	/**
+	 * Unretire the specified {@link Item}. This restores a previously retired item back into circulation and use.
+	 *
+	 * @param item The {@link Item} to unretire
+	 * @return the newly unretired location
+	 * @throws APIException
+	 * @should throw IllegalArgumentException if the item is null
+	 * @should unretire retired item
+	 */
+	@Authorized( { CashierPrivilegeConstants.MANAGE_ITEMS })
+	Item unretireLocation(Item item) throws APIException;
+
+	/**
+	 * Completely remove an {@link Item} from the database (not reversible).
+	 *
+	 * @param item the {@link Item} to remove from the database.
+	 * @should throw IllegalArgumentException if the item is null
+	 * @should delete the specified item
+	 */
+	@Authorized( { CashierPrivilegeConstants.PURGE_ITEMS })
+	void purgeLocation(Item item) throws APIException;
 
 	/**
 	 * Gets the {@link Item} with the specified {@code itemId} or {@code null} if not found.
@@ -60,15 +95,49 @@ public interface IBillingItemService extends IDaoService<IBillingItemDAO> {
 	 * @param itemCode The item code to find.
 	 * @return The {@link Item} or with the specified item code or {@code null}.
 	 * @throws APIException
+	 * @should throw IllegalArgumentException if the item code is null
+	 * @should throw IllegalArgumentException if the item code is longer than 255 characters
+	 * @should return the item with the specified item code
+	 * @should return null if the item code is not found
 	 */
 	@Transactional(readOnly =  true)
 	@Authorized( {CashierPrivilegeConstants.VIEW_ITEMS})
 	Item getItemByCode(String itemCode) throws APIException;
 
+	/**
+	 * Finds all items that start with the specified name.
+	 * @param name The item name fragment
+	 * @param includeRetired Whether retired item should be included in the results
+	 * @return All items that start with the specified name.
+	 * @throws APIException
+	 * @should throw IllegalArgumentException if the name is null
+	 * @should throw IllegalArgumentException if the name is empty
+	 * @should throw IllegalArgumentException if the name is longer than 255 characters
+	 * @should return an empty list if no items are found
+	 * @should not return retired items unless specified
+	 * @should return items that start with the specified name
+	 * @should return items for all departments
+	 */
 	@Transactional(readOnly = true)
 	@Authorized( {CashierPrivilegeConstants.VIEW_ITEMS})
 	List<Item> findItems(String name, boolean includeRetired) throws APIException;
 
+	/**
+	 * Finds all items in the specified {@link Department} that start with the specified name.
+	 * @param department The department to search within
+	 * @param name The item name fragment
+	 * @param includeRetired Whether retired item should be included in the results
+	 * @return All items in the specified {@link Department} that start with the specified name.
+	 * @throws APIException
+	 * @should throw IllegalArgumentException if the department is null
+	 * @should throw IllegalArgumentException if the name is null
+	 * @should throw IllegalArgumentException if the name is empty
+	 * @should throw IllegalArgumentException if the name is longer than 255 characters
+	 * @should return an empty list if no items are found
+	 * @should not return retired items unless specified
+	 * @should return items that start with the specified name
+	 * @should return items for only the specified department
+	 */
 	@Transactional(readOnly = true)
 	@Authorized( {CashierPrivilegeConstants.VIEW_ITEMS})
 	List<Item> findItems(Department department, String name, boolean includeRetired) throws APIException;

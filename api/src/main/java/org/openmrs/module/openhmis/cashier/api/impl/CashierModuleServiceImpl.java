@@ -17,6 +17,7 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.openhmis.cashier.api.CashierModuleService;
+import org.openmrs.module.openhmis.cashier.api.IDaoService;
 import org.openmrs.module.openhmis.cashier.api.db.CashierModuleDAO;
 
 /**
@@ -42,3 +43,4 @@ public class CashierModuleServiceImpl extends BaseOpenmrsService implements Cash
 	    return dao;
     }
 }
+
