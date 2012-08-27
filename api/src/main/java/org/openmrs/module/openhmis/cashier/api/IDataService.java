@@ -15,10 +15,29 @@
 package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface IDataService<T extends IEntityDao, E extends BaseOpenmrsData> extends IEntityService<T, E> {
+	/**
+	 * Voiding an entity essentially removes it from circulation.
+	 *
+	 * @param entity The entity object to void.
+	 * @param reason The reason for voiding.
+	 * @should void the entity
+	 * @should throw IllegalArgumentException with null reason parameter
+	 * @should throw IllegalArgumentException with null entity
+	 */
+	public E voidEncounter(E entity, String reason);
 
+	/**
+	 * Unvoid the entity record.
+	 *
+	 * @param entity The entity to be revived.
+	 * @should unvoid the entity
+	 * @should throw IllegalArgumentException with null entity
+	 */
+	public E unvoidEncounter(E entity) throws APIException;
 }

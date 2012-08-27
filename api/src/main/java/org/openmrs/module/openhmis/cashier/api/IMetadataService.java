@@ -53,6 +53,8 @@ public interface IMetadataService<T extends IEntityDao, E extends BaseOpenmrsMet
 	 * @param retired {@code true} to return only retired entities, {@code false} to return only unretired entities.
 	 * @return All the entity records that have the specified retirement status.
 	 * @throws APIException
+	 * @should return all retired entities when retired is set to true
+	 * @should return all unretired entities when retired is set to false
 	 */
 	List<E> getAll(boolean retired) throws APIException;
 

@@ -21,6 +21,11 @@ import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
 
 import java.util.List;
 
+/**
+ * The base type for metadata entity services.
+ * @param <T> The entity data access object type.
+ * @param <E> THe entity type.
+ */
 public abstract class BaseMetadataServiceImpl<T extends IEntityDao, E extends BaseOpenmrsMetadata>
 		extends BaseEntityServiceImpl<T, E> implements IMetadataService<T, E> {
 

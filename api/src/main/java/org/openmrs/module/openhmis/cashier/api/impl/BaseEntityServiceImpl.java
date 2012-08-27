@@ -22,9 +22,23 @@ import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
 
 import java.util.List;
 
+/**
+ * The base type for entity services which provides the core implementation for the common {@link BaseOpenmrsObject} operations.
+ * @param <T> The entity data access object type.
+ * @param <E> The entity type.
+ */
 public abstract class BaseEntityServiceImpl<T extends IEntityDao, E extends BaseOpenmrsObject>
 		extends BaseOpenmrsService implements IEntityService<T, E> {
 	private T dao;
+
+	/**
+	 * Validates the specified entity, throwing an exception in the validation fails.
+	 * @param entity The entity to validate.
+	 * @should not throw an exception for valid objects
+	 * @should throw IllegalArgumentException with a null entity
+	 * @should throw an exception for invalid objects
+	 */
+	protected abstract void validate(E entity) throws APIException;
 
 	/**
 	 * @param dao the dao to set
