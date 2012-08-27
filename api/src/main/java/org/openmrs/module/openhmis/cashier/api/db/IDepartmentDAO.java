@@ -12,25 +12,10 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api.impl;
+package org.openmrs.module.openhmis.cashier.api.db;
 
-import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.openhmis.cashier.api.IDaoService;
+import org.openmrs.module.openhmis.cashier.api.model.Department;
 
-public class BaseDaoServiceImpl<T> extends BaseOpenmrsService implements IDaoService<T> {
-	private T dao;
+public interface IDepartmentDao extends IEntityDao<Department>  {
 
-	/**
-	 * @param dao the dao to set
-	 */
-	public void setDao(T dao) {
-		this.dao = dao;
-	}
-
-	/**
-	 * @return the dao
-	 */
-	public T getDao() {
-		return dao;
-	}
 }

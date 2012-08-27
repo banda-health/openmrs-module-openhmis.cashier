@@ -12,16 +12,13 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.impl;
 
-import org.openmrs.api.OpenmrsService;
+import org.openmrs.BaseOpenmrsData;
+import org.openmrs.module.openhmis.cashier.api.IDataService;
+import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
 
-public interface IDaoService<T> extends OpenmrsService {
-	/**
-	 * Set the data access object that the service will use to interact with the database. This is
-	 * set by spring in the applicationContext-service.xml file
-	 *
-	 * @param dao The data access object that the service will use
-	 */
-	void setDao(T dao);
+public abstract class BaseDataServiceImpl<T extends IEntityDao, E extends BaseOpenmrsData>
+		extends BaseEntityServiceImpl<T, E> implements IDataService<T, E> {
+
 }

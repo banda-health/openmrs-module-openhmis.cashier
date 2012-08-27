@@ -14,36 +14,31 @@
 
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IBillingItemService;
 import org.openmrs.module.openhmis.cashier.api.db.IBillingItemDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
 import java.util.List;
 
-public class BillingItemServiceImpl extends BaseDaoServiceImpl<IBillingItemDAO> implements IBillingItemService {
+public class BillingItemServiceImpl extends BaseMetadataServiceImpl<IBillingItemDAO, Item> implements IBillingItemService {
+	/**
+	 *
+	 * @param item The {@link Item} to be saved to the database
+	 * @return
+	 * @throws APIException
+	 * @should throw APIException if the item has no name
+	 * @should throw APIException if the item has no department
+	 * @should throw APIException if the item name is longer than 255 characters
+	 * @should throw APIException if the item description is longer than 1024 characters
+	 * @should throw APIException if the item has an item code that is already defined
+	 */
 	@Override
-	public Item saveItem(Item item) throws APIException {
-		return null;
-	}
-
-	@Override
-	public Item retireLocation(Item item, String reason) throws APIException {
-		return null;
-	}
-
-	@Override
-	public Item unretireLocation(Item item) throws APIException {
-		return null;
-	}
-
-	@Override
-	public void purgeLocation(Item item) throws APIException {
-	}
-
-	@Override
-	public Item getItem(int itemId) throws APIException {
+	@Authorized( {CashierPrivilegeConstants.MANAGE_ITEMS})
+	public Item save(Item item) throws APIException {
 		return null;
 	}
 
@@ -52,8 +47,15 @@ public class BillingItemServiceImpl extends BaseDaoServiceImpl<IBillingItemDAO> 
 		return null;
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @param includeRetired Whether retired item should be included in the results.
+	 * @return
+	 * @should return items for all departments
+	 */
 	@Override
-	public List<Item> findItems(String name, boolean includeRetired) throws APIException {
+	public List<Item> findByName(String name, boolean includeRetired) {
 		return null;
 	}
 

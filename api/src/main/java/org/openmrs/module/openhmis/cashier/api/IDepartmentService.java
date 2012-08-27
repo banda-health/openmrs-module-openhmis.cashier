@@ -12,10 +12,11 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api.db;
+package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.module.openhmis.cashier.api.model.Item;
+import org.openmrs.module.openhmis.cashier.api.db.IDepartmentDao;
+import org.openmrs.module.openhmis.cashier.api.model.Department;
 
-public interface IBillingItemDAO extends IEntityDao<Item> {
+public interface IDepartmentService extends IMetadataService<IDepartmentDao, Department> {
 
 }

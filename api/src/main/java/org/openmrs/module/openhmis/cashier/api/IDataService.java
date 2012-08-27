@@ -12,10 +12,13 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api.db;
+package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.module.openhmis.cashier.api.model.Item;
+import org.openmrs.BaseOpenmrsData;
+import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface IBillingItemDAO extends IEntityDao<Item> {
+@Transactional
+public interface IDataService<T extends IEntityDao, E extends BaseOpenmrsData> extends IEntityService<T, E> {
 
 }

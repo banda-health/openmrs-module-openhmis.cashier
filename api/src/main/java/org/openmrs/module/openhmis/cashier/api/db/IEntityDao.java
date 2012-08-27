@@ -14,8 +14,8 @@
 
 package org.openmrs.module.openhmis.cashier.api.db;
 
-import org.openmrs.module.openhmis.cashier.api.model.Item;
+import org.openmrs.BaseOpenmrsObject;
 
-public interface IBillingItemDAO extends IEntityDao<Item> {
+public interface IEntityDao<T extends BaseOpenmrsObject> {
 
 }
