@@ -4,6 +4,10 @@
     <entry_points version="2.0" />
   </component>
   <component name="IdProvider" IDEtalkID="09322869F9A670C1512CE977DEE9AB19" />
+  <component name="LiquibaseProjectComponent">
+    <option name="outputChangeLogFile" />
+    <option name="rootChangeLogFile" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
