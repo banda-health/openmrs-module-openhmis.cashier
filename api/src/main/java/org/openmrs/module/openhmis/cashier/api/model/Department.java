@@ -18,6 +18,8 @@ import org.openmrs.BaseOpenmrsMetadata;
 
 public class Department extends BaseOpenmrsMetadata {
 	private Integer departmentId;
+	private String name;
+	private String description;
 
 	@Override
 	public Integer getId() {
@@ -29,12 +31,19 @@ public class Department extends BaseOpenmrsMetadata {
 		departmentId = id;
 	}
 
-	public Integer getDepartmentId() {
-		return departmentId;
+	public String getName() {
+		return name;
 	}
 
-	public void setDepartmentId(Integer departmentId) {
-		this.departmentId = departmentId;
+	public void setName(String name) {
+		this.name = name;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
