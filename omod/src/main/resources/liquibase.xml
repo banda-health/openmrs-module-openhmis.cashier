@@ -12,12 +12,12 @@
 		    <column defaultValue="" name="name" type="varchar(255)">
 			    <constraints nullable="false"/>
 		    </column>
-		    <column defaultValue="" name="description" type="varchar(500)" />
+		    <column defaultValue="" name="description" type="varchar(1024)" />
 		    <column name="department_id" type="int">
 			    <constraints nullable="false" />
 		    </column>
 
-		    <column defaultValueNumeric="0" name="creator" type="int">
+		    <column name="creator" type="int" defaultValueNumeric="0" >
 			    <constraints nullable="false"/>
 		    </column>
 		    <column name="date_created" type="DATETIME">
@@ -134,5 +134,5 @@
 		<addForeignKeyConstraint constraintName="cashier_item_attribute_voided_by_fk"
 		     baseTableName="cashier_item_attribute" baseColumnNames="voided_by"
 		     referencedTableName="users" referencedColumnNames="user_id"/>
-    </changeSet>    
+    </changeSet>
 </databaseChangeLog>

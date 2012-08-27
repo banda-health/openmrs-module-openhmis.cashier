@@ -28,9 +28,7 @@
 	
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
-				
-		OpenHMISCashierModule.hbm.xml
-				
+		hibernate.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

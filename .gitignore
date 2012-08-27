@@ -23,6 +23,7 @@
 .idea/workspace.xml
 .idea/misc.xml
 .idea/libraries
+.idea/*datasources.*
 
 # building
 target

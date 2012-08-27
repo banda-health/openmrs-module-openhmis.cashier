@@ -13,13 +13,13 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.BaseCustomizableData;
+import org.openmrs.BaseCustomizableMetadata;
 import org.openmrs.customdatatype.Customizable;
 
 import java.math.BigDecimal;
 import java.util.Set;
 
-public class Item extends BaseCustomizableData<ItemAttribute> implements Customizable<ItemAttribute> {
+public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Customizable<ItemAttribute> {
 	private Integer itemId;
 	private Set<String> codes;
 	private Set<BigDecimal> prices;
