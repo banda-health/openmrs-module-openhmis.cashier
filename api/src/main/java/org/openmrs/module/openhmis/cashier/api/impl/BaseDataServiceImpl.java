@@ -18,14 +18,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IDataService;
-import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
 /**
  * The base type for data entity services.
  * @param <T> The entity data access object type.
  * @param <E> The entity type.
  */
-public abstract class BaseDataServiceImpl<T extends IEntityDao, E extends BaseOpenmrsData>
+public abstract class BaseDataServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsData>
 		extends BaseEntityServiceImpl<T, E> implements IDataService<T, E> {
 
 	@Override

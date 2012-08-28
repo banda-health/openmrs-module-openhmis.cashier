@@ -14,7 +14,6 @@
 
 package org.openmrs.module.openhmis.cashier.api.impl;
 
-import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
@@ -22,7 +21,7 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
-import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ import java.util.List;
  * @param <T> The entity data access object type.
  * @param <E> THe entity type.
  */
-public abstract class BaseMetadataServiceImpl<T extends IEntityDao, E extends BaseOpenmrsMetadata>
+public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsMetadata>
 		extends BaseEntityServiceImpl<T, E> implements IMetadataService<T, E> {
 
 	@Override
@@ -62,9 +61,8 @@ public abstract class BaseMetadataServiceImpl<T extends IEntityDao, E extends Ba
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<E> getAll(boolean retired) throws APIException {
-		Criteria criteria = dao.createCriteria(getEntityClass());
+		Criteria criteria = dao.createCriteria();
 		criteria.add(Restrictions.eq("retired", retired));
 
 		return dao.select(criteria);
@@ -76,7 +74,7 @@ public abstract class BaseMetadataServiceImpl<T extends IEntityDao, E extends Ba
 			throw new IllegalArgumentException("The name fragment must be defined.");
 		}
 
-		Criteria criteria = dao.createCriteria(getEntityClass());
+		Criteria criteria = dao.createCriteria();
 		criteria.add(Restrictions.ilike("name", nameFragment, MatchMode.START));
 
 		if (!includeRetired) {

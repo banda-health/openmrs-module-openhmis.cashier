@@ -18,14 +18,14 @@ import org.apache.commons.lang.NotImplementedException;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IBillingItemService;
-import org.openmrs.module.openhmis.cashier.api.db.IBillingItemDAO;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
 import java.util.List;
 
-public class BillingItemServiceImpl extends BaseMetadataServiceImpl<IBillingItemDAO, Item> implements IBillingItemService {
+public class BillingItemServiceImpl extends BaseMetadataServiceImpl<IGenericHibernateDAO<Item>, Item> implements IBillingItemService {
 	@Override
 	protected void validate(Item entity) throws APIException {
 		throw new NotImplementedException();

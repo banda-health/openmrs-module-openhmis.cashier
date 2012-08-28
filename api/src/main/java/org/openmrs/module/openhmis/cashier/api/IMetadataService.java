@@ -16,13 +16,13 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional
-public interface IMetadataService<T extends IEntityDao, E extends BaseOpenmrsMetadata> extends IEntityService<T, E> {
+public interface IMetadataService<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsMetadata> extends IEntityService<T, E> {
 	/**
 	 * Retires the specified entity. This effectively removes the entity from circulation or use.
 	 *

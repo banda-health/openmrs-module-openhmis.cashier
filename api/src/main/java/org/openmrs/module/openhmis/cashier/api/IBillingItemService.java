@@ -16,7 +16,7 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.db.IBillingItemDAO;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public interface IBillingItemService extends IMetadataService<IBillingItemDAO, Item> {
+public interface IBillingItemService extends IMetadataService<IGenericHibernateDAO<Item>, Item> {
 	/**
 	 * Gets the {@link Item} with the specified code or {@code null} if not found.
 	 * @param itemCode The item code to find.

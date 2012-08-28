@@ -21,7 +21,7 @@ import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.openhmis.cashier.api.IEntityService;
-import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -31,7 +31,7 @@ import java.util.List;
  * @param <T> The entity data access object type.
  * @param <E> The entity type.
  */
-public abstract class BaseEntityServiceImpl<T extends IEntityDao, E extends BaseOpenmrsObject>
+public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsObject>
 		extends BaseOpenmrsService implements IEntityService<T, E> {
 	protected T dao;
 	private Class entityClass = null;
@@ -95,7 +95,7 @@ public abstract class BaseEntityServiceImpl<T extends IEntityDao, E extends Base
 			throw new IllegalArgumentException("The UUID must be defined.");
 		}
 
-		Criteria criteria = dao.createCriteria(getEntityClass());
+		Criteria criteria = dao.createCriteria();
 		criteria.add(Restrictions.eq("uuid", uuid));
 
 		return dao.selectSingle(criteria);
