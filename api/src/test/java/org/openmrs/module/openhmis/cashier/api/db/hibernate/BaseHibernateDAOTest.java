@@ -13,13 +13,13 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseHibernateDAOTest extends BaseModuleContextSensitiveTest {	
-	private Log log = LogFactory.getLog(BaseHibernateDAO.class);
+	private Log log = LogFactory.getLog(BaseGenericHibernateDAO.class);
 	private static String TEST_DATABASE_FILE = "db/DepartmentTest.xml";
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	private BaseHibernateDAO<Department> provider;
+	private BaseGenericHibernateDAO<Department> provider;
 
 	@Before
 	public void before() {
@@ -28,16 +28,16 @@ public class BaseHibernateDAOTest extends BaseModuleContextSensitiveTest {
 		} catch (Exception e) {
 			Assert.fail("Couldn't load test database from " + TEST_DATABASE_FILE);
 		}
-		provider = new BaseHibernateDAO<Department>(Department.class, sessionFactory);
+		provider = new BaseGenericHibernateDAO<Department>(Department.class, sessionFactory);
 	}
 	/**
-	 * @see BaseHibernateDAO#getAll()
+	 * @see BaseGenericHibernateDAO#getAll()
 	 * @verifies get all objects of type T from the database.
 	 */
 	@Test
 	public void getAll_shouldGetAllObjectsOfTypeTFromTheDatabase()
 			throws Exception {
-		List<Department> list = provider.getAll();
+		List<Department> list = provider.select();
 		Department department = list.get(0);
 		Assert.assertEquals("Test", department.getName());
 	}

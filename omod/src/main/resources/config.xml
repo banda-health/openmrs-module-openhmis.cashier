@@ -17,18 +17,43 @@
 
 	
 	<!-- Module Activator -->
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.OpenHMISCashierModuleActivator</activator>
+	<activator>${project.parent.groupId}.${project.parent.artifactId}.CashierModuleActivator</activator>
 	
 	
-	<!-- Adds link to admin page -->
+	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
 		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
 	</extension>
+	<extension>
+		<point>org.openmrs.gutter.tools</point>
+		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.CashierMenuItem</class>
+	</extension>
 	
-	<!-- Maps hibernate file's, if present -->
+	<!-- Privileges -->
+	<privilege>
+		<name>Add Bills</name>
+		<description>Able to add a bill</description>
+	</privilege>
+	
+	<privilege>
+		<name>Edit Bills</name>
+		<description>Able to edit bills</description>
+	</privilege>
+	
+	<privilege>
+		<name>Delete Bills</name>
+		<description>Able to delete bills</description>
+	</privilege>
+	
+	<privilege>
+		<name>View Bills</name>
+		<description>Able to view bills</description>
+	</privilege>
+	
+	<!-- Maps hibernate files, if present -->
 	<mappingFiles>
-		hibernate.hbm.xml
+
 	</mappingFiles>
 
 	<!-- Internationalization -->

@@ -10,7 +10,7 @@
 
 	<artifactId>openhmis.cashier-api</artifactId>
 	<packaging>jar</packaging>
-	<name>OpenHMIS Cashier Module Module API</name>
+	<name>OpenHMIS Cashier Module API</name>
 	<description>API project for the OpenHMIS Cashier module</description>
 
 	<dependencies>
