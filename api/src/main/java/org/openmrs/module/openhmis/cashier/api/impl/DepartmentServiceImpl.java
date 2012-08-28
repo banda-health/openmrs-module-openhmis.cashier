@@ -12,23 +12,13 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.impl;
 
-import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
+import org.openmrs.module.openhmis.cashier.api.db.IDepartmentDao;
+import org.openmrs.module.openhmis.cashier.api.model.Department;
 
-public interface IScheme {
-
-	/**
-	 * A Scheme should use a reference to a bill to determine how much of the
-	 * bill it will cover
-	 *  
-	 * @param bill
-	 */
-	public void setBill(Bill bill);
+public class DepartmentServiceImpl
+		extends BaseMetadataServiceImpl<IDepartmentDao, Department> implements IDepartmentService {
 	
-	/**
-	 * Determine how much of the bill will be covered by the scheme
-	 * @return Double the portion of the bill covered by the scheme 
-	 */
-	public Double getCoveredAmount();
 }

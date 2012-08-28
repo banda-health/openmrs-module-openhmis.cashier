@@ -22,3 +22,4 @@ public interface CashierModuleDAO {
 	 * Add DAO methods here
 	 */
 }
+
