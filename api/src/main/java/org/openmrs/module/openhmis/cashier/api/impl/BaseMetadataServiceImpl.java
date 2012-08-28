@@ -14,6 +14,11 @@
 
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
@@ -31,21 +36,53 @@ public abstract class BaseMetadataServiceImpl<T extends IEntityDao, E extends Ba
 
 	@Override
 	public E retire(E entity, String reason) throws APIException {
-		return null;
+		if (entity == null) {
+			throw new IllegalArgumentException("The entity to retire cannot be null.");
+		}
+		if (StringUtils.isEmpty(reason)) {
+			throw new IllegalArgumentException("The reason to retire must be defined.");
+		}
+
+		entity.setRetired(true);
+		entity.setRetireReason(reason);
+
+		return save(entity);
 	}
 
 	@Override
 	public E unretire(E entity) throws APIException {
-		return null;
+		if (entity == null) {
+			throw new IllegalArgumentException("The entity to unretire cannot be null.");
+		}
+
+		entity.setRetired(false);
+		entity.setRetireReason("");
+
+		return save(entity);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<E> getAll(boolean retired) throws APIException {
-		return null;
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("retired", retired));
+
+		return dao.select(criteria);
 	}
 
 	@Override
 	public List<E> findByName(String nameFragment, boolean includeRetired) throws APIException {
-		return null;
+		if (StringUtils.isEmpty(nameFragment)) {
+			throw new IllegalArgumentException("The name fragment must be defined.");
+		}
+
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.add(Restrictions.ilike("name", nameFragment, MatchMode.START));
+
+		if (!includeRetired) {
+			criteria.add(Restrictions.eq("retired", false));
+		}
+
+		return dao.select(criteria);
 	}
 }
