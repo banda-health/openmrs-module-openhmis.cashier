@@ -14,7 +14,7 @@
 
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
 import org.openmrs.module.openhmis.cashier.api.IScheme;
@@ -28,7 +28,7 @@ import java.util.Set;
  * @author daniel
  *
  */
-public class Bill extends BaseOpenmrsObject {
+public class Bill extends BaseOpenmrsData {
 	/**
 	 * Database ID
 	 */
