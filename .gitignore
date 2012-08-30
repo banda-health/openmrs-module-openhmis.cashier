@@ -24,6 +24,7 @@
 .idea/misc.xml
 .idea/libraries
 .idea/*datasources.*
+.idea/encodings.xml
 
 # building
 target
