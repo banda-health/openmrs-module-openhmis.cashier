@@ -17,10 +17,10 @@ package org.openmrs.module.openhmis.cashier.api;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class IBillingItemServiceTest {
+public class IItemServiceTest {
 	/**
 	 * @verifies throw IllegalArgumentException if the item code is null
-	 * @see IBillingItemService#getItemByCode(String)
+	 * @see IItemService#getItemByCode(String)
 	 */
 	@Test
 	public void getItemByCode_shouldThrowIllegalArgumentExceptionIfTheItemCodeIsNull() throws Exception {
@@ -30,7 +30,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies throw IllegalArgumentException if the item code is longer than 255 characters
-	 * @see IBillingItemService#getItemByCode(String)
+	 * @see IItemService#getItemByCode(String)
 	 */
 	@Test
 	public void getItemByCode_shouldThrowIllegalArgumentExceptionIfTheItemCodeIsLongerThan255Characters() throws Exception {
@@ -40,7 +40,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies return the item with the specified item code
-	 * @see IBillingItemService#getItemByCode(String)
+	 * @see IItemService#getItemByCode(String)
 	 */
 	@Test
 	public void getItemByCode_shouldReturnTheItemWithTheSpecifiedItemCode() throws Exception {
@@ -50,7 +50,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies return null if the item code is not found
-	 * @see IBillingItemService#getItemByCode(String)
+	 * @see IItemService#getItemByCode(String)
 	 */
 	@Test
 	public void getItemByCode_shouldReturnNullIfTheItemCodeIsNotFound() throws Exception {
@@ -60,7 +60,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies throw IllegalArgumentException if the department is null
-	 * @see IBillingItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
+	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
 	@Test
 	public void findItems_shouldThrowIllegalArgumentExceptionIfTheDepartmentIsNull() throws Exception {
@@ -70,7 +70,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies throw IllegalArgumentException if the name is null
-	 * @see IBillingItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
+	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
 	@Test
 	public void findItems_shouldThrowIllegalArgumentExceptionIfTheNameIsNull() throws Exception {
@@ -80,7 +80,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies throw IllegalArgumentException if the name is empty
-	 * @see IBillingItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
+	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
 	@Test
 	public void findItems_shouldThrowIllegalArgumentExceptionIfTheNameIsEmpty() throws Exception {
@@ -90,7 +90,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies throw IllegalArgumentException if the name is longer than 255 characters
-	 * @see IBillingItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
+	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
 	@Test
 	public void findItems_shouldThrowIllegalArgumentExceptionIfTheNameIsLongerThan255Characters() throws Exception {
@@ -100,7 +100,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies return an empty list if no items are found
-	 * @see IBillingItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
+	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
 	@Test
 	public void findItems_shouldReturnAnEmptyListIfNoItemsAreFound() throws Exception {
@@ -110,7 +110,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies not return retired items unless specified
-	 * @see IBillingItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
+	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
 	@Test
 	public void findItems_shouldNotReturnRetiredItemsUnlessSpecified() throws Exception {
@@ -120,7 +120,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies return items that start with the specified name
-	 * @see IBillingItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
+	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
 	@Test
 	public void findItems_shouldReturnItemsThatStartWithTheSpecifiedName() throws Exception {
@@ -130,7 +130,7 @@ public class IBillingItemServiceTest {
 
 	/**
 	 * @verifies return items for only the specified department
-	 * @see IBillingItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
+	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
 	@Test
 	public void findItems_shouldReturnItemsForOnlyTheSpecifiedDepartment() throws Exception {

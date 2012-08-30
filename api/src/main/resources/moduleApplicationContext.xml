@@ -21,7 +21,7 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>org.openmrs.module.openhmis.cashier.api.IBillingItemService</value>
+				<value>org.openmrs.module.openhmis.cashier.api.IItemService</value>
 				<ref bean="cashierItemService" />
 				<value>org.openmrs.module.openhmis.cashier.api.IDepartmentService</value>
 				<ref bean="cashierDepartmentService" />
@@ -33,9 +33,9 @@
 	<bean id="cashierItemService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
-			<bean class="org.openmrs.module.openhmis.cashier.api.impl.BillingItemServiceImpl">
+			<bean class="org.openmrs.module.openhmis.cashier.api.impl.ItemServiceImpl">
 				<property name="dao">
-					<bean class="org.openmrs.module.openhmis.cashier.api.db.hibernate.BillingItemHibernateDAO">
+					<bean class="org.openmrs.module.openhmis.cashier.api.db.hibernate.ItemHibernateDAO">
 						<constructor-arg name="sessionFactory" ref="sessionFactory" />
 					</bean>
 				</property>

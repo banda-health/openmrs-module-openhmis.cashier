@@ -15,16 +15,15 @@
 package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 
 import org.hibernate.SessionFactory;
-import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This type is a marker class for billing item DAO.
  */
-public class BillingItemHibernateDAO extends GenericHibernateDAO<Item> {
+public class ItemHibernateDAO extends GenericHibernateDAO<Item> {
 	@Autowired
-	public BillingItemHibernateDAO(SessionFactory sessionFactory) {
+	public ItemHibernateDAO(SessionFactory sessionFactory) {
 		super(Item.class, sessionFactory);
 	}
 }

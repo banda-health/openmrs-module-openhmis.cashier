@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public interface IBillingItemService extends IMetadataService<IGenericHibernateDAO<Item>, Item> {
+public interface IItemService extends IMetadataService<IGenericHibernateDAO<Item>, Item> {
 	/**
 	 * Gets the {@link Item} with the specified code or {@code null} if not found.
 	 * @param itemCode The item code to find.

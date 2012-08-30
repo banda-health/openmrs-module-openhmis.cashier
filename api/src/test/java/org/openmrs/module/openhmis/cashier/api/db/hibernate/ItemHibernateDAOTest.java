@@ -17,7 +17,7 @@ package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 import org.apache.commons.lang.NotImplementedException;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 
-public class BillingItemHibernateDAOTest extends IGenericHibernateDAOTest<Item> {
+public class ItemHibernateDAOTest extends IGenericHibernateDAOTest<Item> {
 	protected DepartmentHibernateDAO departmentDao;
 
 	@Override
@@ -29,7 +29,7 @@ public class BillingItemHibernateDAOTest extends IGenericHibernateDAOTest<Item> 
 
 	@Override
 	protected IGenericHibernateDAO<Item> newDao() {
-		return new BillingItemHibernateDAO(sessionFactory);
+		return new ItemHibernateDAO(sessionFactory);
 	}
 
 	@Override
