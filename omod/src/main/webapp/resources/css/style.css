@@ -1,0 +1,25 @@
+table.form td { padding-right: 10px; }
+table.form td.end { padding-right: 0px; }
+table.form tbody th { font-weight: normal; }
+
+table.bill { width: 100%; border-spacing: 0; }
+th.item-quantity, th.item-price, th.item-total {
+	width: 13%;
+}
+table.bill td input[type="text"] {
+	width: 100%;
+	border: 0;
+	background-color: transparent;
+}
+
+table.bill tr.odd { background-color: #efefef;}
+
+table.bill td, table.bill th {
+	padding: 0px 5px;
+	border-right: 1px solid #aaa;
+}
+table.bill td.end, table.bill th.end { border-right: none; }
+
+input.item-quantity, input.item-price, input.item-total {
+	text-align: right;
+}

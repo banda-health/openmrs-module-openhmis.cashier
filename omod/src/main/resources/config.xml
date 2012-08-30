@@ -29,6 +29,10 @@
 		<point>org.openmrs.gutter.tools</point>
 		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.CashierMenuItem</class>
 	</extension>
+	<extension>
+		<point>org.openmrs.headerFullIncludeExt</point>
+		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.CashierHeadIncludes</class>
+	</extension>
 	
 	<!-- Privileges -->
 	<privilege>

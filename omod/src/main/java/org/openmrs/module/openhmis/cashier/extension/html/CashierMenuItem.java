@@ -21,7 +21,7 @@ public class CashierMenuItem extends LinkExt {
 
 	@Override
 	public String getUrl() {
-		return "module/openhmis.cashier/bill.form";
+		return "module/openhmis/cashier/bill.form";
 	}
 
 }
