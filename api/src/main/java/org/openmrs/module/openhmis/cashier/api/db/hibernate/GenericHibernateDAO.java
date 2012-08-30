@@ -14,17 +14,19 @@
 
 package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 
-import java.io.Serializable;
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
+import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class GenericHibernateDAO<T> implements IGenericHibernateDAO<T> {
+import java.io.Serializable;
+import java.util.List;
+
+public class GenericHibernateDAO<T extends BaseOpenmrsObject> implements IGenericHibernateDAO<T> {
 
 	SessionFactory sessionFactory;
 	private final Class<T> type;
@@ -122,3 +124,4 @@ public class GenericHibernateDAO<T> implements IGenericHibernateDAO<T> {
 		return results;		
 	}
 }
+
