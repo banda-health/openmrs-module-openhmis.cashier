@@ -12,10 +12,15 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api.db;
+package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 
-import org.openmrs.BaseOpenmrsObject;
+import org.hibernate.SessionFactory;
+import org.openmrs.module.openhmis.cashier.api.model.Department;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public interface IEntityDao<T extends BaseOpenmrsObject> {
-
+public class DepartmentHibernateDAO extends GenericHibernateDAO<Department> {
+	@Autowired
+	public DepartmentHibernateDAO(SessionFactory sessionFactory) {
+		super(Department.class, sessionFactory);
+	}
 }

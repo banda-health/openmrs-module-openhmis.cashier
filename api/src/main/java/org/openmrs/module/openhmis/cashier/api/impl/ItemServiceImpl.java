@@ -15,25 +15,18 @@
 package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.IBillingItemService;
-import org.openmrs.module.openhmis.cashier.api.db.IBillingItemDAO;
+import org.openmrs.module.openhmis.cashier.api.IItemService;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
 import java.util.List;
 
-public class BillingItemServiceImpl extends BaseMetadataServiceImpl<IBillingItemDAO, Item> implements IBillingItemService {
-	@Override
-	protected void validate(Item entity) throws APIException {
-		throw new NotImplementedException();
-	}
-
+public class ItemServiceImpl extends BaseMetadataServiceImpl<IGenericHibernateDAO<Item>, Item> implements IItemService {
 	/**
-	 *
-	 * @param item The {@link Item} to be saved to the database
+	 * Validates the entity.
+	 * @param entity The {@link Item} to be validated
 	 * @return
 	 * @throws APIException
 	 * @should throw APIException if the item has no name
@@ -43,25 +36,13 @@ public class BillingItemServiceImpl extends BaseMetadataServiceImpl<IBillingItem
 	 * @should throw APIException if the item has an item code that is already defined
 	 */
 	@Override
-	@Authorized( {CashierPrivilegeConstants.MANAGE_ITEMS})
-	public Item save(Item item) throws APIException {
-		return null;
+	protected void validate(Item entity) throws APIException {
+		throw new NotImplementedException();
 	}
+
 
 	@Override
 	public Item getItemByCode(String itemCode) throws APIException {
-		return null;
-	}
-
-	/**
-	 *
-	 * @param name
-	 * @param includeRetired Whether retired item should be included in the results.
-	 * @return
-	 * @should return items for all departments
-	 */
-	@Override
-	public List<Item> findByName(String name, boolean includeRetired) {
 		return null;
 	}
 

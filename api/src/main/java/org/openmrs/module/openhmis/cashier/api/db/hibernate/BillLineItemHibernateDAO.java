@@ -12,10 +12,15 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api.db;
+package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 
-import org.openmrs.module.openhmis.cashier.api.model.Item;
+import org.hibernate.SessionFactory;
+import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public interface IBillingItemDAO extends IEntityDao<Item> {
-
+public class BillLineItemHibernateDAO extends GenericHibernateDAO<BillLineItem> {
+	@Autowired
+	public BillLineItemHibernateDAO(SessionFactory sessionFactory) {
+		super(BillLineItem.class, sessionFactory);
+	}
 }

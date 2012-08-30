@@ -14,10 +14,14 @@
 
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
-import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
 import java.util.List;
 
@@ -26,26 +30,57 @@ import java.util.List;
  * @param <T> The entity data access object type.
  * @param <E> THe entity type.
  */
-public abstract class BaseMetadataServiceImpl<T extends IEntityDao, E extends BaseOpenmrsMetadata>
+public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsMetadata>
 		extends BaseEntityServiceImpl<T, E> implements IMetadataService<T, E> {
 
 	@Override
 	public E retire(E entity, String reason) throws APIException {
-		return null;
+		if (entity == null) {
+			throw new IllegalArgumentException("The entity to retire cannot be null.");
+		}
+		if (StringUtils.isEmpty(reason)) {
+			throw new IllegalArgumentException("The reason to retire must be defined.");
+		}
+
+		entity.setRetired(true);
+		entity.setRetireReason(reason);
+
+		return save(entity);
 	}
 
 	@Override
 	public E unretire(E entity) throws APIException {
-		return null;
+		if (entity == null) {
+			throw new IllegalArgumentException("The entity to unretire cannot be null.");
+		}
+
+		entity.setRetired(false);
+		entity.setRetireReason("");
+
+		return save(entity);
 	}
 
 	@Override
 	public List<E> getAll(boolean retired) throws APIException {
-		return null;
+		Criteria criteria = dao.createCriteria();
+		criteria.add(Restrictions.eq("retired", retired));
+
+		return dao.select(criteria);
 	}
 
 	@Override
 	public List<E> findByName(String nameFragment, boolean includeRetired) throws APIException {
-		return null;
+		if (StringUtils.isEmpty(nameFragment)) {
+			throw new IllegalArgumentException("The name fragment must be defined.");
+		}
+
+		Criteria criteria = dao.createCriteria();
+		criteria.add(Restrictions.ilike("name", nameFragment, MatchMode.START));
+
+		if (!includeRetired) {
+			criteria.add(Restrictions.eq("retired", false));
+		}
+
+		return dao.select(criteria);
 	}
 }

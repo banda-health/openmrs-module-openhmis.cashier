@@ -1,6 +1,6 @@
-/**
+/*
  * The contents of this file are subject to the OpenMRS Public License
- * Version 1.0 (the "License"); you may not use this file except in
+ * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://license.openmrs.org
  *
@@ -11,20 +11,12 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 package org.openmrs.module.openhmis.cashier.api;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import org.openmrs.api.context.Context;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.GenericHibernateDAO;
+import org.openmrs.module.openhmis.cashier.api.model.Department;
 
-/**
- * Tests {@link ${CashierModuleService}}.
- */
-public class CashierModuleServiceTest extends BaseModuleContextSensitiveTest {
-	
-	@Test
-	public void shouldSetupContext() {
-		assertNotNull(Context.getService(CashierModuleService.class));
-	}
+public class IDepartmentServiceTest extends IMetadataServiceTest<GenericHibernateDAO<Department>, Department> {
+
 }
