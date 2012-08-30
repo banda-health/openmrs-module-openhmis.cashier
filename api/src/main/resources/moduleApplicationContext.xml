@@ -17,15 +17,45 @@
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<!-- Add here beans related to the API context -->
-
 	<!-- Services accessible via Context.getService() -->
-<!-- 	<bean parent="serviceContext"> -->
-<!-- 		<property name="moduleService"> -->
-<!-- 			<list> -->
-<!-- 				<value>${project.parent.groupId}.${project.parent.artifactId}.api.CashierModuleService</value> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
-	
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.openmrs.module.openhmis.cashier.api.IBillingItemService</value>
+				<ref bean="cashierItemService" />
+				<value>org.openmrs.module.openhmis.cashier.api.IDepartmentService</value>
+				<ref bean="cashierDepartmentService" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Service Beans Definitions -->
+	<bean id="cashierItemService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target">
+			<bean class="org.openmrs.module.openhmis.cashier.api.impl.BillingItemServiceImpl">
+				<property name="dao">
+					<bean class="org.openmrs.module.openhmis.cashier.api.db.hibernate.BillingItemHibernateDAO">
+						<constructor-arg name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+		<property name="preInterceptors" ref="serviceInterceptors" />
+		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
+	</bean>
+	<bean id="cashierDepartmentService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target">
+			<bean class="org.openmrs.module.openhmis.cashier.api.impl.DepartmentServiceImpl">
+				<property name="dao">
+					<bean class="org.openmrs.module.openhmis.cashier.api.db.hibernate.DepartmentHibernateDAO">
+						<constructor-arg name="sessionFactory" ref="sessionFactory" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+		<property name="preInterceptors" ref="serviceInterceptors" />
+		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
+	</bean>
 </beans>
