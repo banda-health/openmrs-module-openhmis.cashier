@@ -6,5 +6,6 @@
 <hibernate-configuration>
 	<session-factory>
 		<mapping resource="Department.hbm.xml" />
+		<mapping resource="Item.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

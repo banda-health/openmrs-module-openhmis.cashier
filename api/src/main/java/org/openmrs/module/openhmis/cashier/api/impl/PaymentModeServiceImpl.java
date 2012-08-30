@@ -14,16 +14,12 @@
 
 package org.openmrs.module.openhmis.cashier.api.impl;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
-import org.openmrs.module.openhmis.cashier.api.model.Department;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 
-public class DepartmentServiceImpl
-		extends BaseMetadataServiceImpl<IGenericHibernateDAO<Department>, Department> implements IDepartmentService {
+public class PaymentModeServiceImpl extends BaseMetadataServiceImpl<IGenericHibernateDAO<PaymentMode>, PaymentMode> {
 	@Override
-	protected void validate(Department entity) throws APIException {
-		throw new NotImplementedException();
+	protected void validate(PaymentMode entity) throws APIException {
 	}
 }

@@ -12,18 +12,12 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api.impl;
+package org.openmrs.module.openhmis.cashier.api;
 
-import org.apache.commons.lang.NotImplementedException;
-import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
-import org.openmrs.module.openhmis.cashier.api.model.Department;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.springframework.transaction.annotation.Transactional;
 
-public class DepartmentServiceImpl
-		extends BaseMetadataServiceImpl<IGenericHibernateDAO<Department>, Department> implements IDepartmentService {
-	@Override
-	protected void validate(Department entity) throws APIException {
-		throw new NotImplementedException();
-	}
+@Transactional
+public interface IBillService extends IDataService<IGenericHibernateDAO<Bill>, Bill> {
 }

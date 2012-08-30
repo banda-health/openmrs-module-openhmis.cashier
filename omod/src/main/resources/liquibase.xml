@@ -16,6 +16,7 @@
 			<column name="department_id" type="int">
 				<constraints nullable="false" />
 			</column>
+			<column name="default_price_id" type="int" />
 
 			<column name="creator" type="int" defaultValueNumeric="0" >
 				<constraints nullable="false"/>
@@ -74,7 +75,7 @@
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="item_id" type="int"><constraints nullable="false" /></column>
-			<column name="attribute_type_id" type="int"><constraints nullable="false" /></column>
+			<column name="item_attribute_type_id" type="int"><constraints nullable="false" /></column>
 			<column name="value_reference" type="text"><constraints nullable="false" /></column>
 			<column name="uuid" type="char(38)"><constraints nullable="false" unique="true" /></column>
 			<column name="creator" type="int"><constraints nullable="false"/></column>
@@ -87,6 +88,68 @@
 			<column name="voided_by" type="int" />
 			<column name="date_voided" type="datetime" />
 			<column name="void_reason" type="varchar(255)" defaultValue="null"/>
+		</createTable>
+
+		<createTable tableName="cashier_item_price">
+			<column name="item_price_id" autoIncrement="true" type="int">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="item_id" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="price" type="decimal(10,2)">
+				<constraints nullable="false"/>
+			</column>
+
+			<column defaultValue="" name="name" type="varchar(255)" />
+			<column defaultValue="" name="description" type="varchar(1024)" />
+
+			<column name="creator" type="int" defaultValueNumeric="0" >
+				<constraints nullable="false"/>
+			</column>
+			<column name="date_created" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+			<column name="changed_by" type="int"/>
+			<column name="date_changed" type="DATETIME"/>
+			<column defaultValueBoolean="false" name="retired" type="BOOLEAN">
+				<constraints nullable="false"/>
+			</column>
+			<column name="retired_by" type="int"/>
+			<column name="date_retired" type="DATETIME"/>
+			<column name="retire_reason" type="varchar(255)"/>
+			<column name="uuid" type="char(38)" />
+		</createTable>
+
+		<createTable tableName="cashier_item_code">
+			<column name="item_code_id" autoIncrement="true" type="int">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="item_id" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="code" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+
+			<column defaultValue="" name="name" type="varchar(255)" />
+			<column defaultValue="" name="description" type="varchar(1024)" />
+
+			<column name="creator" type="int" defaultValueNumeric="0" >
+				<constraints nullable="false"/>
+			</column>
+			<column name="date_created" type="DATETIME">
+				<constraints nullable="false"/>
+			</column>
+			<column name="changed_by" type="int"/>
+			<column name="date_changed" type="DATETIME"/>
+			<column defaultValueBoolean="false" name="retired" type="BOOLEAN">
+				<constraints nullable="false"/>
+			</column>
+			<column name="retired_by" type="int"/>
+			<column name="date_retired" type="DATETIME"/>
+			<column name="retire_reason" type="varchar(255)"/>
+			<column name="uuid" type="char(38)" />
 		</createTable>
 
 		<createTable tableName="cashier_department">
@@ -153,8 +216,11 @@
 		                         referencedTableName="users" referencedColumnNames="user_id"/>
 
 		<addForeignKeyConstraint constraintName="cashier_item_attribute_attribute_type_id_fk"
-		                         baseTableName="cashier_item_attribute" baseColumnNames="attribute_type_id"
+		                         baseTableName="cashier_item_attribute" baseColumnNames="item_attribute_type_id"
 		                         referencedTableName="cashier_item_attribute_type" referencedColumnNames="cashier_item_attribute_type_id" />
+		<addForeignKeyConstraint constraintName="cashier_item_attribute_item_id_fk"
+		                         baseTableName="cashier_item_attribute" baseColumnNames="item_id"
+		                         referencedTableName="cashier_item" referencedColumnNames="item_id" />
 		<addForeignKeyConstraint constraintName="cashier_item_attribute_creator_fk"
 		                         baseTableName="cashier_item_attribute" baseColumnNames="creator"
 		                         referencedTableName="users" referencedColumnNames="user_id"/>
@@ -164,8 +230,41 @@
 		<addForeignKeyConstraint constraintName="cashier_item_attribute_voided_by_fk"
 		                         baseTableName="cashier_item_attribute" baseColumnNames="voided_by"
 		                         referencedTableName="users" referencedColumnNames="user_id"/>
-	</changeSet>
-	<changeSet id="openhmis.cashier-2012-08-27-17:30" author="akmad">
 
+		<addForeignKeyConstraint constraintName="cashier_item_price_item_id_fk"
+		                         baseTableName="cashier_item_price" baseColumnNames="item_id"
+		                         referencedTableName="cashier_item" referencedColumnNames="item_id" />
+		<addForeignKeyConstraint constraintName="cashier_item_price_creator_fk"
+		                         baseTableName="cashier_item_price" baseColumnNames="creator"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_item_price_changed_by_fk"
+		                         baseTableName="cashier_item_price" baseColumnNames="changed_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_item_price_retired_by_fk"
+		                         baseTableName="cashier_item_price" baseColumnNames="retired_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+
+		<addForeignKeyConstraint constraintName="cashier_item_code_item_id_fk"
+		                         baseTableName="cashier_item_code" baseColumnNames="item_id"
+		                         referencedTableName="cashier_item" referencedColumnNames="item_id" />
+		<addForeignKeyConstraint constraintName="cashier_item_code_creator_fk"
+		                         baseTableName="cashier_item_code" baseColumnNames="creator"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_item_code_changed_by_fk"
+		                         baseTableName="cashier_item_code" baseColumnNames="changed_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_item_code_retired_by_fk"
+		                         baseTableName="cashier_item_code" baseColumnNames="retired_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+
+		<addForeignKeyConstraint constraintName="cashier_department_creator_fk"
+		                         baseTableName="cashier_department" baseColumnNames="creator"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_department_changed_by_fk"
+		                         baseTableName="cashier_department" baseColumnNames="changed_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_department_retired_by_fk"
+		                         baseTableName="cashier_department" baseColumnNames="retired_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
 	</changeSet>
 </databaseChangeLog>

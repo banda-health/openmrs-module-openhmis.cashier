@@ -14,17 +14,17 @@
 
 package org.openmrs.module.openhmis.cashier.api.model;
 
+import org.openmrs.BaseOpenmrsMetadata;
+
 import java.math.BigDecimal;
 import java.util.Set;
-
-import org.openmrs.BaseOpenmrsMetadata;
 
 /**
  * A class to represent a payment toward a bill
  * @author daniel
  *
  */
-public class Payment extends BaseOpenmrsMetadata{
+public class Payment extends BaseOpenmrsMetadata {
 
 	private Integer paymentId;
 	private PaymentMode paymentMode;

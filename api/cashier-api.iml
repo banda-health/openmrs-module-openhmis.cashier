@@ -3,15 +3,17 @@
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="fileset1" name="Xml Application Context" removed="false">
+        <fileset id="fileset2" name="Xml Application Context" removed="false">
           <file>file://$MODULE_DIR$/src/main/resources/moduleApplicationContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/parent-OpenmrsContext.xml</file>
         </fileset>
       </configuration>
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="hibernate.cfg.xml" value="fdeff304-c380-490f-84fc-093c289fbb55" />
+          <unit-entry name="hibernate.cfg.xml" />
+          <unit-entry name="sessionFactory" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../omod/src/main/resources/hibernate.cfg.xml" />
       </configuration>
@@ -29,6 +31,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />

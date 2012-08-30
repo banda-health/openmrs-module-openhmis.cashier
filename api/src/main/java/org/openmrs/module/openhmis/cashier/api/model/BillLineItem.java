@@ -14,20 +14,32 @@
 
 package org.openmrs.module.openhmis.cashier.api.model;
 
+import org.openmrs.BaseOpenmrsData;
+
 import java.math.BigDecimal;
 
 /**
  * A LineItem represents a line on a {@link Bill} which will bill some quantity
- * of a particular {@link BillableItem}.
+ * of a particular {@link Item}.
  * 
  * @author daniel
  *
  */
-public class BillLineItem {
+public class BillLineItem extends BaseOpenmrsData {
 	private int billLineItemId;
 	private Item item;
 	private Integer quantity;
-	
+
+	@Override
+	public Integer getId() {
+		return billLineItemId;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		billLineItemId = id;
+	}
+
 	/**
 	 * Get the total price for the line item
 	 * @return double the total price for the line item

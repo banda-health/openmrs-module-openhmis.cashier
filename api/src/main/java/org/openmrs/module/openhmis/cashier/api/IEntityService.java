@@ -17,13 +17,13 @@ package org.openmrs.module.openhmis.cashier.api;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional
-public interface IEntityService<T extends IEntityDao, E extends BaseOpenmrsObject> extends OpenmrsService {
+public interface IEntityService<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsObject> extends OpenmrsService {
 	/**
 	 * Set the data access object that the service will use to interact with the database. This is
 	 * set by spring in the applicationContext-service.xml file
@@ -38,6 +38,7 @@ public interface IEntityService<T extends IEntityDao, E extends BaseOpenmrsObjec
 	 * @param entity The entity to be saved to the database
 	 * @return The saved entity.
 	 * @should throw IllegalArgumentException if the entity is null
+	 * @should validate the entity before saving
 	 * @should return saved entity
 	 * @should update the entity successfully
 	 * @should create the entity successfully
@@ -58,6 +59,7 @@ public interface IEntityService<T extends IEntityDao, E extends BaseOpenmrsObjec
 	 *
 	 * @return All entity records that are in the database.
 	 * @should return all entity records
+	 * @should return an empty list if there are no entities
 	 */
 	@Transactional(readOnly = true)
 	List<E> getAll() throws APIException;
@@ -80,6 +82,8 @@ public interface IEntityService<T extends IEntityDao, E extends BaseOpenmrsObjec
 	 * @return the entity with the specified uuid.
 	 * @should find the entity with the specified uuid
 	 * @should return null if no entity is found
+	 * @should throw IllegalArgumentException if uuid is null
+	 * @should throw IllegalArgumentException if uuid is empty
 	 */
 	@Transactional(readOnly = true)
 	E getByUuid(String uuid) throws APIException;

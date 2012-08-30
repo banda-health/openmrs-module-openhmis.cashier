@@ -12,23 +12,19 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 
-import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.hibernate.SessionFactory;
+import org.openmrs.module.openhmis.cashier.api.model.Item;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public interface IScheme {
-
-	/**
-	 * A Scheme should use a reference to a bill to determine how much of the
-	 * bill it will cover
-	 *  
-	 * @param bill
-	 */
-	public void setBill(Bill bill);
-	
-	/**
-	 * Determine how much of the bill will be covered by the scheme
-	 * @return Double the portion of the bill covered by the scheme 
-	 */
-	public Double getCoveredAmount();
+/**
+ * This type is a marker class for billing item DAO.
+ */
+public class ItemHibernateDAO extends GenericHibernateDAO<Item> {
+	@Autowired
+	public ItemHibernateDAO(SessionFactory sessionFactory) {
+		super(Item.class, sessionFactory);
+	}
 }
+

@@ -16,16 +16,16 @@ package org.openmrs.module.openhmis.cashier.api.model;
 import org.openmrs.BaseCustomizableMetadata;
 import org.openmrs.customdatatype.Customizable;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Customizable<ItemAttribute> {
 	private Integer itemId;
-	private Set<String> codes;
-	private Set<BigDecimal> prices;
+	private Set<ItemCode> codes;
+	private Set<ItemPrice> prices;
 	private String name;
 	private String description;
 	private Department department;
+	private ItemPrice defaultPrice;
 
 	public Item() {
 	}
@@ -52,20 +52,44 @@ public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Cus
 		this.itemId = itemId;
 	}
 
-	public Set<String> getCodes() {
+	public Set<ItemCode> getCodes() {
 		return codes;
 	}
 
-	public void setCodes(Set<String> codes) {
+	public void setCodes(Set<ItemCode> codes) {
 		this.codes = codes;
 	}
 
-	public Set<BigDecimal> getPrices() {
+	public void addCode(ItemCode code) {
+		if (code != null) {
+			codes.add(code);
+		}
+	}
+
+	public void removeCode(ItemCode code) {
+		if (code != null) {
+			codes.remove(code);
+		}
+	}
+
+	public Set<ItemPrice> getPrices() {
 		return prices;
 	}
 
-	public void setPrices(Set<BigDecimal> prices) {
+	public void setPrices(Set<ItemPrice> prices) {
 		this.prices = prices;
+	}
+
+	public void addPrice(ItemPrice price) {
+		if (price != null) {
+			prices.add(price);
+		}
+	}
+
+	public void removePrice(ItemPrice price) {
+		if (price != null) {
+			prices.remove(price);
+		}
 	}
 
 	public String getName() {
@@ -90,5 +114,13 @@ public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Cus
 
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+
+	public ItemPrice getDefaultPrice() {
+		return defaultPrice;
+	}
+
+	public void setDefaultPrice(ItemPrice defaultPrice) {
+		this.defaultPrice = defaultPrice;
 	}
 }

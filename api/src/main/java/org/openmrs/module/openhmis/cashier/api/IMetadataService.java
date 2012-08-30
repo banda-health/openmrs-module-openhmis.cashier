@@ -16,13 +16,13 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.db.IEntityDao;
+import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional
-public interface IMetadataService<T extends IEntityDao, E extends BaseOpenmrsMetadata> extends IEntityService<T, E> {
+public interface IMetadataService<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsMetadata> extends IEntityService<T, E> {
 	/**
 	 * Retires the specified entity. This effectively removes the entity from circulation or use.
 	 *
@@ -53,6 +53,8 @@ public interface IMetadataService<T extends IEntityDao, E extends BaseOpenmrsMet
 	 * @param retired {@code true} to return only retired entities, {@code false} to return only unretired entities.
 	 * @return All the entity records that have the specified retirement status.
 	 * @throws APIException
+	 * @should return all retired entities when retired is set to true
+	 * @should return all unretired entities when retired is set to false
 	 */
 	List<E> getAll(boolean retired) throws APIException;
 
