@@ -20,8 +20,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.model.Item;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,7 +29,6 @@ public class GenericHibernateDAO<T extends BaseOpenmrsObject> implements IGeneri
 	SessionFactory sessionFactory;
 	private final Class<T> type;
 	
-	@Autowired
 	public GenericHibernateDAO(Class<T> type, SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 		this.type = type; 
