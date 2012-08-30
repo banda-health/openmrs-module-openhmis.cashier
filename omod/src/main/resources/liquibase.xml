@@ -164,8 +164,15 @@
 		<addForeignKeyConstraint constraintName="cashier_item_attribute_voided_by_fk"
 		                         baseTableName="cashier_item_attribute" baseColumnNames="voided_by"
 		                         referencedTableName="users" referencedColumnNames="user_id"/>
-	</changeSet>
-	<changeSet id="openhmis.cashier-2012-08-27-17:30" author="akmad">
 
+		<addForeignKeyConstraint constraintName="cashier_department_creator_fk"
+		                         baseTableName="cashier_department" baseColumnNames="creator"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_department_changed_by_fk"
+		                         baseTableName="cashier_department" baseColumnNames="changed_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_department_retired_by_fk"
+		                         baseTableName="cashier_department" baseColumnNames="retired_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
 	</changeSet>
 </databaseChangeLog>
