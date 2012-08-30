@@ -12,13 +12,14 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
-import org.openmrs.module.openhmis.cashier.api.model.Department;
-import org.springframework.transaction.annotation.Transactional;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
 
-@Transactional
-public interface IDepartmentService extends IMetadataService<IGenericHibernateDAO<Department>, Department> {
-
+public class BillServiceImpl extends BaseDataServiceImpl<IGenericHibernateDAO<Bill>, Bill> {
+	@Override
+	protected void validate(Bill entity) throws APIException {
+	}
 }

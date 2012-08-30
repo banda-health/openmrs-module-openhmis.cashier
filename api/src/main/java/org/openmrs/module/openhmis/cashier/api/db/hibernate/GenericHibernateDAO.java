@@ -77,6 +77,7 @@ public class GenericHibernateDAO<T extends BaseOpenmrsObject> implements IGeneri
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public T selectSingle(Criteria criteria) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 		T result = null;
@@ -95,6 +96,7 @@ public class GenericHibernateDAO<T extends BaseOpenmrsObject> implements IGeneri
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<T> select() throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 
@@ -109,6 +111,7 @@ public class GenericHibernateDAO<T extends BaseOpenmrsObject> implements IGeneri
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<T> select(Criteria criteria) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 		List<T> results = null;

@@ -12,13 +12,15 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
-import org.openmrs.module.openhmis.cashier.api.model.Department;
-import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.SessionFactory;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Transactional
-public interface IDepartmentService extends IMetadataService<IGenericHibernateDAO<Department>, Department> {
-
+public class BillHibernateDAO extends GenericHibernateDAO<Bill> {
+	@Autowired
+	public BillHibernateDAO(SessionFactory sessionFactory) {
+		super(Bill.class, sessionFactory);
+	}
 }
