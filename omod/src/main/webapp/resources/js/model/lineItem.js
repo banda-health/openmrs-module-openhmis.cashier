@@ -1,5 +1,9 @@
 openhmis.LineItem = Backbone.Model.extend({
+
 	getTotal: function() {
+		if (this.get('quantity') === undefined
+			|| this.get('price') === undefined)
+			return undefined;
 		return this.get('price') * this.get('quantity');
 	}
 });

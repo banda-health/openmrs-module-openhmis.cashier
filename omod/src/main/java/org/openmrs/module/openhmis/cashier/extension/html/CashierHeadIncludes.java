@@ -20,6 +20,7 @@ public class CashierHeadIncludes extends HeaderIncludeExt {
 			files.add("/moduleResources/openhmis/cashier/js/underscore.js");
 			files.add("/moduleResources/openhmis/cashier/js/backbone.js");
 			files.add("/moduleResources/openhmis/cashier/js/util.js");
+			files.add("/moduleResources/openhmis/cashier/js/i18n/english.js");			
 			files.add("/moduleResources/openhmis/cashier/js/model/lineItem.js");
 			files.add("/moduleResources/openhmis/cashier/js/model/patient.js");
 			files.add("/moduleResources/openhmis/cashier/js/view/lineItem.js");
