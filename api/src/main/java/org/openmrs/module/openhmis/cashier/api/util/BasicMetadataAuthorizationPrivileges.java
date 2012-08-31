@@ -11,22 +11,28 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+package org.openmrs.module.openhmis.cashier.api.util;
 
-package org.openmrs.module.openhmis.cashier.api.impl;
-
-import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
-import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
-import org.openmrs.module.openhmis.cashier.api.util.BasicMetadataAuthorizationPrivileges;
 
-public class PaymentModeServiceImpl extends BaseMetadataServiceImpl<IGenericHibernateDAO<PaymentMode>, PaymentMode> {
+public class BasicMetadataAuthorizationPrivileges implements IMetadataAuthorizationPrivileges {
 	@Override
-	protected IMetadataAuthorizationPrivileges getPrivileges() {
-		return new BasicMetadataAuthorizationPrivileges();
+	public String getRetirePrivilege() {
+		return CashierPrivilegeConstants.MANAGE_METADATA;
 	}
 
 	@Override
-	protected void validate(PaymentMode entity) throws APIException {
+	public String getSavePrivilege() {
+		return CashierPrivilegeConstants.MANAGE_METADATA;
+	}
+
+	@Override
+	public String getPurgePrivilege() {
+		return CashierPrivilegeConstants.PURGE_METADATA;
+	}
+
+	@Override
+	public String getGetPrivilege() {
+		return CashierPrivilegeConstants.VIEW_METADATA;
 	}
 }

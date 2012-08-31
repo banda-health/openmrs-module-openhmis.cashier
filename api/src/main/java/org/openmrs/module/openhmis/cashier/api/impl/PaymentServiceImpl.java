@@ -15,10 +15,17 @@
 package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.openmrs.api.APIException;
+import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
+import org.openmrs.module.openhmis.cashier.api.util.BasicMetadataAuthorizationPrivileges;
 
 public class PaymentServiceImpl extends BaseMetadataServiceImpl<IGenericHibernateDAO<Payment>, Payment> {
+	@Override
+	protected IMetadataAuthorizationPrivileges getPrivileges() {
+		return new BasicMetadataAuthorizationPrivileges();
+	}
+
 	@Override
 	protected void validate(Payment entity) throws APIException {
 	}

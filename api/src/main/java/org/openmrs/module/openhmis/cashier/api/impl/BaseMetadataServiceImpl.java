@@ -20,6 +20,8 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
@@ -31,10 +33,15 @@ import java.util.List;
  * @param <E> THe entity type.
  */
 public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsMetadata>
-		extends BaseEntityServiceImpl<T, E> implements IMetadataService<T, E> {
+		extends BaseEntityServiceImpl<T, E, IMetadataAuthorizationPrivileges> implements IMetadataService<T, E> {
 
 	@Override
 	public E retire(E entity, String reason) throws APIException {
+		IMetadataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getRetirePrivilege())) {
+			Context.requirePrivilege(privileges.getRetirePrivilege());
+		}
+
 		if (entity == null) {
 			throw new IllegalArgumentException("The entity to retire cannot be null.");
 		}
@@ -50,6 +57,11 @@ public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>,
 
 	@Override
 	public E unretire(E entity) throws APIException {
+		IMetadataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getRetirePrivilege())) {
+			Context.requirePrivilege(privileges.getRetirePrivilege());
+		}
+
 		if (entity == null) {
 			throw new IllegalArgumentException("The entity to unretire cannot be null.");
 		}
@@ -62,6 +74,11 @@ public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>,
 
 	@Override
 	public List<E> getAll(boolean retired) throws APIException {
+		IMetadataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
+			Context.requirePrivilege(privileges.getGetPrivilege());
+		}
+
 		Criteria criteria = dao.createCriteria();
 		criteria.add(Restrictions.eq("retired", retired));
 
@@ -70,6 +87,11 @@ public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>,
 
 	@Override
 	public List<E> findByName(String nameFragment, boolean includeRetired) throws APIException {
+		IMetadataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
+			Context.requirePrivilege(privileges.getGetPrivilege());
+		}
+
 		if (StringUtils.isEmpty(nameFragment)) {
 			throw new IllegalArgumentException("The name fragment must be defined.");
 		}

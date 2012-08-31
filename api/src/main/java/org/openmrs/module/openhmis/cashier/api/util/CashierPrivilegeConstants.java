@@ -18,10 +18,27 @@ import org.openmrs.annotation.AddOnStartup;
 
 public class CashierPrivilegeConstants {
 	@AddOnStartup(description = "Able to add/edit/delete billing items", core = false)
-	public static final String MANAGE_ITEMS = "Manage Billing Items";
+	public static final String MANAGE_ITEMS = "Manage Cashier Items";
 
 	@AddOnStartup(description = "Able to view billing items", core = false)
-	public static final String VIEW_ITEMS = "View Billing Items";
+	public static final String VIEW_ITEMS = "View Cashier Items";
 
-	public static final String PURGE_ITEMS = "Purge Locations";
+	public static final String PURGE_ITEMS = "Purge Cashier Items";
+
+	@AddOnStartup(description = "Able to add/edit/delete bills", core = false)
+	public static final String MANAGE_BILLS = "Manage Cashier Bills";
+
+	@AddOnStartup(description = "Able to view bills", core = false)
+	public static final String VIEW_BILLS = "View Cashier Bills";
+
+	public static final String PURGE_BILLS = "Purge Cashier Bills";
+
+	@AddOnStartup(description = "Able to add/edit/delete cashier module metadata", core = false)
+	public static final String MANAGE_METADATA = "Manage Cashier Metadata";
+
+	@AddOnStartup(description = "Able to view cashier module metadata", core = false)
+	public static final String VIEW_METADATA = "View Cashier Metadata";
+
+	public static final String PURGE_METADATA = "Purge Cashier Metadata";
+
 }

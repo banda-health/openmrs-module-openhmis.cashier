@@ -33,7 +33,6 @@ public interface IMetadataService<T extends IGenericHibernateDAO<E>, E extends B
 	 * @should throw IllegalArgumentException when the entity is null
 	 * @should throw IllegalArgumentException when no reason is given
 	 */
-	//@Authorized( { CashierPrivilegeConstants.MANAGE_ITEMS })
 	E retire(E entity, String reason) throws APIException;
 
 	/**
@@ -45,7 +44,6 @@ public interface IMetadataService<T extends IGenericHibernateDAO<E>, E extends B
 	 * @should throw IllegalArgumentException if the entity is null
 	 * @should unretire the entity
 	 */
-	//@Authorized( { CashierPrivilegeConstants.MANAGE_ITEMS })
 	E unretire(E entity) throws APIException;
 
 	/**

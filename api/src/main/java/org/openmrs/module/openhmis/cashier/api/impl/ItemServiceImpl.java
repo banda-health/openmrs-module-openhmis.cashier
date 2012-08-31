@@ -15,15 +15,25 @@
 package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
+import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
 import java.util.List;
 
-public class ItemServiceImpl extends BaseMetadataServiceImpl<IGenericHibernateDAO<Item>, Item> implements IItemService {
+public class ItemServiceImpl
+		extends BaseMetadataServiceImpl<IGenericHibernateDAO<Item>, Item>
+		implements IItemService, IMetadataAuthorizationPrivileges {
+	@Override
+	protected IMetadataAuthorizationPrivileges getPrivileges() {
+		return this;
+	}
+
 	/**
 	 * Validates the entity.
 	 * @param entity The {@link Item} to be validated
@@ -42,12 +52,34 @@ public class ItemServiceImpl extends BaseMetadataServiceImpl<IGenericHibernateDA
 
 
 	@Override
+	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
 	public Item getItemByCode(String itemCode) throws APIException {
 		return null;
 	}
 
 	@Override
+	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
 	public List<Item> findItems(Department department, String name, boolean includeRetired) throws APIException {
 		return null;
+	}
+
+	@Override
+	public String getSavePrivilege() {
+		return CashierPrivilegeConstants.MANAGE_ITEMS;
+	}
+
+	@Override
+	public String getPurgePrivilege() {
+		return CashierPrivilegeConstants.PURGE_ITEMS;
+	}
+
+	@Override
+	public String getGetPrivilege() {
+		return CashierPrivilegeConstants.VIEW_ITEMS;
+	}
+
+	@Override
+	public String getRetirePrivilege() {
+		return CashierPrivilegeConstants.MANAGE_ITEMS;
 	}
 }

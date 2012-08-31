@@ -15,11 +15,40 @@
 package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.openmrs.api.APIException;
+import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
-public class BillServiceImpl extends BaseDataServiceImpl<IGenericHibernateDAO<Bill>, Bill> {
+public class BillServiceImpl
+		extends BaseDataServiceImpl<IGenericHibernateDAO<Bill>, Bill>
+		implements IDataAuthorizationPrivileges {
+	@Override
+	protected IDataAuthorizationPrivileges getPrivileges() {
+		return this;
+	}
+
 	@Override
 	protected void validate(Bill entity) throws APIException {
+	}
+
+	@Override
+	public String getVoidPrivilege() {
+		return CashierPrivilegeConstants.MANAGE_BILLS;
+	}
+
+	@Override
+	public String getSavePrivilege() {
+		return CashierPrivilegeConstants.MANAGE_BILLS;
+	}
+
+	@Override
+	public String getPurgePrivilege() {
+		return CashierPrivilegeConstants.PURGE_BILLS;
+	}
+
+	@Override
+	public String getGetPrivilege() {
+		return CashierPrivilegeConstants.VIEW_BILLS;
 	}
 }
