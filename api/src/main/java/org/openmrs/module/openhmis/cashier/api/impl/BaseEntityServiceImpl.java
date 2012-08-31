@@ -19,7 +19,9 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.openhmis.cashier.api.IEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IEntityService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
@@ -27,14 +29,16 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
- * The base type for entity services which provides the core implementation for the common {@link BaseOpenmrsObject} operations.
+ * The base type for entity services. Provides the core implementation for the common {@link BaseOpenmrsObject} operations.
  * @param <T> The entity data access object type.
  * @param <E> The entity type.
  */
-public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsObject>
+public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsObject, P extends IEntityAuthorizationPrivileges>
 		extends BaseOpenmrsService implements IEntityService<T, E> {
 	protected T dao;
 	private Class entityClass = null;
+
+	protected abstract P getPrivileges();
 
 	/**
 	 * Validates the specified entity, throwing an exception in the validation fails.
@@ -61,6 +65,11 @@ public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E
 
 	@Override
 	public E save(E entity) throws APIException {
+		P privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getSavePrivilege())) {
+			Context.requirePrivilege(privileges.getSavePrivilege());
+		}
+
 		if (entity == null) {
 			throw new IllegalArgumentException("The entity to save cannot be null.");
 		}
@@ -72,6 +81,11 @@ public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E
 
 	@Override
 	public void purge(E entity) throws APIException {
+		P privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getPurgePrivilege())) {
+			Context.requirePrivilege(privileges.getPurgePrivilege());
+		}
+
 		if (entity == null) {
 			throw new IllegalArgumentException("The entity to purge cannot be null.");
 		}
@@ -81,16 +95,31 @@ public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E
 
 	@Override
 	public List<E> getAll() throws APIException {
+		P privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
+			Context.requirePrivilege(privileges.getGetPrivilege());
+		}
+
 		return dao.select();
 	}
 
 	@Override
 	public E getById(int entityId) throws APIException {
+		P privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
+			Context.requirePrivilege(privileges.getGetPrivilege());
+		}
+
 		return dao.selectSingle(entityId);
 	}
 
 	@Override
 	public E getByUuid(String uuid) throws APIException {
+		P privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
+			Context.requirePrivilege(privileges.getGetPrivilege());
+		}
+
 		if (StringUtils.isEmpty(uuid)) {
 			throw new IllegalArgumentException("The UUID must be defined.");
 		}

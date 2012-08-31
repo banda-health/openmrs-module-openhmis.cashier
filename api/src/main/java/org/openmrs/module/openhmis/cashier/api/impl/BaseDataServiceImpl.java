@@ -17,6 +17,8 @@ package org.openmrs.module.openhmis.cashier.api.impl;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IDataService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
@@ -26,10 +28,15 @@ import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO
  * @param <E> The entity type.
  */
 public abstract class BaseDataServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsData>
-		extends BaseEntityServiceImpl<T, E> implements IDataService<T, E> {
+		extends BaseEntityServiceImpl<T, E, IDataAuthorizationPrivileges> implements IDataService<T, E> {
 
 	@Override
 	public E voidEncounter(E entity, String reason) {
+		IDataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getVoidPrivilege())) {
+			Context.requirePrivilege(privileges.getVoidPrivilege());
+		}
+
 		if (entity == null) {
 			throw new IllegalArgumentException("The entity to void cannot be null.");
 		}
@@ -45,6 +52,11 @@ public abstract class BaseDataServiceImpl<T extends IGenericHibernateDAO<E>, E e
 
 	@Override
 	public E unvoidEncounter(E entity) throws APIException {
+		IDataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getVoidPrivilege())) {
+			Context.requirePrivilege(privileges.getVoidPrivilege());
+		}
+
 		if (entity == null) {
 			throw new IllegalArgumentException("The entity to unvoid cannot be null.");
 		}
