@@ -98,6 +98,24 @@
 						
 			<!-- End OpenMRS core -->
 
+			<!-- Begin webservices.rest -->
+
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>webservices.rest-api</artifactId>
+				<version>1.0</version>
+				<scope>provided</scope>
+			</dependency>
+			 
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>webservices.rest-omod</artifactId>
+				<version>1.0</version>
+				<scope>provided</scope>
+			</dependency>
+			
+			<!-- End webservices.rest -->
+
 		</dependencies>
 	</dependencyManagement>
 
