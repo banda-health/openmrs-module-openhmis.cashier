@@ -3,6 +3,7 @@
     <module2copyright>
       <element module="All" copyright="OpenMRS Public License 1.1" />
     </module2copyright>
+    <LanguageOptions name="ActionScript" />
     <LanguageOptions name="CSS">
       <option name="fileTypeOverride" value="1" />
     </LanguageOptions>
