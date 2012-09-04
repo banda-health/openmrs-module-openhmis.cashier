@@ -14,7 +14,7 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public interface IEntityService<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsObject> extends OpenmrsService {
+public interface IEntityService<T extends IGenericHibernateDAO<E>, E extends OpenmrsObject> extends OpenmrsService {
 	/**
 	 * Set the data access object that the service will use to interact with the database. This is
 	 * set by spring in the applicationContext-service.xml file
