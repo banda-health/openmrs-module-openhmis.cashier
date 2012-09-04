@@ -15,7 +15,7 @@
 package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 
 import org.hibernate.Criteria;
-import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.api.APIException;
 
 import java.io.Serializable;
@@ -25,7 +25,7 @@ import java.util.List;
  * Represents types that can provide access to a data source through hibernate.
  * @param <E> The model class.
  */
-public interface IGenericHibernateDAO<E extends BaseOpenmrsObject> {
+public interface IGenericHibernateDAO<E extends OpenmrsObject> {
 	/**
 	 * Creates a new {@link Criteria}.
 	 * @return The newly created {@link Criteria}

@@ -11,8 +11,14 @@ table.bill td input[type="text"] {
 	border: 0;
 	background-color: transparent;
 }
+table.bill td.item-actions { width: 20px; }
+td.item-actions input { visibility: hidden; }
 
-table.bill tr.odd { background-color: #efefef;}
+
+table.bill tr.even.row_selected td, table.bill tr.odd.row_selected td
+{ background-color: #f0e68c !important; }
+tr.row_selected td.item-actions input, tr:hover td.item-actions input
+{ visibility: visible; }
 
 table.bill td, table.bill th {
 	padding: 0px 5px;

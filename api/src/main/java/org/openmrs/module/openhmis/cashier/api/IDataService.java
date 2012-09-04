@@ -14,13 +14,13 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.BaseOpenmrsData;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface IDataService<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsData> extends IEntityService<T, E> {
+public interface IDataService<T extends IGenericHibernateDAO<E>, E extends OpenmrsObject> extends IEntityService<T, E> {
 	/**
 	 * Voiding an entity essentially removes it from circulation.
 	 *

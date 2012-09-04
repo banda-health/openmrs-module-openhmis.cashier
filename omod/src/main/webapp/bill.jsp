@@ -23,9 +23,10 @@
 	</div>
 </div>
 <div class="box">
-	<table class="bill">
+	<table class="bill display">
 		<thead>
 			<tr>
+				<td class="item-actions end"></td>
 				<th class="item-description"><spring:message code="openhmis.cashier.item.description" /></th>
 				<th class="item-quantity"><spring:message code="openhmis.cashier.item.quantity" /></th>
 				<th class="item-price"><spring:message code="openhmis.cashier.item.price" /></th>
@@ -56,8 +57,9 @@
 </script>
 
 <script id="line-item-template" type="text/template">
-		<td><input type="text" value="<? item.get('description') ?>" class="item-description" /></td>
-		<td><input type="text" value="<? item.get('quantity') ?>" class="item-quantity" /></td>
-		<td><input type="text" value="<? item.get('price') ?>" class="item-price" /></td>
-		<td class="end"><input type="text" value="<? item.getTotal() ?>" class="item-total" /></td>
+		<td class="item-actions end"><? if (item.collection !== undefined) { ?><input type="image" src="/openmrs/images/trash.gif" title="<spring:message code="openhmis.cashier.bill.removeTitle" />" class="remove"/><? } ?></td>
+		<td><input type="text" value="<?= (val = item.get('description')) === undefined ? "" : val ?>" class="item-description" /></td>
+		<td><input type="text" value="<?= (val = item.get('quantity')) === undefined ? "" : val ?>" class="item-quantity" /></td>
+		<td><input type="text" value="<?= (val = item.get('price')) === undefined ? "" : val ?>" class="item-price" /></td>
+		<td class="end"><input type="text" value="<?= (val = item.getTotal()) === undefined ? "" : val ?>" class="item-total" /></td>
 </script>
