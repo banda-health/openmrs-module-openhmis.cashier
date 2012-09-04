@@ -217,7 +217,7 @@
 
 		<addForeignKeyConstraint constraintName="cashier_item_attribute_attribute_type_id_fk"
 		                         baseTableName="cashier_item_attribute" baseColumnNames="item_attribute_type_id"
-		                         referencedTableName="cashier_item_attribute_type" referencedColumnNames="cashier_item_attribute_type_id" />
+		                         referencedTableName="cashier_item_attribute_type" referencedColumnNames="item_attribute_type_id" />
 		<addForeignKeyConstraint constraintName="cashier_item_attribute_item_id_fk"
 		                         baseTableName="cashier_item_attribute" baseColumnNames="item_id"
 		                         referencedTableName="cashier_item" referencedColumnNames="item_id" />
