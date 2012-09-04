@@ -22,8 +22,6 @@ public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Cus
 	private Integer itemId;
 	private Set<ItemCode> codes;
 	private Set<ItemPrice> prices;
-	private String name;
-	private String description;
 	private Department department;
 	private ItemPrice defaultPrice;
 
@@ -90,22 +88,6 @@ public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Cus
 		if (price != null) {
 			prices.remove(price);
 		}
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Department getDepartment() {
