@@ -16,12 +16,11 @@ package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
 public class BillServiceImpl
-		extends BaseDataServiceImpl<IGenericHibernateDAO<Bill>, Bill>
+		extends BaseDataServiceImpl<Bill>
 		implements IDataAuthorizationPrivileges {
 	@Override
 	protected IDataAuthorizationPrivileges getPrivileges() {

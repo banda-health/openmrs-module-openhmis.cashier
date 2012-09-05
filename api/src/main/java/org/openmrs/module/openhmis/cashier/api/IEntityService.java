@@ -23,14 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public interface IEntityService<T extends IGenericHibernateDAO<E>, E extends OpenmrsObject> extends OpenmrsService {
+public interface IEntityService<E extends OpenmrsObject> extends OpenmrsService {
 	/**
 	 * Set the data access object that the service will use to interact with the database. This is
 	 * set by spring in the applicationContext-service.xml file
 	 *
 	 * @param dao The data access object that the service will use
 	 */
-	void setDao(T dao);
+	void setDao(IGenericHibernateDAO dao);
 
 	/**
 	 * Saves the entity to the database, creating a new item or updating an existing one.

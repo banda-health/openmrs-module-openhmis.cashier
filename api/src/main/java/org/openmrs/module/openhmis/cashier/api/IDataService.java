@@ -16,11 +16,10 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.OpenmrsObject;
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface IDataService<T extends IGenericHibernateDAO<E>, E extends OpenmrsObject> extends IEntityService<T, E> {
+public interface IDataService<E extends OpenmrsObject> extends IEntityService<E> {
 	/**
 	 * Voiding an entity essentially removes it from circulation.
 	 *
@@ -30,7 +29,7 @@ public interface IDataService<T extends IGenericHibernateDAO<E>, E extends Openm
 	 * @should throw IllegalArgumentException with null reason parameter
 	 * @should throw IllegalArgumentException with null entity
 	 */
-	public E voidEncounter(E entity, String reason);
+	public E voidEntity(E entity, String reason);
 
 	/**
 	 * Unvoid the entity record.
@@ -39,5 +38,5 @@ public interface IDataService<T extends IGenericHibernateDAO<E>, E extends Openm
 	 * @should unvoid the entity
 	 * @should throw IllegalArgumentException with null entity
 	 */
-	public E unvoidEncounter(E entity) throws APIException;
+	public E unvoidEntity(E entity) throws APIException;
 }

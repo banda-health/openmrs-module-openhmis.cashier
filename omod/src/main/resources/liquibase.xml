@@ -220,7 +220,8 @@
 		                         referencedTableName="cashier_item_attribute_type" referencedColumnNames="item_attribute_type_id" />
 		<addForeignKeyConstraint constraintName="cashier_item_attribute_item_id_fk"
 		                         baseTableName="cashier_item_attribute" baseColumnNames="item_id"
-		                         referencedTableName="cashier_item" referencedColumnNames="item_id" />
+		                         referencedTableName="cashier_item" referencedColumnNames="item_id"
+								 onDelete="CASCADE" onUpdate="CASCADE"/>
 		<addForeignKeyConstraint constraintName="cashier_item_attribute_creator_fk"
 		                         baseTableName="cashier_item_attribute" baseColumnNames="creator"
 		                         referencedTableName="users" referencedColumnNames="user_id"/>
@@ -233,7 +234,8 @@
 
 		<addForeignKeyConstraint constraintName="cashier_item_price_item_id_fk"
 		                         baseTableName="cashier_item_price" baseColumnNames="item_id"
-		                         referencedTableName="cashier_item" referencedColumnNames="item_id" />
+		                         referencedTableName="cashier_item" referencedColumnNames="item_id"
+								 onDelete="CASCADE" onUpdate="CASCADE"/>
 		<addForeignKeyConstraint constraintName="cashier_item_price_creator_fk"
 		                         baseTableName="cashier_item_price" baseColumnNames="creator"
 		                         referencedTableName="users" referencedColumnNames="user_id"/>
@@ -246,7 +248,8 @@
 
 		<addForeignKeyConstraint constraintName="cashier_item_code_item_id_fk"
 		                         baseTableName="cashier_item_code" baseColumnNames="item_id"
-		                         referencedTableName="cashier_item" referencedColumnNames="item_id" />
+		                         referencedTableName="cashier_item" referencedColumnNames="item_id"
+								 onDelete="CASCADE" onUpdate="CASCADE" />
 		<addForeignKeyConstraint constraintName="cashier_item_code_creator_fk"
 		                         baseTableName="cashier_item_code" baseColumnNames="creator"
 		                         referencedTableName="users" referencedColumnNames="user_id"/>

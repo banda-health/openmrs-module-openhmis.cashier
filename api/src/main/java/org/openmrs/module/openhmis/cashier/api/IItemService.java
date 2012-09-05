@@ -16,7 +16,6 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
@@ -25,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public interface IItemService extends IMetadataService<IGenericHibernateDAO<Item>, Item> {
+public interface IItemService extends IMetadataService<Item> {
 	/**
 	 * Gets the {@link Item} with the specified code or {@code null} if not found.
 	 * @param itemCode The item code to find.
@@ -47,7 +46,7 @@ public interface IItemService extends IMetadataService<IGenericHibernateDAO<Item
 	 * @param includeRetired Whether retired item should be included in the results
 	 * @return All items in the specified {@link Department} that start with the specified name.
 	 * @throws APIException
-	 * @should throw IllegalArgumentException if the department is null
+	 * @should throw NullPointerException if the department is null
 	 * @should throw IllegalArgumentException if the name is null
 	 * @should throw IllegalArgumentException if the name is empty
 	 * @should throw IllegalArgumentException if the name is longer than 255 characters

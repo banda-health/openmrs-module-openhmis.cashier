@@ -30,14 +30,17 @@ import java.util.List;
 
 /**
  * The base type for entity services. Provides the core implementation for the common {@link BaseOpenmrsObject} operations.
- * @param <T> The entity data access object type.
  * @param <E> The entity type.
  */
-public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsObject, P extends IEntityAuthorizationPrivileges>
-		extends BaseOpenmrsService implements IEntityService<T, E> {
-	protected T dao;
+public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P extends IEntityAuthorizationPrivileges>
+		extends BaseOpenmrsService implements IEntityService<E> {
+	protected IGenericHibernateDAO dao;
 	private Class entityClass = null;
 
+	/**
+	 * Gets the privileges to use for this service or {@code null} if none are needed.
+	 * @return The service privileges.
+	 */
 	protected abstract P getPrivileges();
 
 	/**
@@ -52,14 +55,14 @@ public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E
 	/**
 	 * @param dao the dao to set
 	 */
-	public void setDao(T dao) {
+	public void setDao(IGenericHibernateDAO dao) {
 		this.dao = dao;
 	}
 
 	/**
 	 * @return the dao
 	 */
-	public T getDao() {
+	public IGenericHibernateDAO getDao() {
 		return dao;
 	}
 
@@ -100,7 +103,7 @@ public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E
 			Context.requirePrivilege(privileges.getGetPrivilege());
 		}
 
-		return dao.select();
+		return dao.select(getEntityClass());
 	}
 
 	@Override
@@ -110,7 +113,7 @@ public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E
 			Context.requirePrivilege(privileges.getGetPrivilege());
 		}
 
-		return dao.selectSingle(entityId);
+		return dao.selectSingle(getEntityClass(), entityId);
 	}
 
 	@Override
@@ -124,17 +127,18 @@ public abstract class BaseEntityServiceImpl<T extends IGenericHibernateDAO<E>, E
 			throw new IllegalArgumentException("The UUID must be defined.");
 		}
 
-		Criteria criteria = dao.createCriteria();
+		Criteria criteria = dao.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("uuid", uuid));
 
-		return dao.selectSingle(criteria);
+		return dao.selectSingle(getEntityClass(), criteria);
 	}
 
-	protected Class getEntityClass() {
+	@SuppressWarnings("unchecked")
+	protected Class<E> getEntityClass() {
 		if (entityClass == null) {
 			ParameterizedType parameterizedType = (ParameterizedType)getClass().getGenericSuperclass();
 
-			entityClass = (Class) parameterizedType.getActualTypeArguments()[1];
+			entityClass = (Class) parameterizedType.getActualTypeArguments()[0];
 		}
 
 		return entityClass;

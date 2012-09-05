@@ -23,17 +23,16 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * The base type for metadata entity services.
- * @param <T> The entity data access object type.
  * @param <E> THe entity type.
  */
-public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsMetadata>
-		extends BaseEntityServiceImpl<T, E, IMetadataAuthorizationPrivileges> implements IMetadataService<T, E> {
+public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
+		extends BaseEntityServiceImpl<E, IMetadataAuthorizationPrivileges> implements IMetadataService<E> {
 
 	@Override
 	public E retire(E entity, String reason) throws APIException {
@@ -43,7 +42,7 @@ public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>,
 		}
 
 		if (entity == null) {
-			throw new IllegalArgumentException("The entity to retire cannot be null.");
+			throw new NullPointerException("The entity to retire cannot be null.");
 		}
 		if (StringUtils.isEmpty(reason)) {
 			throw new IllegalArgumentException("The reason to retire must be defined.");
@@ -51,6 +50,8 @@ public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>,
 
 		entity.setRetired(true);
 		entity.setRetireReason(reason);
+		entity.setRetiredBy(Context.getAuthenticatedUser());
+		entity.setDateRetired(new Date());
 
 		return save(entity);
 	}
@@ -63,11 +64,12 @@ public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>,
 		}
 
 		if (entity == null) {
-			throw new IllegalArgumentException("The entity to unretire cannot be null.");
+			throw new NullPointerException("The entity to unretire cannot be null.");
 		}
 
 		entity.setRetired(false);
-		entity.setRetireReason("");
+		entity.setRetireReason(null);
+		entity.setRetiredBy(null);
 
 		return save(entity);
 	}
@@ -79,10 +81,10 @@ public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>,
 			Context.requirePrivilege(privileges.getGetPrivilege());
 		}
 
-		Criteria criteria = dao.createCriteria();
+		Criteria criteria = dao.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("retired", retired));
 
-		return dao.select(criteria);
+		return dao.select(getEntityClass(), criteria);
 	}
 
 	@Override
@@ -95,14 +97,17 @@ public abstract class BaseMetadataServiceImpl<T extends IGenericHibernateDAO<E>,
 		if (StringUtils.isEmpty(nameFragment)) {
 			throw new IllegalArgumentException("The name fragment must be defined.");
 		}
+		if (nameFragment.length() > 255) {
+			throw new IllegalArgumentException("the name fragment must be less than 256 characters long.");
+		}
 
-		Criteria criteria = dao.createCriteria();
+		Criteria criteria = dao.createCriteria(getEntityClass());
 		criteria.add(Restrictions.ilike("name", nameFragment, MatchMode.START));
 
 		if (!includeRetired) {
 			criteria.add(Restrictions.eq("retired", false));
 		}
 
-		return dao.select(criteria);
+		return dao.select(getEntityClass(), criteria);
 	}
 }

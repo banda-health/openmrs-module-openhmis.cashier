@@ -17,56 +17,83 @@ package org.openmrs.module.openhmis.cashier.api;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.BaseOpenmrsData;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
+import org.openmrs.api.context.Context;
 
-public abstract class IDataServiceTest<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsData> extends IEntityServiceTest<T, E> {
+import java.util.Date;
+
+public abstract class IDataServiceTest<S extends IDataService<E>, E extends BaseOpenmrsData> extends IEntityServiceTest<S, E> {
 	/**
 	 * @verifies void the entity
-	 * @see IDataService#voidEncounter(E, String)
+	 * @see IDataService#voidEntity(org.openmrs.OpenmrsObject, String)
 	 */
 	@Test
-	public void voidEncounter_shouldVoidTheEntity() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+	public void voidEntity_shouldVoidTheEntity() throws Exception {
+		String reason = "test void";
+		E entity = service.getById(0);
+		service.voidEntity(entity, reason);
+
+		Context.flushSession();
+
+		entity = service.getById(0);
+		Assert.assertTrue(entity.getVoided());
+		Assert.assertEquals(Context.getAuthenticatedUser(), entity.getVoidedBy());
+		Assert.assertEquals(reason, entity.getVoidReason());
+		Assert.assertTrue(entity.getDateVoided().before(new Date()));
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException with null reason parameter
-	 * @see IDataService#voidEncounter(E, String)
+	 * @see IDataService#voidEntity(org.openmrs.OpenmrsObject, String)
 	 */
-	@Test
-	public void voidEncounter_shouldThrowIllegalArgumentExceptionWithNullReasonParameter() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+	@Test(expected = IllegalArgumentException.class)
+	public void voidEntity_shouldThrowIllegalArgumentExceptionWithNullReasonParameter() throws Exception {
+		E entity = service.getById(0);
+
+		service.voidEntity(entity, null);
 	}
 
 	/**
-	 * @verifies throw IllegalArgumentException with null entity
-	 * @see IDataService#voidEncounter(E, String)
+	 * @verifies throw NullPointerException with null entity
+	 * @see IDataService#voidEntity(org.openmrs.OpenmrsObject, String)
 	 */
-	@Test
-	public void voidEncounter_shouldThrowIllegalArgumentExceptionWithNullEntity() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+	@Test(expected = NullPointerException.class)
+	public void voidEntity_shouldThrowNullPointerExceptionWithNullEntity() throws Exception {
+		service.voidEntity(null, "something");
 	}
 
 	/**
 	 * @verifies unvoid the entity
-	 * @see IDataService#unvoidEncounter(E)
+	 * @see IDataService#unvoidEntity(org.openmrs.OpenmrsObject)
 	 */
 	@Test
-	public void unvoidEncounter_shouldUnvoidTheEntity() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+	public void unvoidEntity_shouldUnvoidTheEntity() throws Exception {
+		String reason = "test void";
+		E entity = service.getById(0);
+		service.voidEntity(entity, reason);
+
+		Context.flushSession();
+
+		entity = service.getById(0);
+		Assert.assertTrue(entity.getVoided());
+
+		service.unvoidEntity(entity);
+
+		Context.flushSession();
+
+		entity = service.getById(0);
+
+		Assert.assertFalse(entity.getVoided());
+		Assert.assertNull(entity.getVoidedBy());
+		Assert.assertNull(entity.getVoidReason());
+		Assert.assertNotNull(entity.getDateVoided());
 	}
 
 	/**
-	 * @verifies throw IllegalArgumentException with null entity
-	 * @see IDataService#unvoidEncounter(E)
+	 * @verifies throw NullPointerException with null entity
+	 * @see IDataService#unvoidEntity(org.openmrs.OpenmrsObject)
 	 */
-	@Test
-	public void unvoidEncounter_shouldThrowIllegalArgumentExceptionWithNullEntity() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+	@Test(expected = NullPointerException.class)
+	public void unvoidEntity_shouldThrowNullPointerExceptionWithNullEntity() throws Exception {
+		service.unvoidEntity(null);
 	}
 }

@@ -18,11 +18,6 @@
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../omod/src/main/resources/hibernate.cfg.xml" />
       </configuration>
     </facet>
-    <facet type="LiquibaseEjb" name="Liquibase EJB">
-      <configuration>
-        <deploymentDescriptor name="liquibase.xml" url="file://$MODULE_DIR$/src/main/resources/liquibase.xml" />
-      </configuration>
-    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />

@@ -13,9 +13,12 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.BaseCustomizableMetadata;
 import org.openmrs.customdatatype.Customizable;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Customizable<ItemAttribute> {
@@ -58,14 +61,35 @@ public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Cus
 		this.codes = codes;
 	}
 
+	public ItemCode addCode(String codeName, String code) {
+		if (StringUtils.isEmpty(code)) {
+			throw new IllegalArgumentException("The item code must be defined.");
+		}
+
+		ItemCode itemCode = new ItemCode(code, codeName);
+		itemCode.setItem(this);
+
+		addCode(itemCode);
+
+		return itemCode;
+	}
+
 	public void addCode(ItemCode code) {
 		if (code != null) {
+			if (codes == null) {
+				codes = new HashSet<ItemCode>();
+			}
+
 			codes.add(code);
 		}
 	}
 
 	public void removeCode(ItemCode code) {
 		if (code != null) {
+			if (codes == null) {
+				codes = new HashSet<ItemCode>();
+			}
+
 			codes.remove(code);
 		}
 	}
@@ -78,14 +102,38 @@ public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Cus
 		this.prices = prices;
 	}
 
+	public ItemPrice addPrice(String priceName, BigDecimal price) {
+		if (StringUtils.isEmpty(priceName)) {
+			throw new IllegalArgumentException("The price name must be defined.");
+		}
+		if (price == null) {
+			throw new NullPointerException("The item price must be defined.");
+		}
+
+		ItemPrice itemPrice = new ItemPrice(price, priceName);
+		itemPrice.setItem(this);
+
+		addPrice(itemPrice);
+
+		return itemPrice;
+	}
+
 	public void addPrice(ItemPrice price) {
 		if (price != null) {
+			if (prices == null) {
+				prices = new HashSet<ItemPrice>();
+			}
+
 			prices.add(price);
 		}
 	}
 
 	public void removePrice(ItemPrice price) {
 		if (price != null) {
+			if (prices == null) {
+				prices = new HashSet<ItemPrice>();
+			}
+
 			prices.remove(price);
 		}
 	}
