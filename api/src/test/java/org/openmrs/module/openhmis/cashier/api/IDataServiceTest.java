@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
-public abstract class IDataServiceTest<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsData> extends IEntityServiceTest<T, E> {
+public abstract class IDataServiceTest<S extends IEntityService<E>, E extends BaseOpenmrsData> extends IEntityServiceTest<S, E> {
 	/**
 	 * @verifies void the entity
 	 * @see IDataService#voidEncounter(E, String)

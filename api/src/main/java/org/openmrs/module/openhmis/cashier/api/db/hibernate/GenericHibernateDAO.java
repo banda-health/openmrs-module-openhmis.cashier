@@ -17,111 +17,104 @@ package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class GenericHibernateDAO<T extends BaseOpenmrsObject> implements IGenericHibernateDAO<T> {
-
+public class GenericHibernateDAO implements IGenericHibernateDAO {
 	SessionFactory sessionFactory;
-	private final Class<T> type;
-	
-	public GenericHibernateDAO(Class<T> type, SessionFactory sessionFactory) {
+
+	public GenericHibernateDAO(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
-		this.type = type; 
-	}	
-	
-	@Override
-	public Criteria createCriteria() {
-		Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(type);
-	}	
+	}
 
 	@Override
-	public T save(T entity) throws APIException {
+	public <E> Criteria createCriteria(Class<E> cls) {
 		Session session = sessionFactory.getCurrentSession();
-		Integer listId = null;
+		return session.createCriteria(cls);
+	}
+
+	@Override
+	public <E> E save(E entity) throws APIException {
+		Session session = sessionFactory.getCurrentSession();
+
 		try {
-			listId = (Integer) session.save(entity);
+			session.saveOrUpdate(entity);
 		} catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to add a " + entity.getClass().getSimpleName() + " entity.", ex);
+			throw new APIException("An exception occurred while attempting to add a " + entity.getClass().getSimpleName() + " entity.", ex);
 		}
 		return entity;
 	}
 
 	@Override
-	public void delete(T entity) throws APIException {
+	public <E> void delete(E entity) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 		try {
 			session.delete(entity);
 		} catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to delete a " + entity.getClass().getSimpleName() + " entity.", ex);
+			throw new APIException("An exception occurred while attempting to delete a " + entity.getClass().getSimpleName() + " entity.", ex);
 		}
 	}
 
 	@Override
-	public T selectSingle(Serializable id) throws APIException {
+	public <E> E selectSingle(Class<E> cls, Serializable id) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
-		Criteria search;
+
 		try {
-			search = session.createCriteria(type)
-				.add(Restrictions.eq("id", id));
+			return (E)session.get(cls, id);
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to select a single " + type.getSimpleName() + " entity with ID " + id.toString() + ".", ex);			
+			throw new RuntimeException("An exception occurred while attempting to select a single " + cls.getSimpleName() + " entity with ID " + id.toString() + ".", ex);
 		}
-		return selectSingle(search);
+	}
+
+	@Override
+	@SuppressWarnings("unchcked")
+	public <E> E selectSingle(Class<E> cls, Criteria criteria) throws APIException {
+		Session session = sessionFactory.getCurrentSession();
+		E result = null;
+		try {
+			List<E> results = criteria.list();
+
+			if (results.size() > 0) {
+				result = results.get(0);
+			}
+		}
+		catch (Exception ex) {
+			throw new RuntimeException("An exception occurred while attempting to select a single " + cls.getSimpleName() + " entity.", ex);
+		}
+		return result;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public T selectSingle(Criteria criteria) throws APIException {
-		Session session = sessionFactory.getCurrentSession();
-		T result = null;
-		try {
-			List<T> results = criteria.list();
-			if (results.size() < 1)
-				throw new RuntimeException("No entity found for criteria.");
-			if (results.size() > 1)
-				throw new RuntimeException("Multiple entities found for criteria.");
-			result = results.get(0);
-		}
-		catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to select a single " + type.getSimpleName() + " entity.", ex);
-		}
-		return result;		
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<T> select() throws APIException {
+	public <E> List<E> select(Class<E> cls) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 
 		try {
-			Criteria search = session.createCriteria(type);
+			Criteria search = session.createCriteria(cls);
+
 			return search.list();
 		} catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to get " + type.getSimpleName() + " entities.", ex);
-		} finally {
-			//session.close();
+			throw new RuntimeException("An exception occurred while attempting to get " + cls.getSimpleName() + " entities.", ex);
 		}
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<T> select(Criteria criteria) throws APIException {
+	public <E> List<E> select(Class<E> cls, Criteria criteria) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
-		List<T> results = null;
+		List<E> results = null;
+
 		try {
 			results = criteria.list();
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to select " + type.getSimpleName() + " entities.", ex);
+			throw new RuntimeException("An exception occurred while attempting to select " + cls.getSimpleName() + " entities.", ex);
 		}
-		return results;		
+
+		return results;
 	}
 }
 

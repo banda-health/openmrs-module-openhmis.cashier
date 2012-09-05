@@ -14,11 +14,10 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface IDepartmentService extends IMetadataService<IGenericHibernateDAO<Department>, Department> {
+public interface IDepartmentService extends IMetadataService<Department> {
 
 }

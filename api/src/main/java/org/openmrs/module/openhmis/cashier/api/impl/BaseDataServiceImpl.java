@@ -11,7 +11,6 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,15 +19,13 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IDataService;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
 /**
  * The base type for data entity services.
- * @param <T> The entity data access object type.
  * @param <E> The entity type.
  */
-public abstract class BaseDataServiceImpl<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsData>
-		extends BaseEntityServiceImpl<T, E, IDataAuthorizationPrivileges> implements IDataService<T, E> {
+public abstract class BaseDataServiceImpl<E extends BaseOpenmrsData>
+		extends BaseEntityServiceImpl<E, IDataAuthorizationPrivileges> implements IDataService<E> {
 
 	@Override
 	public E voidEncounter(E entity, String reason) {
@@ -61,7 +58,7 @@ public abstract class BaseDataServiceImpl<T extends IGenericHibernateDAO<E>, E e
 			throw new IllegalArgumentException("The entity to unvoid cannot be null.");
 		}
 
-		entity.setVoided(true);
+		entity.setVoided(false);
 		entity.setVoidReason(null);
 
 		return save(entity);

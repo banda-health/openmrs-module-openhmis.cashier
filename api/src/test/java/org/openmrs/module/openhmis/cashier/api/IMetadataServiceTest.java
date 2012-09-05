@@ -17,9 +17,26 @@ package org.openmrs.module.openhmis.cashier.api;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.BaseOpenmrsMetadata;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 
-public abstract class IMetadataServiceTest<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsMetadata> extends IEntityServiceTest<T, E> {
+public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E extends BaseOpenmrsMetadata>
+		extends IEntityServiceTest<S, E> {
+
+	@Override
+	protected void assertEntity(E expected, E actual) {
+		super.assertEntity(expected, actual);
+
+		Assert.assertEquals(expected.getChangedBy(), actual.getChangedBy());
+		Assert.assertEquals(expected.getCreator(), actual.getCreator());
+		Assert.assertEquals(expected.getDateChanged(), actual.getDateChanged());
+		Assert.assertEquals(expected.getDateCreated(), actual.getDateCreated());
+		Assert.assertEquals(expected.getDateRetired(), actual.getDateRetired());
+		Assert.assertEquals(expected.getDescription(), actual.getDescription());
+		Assert.assertEquals(expected.getName(), actual.getName());
+		Assert.assertEquals(expected.getRetired(), actual.getRetired());
+		Assert.assertEquals(expected.getRetiredBy(), actual.getRetiredBy());
+		Assert.assertEquals(expected.getRetireReason(), actual.getRetireReason());
+	}
+
 	/**
 	 * @verifies retire the entity successfully
 	 * @see IMetadataService#retire(E, String)

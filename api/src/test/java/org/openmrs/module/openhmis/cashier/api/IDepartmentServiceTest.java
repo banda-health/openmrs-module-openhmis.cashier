@@ -14,9 +14,50 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.GenericHibernateDAO;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 
-public class IDepartmentServiceTest extends IMetadataServiceTest<GenericHibernateDAO<Department>, Department> {
+public class IDepartmentServiceTest extends IMetadataServiceTest<IDepartmentService, Department> {
+	public static final String DEPARTMENT_DATASET = "org/openmrs/module/openhmis/cashier/api/include/DepartmentTest.xml";
 
+	@Override
+	public void before() throws Exception{
+		super.before();
+
+		executeDataSet(DEPARTMENT_DATASET);
+	}
+
+	@Override
+	protected IDepartmentService createService() {
+		return Context.getService(IDepartmentService.class);
+	}
+
+	@Override
+	protected int getTestEntityCount() {
+		return 3;
+	}
+
+	@Override
+	protected Department createEntity(boolean valid) {
+		Department department = new Department();
+
+		if (valid) {
+			department.setName("new department");
+		}
+
+		department.setDescription("new department description");
+
+		return department;
+	}
+
+	@Override
+	protected void updateEntityFields(Department department) {
+		department.setName(department.getName() + " updated");
+		department.setDescription(department.getDescription() + " updated");
+	}
+
+	@Override
+	protected void assertEntity(Department expected, Department actual) {
+		super.assertEntity(expected, actual);
+	}
 }

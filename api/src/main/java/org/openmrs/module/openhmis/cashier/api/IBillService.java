@@ -14,10 +14,9 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface IBillService extends IDataService<IGenericHibernateDAO<Bill>, Bill> {
+public interface IBillService extends IDataService<Bill> {
 }

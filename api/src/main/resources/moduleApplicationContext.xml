@@ -20,25 +20,33 @@
 	<!-- Services accessible via Context.getService() -->
 	<bean parent="serviceContext">
 		<property name="moduleService">
-			<list>
+			<list merge="true">
 				<value>org.openmrs.module.openhmis.cashier.api.IItemService</value>
 				<ref bean="cashierItemService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list merge="true">
 				<value>org.openmrs.module.openhmis.cashier.api.IDepartmentService</value>
 				<ref bean="cashierDepartmentService" />
 			</list>
 		</property>
 	</bean>
 
-	<!-- Service Beans Definitions -->
+	<!-- Core Module Beans -->
+	<bean id="genericDAO" class="org.openmrs.module.openhmis.cashier.api.db.hibernate.GenericHibernateDAO">
+		<constructor-arg name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Service Bean Definitions -->
 	<bean id="cashierItemService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.ItemServiceImpl">
-				<property name="dao">
-					<bean class="org.openmrs.module.openhmis.cashier.api.db.hibernate.ItemHibernateDAO">
-						<constructor-arg name="sessionFactory" ref="sessionFactory" />
-					</bean>
-				</property>
+				<property name="dao" ref="genericDAO" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />
@@ -48,11 +56,7 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.DepartmentServiceImpl">
-				<property name="dao">
-					<bean class="org.openmrs.module.openhmis.cashier.api.db.hibernate.DepartmentHibernateDAO">
-						<constructor-arg name="sessionFactory" ref="sessionFactory" />
-					</bean>
-				</property>
+				<property name="dao" ref="genericDAO" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />

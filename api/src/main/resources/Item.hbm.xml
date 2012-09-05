@@ -56,12 +56,12 @@
 			<key column="item_id" />
 			<one-to-many class="ItemAttribute" />
 		</set>
-		<set name="prices" lazy="true">
-			<key column="item_id" />
+		<set name="prices" lazy="true" inverse="true" cascade="all-delete-orphan">
+			<key column="item_id" not-null="true" />
 			<one-to-many class="ItemPrice" />
 		</set>
-		<set name="codes" lazy="true">
-			<key column="item_id" />
+		<set name="codes" lazy="true" inverse="true" cascade="all-delete-orphan">
+			<key column="item_id" not-null="true" />
 			<one-to-many class="ItemCode" />
 		</set>
 	</class>
@@ -166,7 +166,7 @@
 
 		<property name="name" type="java.lang.String" column="name" not-null="false" length="255" />
 		<property name="description" type="java.lang.String" column="description" length="1024" />
-		<property name="code" type="java.lang.String" column="code" not-null="true" lazy="255" />
+		<property name="code" type="java.lang.String" column="code" not-null="true" length="255" />
 
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
 		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />

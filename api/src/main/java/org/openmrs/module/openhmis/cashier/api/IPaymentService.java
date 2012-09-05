@@ -14,10 +14,9 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface IPaymentService extends IMetadataService<IGenericHibernateDAO<Payment>, Payment> {
+public interface IPaymentService extends IMetadataService<Payment> {
 }

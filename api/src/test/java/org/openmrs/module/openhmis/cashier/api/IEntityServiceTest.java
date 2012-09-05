@@ -15,79 +15,122 @@
 package org.openmrs.module.openhmis.cashier.api;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.BaseOpenmrsObject;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
+import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
+import org.openmrs.test.BaseModuleContextSensitiveTest;
 
-public abstract class IEntityServiceTest<T extends IGenericHibernateDAO<E>, E extends BaseOpenmrsObject> {
+import java.util.List;
+
+public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends BaseOpenmrsObject> extends BaseModuleContextSensitiveTest {
+	protected S service;
+
+	protected abstract S createService();
+	protected abstract E createEntity(boolean valid);
+	protected abstract int getTestEntityCount();
+	protected abstract void updateEntityFields(E entity);
+
+	protected void assertEntity(E expected, E actual) {
+		Assert.assertNotNull(expected);
+		Assert.assertNotNull(actual);
+
+		Assert.assertEquals(expected.getId(), actual.getId());
+		Assert.assertEquals(expected.getUuid(), actual.getUuid());
+	}
+
+	@Before
+	public void before() throws Exception{
+		service = createService();
+	}
+
 	/**
 	 * @verifies throw IllegalArgumentException if the entity is null
-	 * @see IEntityService#save(E)
+	 * @see IEntityService#save(org.openmrs.OpenmrsObject)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void save_shouldThrowIllegalArgumentExceptionIfTheEntityIsNull() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.save(null);
 	}
 
 	/**
 	 * @verifies validate the entity before saving
-	 * @see IEntityService#save(E)
+	 * @see IEntityService#save(org.openmrs.OpenmrsObject)
 	 */
-	@Test
+	@Test(expected = APIException.class)
 	public void save_shouldValidateTheEntityBeforeSaving() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = createEntity(false);
+
+		service.save(entity);
 	}
 
 	/**
 	 * @verifies return saved entity
-	 * @see IEntityService#save(E)
+	 * @see IEntityService#save(org.openmrs.OpenmrsObject)
 	 */
 	@Test
 	public void save_shouldReturnSavedEntity() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = createEntity(true);
+
+		E result = service.save(entity);
+
+		Assert.assertNotNull(result);
 	}
 
 	/**
 	 * @verifies update the entity successfully
-	 * @see IEntityService#save(E)
+	 * @see IEntityService#save(org.openmrs.OpenmrsObject)
 	 */
 	@Test
 	public void save_shouldUpdateTheEntitySuccessfully() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = service.getById(0);
+		Assert.assertNotNull(entity);
+
+		updateEntityFields(entity);
+
+		service.save(entity);
+
+		E updatedEntity = service.getById(entity.getId());
+		assertEntity(entity, updatedEntity);
 	}
 
 	/**
 	 * @verifies create the entity successfully
-	 * @see IEntityService#save(E)
+	 * @see IEntityService#save(org.openmrs.OpenmrsObject)
 	 */
 	@Test
 	public void save_shouldCreateTheEntitySuccessfully() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = createEntity(true);
+
+		entity = service.save(entity);
+
+		E result = service.getById(entity.getId());
+		assertEntity(entity, result);
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if the entity is null
-	 * @see IEntityService#purge(E)
+	 * @see IEntityService#purge(org.openmrs.OpenmrsObject)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void purge_shouldThrowIllegalArgumentExceptionIfTheEntityIsNull() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.purge(null);
 	}
 
 	/**
 	 * @verifies delete the specified entity
-	 * @see IEntityService#purge(E)
+	 * @see IEntityService#purge(org.openmrs.OpenmrsObject)
 	 */
 	@Test
 	public void purge_shouldDeleteTheSpecifiedEntity() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = service.getById(0);
+		Assert.assertNotNull(entity);
+
+		service.purge(entity);
+
+		entity = service.getById(0);
+		Assert.assertNull(entity);
 	}
 
 	/**
@@ -96,8 +139,10 @@ public abstract class IEntityServiceTest<T extends IGenericHibernateDAO<E>, E ex
 	 */
 	@Test
 	public void getAll_shouldReturnAllEntityRecords() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		List<E> entities = service.getAll();
+		Assert.assertNotNull(entities);
+
+		Assert.assertEquals(entities.size(), getTestEntityCount());
 	}
 
 	/**
@@ -106,8 +151,16 @@ public abstract class IEntityServiceTest<T extends IGenericHibernateDAO<E>, E ex
 	 */
 	@Test
 	public void getAll_shouldReturnAnEmptyListIfThereAreNoEntities() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		List<E> entities = service.getAll();
+		for (E entity : entities) {
+			service.purge(entity);
+		}
+
+		Context.flushSession();
+
+		entities = service.getAll();
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(0, entities.size());
 	}
 
 	/**
@@ -116,8 +169,9 @@ public abstract class IEntityServiceTest<T extends IGenericHibernateDAO<E>, E ex
 	 */
 	@Test
 	public void getById_shouldReturnTheEntityWithTheSpecifiedId() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = service.getById(0);
+
+		Assert.assertEquals((Integer)0, entity.getId());
 	}
 
 	/**
@@ -126,8 +180,9 @@ public abstract class IEntityServiceTest<T extends IGenericHibernateDAO<E>, E ex
 	 */
 	@Test
 	public void getById_shouldReturnNullIfNoEntityCanBeFound() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = service.getById(-100);
+
+		Assert.assertNull(entity);
 	}
 
 	/**
@@ -136,8 +191,10 @@ public abstract class IEntityServiceTest<T extends IGenericHibernateDAO<E>, E ex
 	 */
 	@Test
 	public void getByUuid_shouldFindTheEntityWithTheSpecifiedUuid() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = service.getById(0);
+		E uuidEntity = service.getByUuid(entity.getUuid());
+
+		assertEntity(entity, uuidEntity);
 	}
 
 	/**
@@ -146,27 +203,26 @@ public abstract class IEntityServiceTest<T extends IGenericHibernateDAO<E>, E ex
 	 */
 	@Test
 	public void getByUuid_shouldReturnNullIfNoEntityIsFound() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = service.getByUuid("Invalid");
+
+		Assert.assertNull(entity);
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if uuid is null
 	 * @see IEntityService#getByUuid(String)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void getByUuid_shouldThrowIllegalArgumentExceptionIfUuidIsNull() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.getByUuid(null);
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if uuid is empty
 	 * @see IEntityService#getByUuid(String)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void getByUuid_shouldThrowIllegalArgumentExceptionIfUuidIsEmpty() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.getByUuid("");
 	}
 }

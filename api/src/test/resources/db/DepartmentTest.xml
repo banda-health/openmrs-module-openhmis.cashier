@@ -1,5 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<dataset>
-  <cashier_department department_id="1" name="Test" description="Some test department"/>
-  <cashier_department/>
-</dataset>

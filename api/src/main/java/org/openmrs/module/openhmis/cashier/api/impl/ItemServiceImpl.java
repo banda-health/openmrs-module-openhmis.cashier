@@ -11,15 +11,12 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.impl;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
 import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
@@ -27,12 +24,10 @@ import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import java.util.List;
 
 public class ItemServiceImpl
-		extends BaseMetadataServiceImpl<IGenericHibernateDAO<Item>, Item>
+		extends BaseMetadataServiceImpl<Item>
 		implements IItemService, IMetadataAuthorizationPrivileges {
-	@Override
-	protected IMetadataAuthorizationPrivileges getPrivileges() {
-		return this;
-	}
+	public static final int NAME_FIELD_LENGTH = 255;
+	public static final int DESC_FIELD_SIZE = 1024;
 
 	/**
 	 * Validates the entity.
@@ -47,9 +42,8 @@ public class ItemServiceImpl
 	 */
 	@Override
 	protected void validate(Item entity) throws APIException {
-		throw new NotImplementedException();
+		return;
 	}
-
 
 	@Override
 	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
@@ -61,6 +55,11 @@ public class ItemServiceImpl
 	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
 	public List<Item> findItems(Department department, String name, boolean includeRetired) throws APIException {
 		return null;
+	}
+
+	@Override
+	protected IMetadataAuthorizationPrivileges getPrivileges() {
+		return this;
 	}
 
 	@Override
