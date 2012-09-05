@@ -29,7 +29,7 @@ public interface IDataService<E extends OpenmrsObject> extends IEntityService<E>
 	 * @should throw IllegalArgumentException with null reason parameter
 	 * @should throw IllegalArgumentException with null entity
 	 */
-	public E voidEncounter(E entity, String reason);
+	public E voidEntity(E entity, String reason);
 
 	/**
 	 * Unvoid the entity record.
@@ -38,5 +38,5 @@ public interface IDataService<E extends OpenmrsObject> extends IEntityService<E>
 	 * @should unvoid the entity
 	 * @should throw IllegalArgumentException with null entity
 	 */
-	public E unvoidEncounter(E entity) throws APIException;
+	public E unvoidEntity(E entity) throws APIException;
 }

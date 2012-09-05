@@ -13,6 +13,10 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
@@ -48,13 +52,42 @@ public class ItemServiceImpl
 	@Override
 	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
 	public Item getItemByCode(String itemCode) throws APIException {
-		return null;
+		if (StringUtils.isEmpty(itemCode)) {
+			throw new IllegalArgumentException("The item code must be defined.");
+		}
+		if (itemCode.length() > 255) {
+			throw new IllegalArgumentException("The item code must be less than 256 characters.");
+		}
+
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.createAlias("codes", "c")
+				.add(Restrictions.ilike("c.code", itemCode));
+
+		return dao.selectSingle(getEntityClass(), criteria);
 	}
 
 	@Override
 	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
 	public List<Item> findItems(Department department, String name, boolean includeRetired) throws APIException {
-		return null;
+		if (department == null) {
+			throw new NullPointerException("The department must be defined");
+		}
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("The item code must be defined.");
+		}
+		if (name.length() > 255) {
+			throw new IllegalArgumentException("The item code must be less than 256 characters.");
+		}
+
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("department", department))
+				.add(Restrictions.ilike("name", name, MatchMode.START));
+
+		if (!includeRetired) {
+			criteria.add(Restrictions.eq("retired", false));
+		}
+
+		return dao.select(getEntityClass(), criteria);
 	}
 
 	@Override
