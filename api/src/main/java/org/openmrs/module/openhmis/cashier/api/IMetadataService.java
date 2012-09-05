@@ -29,7 +29,7 @@ public interface IMetadataService<E extends BaseOpenmrsMetadata> extends IEntity
 	 * @param reason the reason why the entity is being retired.
 	 * @return the newly retired entity.
 	 * @should retire the entity successfully
-	 * @should throw IllegalArgumentException when the entity is null
+	 * @should throw NullPointerException when the entity is null
 	 * @should throw IllegalArgumentException when no reason is given
 	 */
 	E retire(E entity, String reason) throws APIException;
@@ -40,7 +40,7 @@ public interface IMetadataService<E extends BaseOpenmrsMetadata> extends IEntity
 	 * @param entity The entity to unretire.
 	 * @return the newly unretired entity.
 	 * @throws APIException
-	 * @should throw IllegalArgumentException if the entity is null
+	 * @should throw NullPointerException if the entity is null
 	 * @should unretire the entity
 	 */
 	E unretire(E entity) throws APIException;

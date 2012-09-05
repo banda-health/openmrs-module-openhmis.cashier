@@ -47,7 +47,7 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 
 	@Override
 	protected int getTestEntityCount() {
-		return 1;
+		return 3;
 	}
 
 	@Override

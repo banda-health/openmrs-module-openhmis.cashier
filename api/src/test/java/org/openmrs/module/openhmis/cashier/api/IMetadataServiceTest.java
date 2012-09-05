@@ -14,9 +14,14 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.api.context.Context;
+
+import java.util.Date;
+import java.util.List;
 
 public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E extends BaseOpenmrsMetadata>
 		extends IEntityServiceTest<S, E> {
@@ -43,38 +48,48 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 	 */
 	@Test
 	public void retire_shouldRetireTheEntitySuccessfully() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		String reason = "test retire";
+		E entity = service.getById(0);
+
+		service.retire(entity, reason);
+
+		Context.flushSession();
+
+		entity = service.getById(entity.getId());
+
+		Assert.assertTrue(entity.getRetired());
+		Assert.assertEquals(Context.getAuthenticatedUser(), entity.getRetiredBy());
+		Assert.assertEquals(reason, entity.getRetireReason());
+		Assert.assertTrue(entity.getDateRetired().before(new Date()));
 	}
 
 	/**
-	 * @verifies throw IllegalArgumentException when the entity is null
+	 * @verifies throw NullPointerException when the entity is null
 	 * @see IMetadataService#retire(E, String)
 	 */
-	@Test
-	public void retire_shouldThrowIllegalArgumentExceptionWhenTheEntityIsNull() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+	@Test(expected = NullPointerException.class)
+	public void retire_shouldThrowNullPointerExceptionWhenTheEntityIsNull() throws Exception {
+		service.retire(null, "something");
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException when no reason is given
 	 * @see IMetadataService#retire(E, String)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void retire_shouldThrowIllegalArgumentExceptionWhenNoReasonIsGiven() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = service.getById(0);
+
+		service.retire(entity, null);
 	}
 
 	/**
-	 * @verifies throw IllegalArgumentException if the entity is null
+	 * @verifies throw NullPointerException if the entity is null
 	 * @see IMetadataService#unretire(E)
 	 */
-	@Test
-	public void unretire_shouldThrowIllegalArgumentExceptionIfTheEntityIsNull() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+	@Test(expected = NullPointerException.class)
+	public void unretire_shouldThrowNullPointerExceptionIfTheEntityIsNull() throws Exception {
+		service.unretire(null);
 	}
 
 	/**
@@ -83,8 +98,24 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 	 */
 	@Test
 	public void unretire_shouldUnretireTheEntity() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		String reason = "test retire";
+		E entity = service.getById(0);
+		service.retire(entity, reason);
+
+		Context.flushSession();
+
+		entity = service.getById(entity.getId());
+		Date dateRetired = entity.getDateRetired();
+		Assert.assertTrue(entity.getRetired());
+		service.unretire(entity);
+
+		Context.flushSession();
+
+		entity = service.getById(entity.getId());
+		Assert.assertFalse(entity.getRetired());
+		Assert.assertNull(entity.getRetiredBy());
+		Assert.assertNull(entity.getRetireReason());
+		Assert.assertEquals(dateRetired, entity.getDateRetired());
 	}
 
 	/**
@@ -93,8 +124,16 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 	 */
 	@Test
 	public void getAll_shouldReturnAllRetiredEntitiesWhenRetiredIsSetToTrue() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		String reason = "test retire";
+		E entity = service.getById(0);
+		service.retire(entity, reason);
+
+		Context.flushSession();
+
+		List<E> entities = service.getAll(true);
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		assertEntity(entity, entities.get(0));
 	}
 
 	/**
@@ -103,38 +142,42 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 	 */
 	@Test
 	public void getAll_shouldReturnAllUnretiredEntitiesWhenRetiredIsSetToFalse() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		String reason = "test retire";
+		E entity = service.getById(0);
+		service.retire(entity, reason);
+
+		Context.flushSession();
+
+		List<E> entities = service.getAll(false);
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(getTestEntityCount() - 1, entities.size());
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if the name is null
 	 * @see IMetadataService#findByName(String, boolean)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void findByName_shouldThrowIllegalArgumentExceptionIfTheNameIsNull() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.findByName(null, true);
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if the name is empty
 	 * @see IMetadataService#findByName(String, boolean)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void findByName_shouldThrowIllegalArgumentExceptionIfTheNameIsEmpty() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.findByName("", true);
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if the name is longer than 255 characters
 	 * @see IMetadataService#findByName(String, boolean)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void findByName_shouldThrowIllegalArgumentExceptionIfTheNameIsLongerThan255Characters() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.findByName(StringUtils.repeat("A", 256), true);
 	}
 
 	/**
@@ -143,8 +186,10 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 	 */
 	@Test
 	public void findByName_shouldReturnAnEmptyListIfNoEntitiesAreFound() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		List<E> entities = service.findByName("NotAValidName", true);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(0, entities.size());
 	}
 
 	/**
@@ -153,8 +198,17 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 	 */
 	@Test
 	public void findByName_shouldNotReturnRetiredEntitiesUnlessSpecified() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = service.getById(0);
+		service.retire(entity, "something");
+		Context.flushSession();
+
+		List<E> entities = service.findByName("t", false);
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(getTestEntityCount() - 1, entities.size());
+
+		entities = service.findByName("t", true);
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(getTestEntityCount(), entities.size());
 	}
 
 	/**
@@ -163,8 +217,22 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 	 */
 	@Test
 	public void findByName_shouldReturnEntitiesThatStartWithTheSpecifiedName() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		E entity = service.getById(0);
+
+		// Search using the first four characters in the name
+		List<E> entities = service.findByName(entity.getName().substring(0, 4), false);
+		Assert.assertTrue(entities.size() > 0);
+
+		// Make sure the entity is in the results
+		E found = null;
+		for (E result : entities) {
+			if (result.getId().equals(entity.getId())) {
+				found = result;
+				break;
+			}
+		}
+
+		Assert.assertNotNull("Could not find entity in search results", found);
 	}
 }
 

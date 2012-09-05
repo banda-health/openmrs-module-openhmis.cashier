@@ -74,8 +74,10 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 		E entity = createEntity(true);
 
 		E result = service.save(entity);
+		Context.flushSession();
 
 		Assert.assertNotNull(result);
+		Assert.assertNotNull(result.getId());
 	}
 
 	/**
@@ -90,6 +92,7 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 		updateEntityFields(entity);
 
 		service.save(entity);
+		Context.flushSession();
 
 		E updatedEntity = service.getById(entity.getId());
 		assertEntity(entity, updatedEntity);
@@ -104,6 +107,7 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 		E entity = createEntity(true);
 
 		entity = service.save(entity);
+		Context.flushSession();
 
 		E result = service.getById(entity.getId());
 		assertEntity(entity, result);
@@ -128,6 +132,7 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 		Assert.assertNotNull(entity);
 
 		service.purge(entity);
+		Context.flushSession();
 
 		entity = service.getById(0);
 		Assert.assertNull(entity);

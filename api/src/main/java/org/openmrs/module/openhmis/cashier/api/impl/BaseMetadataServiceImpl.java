@@ -24,6 +24,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 		}
 
 		if (entity == null) {
-			throw new IllegalArgumentException("The entity to retire cannot be null.");
+			throw new NullPointerException("The entity to retire cannot be null.");
 		}
 		if (StringUtils.isEmpty(reason)) {
 			throw new IllegalArgumentException("The reason to retire must be defined.");
@@ -49,6 +50,8 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 
 		entity.setRetired(true);
 		entity.setRetireReason(reason);
+		entity.setRetiredBy(Context.getAuthenticatedUser());
+		entity.setDateRetired(new Date());
 
 		return save(entity);
 	}
@@ -61,11 +64,12 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 		}
 
 		if (entity == null) {
-			throw new IllegalArgumentException("The entity to unretire cannot be null.");
+			throw new NullPointerException("The entity to unretire cannot be null.");
 		}
 
 		entity.setRetired(false);
-		entity.setRetireReason("");
+		entity.setRetireReason(null);
+		entity.setRetiredBy(null);
 
 		return save(entity);
 	}
@@ -92,6 +96,9 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 
 		if (StringUtils.isEmpty(nameFragment)) {
 			throw new IllegalArgumentException("The name fragment must be defined.");
+		}
+		if (nameFragment.length() > 255) {
+			throw new IllegalArgumentException("the name fragment must be less than 255 characters long.");
 		}
 
 		Criteria criteria = dao.createCriteria(getEntityClass());
