@@ -106,7 +106,7 @@
 				<version>1.0</version>
 				<scope>provided</scope>
 			</dependency>
-			 
+
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>webservices.rest-omod</artifactId>

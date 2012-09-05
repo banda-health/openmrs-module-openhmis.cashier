@@ -71,7 +71,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 	}
 
 	@Override
-	@SuppressWarnings("unchcked")
+	@SuppressWarnings("unchecked")
 	public <E> E selectSingle(Class<E> cls, Criteria criteria) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 		E result = null;
