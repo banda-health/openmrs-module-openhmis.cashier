@@ -85,7 +85,7 @@ public abstract class IDataServiceTest<S extends IDataService<E>, E extends Base
 		Assert.assertFalse(entity.getVoided());
 		Assert.assertNull(entity.getVoidedBy());
 		Assert.assertNull(entity.getVoidReason());
-		Assert.assertNotNull(entity.getDateVoided()));
+		Assert.assertNotNull(entity.getDateVoided());
 	}
 
 	/**
