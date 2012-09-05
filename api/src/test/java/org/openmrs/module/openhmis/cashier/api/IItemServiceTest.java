@@ -14,15 +14,18 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
+import liquibase.util.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.model.ItemCode;
 import org.openmrs.module.openhmis.cashier.api.model.ItemPrice;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
@@ -154,20 +157,18 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 	 * @verifies throw IllegalArgumentException if the item code is null
 	 * @see IItemService#getItemByCode(String)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void getItemByCode_shouldThrowIllegalArgumentExceptionIfTheItemCodeIsNull() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.getItemByCode(null);
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if the item code is longer than 255 characters
 	 * @see IItemService#getItemByCode(String)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void getItemByCode_shouldThrowIllegalArgumentExceptionIfTheItemCodeIsLongerThan255Characters() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.getItemByCode(StringUtils.repeat("A", 256));
 	}
 
 	/**
@@ -176,8 +177,11 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 	 */
 	@Test
 	public void getItemByCode_shouldReturnTheItemWithTheSpecifiedItemCode() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		Item item = service.getItemByCode("item 1 code");
+		Assert.assertNotNull(item);
+
+		Item expected = service.getById(0);
+		assertEntity(expected, item);
 	}
 
 	/**
@@ -186,48 +190,45 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 	 */
 	@Test
 	public void getItemByCode_shouldReturnNullIfTheItemCodeIsNotFound() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		Item item = service.getItemByCode("not a valid code");
+
+		Assert.assertNull(item);
 	}
 
 	/**
-	 * @verifies throw IllegalArgumentException if the department is null
+	 * @verifies throw NullPointerException if the department is null
 	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
-	@Test
-	public void findItems_shouldThrowIllegalArgumentExceptionIfTheDepartmentIsNull() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+	@Test(expected = NullPointerException.class)
+	public void findItems_shouldThrowNullPointerExceptionIfTheDepartmentIsNull() throws Exception {
+		service.findItems(null, "something", false);
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if the name is null
 	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void findItems_shouldThrowIllegalArgumentExceptionIfTheNameIsNull() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.findItems(departmentService.getById(0), null, false);
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if the name is empty
 	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void findItems_shouldThrowIllegalArgumentExceptionIfTheNameIsEmpty() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.findItems(departmentService.getById(0), "", false);
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if the name is longer than 255 characters
 	 * @see IItemService#findItems(org.openmrs.module.openhmis.cashier.api.model.Department, String, boolean)
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void findItems_shouldThrowIllegalArgumentExceptionIfTheNameIsLongerThan255Characters() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		service.findItems(departmentService.getById(0), StringUtils.repeat("A", 256), false);
 	}
 
 	/**
@@ -236,8 +237,10 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 	 */
 	@Test
 	public void findItems_shouldReturnAnEmptyListIfNoItemsAreFound() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		List<Item> items = service.findItems(departmentService.getById(0), "not a valid name", false);
+
+		Assert.assertNotNull(items);
+		Assert.assertEquals(0, items.size());
 	}
 
 	/**
@@ -246,8 +249,19 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 	 */
 	@Test
 	public void findItems_shouldNotReturnRetiredItemsUnlessSpecified() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		Item item = service.getById(0);
+		service.retire(item, "test");
+
+		Context.flushSession();
+
+		Department department = departmentService.getById(0);
+		List<Item> items = service.findItems(department, "t", false);
+		Assert.assertNotNull(items);
+		Assert.assertEquals(getTestEntityCount() - 1, items.size());
+
+		items = service.findItems(department, "t", true);
+		Assert.assertNotNull(items);
+		Assert.assertEquals(getTestEntityCount(), items.size());
 	}
 
 	/**
@@ -256,8 +270,12 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 	 */
 	@Test
 	public void findItems_shouldReturnItemsThatStartWithTheSpecifiedName() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		List<Item> items = service.findItems(departmentService.getById(0), "test 1", false);
+		Assert.assertNotNull(items);
+		Assert.assertEquals(1, items.size());
+
+		Item item = service.getById(0);
+		assertEntity(item, items.get(0));
 	}
 
 	/**
@@ -266,7 +284,12 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 	 */
 	@Test
 	public void findItems_shouldReturnItemsForOnlyTheSpecifiedDepartment() throws Exception {
-		//TODO auto-generated
-		Assert.fail("Not yet implemented");
+		List<Item> items = service.findItems(departmentService.getById(0), "test", false);
+		Assert.assertNotNull(items);
+		Assert.assertEquals(3, items.size());
+
+		items = service.findItems(departmentService.getById(1), "test", false);
+		Assert.assertNotNull(items);
+		Assert.assertEquals(0, items.size());
 	}
 }

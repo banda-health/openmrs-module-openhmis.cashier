@@ -23,6 +23,15 @@
 		<level value="FATAL" />
 	</logger>
 
+	<!-- Uncomment for hibernate debugging
+	<logger name="org.hibernate">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="log4j.logger.org.hibernate.SQL">
+		<level value="DEBUG" />
+	</logger>
+	-->
+
 	<!-- 
 		This controls the LoggingAdvice class that wraps around the OpenMRS services 
 		WARN == don't log anything special for the services

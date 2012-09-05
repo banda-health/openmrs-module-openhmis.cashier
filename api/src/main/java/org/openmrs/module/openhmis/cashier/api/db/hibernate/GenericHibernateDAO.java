@@ -58,6 +58,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <E> E selectSingle(Class<E> cls, Serializable id) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 
@@ -65,7 +66,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 			return (E)session.get(cls, id);
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to select a single " + cls.getSimpleName() + " entity with ID " + id.toString() + ".", ex);
+			throw new APIException("An exception occurred while attempting to select a single " + cls.getSimpleName() + " entity with ID " + id.toString() + ".", ex);
 		}
 	}
 
@@ -82,7 +83,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 			}
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to select a single " + cls.getSimpleName() + " entity.", ex);
+			throw new APIException("An exception occurred while attempting to select a single " + cls.getSimpleName() + " entity.", ex);
 		}
 		return result;
 	}
@@ -97,7 +98,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 
 			return search.list();
 		} catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to get " + cls.getSimpleName() + " entities.", ex);
+			throw new APIException("An exception occurred while attempting to get " + cls.getSimpleName() + " entities.", ex);
 		}
 	}
 
@@ -111,7 +112,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 			results = criteria.list();
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("An exception occurred while attempting to select " + cls.getSimpleName() + " entities.", ex);
+			throw new APIException("An exception occurred while attempting to select " + cls.getSimpleName() + " entities.", ex);
 		}
 
 		return results;

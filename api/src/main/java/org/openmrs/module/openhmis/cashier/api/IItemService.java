@@ -46,7 +46,7 @@ public interface IItemService extends IMetadataService<Item> {
 	 * @param includeRetired Whether retired item should be included in the results
 	 * @return All items in the specified {@link Department} that start with the specified name.
 	 * @throws APIException
-	 * @should throw IllegalArgumentException if the department is null
+	 * @should throw NullPointerException if the department is null
 	 * @should throw IllegalArgumentException if the name is null
 	 * @should throw IllegalArgumentException if the name is empty
 	 * @should throw IllegalArgumentException if the name is longer than 255 characters

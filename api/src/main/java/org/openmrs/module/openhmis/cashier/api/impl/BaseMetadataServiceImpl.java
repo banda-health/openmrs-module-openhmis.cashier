@@ -98,7 +98,7 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 			throw new IllegalArgumentException("The name fragment must be defined.");
 		}
 		if (nameFragment.length() > 255) {
-			throw new IllegalArgumentException("the name fragment must be less than 255 characters long.");
+			throw new IllegalArgumentException("the name fragment must be less than 256 characters long.");
 		}
 
 		Criteria criteria = dao.createCriteria(getEntityClass());
