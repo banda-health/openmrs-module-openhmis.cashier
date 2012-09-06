@@ -2,9 +2,8 @@ package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.OpenmrsMetadata;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.IDataService;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
-import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
+import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
@@ -14,15 +13,14 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.resource.impl.ServiceSearcher;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extends MetadataDelegatingCrudResource<E> {
+public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extends MetadataDelegatingCrudResource<E> implements IMetadataServiceResource<E> {
 
 	@Override
 	public abstract E newDelegate();
-
+	
 	@Override
 	public E save(E delegate) {
-		@SuppressWarnings("unchecked")
-		IDataService<IGenericHibernateDAO<E>, E> service = (IDataService<IGenericHibernateDAO<E>, E>) Context.getService(delegate.getClass());
+		IMetadataService<E> service = Context.getService(getServiceClass());
 		service.save(delegate);
 		return delegate;
 	}
@@ -30,7 +28,6 @@ public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extend
 	protected DelegatingResourceDescription getDefaultRepresentationDescription() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("uuid");
-		description.addProperty("display");
 		description.addProperty("name");
 		description.addProperty("description");
 		description.addProperty("retired");
@@ -45,8 +42,7 @@ public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extend
 
 	@Override
 	public E getByUniqueId(String uniqueId) {
-		@SuppressWarnings("unchecked")
-		IDataService<IGenericHibernateDAO<E>, E> service = (IDataService<IGenericHibernateDAO<E>, E>) Context.getService(newDelegate().getClass());
+		IMetadataService<E> service = Context.getService(getServiceClass());
 		E entity = service.getByUuid(uniqueId);
 		return entity;
 	}
@@ -54,15 +50,13 @@ public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extend
 	@Override
 	public void purge(E delegate, RequestContext context)
 			throws ResponseException {
-		@SuppressWarnings("unchecked")
-		IDataService<IGenericHibernateDAO<E>, E> service = (IDataService<IGenericHibernateDAO<E>, E>) Context.getService(delegate.getClass());
+		IMetadataService<E> service = Context.getService(getServiceClass());
 		service.purge(delegate);		
 	}
 	
 	@Override
 	protected NeedsPaging<E> doGetAll(RequestContext context) throws ResponseException {
-		@SuppressWarnings("unchecked")
-		IDataService<IGenericHibernateDAO<E>, E> service = (IDataService<IGenericHibernateDAO<E>, E>) Context.getService(newDelegate().getClass());
+		IMetadataService<E> service = Context.getService(getServiceClass());
 		return new NeedsPaging<E>(service.getAll(), context);
 	}
 

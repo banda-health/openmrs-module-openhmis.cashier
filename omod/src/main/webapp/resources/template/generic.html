@@ -1,0 +1,38 @@
+<script id="add-edit-template" type="text/template">
+	<p><a class="addLink" href="#"><?= __("Add %s", model.meta.name) ?></a></p>
+	<b class="boxHeader title" style="display: none"><?= model.isNew()
+		? __("Add New %s", model.meta.name)
+		: __("Edit %s", model.meta.name) ?></b>
+	<div class="box form" style="display: none">
+		<button class="submit"><?= model.isNew() ? __("Create") : __("Update") ?></button>
+		<button class="cancel"><?= __("Cancel") ?></button>
+	</div>
+	
+</script>
+
+<script id="generic-list" type="text/template">
+<b class="boxHeader"><?= __("Current %s", modelMeta.namePlural) ?></b>
+<div class="box">
+	<? if (list.length === 0) { ?>
+		<p><?= __("There are currently no %s", modelMeta.namePlural.toLowerCase()) ?></p>
+	<? } else { ?>
+	<table class="display" width="100%">
+		<thead>
+			<tr>
+			<? for (var attr in modelSchema) { ?>
+				<th><?= modelSchema[attr].title === undefined ? capitalize(attr) : modelSchema[attr].title ?></th>
+			<? } ?>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<? } ?>
+</div>
+</script>
+
+<script id="generic-list-item" type="text/template">
+	<? for (var attr in model.schema) { ?>
+	<td><?= model.get(attr) ?></td>
+	<? } ?>
+</script>

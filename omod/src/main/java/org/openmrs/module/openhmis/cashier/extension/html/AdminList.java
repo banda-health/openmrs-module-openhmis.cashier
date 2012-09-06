@@ -44,7 +44,7 @@ public class AdminList extends AdministrationSectionExt {
 	 */
 	public Map<String, String> getLinks() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-		map.put("/module/openhmis.cashier/manage.form", "openhmis.cashier.manage");
+		map.put("/module/openhmis/cashier/departments.form", "openhmis.cashier.admin.departments");
 		return map;
 	}
 	

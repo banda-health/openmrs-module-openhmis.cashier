@@ -60,7 +60,8 @@
 	
 	<!-- Maps hibernate files, if present -->
 	<mappingFiles>
-
+		Department.hbm.xml
+		Item.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

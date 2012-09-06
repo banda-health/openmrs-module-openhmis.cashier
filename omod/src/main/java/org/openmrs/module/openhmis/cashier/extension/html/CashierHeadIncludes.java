@@ -17,15 +17,6 @@ public class CashierHeadIncludes extends HeaderIncludeExt {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		if (request.getRequestURI().contains("openhmis/cashier")) {
 			files.add("/moduleResources/openhmis/cashier/css/style.css");
-			files.add("/moduleResources/openhmis/cashier/js/underscore.js");
-			files.add("/moduleResources/openhmis/cashier/js/backbone.js");
-			files.add("/moduleResources/openhmis/cashier/js/util.js");
-			files.add("/moduleResources/openhmis/cashier/js/i18n/english.js");			
-			files.add("/moduleResources/openhmis/cashier/js/model/lineItem.js");
-			files.add("/moduleResources/openhmis/cashier/js/model/patient.js");
-			files.add("/moduleResources/openhmis/cashier/js/view/lineItem.js");
-			files.add("/moduleResources/openhmis/cashier/js/view/bill.js");
-			files.add("/moduleResources/openhmis/cashier/js/view/patient.js");
 		}
 		return files;
 	}
