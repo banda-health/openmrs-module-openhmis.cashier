@@ -1,6 +1,6 @@
 package org.openmrs.module.webservices.rest.resource;
 
-import org.openmrs.BaseOpenmrsData;
+import org.openmrs.OpenmrsData;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IDataService;
 import org.openmrs.module.openhmis.cashier.api.IEntityService;
@@ -14,7 +14,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.resource.impl.ServiceSearcher;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-public abstract class BaseRestDataResource<E extends BaseOpenmrsData> extends DataDelegatingCrudResource<E> implements IDataServiceResource<E> {
+public abstract class BaseRestDataResource<E extends OpenmrsData> extends DataDelegatingCrudResource<E> implements IDataServiceResource<E> {
 
 	@Override
 	public abstract E newDelegate();
