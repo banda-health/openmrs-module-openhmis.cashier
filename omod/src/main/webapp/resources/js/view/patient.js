@@ -1,7 +1,11 @@
 $(function() {
 window.openhmis.PatientView = Backbone.View.extend({
+	tmplFile: 'patient.html',
+	tmplSelector: '#patient-details-template',
+	
 	initialize: function() {
 		_.bindAll(this);
+		this.template = this.getTemplate();
 	},
 	
 	setElement: function(el) {
@@ -24,9 +28,7 @@ window.openhmis.PatientView = Backbone.View.extend({
 		this.findEl.show();
 		this.$('#inputNode').focus();
 	},
-	
-	template: _.template($('#patient-details-template').html()),
-	
+		
 	render: function() {
 		if (this.model === undefined) {
 			this.findEl.show();

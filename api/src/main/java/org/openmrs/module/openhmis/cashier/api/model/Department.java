@@ -54,4 +54,8 @@ public class Department extends BaseOpenmrsMetadata {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public String getDisplayString() {
+		return getClass().toString() + " " + getName();
+	}
 }
