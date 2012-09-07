@@ -31,4 +31,11 @@ input.item-quantity, input.item-price, input.item-total {
 	text-align: right;
 }
 
+form.bbf-form fieldset { border: none; }
+form.bbf-form ul { padding: 0; }
+li.bbf-field { list-style: none; }
+li.bbf-field label { display: inline-block; width: 150px; }
+li.bbf-field div.bbf-editor { display: inline-block; }
+
+input.reason { width: 25em; }
 .selectable { cursor: pointer; }

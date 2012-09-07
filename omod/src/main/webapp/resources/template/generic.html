@@ -4,10 +4,29 @@
 		? __("Add New %s", model.meta.name)
 		: __("Edit %s", model.meta.name) ?></b>
 	<div class="box form" style="display: none">
-		<button class="submit"><?= model.isNew() ? __("Create") : __("Update") ?></button>
+		<button class="submit"><?= model.isNew() ? __("Create %s", model.meta.name) : __("Update %s", model.meta.name) ?></button>
 		<button class="cancel"><?= __("Cancel") ?></button>
 	</div>
-	
+	<br />
+	<div class="retireVoidPurge" style="display: none;">
+		<div class="box">
+			<? var strRetireOrVoid = model.getDataType() === "data" ? "Void" : "Retire" ?>
+			<? if (model.isRetired()) { ?>
+			<? var strUnretire = "Un" + strRetireOrVoid.toLowerCase() ?>
+			<h4><?= __(strUnretire + " %s", model.meta.name) ?></h4>
+			<button class="unretireOrUnvoid"><?= __(strUnretire) ?></button>
+			<? } else { ?>
+			<h4><?= __(strRetireOrVoid + " %s", model.meta.name) ?></h4>
+			<label for="reason">Reason</label> <input name="reason" id="reason" class="reason" type="text" /><br />
+			<button class="retireOrVoid"><?= __(strRetireOrVoid) ?></button>
+			<? } ?>
+		</div>
+		<br />
+		<div class="box">
+			<h4><?= __("Purge %s", model.meta.name) ?></h4>
+			<button class="purge"><?= __("Purge") ?></button>
+		</div>
+	</div>
 </script>
 
 <script id="generic-list" type="text/template">
@@ -20,7 +39,7 @@
 		<thead>
 			<tr>
 			<? for (var attr in modelSchema) { ?>
-				<th><?= modelSchema[attr].title === undefined ? capitalize(attr) : modelSchema[attr].title ?></th>
+				<th><?= modelSchema[attr].title === undefined ? Backbone.Form.helpers.keyToTitle(attr) : modelSchema[attr].title ?></th>
 			<? } ?>
 			</tr>
 		</thead>
@@ -29,10 +48,12 @@
 	</table>
 	<? } ?>
 </div>
+<? var strRetiredOrVoided = (modelMeta.openmrsType === 'data') ? "voided" : "retired" ?>
+<input id="showRetired" type="checkbox"<?= showRetired ? ' checked="checked"' : '' ?>/><label for="showRetired"><?= __("Show " + strRetiredOrVoided) ?></label>
 </script>
 
 <script id="generic-list-item" type="text/template">
 	<? for (var attr in model.schema) { ?>
-	<td><?= model.get(attr) ?></td>
+	<td<?= model.isRetired() ? ' class="retired"' : '' ?>><?= model.get(attr) ?></td>
 	<? } ?>
 </script>

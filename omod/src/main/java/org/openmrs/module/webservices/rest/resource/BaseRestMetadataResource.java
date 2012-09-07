@@ -31,6 +31,7 @@ public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extend
 		description.addProperty("name");
 		description.addProperty("description");
 		description.addProperty("retired");
+		description.addProperty("retireReason");
 		return description;
 	}
 	
