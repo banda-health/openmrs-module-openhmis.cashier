@@ -40,7 +40,7 @@
 	</bean>
 	<!-- 
 		AOP transaction advice: Intercepts method call and wraps it with a transaction.  The 
-		transactionAttributeSource is what reads/remembers all Transactional attributes of a given 
+		transactionAttributeSource is what reads/remembers all Transactional attributeTypes of a given
 		method or class (which is done during initialization)
 	-->
 	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
@@ -656,7 +656,7 @@
 	</bean>
 
 	<!-- will be autowired to the HibernateSessionFactoryBean by type -->
-	<!-- interceptors are used in order of name, this needs to be one of the first and should be since auditable happens to start with 'a' -->
+	<!-- interceptors are used in attributeOrder of name, this needs to be one of the first and should be since auditable happens to start with 'a' -->
 	<bean id="auditableInterceptor" class="org.openmrs.api.db.hibernate.AuditableInterceptor" />
 
 	<bean id="sessionFactory" class="org.openmrs.api.db.hibernate.HibernateSessionFactoryBean">

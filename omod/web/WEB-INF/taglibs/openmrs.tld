@@ -254,7 +254,7 @@
 <tag>
 	<description>
 		Loops over the PersonAttributeTypes to display a person.  If `type` is 'patient', only patient 
-		display attributes are returned. If `type` is 'user', only user display attributes are returned.
+		display attributeTypes are returned. If `type` is 'user', only user display attributeTypes are returned.
 		'listing' `displayTypes` are maintained with global properties: patient.listingAttributeTypes and 
 		user.listingAttributeTypes.  'viewing' `displayTypes` are maintained with global properties:
 		patient.viewingAttributeTypes and user.viewingAttributeTypes
@@ -310,7 +310,7 @@
 	<attribute>
 		<description>
 			A string in the form of "key=value|key2=value2".   
-			e.g. "size=compact|order=date"
+			e.g. "size=compact|attributeOrder=date"
 		</description>
 		<name>parameters</name>
 		<required>false</required>
@@ -1083,7 +1083,7 @@
 	<attribute>
 		<description>
 			A string in the form of "key=value|key2=value2".   
-			e.g. "size=compact|order=date"
+			e.g. "size=compact|attributeOrder=date"
 		</description>
 		<name>parameters</name>
 		<required>false</required>

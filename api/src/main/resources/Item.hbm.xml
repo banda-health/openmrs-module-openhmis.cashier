@@ -27,8 +27,6 @@
 		</id>
 		<discriminator column="item_id" insert="false" />
 
-		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
-
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
 		<property name="description" type="java.lang.String" column="description" length="1024" />
 
@@ -36,23 +34,8 @@
 		<many-to-one name="department" class="Department" column="department_id" />
 		<many-to-one name="defaultPrice" class="ItemPrice" column="default_price_id" />
 
-		<!-- bi-directional many-to-one association to User -->
-		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
-		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
-
-		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
-		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
-
-		<many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" />
-		<property name="dateRetired" type="java.util.Date"
-		          column="date_retired" length="19" />
-		<property name="retireReason" type="java.lang.String"
-		          column="retire_reason" length="255" />
-		<property name="retired" type="boolean" column="retired"
-		          length="1" not-null="true" />
-
 		<set name="attributes" lazy="true" inverse="true" batch-size="100"
-		     cascade="all-delete-orphan" order-by="voided asc">
+		     cascade="all-delete-orphan" attributeOrder-by="voided asc">
 			<key column="item_id" />
 			<one-to-many class="ItemAttribute" />
 		</set>
@@ -64,6 +47,17 @@
 			<key column="item_id" not-null="true" />
 			<one-to-many class="ItemCode" />
 		</set>
+
+		<!-- bi-directional many-to-one association to User -->
+		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
+		<many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" />
+		<property name="dateRetired" type="java.util.Date" column="date_retired" length="19" />
+		<property name="retireReason" type="java.lang.String" column="retire_reason" length="255" />
+		<property name="retired" type="boolean" column="retired" length="1" not-null="true" />
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
 	</class>
 
 	<class name="ItemAttribute" table="cashier_item_attribute">

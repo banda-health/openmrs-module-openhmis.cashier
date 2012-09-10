@@ -25,7 +25,7 @@ import org.openmrs.BaseOpenmrsObject;
 public class PaymentAttribute extends BaseOpenmrsObject {
 	private Integer paymentAttributeId;
 	private Payment billPayment;
-	private PaymentModeAttribute typeAttribute;
+	private PaymentModeAttributeType typeAttributeType;
 	private String value;
 
 	public Integer getId() {
@@ -48,10 +48,10 @@ public class PaymentAttribute extends BaseOpenmrsObject {
 	public void setBillPayment(Payment billPayment) {
 		this.billPayment = billPayment;
 	}
-	public PaymentModeAttribute getTypeAttribute() {
-		return typeAttribute;
+	public PaymentModeAttributeType getTypeAttributeType() {
+		return typeAttributeType;
 	}
-	public void setTypeAttribute(PaymentModeAttribute typeAttribute) {
-		this.typeAttribute = typeAttribute;
+	public void setTypeAttributeType(PaymentModeAttributeType typeAttributeType) {
+		this.typeAttributeType = typeAttributeType;
 	}
 }
