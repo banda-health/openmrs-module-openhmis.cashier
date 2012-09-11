@@ -25,10 +25,8 @@ import java.util.Set;
  */
 public class PaymentMode extends BaseOpenmrsMetadata {
 	private Integer paymentModeId;
-	private String name;
-	private String description;
-	private Set<PaymentModeAttribute> attributes;
-	
+	private Set<PaymentModeAttributeType> attributeTypes;
+
 	// Getters & setters
 	@Override
 	public Integer getId() {
@@ -38,22 +36,19 @@ public class PaymentMode extends BaseOpenmrsMetadata {
 	public void setId(Integer id) {
 		paymentModeId = id;
 	}
-	public String getName() {
-		return name;
+
+	public Integer getPaymentModeId() {
+		return paymentModeId;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setPaymentModeId(Integer paymentModeId) {
+		this.paymentModeId = paymentModeId;
 	}
-	public String getDescription() {
-		return description;
+
+	public Set<PaymentModeAttributeType> getAttributeTypes() {
+		return attributeTypes;
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public Set<PaymentModeAttribute> getAttributes() {
-		return attributes;
-	}
-	public void setAttributes(Set<PaymentModeAttribute> attributes) {
-		this.attributes = attributes;
+	public void setAttributeTypes(Set<PaymentModeAttributeType> attributeTypes) {
+		this.attributeTypes = attributeTypes;
 	}
 }

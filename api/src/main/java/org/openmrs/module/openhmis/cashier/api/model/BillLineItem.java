@@ -27,7 +27,10 @@ import java.math.BigDecimal;
  */
 public class BillLineItem extends BaseOpenmrsData {
 	private int billLineItemId;
+	private Bill bill;
 	private Item item;
+	private BigDecimal price;
+	private String priceName;
 	private Integer quantity;
 
 	@Override
@@ -40,13 +43,20 @@ public class BillLineItem extends BaseOpenmrsData {
 		billLineItemId = id;
 	}
 
+	public int getBillLineItemId() {
+		return billLineItemId;
+	}
+
+	public void setBillLineItemId(int billLineItemId) {
+		this.billLineItemId = billLineItemId;
+	}
+
 	/**
 	 * Get the total price for the line item
 	 * @return double the total price for the line item
 	 */
 	public BigDecimal getTotal() {
-		//TODO: Implement Item.getDefaultPrice()?
-		return new BigDecimal(0);
+		return price.multiply(BigDecimal.valueOf(quantity));
 	}
 
 	// Getters & setters
@@ -66,12 +76,12 @@ public class BillLineItem extends BaseOpenmrsData {
 		this.quantity = quantity;
 	}
 
-	public int getBillLineItemId() {
-		return billLineItemId;
+	public Bill getBill() {
+		return bill;
 	}
 
-	public void setBillLineItemId(int billLineItemId) {
-		this.billLineItemId = billLineItemId;
+	public void setBill(Bill bill) {
+		this.bill = bill;
 	}
 
 	public Item getItem() {
@@ -80,5 +90,21 @@ public class BillLineItem extends BaseOpenmrsData {
 
 	public void setItem(Item item) {
 		this.item = item;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public String getPriceName() {
+		return priceName;
+	}
+
+	public void setPriceName(String priceName) {
+		this.priceName = priceName;
 	}
 }

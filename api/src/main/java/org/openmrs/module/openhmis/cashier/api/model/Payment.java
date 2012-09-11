@@ -14,7 +14,7 @@
 
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.BaseOpenmrsData;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -24,9 +24,9 @@ import java.util.Set;
  * @author daniel
  *
  */
-public class Payment extends BaseOpenmrsMetadata {
-
+public class Payment extends BaseOpenmrsData {
 	private Integer paymentId;
+	private Bill bill;
 	private PaymentMode paymentMode;
 	private Set<PaymentAttribute> attributes;
 	private BigDecimal amount;
@@ -39,10 +39,10 @@ public class Payment extends BaseOpenmrsMetadata {
 	public void setId(Integer id) {
 		paymentId = id;
 	}
-	public PaymentMode getMode() {
+	public PaymentMode getPaymentMode() {
 		return paymentMode;
 	}
-	public void setMode(PaymentMode mode) {
+	public void setPaymentMode(PaymentMode mode) {
 		this.paymentMode = mode;
 	}
 	public Set<PaymentAttribute> getAttributes() {
@@ -56,5 +56,13 @@ public class Payment extends BaseOpenmrsMetadata {
 	}
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+	}
+
+	public Bill getBill() {
+		return bill;
+	}
+
+	public void setBill(Bill bill) {
+		this.bill = bill;
 	}
 }
