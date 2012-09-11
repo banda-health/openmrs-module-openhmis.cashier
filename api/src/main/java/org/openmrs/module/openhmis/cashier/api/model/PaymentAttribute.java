@@ -24,8 +24,8 @@ import org.openmrs.BaseOpenmrsObject;
  */
 public class PaymentAttribute extends BaseOpenmrsObject {
 	private Integer paymentAttributeId;
-	private Payment billPayment;
-	private PaymentModeAttributeType typeAttributeType;
+	private Payment payment;
+	private PaymentModeAttributeType paymentModeAttributeType;
 	private String value;
 
 	public Integer getId() {
@@ -35,23 +35,35 @@ public class PaymentAttribute extends BaseOpenmrsObject {
 		paymentAttributeId = id;
 	}
 
-	// Getters & setters
+	public Integer getPaymentAttributeId() {
+		return paymentAttributeId;
+	}
+
+	public void setPaymentAttributeId(Integer paymentAttributeId) {
+		this.paymentAttributeId = paymentAttributeId;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+	public PaymentModeAttributeType getPaymentModeAttributeType() {
+		return paymentModeAttributeType;
+	}
+
+	public void setPaymentModeAttributeType(PaymentModeAttributeType paymentModeAttributeType) {
+		this.paymentModeAttributeType = paymentModeAttributeType;
+	}
+
 	public String getValue() {
 		return value;
 	}
+
 	public void setValue(String value) {
 		this.value = value;
-	}
-	public Payment getBillPayment() {
-		return billPayment;
-	}
-	public void setBillPayment(Payment billPayment) {
-		this.billPayment = billPayment;
-	}
-	public PaymentModeAttributeType getTypeAttributeType() {
-		return typeAttributeType;
-	}
-	public void setTypeAttributeType(PaymentModeAttributeType typeAttributeType) {
-		this.typeAttributeType = typeAttributeType;
 	}
 }
