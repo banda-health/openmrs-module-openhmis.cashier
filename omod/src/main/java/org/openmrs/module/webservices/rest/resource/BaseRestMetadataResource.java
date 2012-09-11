@@ -5,6 +5,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.webservices.rest.web.RequestContext;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
@@ -38,7 +39,19 @@ public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extend
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(
 			Representation rep) {
-		return getDefaultRepresentationDescription();
+		DelegatingResourceDescription description = getDefaultRepresentationDescription();		
+		if (rep instanceof FullRepresentation) {
+			description.addProperty("auditInfo", findMethod("getAuditInfo"));
+		}
+		return description;
+	}
+	
+	@Override
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = getDefaultRepresentationDescription();
+		description.removeProperty("uuid");
+		description.removeProperty("retireReason");
+		return description;
 	}
 
 	@Override

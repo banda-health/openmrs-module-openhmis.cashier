@@ -20,7 +20,7 @@
 	<class name="Item" table="cashier_item">
 		<cache usage="read-write"/>
 
-		<id name="itemId" type="int" column="item_id">
+		<id name="id" type="int" column="item_id">
 			<generator class="native">
 				<param name="sequence">cashier_item_item_id_seq</param>
 			</generator>

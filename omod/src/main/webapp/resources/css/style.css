@@ -37,5 +37,8 @@ li.bbf-field { list-style: none; }
 li.bbf-field label { display: inline-block; width: 150px; }
 li.bbf-field div.bbf-editor { display: inline-block; }
 
+/*IE inline-block hack*/
+li.bbf-field label, li.bbf-field div.bbf-editor { zoom:1;*display:inline; margin: 0; }
+
 input.reason { width: 25em; }
 .selectable { cursor: pointer; }

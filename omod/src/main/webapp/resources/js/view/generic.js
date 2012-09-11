@@ -1,3 +1,53 @@
+openhmis.GenericModel = Backbone.Model.extend({
+	initialize: function(attributes, options) {
+		if (options !== undefined) {
+			this.urlRoot = options.urlRoot;
+		}
+		//_.bindAll(this, 'saveSubResource');
+	},
+	toJSON: function(options) {
+		if (this.schema === undefined) return Backbone.Model.prototype.toJSON.call(this, options);
+		var attributes = {};
+		for (var attr in this.attributes) {
+			if (this.schema[attr] !== undefined
+				&& (this.schema[attr].readOnly === undefined
+					|| this.schema[attr].readOnly === false)
+				&& this.schema[attr].type !== 'List')
+				attributes[attr] = this.attributes[attr];
+		}
+		return _.clone(attributes);
+	},
+	
+	save: function(key, value, options) {
+		if (key == null && this.schema !== undefined) {
+			options = value;
+			for (var attr in this.attributes) {
+				if (this.schema[attr] !== undefined) {
+					if (this.schema[attr].type === 'List'
+						&& this.schema[attr].itemType === 'NestedModel') {
+						this.saveSubResource(this.schema[attr].model, this.attributes[attr]);
+					}
+					
+				}
+			}
+			Backbone.Model.prototype.save.call(this, null, options);
+		}
+		else
+			Backbone.Model.prototype.save.call(this, key, value, options);
+	},
+	
+	saveSubResource: function(modelType, object) {
+		if (_.isArray(object)) {
+			for (var item in object) {
+				var model = new modelType(object[item], {
+					urlRoot: this.url() + '/' + modelType.prototype.meta.resourcePath
+				});
+				model.save();
+			}
+		}
+	}
+});
+
 openhmis.GenericCollection = Backbone.Collection.extend({
 	baseUrl: '/openmrs/ws/rest',
 	
@@ -5,18 +55,20 @@ openhmis.GenericCollection = Backbone.Collection.extend({
 		this.url = this.baseUrl + options.url;
 	},
 	
-	fetch: function() {
-		Backbone.Collection.prototype.fetch.call(this, {
-			error: function(model, data) {
-				var o = $.parseJSON(data.response).error;
-				alert("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
-			}
-		});
+	fetch: function(options) {
+		options = options ? options : {};
+		var error = options.error;
+		options.error = function(model, data) {
+			openhmis.displayError(data);
+			if (error !== undefined)
+				error(model, data);
+		}
+		Backbone.Collection.prototype.fetch.call(this, options)
 	},
 	
 	parse: function(response) {
 		return response.results;
-	},
+	}
 });
 
 openhmis.GenericAddEditView = Backbone.View.extend({
@@ -87,9 +139,11 @@ openhmis.GenericAddEditView = Backbone.View.extend({
 	save: function() {
 		this.modelForm.commit();
 		var view = this;
-		this.model.save([], { success: function(model, resp) {
+		this.model.save(null, { success: function(model, resp) {
 			model.trigger('sync', model, resp);
 			view.cancel();
+		}, error: function(model, resp) {
+			openhmis.displayError(resp);
 		}});
 	},
 	
@@ -214,3 +268,21 @@ openhmis.GenericListItemView = Backbone.View.extend({
 		return this;
 	}
 });
+
+// Create new generic add/edit screen
+openhmis.startAddEditScreen = function(model, restResourceUrl) {
+	var collection = new openhmis.GenericCollection([], {
+		url: restResourceUrl,
+		model: model
+	});
+	var addEditView = new openhmis.GenericAddEditView({ collection: collection });
+	addEditView.setElement($('#add-edit-form'));
+	addEditView.render();
+	var listView = new openhmis.GenericListView({
+			model: collection,
+			addEditView: addEditView
+	});
+	collection.on('reset', listView.render);
+	listView.setElement($('#existing-form'));
+	collection.fetch();
+}
