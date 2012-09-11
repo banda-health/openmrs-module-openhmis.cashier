@@ -123,7 +123,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>HTML Event Attribute</description>
 		</attribute>
-		<!-- Form specific attributes -->
+		<!-- Form specific attributeTypes -->
 		<attribute>
 			<name>modelAttribute</name>
 			<required>false</required>
@@ -332,7 +332,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>HTML Standard Attribute</description>
 		</attribute>
-		<!-- 'input(text)' specific attributes -->
+		<!-- 'input(text)' specific attributeTypes -->
 		<attribute>
 			<name>size</name>
 			<required>false</required>
@@ -527,7 +527,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>HTML Standard Attribute</description>
 		</attribute>
-		<!-- 'input(text)' specific attributes -->
+		<!-- 'input(text)' specific attributeTypes -->
 		<attribute>
 			<name>size</name>
 			<required>false</required>
@@ -564,7 +564,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>Common Optional Attribute</description>
 		</attribute>
-		<!-- 'input(password)' specific attributes -->
+		<!-- 'input(password)' specific attributeTypes -->
 		<attribute>
 			<name>showPassword</name>
 			<required>false</required>
@@ -755,7 +755,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>HTML Standard Attribute</description>
 		</attribute>
-		<!-- 'select' specific attributes -->
+		<!-- 'select' specific attributeTypes -->
 		<attribute>
 			<name>items</name>
 			<required>false</required>
@@ -1020,7 +1020,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>HTML Standard Attribute</description>
 		</attribute>
-		<!-- radio button specific attributes -->
+		<!-- radio button specific attributeTypes -->
 		<attribute>
 			<name>value</name>
 			<required>false</required>
@@ -1191,7 +1191,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>HTML Standard Attribute</description>
 		</attribute>
-		<!-- radiobuttons specific attributes -->
+		<!-- radiobuttons specific attributeTypes -->
 		<attribute>
 			<name>items</name>
 			<required>true</required>
@@ -1380,7 +1380,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>HTML Standard Attribute</description>
 		</attribute>
-		<!-- checkbox specific attributes -->
+		<!-- checkbox specific attributeTypes -->
 		<attribute>
 			<name>value</name>
 			<required>false</required>
@@ -1551,7 +1551,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>HTML Standard Attribute</description>
 		</attribute>
-		<!-- checkboxes specific attributes -->
+		<!-- checkboxes specific attributeTypes -->
 		<attribute>
 			<name>items</name>
 			<required>true</required>
@@ -1740,7 +1740,7 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>HTML Standard Attribute</description>
 		</attribute>
-		<!-- 'textarea' specific attributes -->
+		<!-- 'textarea' specific attributeTypes -->
 		<attribute>
 			<name>rows</name>
 			<required>false</required>

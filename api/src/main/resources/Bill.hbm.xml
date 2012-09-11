@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.openmrs.module.openhmis.cashier.api.model">
+	<class name="Bill" table="cashier_bill">
+		<cache usage="read-write"/>
+
+		<id name="billId" type="int" column="bill_id">
+			<generator class="native">
+				<param name="sequence">cashier_bill_bill_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="bill_id" insert="false" />
+
+		<property name="receiptNumber" type="java.lang.String" column="receipt_number" not-null="true" length="255" />
+		<many-to-one name="cashier" class="org.openmrs.Provider" not-null="true" column="provider_id" />
+		<many-to-one name="patient" class="org.openmrs.Patient" not-null="true" column="patient_id" />
+
+		<set name="lineItems" lazy="true" inverse="true" cascade="all-delete-orphan">
+			<key column="bill_id" />
+			<one-to-many class="BillLineItem" />
+		</set>
+		<set name="payments" lazy="true" inverse="true" cascade="all-delete-orphan">
+			<key column="bill_id" />
+			<one-to-many class="Payment" />
+		</set>
+
+		<!-- bi-directional many-to-one association to User -->
+		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
+
+		<property name="voided" type="java.lang.Boolean" column="voided" length="1" not-null="true" />
+		<many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by" />
+
+		<property name="dateVoided" type="java.util.Date" column="date_voided" length="19" />
+		<property name="voidReason" type="java.lang.String" column="void_reason" length="255" />
+
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+	</class>
+
+	<class name="BillLineItem" table="cashier_bill_line_item">
+		<cache usage="read-write"/>
+
+		<id name="billLineItemId" type="int" column="bill_line_item_id">
+			<generator class="native">
+				<param name="sequence">cashier_bill_line_item_bill_line_item_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="bill_line_item_id" insert="false" />
+
+		<many-to-one name="bill" class="Bill" column="bill_id" not-null="true" />
+		<many-to-one name="item" class="Item" column="item_id" not-null="true" />
+		<property name="price" type="java.math.BigDecimal" column="price" not-null="true" />
+		<property name="priceName" type="java.lang.String" column="price_name" length="255" />
+		<property name="quantity" type="int" column="quantity" not-null="true" />
+
+		<!-- bi-directional many-to-one association to User -->
+		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
+
+		<property name="voided" type="java.lang.Boolean" column="voided" length="1" not-null="true" />
+		<many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by" />
+
+		<property name="dateVoided" type="java.util.Date" column="date_voided" length="19" />
+		<property name="voidReason" type="java.lang.String" column="void_reason" length="255" />
+
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+	</class>
+
+	<class name="Payment" table="cashier_bill_payment">
+		<cache usage="read-write" />
+
+		<id name="paymentId" type="int" column="bill_payment_id">
+			<generator class="native">
+				<param name="sequence">cashier_bill_payment_bill_payment_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="bill_payment_id" insert="false" />
+
+		<many-to-one name="bill" class="Bill" column="bill_id" not-null="true" />
+		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
+
+		<property name="amount" type="java.math.BigDecimal" column="amount" not-null="true" />
+
+		<!-- BaseOpenmrsData Fields-->
+		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
+		<property name="voided" type="java.lang.Boolean" column="voided" length="1" not-null="true" />
+		<many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by" />
+		<property name="dateVoided" type="java.util.Date" column="date_voided" length="19" />
+		<property name="voidReason" type="java.lang.String" column="void_reason" length="255" />
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+	</class>
+
+	<class name="PaymentAttribute" table="cashier_bill_payment_attribute">
+		<cache usage="read-write" />
+
+		<id name="paymentAttributeId" type="int" column="bill_payment_attribute_id">
+			<generator class="native">
+				<param name="sequence">cashier_bill_payment_attribute_bill_payment_attribute_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="bill_payment_attribute_id" insert="false" />
+
+		<many-to-one name="payment" class="Payment" column="bill_payment_id" not-null="true" />
+		<many-to-one name="paymentModeAttributeType" class="PaymentModeAttributeType" column="payment_mode_attribute_type_id" not-null="true" />
+		<property name="value" type="text" access="field" column="value_reference" length="65535" />
+
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+	</class>
+
+	<class name="PaymentMode" table="cashier_payment_mode">
+		<cache usage="read-write"/>
+
+		<id name="paymentModeId" type="int" column="payment_mode_id">
+			<generator class="native">
+				<param name="sequence">cashier_payment_mode_payment_mode_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="payment_mode_id" insert="false" />
+
+		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
+		<property name="description" type="java.lang.String" column="description" length="1024" />
+
+		<set name="attributeTypes" lazy="true" inverse="true" cascade="all-delete-orphan">
+			<key column="payment_mode_id" />
+			<one-to-many class="PaymentModeAttributeType" />
+		</set>
+
+		<!-- BaseOpenmrsMetadata fields -->
+		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
+		<many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" />
+		<property name="dateRetired" type="java.util.Date" column="date_retired" length="19" />
+		<property name="retireReason" type="java.lang.String" column="retire_reason" length="255" />
+		<property name="retired" type="boolean" column="retired" length="1" not-null="true" />
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+	</class>
+
+	<class name="PaymentModeAttributeType" table="cashier_payment_mode_attribute">
+		<cache usage="read-write"/>
+
+		<id name="paymentModeAttributeTypeId" type="int" column="payment_mode_attribute_type_id">
+			<generator class="native">
+				<param name="sequence">cashier_payment_mode_attribute_type_payment_mode_attribute_type_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="payment_mode_attribute_type_id" insert="false" />
+
+		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
+
+		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
+		<property name="description" type="java.lang.String" column="description" length="1024" />
+		<property name="format" type="java.lang.String" column="format" length="255" />
+		<property name="regExp" type="java.lang.String" column="reg_exp" length="255" />
+		<property name="required" type="boolean" column="required" length="1" not-null="true" />
+		<property name="attributeOrder" type="int" column="attribute_order" />
+
+		<!-- BaseOpenmrsMetadata fields -->
+		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
+		<many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" />
+		<property name="dateRetired" type="java.util.Date" column="date_retired" length="19" />
+		<property name="retireReason" type="java.lang.String" column="retire_reason" length="255" />
+		<property name="retired" type="boolean" column="retired" length="1" not-null="true" />
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+	</class>
+</hibernate-mapping>

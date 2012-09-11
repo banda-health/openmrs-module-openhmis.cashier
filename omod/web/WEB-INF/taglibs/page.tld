@@ -7,7 +7,7 @@
   <shortname>page</shortname>
   <uri>http://jakarta.apache.org/taglibs/page-1.0</uri>
   <info>The PAGE custom tag library contains tags which can be used to
-      access all the information about the PageContext for a JSP page.Tags are provided to access information in "page" scoped attributes.</info>
+      access all the information about the PageContext for a JSP page.Tags are provided to access information in "page" scoped attributeTypes.</info>
   <tag>
     <name>attribute</name>
     <tagclass>org.apache.taglibs.page.AttributeTag</tagclass>
@@ -19,7 +19,7 @@
     </attribute>
   </tag>
   <tag>
-    <name>attributes</name>
+    <name>attributeTypes</name>
     <tagclass>org.apache.taglibs.page.AttributesTag</tagclass>
     <teiclass>org.apache.taglibs.page.AttributesTEI</teiclass>
     <bodycontent>JSP</bodycontent>
