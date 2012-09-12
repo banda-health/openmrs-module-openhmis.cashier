@@ -209,4 +209,32 @@ public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 
 		Assert.assertNull(bill);
 	}
+
+	@Test
+	public void save_adjustedBill() throws Exception {
+		Bill bill = createEntity(true);
+		bill.setBillAdjusted(service.getById(0));
+		service.save(bill);
+
+		Context.flushSession();
+
+		bill = service.getById(bill.getId());
+		Assert.assertNotNull(bill);
+		Assert.assertNotNull(bill.getBillAdjusted());
+
+		Bill adjustedBill = service.getById(bill.getBillAdjusted().getId());
+		Assert.assertNotNull(adjustedBill);
+		Assert.assertEquals(BillStatus.ADJUSTED, adjustedBill.getStatus());
+		Assert.assertTrue(adjustedBill.getAdjustedBy().size() > 0);
+
+		boolean foundAdjustor = false;
+		for (Bill adjustor : adjustedBill.getAdjustedBy()) {
+			if (adjustor.getId() == bill.getId()) {
+				foundAdjustor = true;
+				break;
+			}
+		}
+
+		Assert.assertTrue("Could not find the adjusting bill.", foundAdjustor);
+	}
 }

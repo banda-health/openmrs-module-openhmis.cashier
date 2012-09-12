@@ -33,10 +33,11 @@ public class Bill extends BaseOpenmrsData {
 	private String receiptNumber;
 	private Provider cashier;
 	private Patient patient;
+	private Bill billAdjusted;
 	private BillStatus status;
 	private List<BillLineItem> lineItems;
-	private Set<IScheme> schemes;
 	private Set<Payment> payments;
+	private Set<Bill> adjustedBy;
 	
 	@Override
 	public Integer getId() {
@@ -70,6 +71,18 @@ public class Bill extends BaseOpenmrsData {
 
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+
+	public Bill getBillAdjusted() {
+		return billAdjusted;
+	}
+
+	public void setBillAdjusted(Bill billAdjusted) {
+		this.billAdjusted = billAdjusted;
+
+		if (billAdjusted != null) {
+			billAdjusted.setStatus(BillStatus.ADJUSTED);
+		}
 	}
 
 	public BillStatus getStatus() {
@@ -180,12 +193,31 @@ public class Bill extends BaseOpenmrsData {
 		}
 	}
 
-	public Set<IScheme> getSchemes() {
-		return schemes;
+	public Set<Bill> getAdjustedBy() {
+		return adjustedBy;
 	}
 
-	public void setSchemes(Set<IScheme> schemes) {
-		this.schemes = schemes;
+	public void setAdjustedBy(Set<Bill> adjustedBy) {
+		this.adjustedBy = adjustedBy;
+	}
+
+	public void addAdjustedBy(Bill adjustedBill) {
+		if (adjustedBill == null) {
+			throw new NullPointerException("The adjusted bill to add must be defined.");
+		}
+
+		if (this.adjustedBy == null) {
+			this.adjustedBy = new HashSet<Bill>();
+		}
+
+		adjustedBill.setBillAdjusted(this);
+		this.adjustedBy.add(adjustedBill);
+	}
+
+	public void removeAdjustedBy(Bill adjustedBill) {
+		if (adjustedBill != null && this.adjustedBy != null) {
+			this.adjustedBy.remove(adjustedBill);
+		}
 	}
 }
 

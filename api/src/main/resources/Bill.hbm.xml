@@ -16,6 +16,7 @@
 		<property name="receiptNumber" type="java.lang.String" column="receipt_number" not-null="true" length="255" />
 		<many-to-one name="cashier" class="org.openmrs.Provider" not-null="true" column="provider_id" />
 		<many-to-one name="patient" class="org.openmrs.Patient" not-null="true" column="patient_id" />
+		<many-to-one name="billAdjusted" class="Bill" column="adjusted_bill_id" />
 
 		<property name="status" column="status" not-null="true">
 			<type name="org.hibernate.type.EnumType">
@@ -30,6 +31,10 @@
 		<set name="payments" lazy="true" inverse="true" cascade="all-delete-orphan">
 			<key column="bill_id" />
 			<one-to-many class="Payment" />
+		</set>
+		<set name="adjustedBy" lazy="true" inverse="true">
+			<key column="adjusted_bill_id" />
+			<one-to-many class="Bill" />
 		</set>
 
 		<!-- bi-directional many-to-one association to User -->

@@ -255,6 +255,7 @@
 			<column name="provider_id" type="int"><constraints nullable="false"/></column>
 			<column name="patient_id" type="int"><constraints nullable="false" /></column>
 			<column name="status" type="varchar(25)"><constraints nullable="false" /></column>
+			<column name="adjusted_bill_id" type="int" />
 
 			<column name="creator" type="int"><constraints nullable="false"/></column>
 			<column name="date_created" type="datetime"><constraints nullable="false"/></column>
@@ -388,6 +389,9 @@
 		<addForeignKeyConstraint constraintName="cashier_bill_voided_by_fk"
 		                         baseTableName="cashier_bill" baseColumnNames="voided_by"
 		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_bill_adjusted_bill_fk"
+		                         baseTableName="cashier_bill" baseColumnNames="adjusted_bill_id"
+		                         referencedTableName="cashier_bill" referencedColumnNames="bill_id"/>
 
 		<addForeignKeyConstraint constraintName="cashier_bill_line_item_bill_id_fk"
 		                         baseTableName="cashier_bill_line_item" baseColumnNames="bill_id"
