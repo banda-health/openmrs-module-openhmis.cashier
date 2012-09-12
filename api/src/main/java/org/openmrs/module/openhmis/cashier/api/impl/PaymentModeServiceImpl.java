@@ -16,10 +16,13 @@ package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.util.BasicMetadataAuthorizationPrivileges;
 
-public class PaymentModeServiceImpl extends BaseMetadataServiceImpl<PaymentMode> {
+public class PaymentModeServiceImpl
+		extends BaseMetadataServiceImpl<PaymentMode>
+		implements IPaymentModeService {
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();

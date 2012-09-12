@@ -11,12 +11,12 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsMetadata;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Class to represent a mode of payment (e.g., cash, check, credit card)
@@ -25,22 +25,61 @@ import java.util.Set;
  */
 public class PaymentMode extends BaseOpenmrsMetadata {
 	private Integer paymentModeId;
-	private Set<PaymentModeAttributeType> attributeTypes;
+	private List<PaymentModeAttributeType> attributeTypes;
 
 	// Getters & setters
 	@Override
 	public Integer getId() {
 		return paymentModeId;
 	}
+
 	@Override
 	public void setId(Integer id) {
 		paymentModeId = id;
 	}
 
-	public Set<PaymentModeAttributeType> getAttributeTypes() {
+	public PaymentModeAttributeType addAttributeType(String name, String format, String regExp, boolean required) {
+		PaymentModeAttributeType attributeType = new PaymentModeAttributeType();
+
+		attributeType.setPaymentMode(this);
+
+		attributeType.setName(name);
+		attributeType.setFormat(format);
+		attributeType.setRegExp(regExp);
+		attributeType.setRequired(required);
+
+		addAttributeType(attributeType);
+
+		return attributeType;
+	}
+
+	public void addAttributeType(PaymentModeAttributeType attributeType) {
+		if (attributeType == null) {
+			throw new NullPointerException("The payment mode attribute type to add must be defined.");
+		}
+
+		if (attributeType.getPaymentMode() != this) {
+			attributeType.setPaymentMode(this);
+		}
+
+		if (this.attributeTypes == null) {
+			this.attributeTypes = new Vector<PaymentModeAttributeType>();
+		}
+
+		this.attributeTypes.add(attributeType);
+	}
+
+	public void removeAttributeType(PaymentModeAttributeType attributeType) {
+		if (attributeType != null && this.attributeTypes != null) {
+			this.attributeTypes.remove(attributeType);
+		}
+	}
+
+	public List<PaymentModeAttributeType> getAttributeTypes() {
 		return attributeTypes;
 	}
-	public void setAttributeTypes(Set<PaymentModeAttributeType> attributeTypes) {
+
+	public void setAttributeTypes(List<PaymentModeAttributeType> attributeTypes) {
 		this.attributeTypes = attributeTypes;
 	}
 }

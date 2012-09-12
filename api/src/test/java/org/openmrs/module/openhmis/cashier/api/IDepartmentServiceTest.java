@@ -14,22 +14,16 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 
 public class IDepartmentServiceTest extends IMetadataServiceTest<IDepartmentService, Department> {
-	public static final String DEPARTMENT_DATASET = "org/openmrs/module/openhmis/cashier/api/include/DepartmentTest.xml";
+	public static final String DEPARTMENT_DATASET = BASE_DATASET_DIR + "DepartmentTest.xml";
 
 	@Override
 	public void before() throws Exception{
 		super.before();
 
 		executeDataSet(DEPARTMENT_DATASET);
-	}
-
-	@Override
-	protected IDepartmentService createService() {
-		return Context.getService(IDepartmentService.class);
 	}
 
 	@Override

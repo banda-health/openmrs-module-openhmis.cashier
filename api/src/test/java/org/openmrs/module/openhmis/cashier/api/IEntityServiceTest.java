@@ -22,12 +22,14 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends BaseOpenmrsObject> extends BaseModuleContextSensitiveTest {
+	public static final String BASE_DATASET_DIR = "org/openmrs/module/openhmis/cashier/api/include/";
+
 	protected S service;
 
-	protected abstract S createService();
 	protected abstract E createEntity(boolean valid);
 	protected abstract int getTestEntityCount();
 	protected abstract void updateEntityFields(E entity);
@@ -38,6 +40,10 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 
 		Assert.assertEquals(expected.getId(), actual.getId());
 		Assert.assertEquals(expected.getUuid(), actual.getUuid());
+	}
+
+	protected S createService() {
+		return Context.getService(getServiceClass());
 	}
 
 	@Before
@@ -229,5 +235,12 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 	@Test(expected = IllegalArgumentException.class)
 	public void getByUuid_shouldThrowIllegalArgumentExceptionIfUuidIsEmpty() throws Exception {
 		service.getByUuid("");
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Class<S> getServiceClass() {
+		ParameterizedType parameterizedType = (ParameterizedType)getClass().getGenericSuperclass();
+
+		return (Class) parameterizedType.getActualTypeArguments()[0];
 	}
 }

@@ -11,7 +11,6 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsData;
@@ -49,15 +48,6 @@ public class BillLineItem extends BaseOpenmrsData {
 	 */
 	public BigDecimal getTotal() {
 		return price.multiply(BigDecimal.valueOf(quantity));
-	}
-
-	// Getters & setters
-	public Item getBillableItem() {
-		return item;
-	}
-
-	public void setBillableItem(Item billableItem) {
-		this.item = billableItem;
 	}
 
 	public Integer getQuantity() {

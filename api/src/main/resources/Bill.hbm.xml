@@ -17,10 +17,16 @@
 		<many-to-one name="cashier" class="org.openmrs.Provider" not-null="true" column="provider_id" />
 		<many-to-one name="patient" class="org.openmrs.Patient" not-null="true" column="patient_id" />
 
-		<set name="lineItems" lazy="true" inverse="true" cascade="all-delete-orphan">
+		<property name="status" column="status" not-null="true">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">org.openmrs.module.openhmis.cashier.api.model.BillStatus</param>
+			</type>
+		</property>
+
+		<bag name="lineItems" lazy="true" inverse="true" cascade="all-delete-orphan" order-by="bill_line_item_id">
 			<key column="bill_id" />
 			<one-to-many class="BillLineItem" />
-		</set>
+		</bag>
 		<set name="payments" lazy="true" inverse="true" cascade="all-delete-orphan">
 			<key column="bill_id" />
 			<one-to-many class="Payment" />
@@ -89,6 +95,11 @@
 
 		<property name="amount" type="java.math.BigDecimal" column="amount" not-null="true" />
 
+		<set name="attributes" lazy="true" inverse="true" cascade="all-delete-orphan">
+			<key column="bill_payment_id" />
+			<one-to-many class="PaymentAttribute" />
+		</set>
+
 		<!-- BaseOpenmrsData Fields-->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
 		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
@@ -131,10 +142,11 @@
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
 		<property name="description" type="java.lang.String" column="description" length="1024" />
 
-		<set name="attributeTypes" lazy="true" inverse="true" cascade="all-delete-orphan">
+		<list name="attributeTypes" lazy="true" inverse="true" cascade="all-delete-orphan">
 			<key column="payment_mode_id" />
+			<list-index column="attribute_order" />
 			<one-to-many class="PaymentModeAttributeType" />
-		</set>
+		</list>
 
 		<!-- BaseOpenmrsMetadata fields -->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
@@ -148,7 +160,7 @@
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
 	</class>
 
-	<class name="PaymentModeAttributeType" table="cashier_payment_mode_attribute">
+	<class name="PaymentModeAttributeType" table="cashier_payment_mode_attribute_type">
 		<cache usage="read-write"/>
 
 		<id name="id" type="int" column="payment_mode_attribute_type_id">
@@ -160,12 +172,12 @@
 
 		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
 
+		<property name="attributeOrder" type="int" column="attribute_order" generated="always" />
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
 		<property name="description" type="java.lang.String" column="description" length="1024" />
 		<property name="format" type="java.lang.String" column="format" length="255" />
 		<property name="regExp" type="java.lang.String" column="reg_exp" length="255" />
 		<property name="required" type="boolean" column="required" length="1" not-null="true" />
-		<property name="attributeOrder" type="int" column="attribute_order" />
 
 		<!-- BaseOpenmrsMetadata fields -->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />

@@ -26,12 +26,27 @@
 			</list>
 		</property>
 	</bean>
-
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list merge="true">
 				<value>org.openmrs.module.openhmis.cashier.api.IDepartmentService</value>
 				<ref bean="cashierDepartmentService" />
+			</list>
+		</property>
+	</bean>
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list merge="true">
+				<value>org.openmrs.module.openhmis.cashier.api.IBillService</value>
+				<ref bean="cashierBillService" />
+			</list>
+		</property>
+	</bean>
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list merge="true">
+				<value>org.openmrs.module.openhmis.cashier.api.IPaymentModeService</value>
+				<ref bean="cashierPaymentModeService" />
 			</list>
 		</property>
 	</bean>
@@ -56,6 +71,26 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.DepartmentServiceImpl">
+				<property name="dao" ref="genericDAO" />
+			</bean>
+		</property>
+		<property name="preInterceptors" ref="serviceInterceptors" />
+		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
+	</bean>
+	<bean id="cashierBillService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target">
+			<bean class="org.openmrs.module.openhmis.cashier.api.impl.BillServiceImpl">
+				<property name="dao" ref="genericDAO" />
+			</bean>
+		</property>
+		<property name="preInterceptors" ref="serviceInterceptors" />
+		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
+	</bean>
+	<bean id="cashierPaymentModeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target">
+			<bean class="org.openmrs.module.openhmis.cashier.api.impl.PaymentModeServiceImpl">
 				<property name="dao" ref="genericDAO" />
 			</bean>
 		</property>

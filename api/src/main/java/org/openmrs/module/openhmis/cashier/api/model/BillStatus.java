@@ -13,18 +13,12 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.BaseOpenmrsMetadata;
+public enum BillStatus {
+	PENDING(0), PAID(1), CANCELLED(2), ADJUSTED(3);
 
-public class Department extends BaseOpenmrsMetadata {
-	private Integer departmentId;
+	private int value;
 
-	@Override
-	public Integer getId() {
-		return departmentId;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		departmentId = id;
+	private BillStatus(int value) {
+		this.value = value;
 	}
 }
