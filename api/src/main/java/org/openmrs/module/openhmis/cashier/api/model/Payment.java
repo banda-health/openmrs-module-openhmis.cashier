@@ -37,14 +37,6 @@ public class Payment extends BaseOpenmrsData {
 		paymentId = id;
 	}
 
-	public Integer getPaymentId() {
-		return paymentId;
-	}
-
-	public void setPaymentId(Integer paymentId) {
-		this.paymentId = paymentId;
-	}
-
 	public PaymentMode getPaymentMode() {
 		return paymentMode;
 	}
