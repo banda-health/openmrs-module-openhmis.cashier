@@ -2,11 +2,21 @@ openhmis.ItemCode = openhmis.GenericModel.extend({
 	meta: {
 		name: "Item Code",
 		namePlural: "Item Codes",
-		openmrsType: 'metadata',
-		resourcePath: 'code'
+		openmrsType: 'metadata'
 	},
 	schema: {
 		code: 'Text'
+	}
+});
+
+openhmis.ItemPrice = openhmis.GenericModel.extend({
+	meta: {
+		name: "Item Price",
+		namePlural: "Item Prices",
+		openmrsType: 'metadata'
+	},
+	schema: {
+		price: 'Number'
 	}
 });
 
@@ -25,7 +35,8 @@ openhmis.Item = openhmis.GenericModel.extend({
 				url: '/department'
 			})
 		},
-		codes: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemCode }
+		codes: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemCode },
+		prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice }
     },
 	
 	toJSON: function() {

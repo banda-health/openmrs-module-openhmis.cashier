@@ -1,7 +1,6 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.openmrs.OpenmrsObject;
@@ -10,6 +9,7 @@ import org.openmrs.module.openhmis.cashier.api.IItemService;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.model.ItemCode;
+import org.openmrs.module.openhmis.cashier.api.model.ItemPrice;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
@@ -40,11 +40,6 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		return description;
 	}	
 
-	@Override
-	public Item newDelegate() {
-		return new Item();
-	}
-	
 	@SuppressWarnings("unchecked")
 	@PropertySetter(value="codes")
 	public void setItemCodes(Item instance, Set<ItemCode> codes) {
@@ -53,12 +48,21 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 			code.setItem(instance);
 		}
 	}
-	
-//	@PropertyGetter(value="department")
-//	public String getItemDepartment(Item delegate) {
-//		return delegate.getDepartment().getUuid();
-//	}
 
+	@SuppressWarnings("unchecked")
+	@PropertySetter(value="prices")
+	public void setItemPrices(Item instance, Set<ItemPrice> prices) {
+		BaseRestDataResource.updateCollection((Collection<OpenmrsObject>)(Object) instance.getCodes(), (Collection<OpenmrsObject>)(Object) prices);
+		for (ItemPrice price : instance.getPrices()) {
+			price.setItem(instance);
+		}
+	}
+	
+	@Override
+	public Item newDelegate() {
+		return new Item();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<IMetadataService<Item>> getServiceClass() {

@@ -1,27 +1,18 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.openhmis.cashier.api.model.ItemCode;
-import org.openmrs.module.webservices.rest.web.annotation.SubResource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
-@SubResource(parent = ItemResource.class, path = "code")
 @Handler(supports = ItemCode.class, order = 0)
 public class ItemCodeResource extends BaseRestMetadataResource<ItemCode> implements IMetadataServiceResource<ItemCode> {
 
 	@Override
 	public ItemCode newDelegate() {
 		return new ItemCode();
-	}
-
-	@Override
-	public ItemCode save(ItemCode delegate) {
-		IMetadataService<ItemCode> service = Context.getService(getServiceClass());
-		return service.save(delegate);
 	}
 
 	@Override
