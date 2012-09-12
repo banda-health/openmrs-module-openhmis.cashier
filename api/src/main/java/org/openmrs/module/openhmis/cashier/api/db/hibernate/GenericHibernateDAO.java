@@ -17,6 +17,7 @@ package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
 
 import java.io.Serializable;
@@ -30,17 +31,21 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 	}
 
 	@Override
-	public <E> Criteria createCriteria(Class<E> cls) {
+	public <E extends BaseOpenmrsObject> Criteria createCriteria(Class<E> cls) {
 		Session session = sessionFactory.getCurrentSession();
 		return session.createCriteria(cls);
 	}
 
 	@Override
-	public <E> E save(E entity) throws APIException {
+	public <E extends BaseOpenmrsObject> E save(E entity) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 
 		try {
-			session.saveOrUpdate(entity);
+			if (entity.getId() != null) {
+				session.merge(entity);
+			} else {
+				session.saveOrUpdate(entity);
+			}
 		} catch (Exception ex) {
 			throw new APIException("An exception occurred while attempting to add a " + entity.getClass().getSimpleName() + " entity.", ex);
 		}
@@ -48,7 +53,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 	}
 
 	@Override
-	public <E> void delete(E entity) throws APIException {
+	public <E extends BaseOpenmrsObject> void delete(E entity) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 		try {
 			session.delete(entity);
@@ -59,7 +64,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> E selectSingle(Class<E> cls, Serializable id) throws APIException {
+	public <E extends BaseOpenmrsObject> E selectSingle(Class<E> cls, Serializable id) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 
 		try {
@@ -72,7 +77,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> E selectSingle(Class<E> cls, Criteria criteria) throws APIException {
+	public <E extends BaseOpenmrsObject> E selectSingle(Class<E> cls, Criteria criteria) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 		E result = null;
 		try {
@@ -90,7 +95,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> List<E> select(Class<E> cls) throws APIException {
+	public <E extends BaseOpenmrsObject> List<E> select(Class<E> cls) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 
 		try {
@@ -104,7 +109,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> List<E> select(Class<E> cls, Criteria criteria) throws APIException {
+	public <E extends BaseOpenmrsObject> List<E> select(Class<E> cls, Criteria criteria) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 		List<E> results = null;
 

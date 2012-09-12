@@ -15,6 +15,7 @@
 package org.openmrs.module.openhmis.cashier.api.db.hibernate;
 
 import org.hibernate.Criteria;
+import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
 
 import java.io.Serializable;
@@ -30,7 +31,7 @@ public interface IGenericHibernateDAO {
 	 * @return The newly created {@link Criteria}
 	 * @should return a new criteria for the entity class
 	 */
-	<E> Criteria createCriteria(Class<E> cls);
+	<E extends BaseOpenmrsObject> Criteria createCriteria(Class<E> cls);
 
 	/**
 	 * Saves an entity to the database, performing either an update or insert depending on the entity state.
@@ -42,7 +43,7 @@ public interface IGenericHibernateDAO {
 	 * @should update an existing item in the database
 	 * @should return a new item with the generated id
 	 */
-	<E> E save(E entity) throws APIException;
+	<E extends BaseOpenmrsObject> E save(E entity) throws APIException;
 
 	/**
 	 * Deletes an entity from the database.
@@ -52,7 +53,7 @@ public interface IGenericHibernateDAO {
 	 * @should delete the item from the database
 	 * @should not throw an exception if the item is not in the database
 	 */
-    <E> void delete(E entity) throws APIException;
+    <E extends BaseOpenmrsObject> void delete(E entity) throws APIException;
 
 	/**
 	 * Selects a single entity from the database with the specified id.
@@ -64,7 +65,7 @@ public interface IGenericHibernateDAO {
 	 * @should return the entity with the specified id
 	 * @should return null if an entity with the id can not be found
 	 */
-    <E> E selectSingle(Class<E> cls, Serializable id) throws APIException;
+    <E extends BaseOpenmrsObject> E selectSingle(Class<E> cls, Serializable id) throws APIException;
 
 	/**
 	 * Selects a single entity from the database using the specified {@link Criteria}.  If more than one entity is
@@ -78,7 +79,7 @@ public interface IGenericHibernateDAO {
 	 * @should return null if no entity can be found
 	 * @should return the first entity if multiple entities are found
 	 */
-    <E> E selectSingle(Class<E> cls, Criteria criteria) throws APIException;
+    <E extends BaseOpenmrsObject> E selectSingle(Class<E> cls, Criteria criteria) throws APIException;
 
 	/**
 	 * Selects all entities from the database.
@@ -88,7 +89,7 @@ public interface IGenericHibernateDAO {
 	 * @should return a list of all the entities
 	 * @should return an empty list if there are no entities in the database
 	 */
-	<E> List<E> select(Class<E> cls) throws APIException;
+	<E extends BaseOpenmrsObject> List<E> select(Class<E> cls) throws APIException;
 
 	/**
 	 * Selects the entities from the database that meet the specified {@link Criteria}.
@@ -100,5 +101,5 @@ public interface IGenericHibernateDAO {
 	 * @should return a list of all entities that meet the criteria
 	 * @should return an empty list when no entities are found
 	 */
-    <E> List<E> select(Class<E> cls, Criteria criteria) throws APIException;
+    <E extends BaseOpenmrsObject> List<E> select(Class<E> cls, Criteria criteria) throws APIException;
 }
