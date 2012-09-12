@@ -6,7 +6,7 @@
 	<class name="Bill" table="cashier_bill">
 		<cache usage="read-write"/>
 
-		<id name="billId" type="int" column="bill_id">
+		<id name="id" type="int" column="bill_id">
 			<generator class="native">
 				<param name="sequence">cashier_bill_bill_id_seq</param>
 			</generator>
@@ -45,7 +45,7 @@
 	<class name="BillLineItem" table="cashier_bill_line_item">
 		<cache usage="read-write"/>
 
-		<id name="billLineItemId" type="int" column="bill_line_item_id">
+		<id name="id" type="int" column="bill_line_item_id">
 			<generator class="native">
 				<param name="sequence">cashier_bill_line_item_bill_line_item_id_seq</param>
 			</generator>
@@ -77,7 +77,7 @@
 	<class name="Payment" table="cashier_bill_payment">
 		<cache usage="read-write" />
 
-		<id name="paymentId" type="int" column="bill_payment_id">
+		<id name="id" type="int" column="bill_payment_id">
 			<generator class="native">
 				<param name="sequence">cashier_bill_payment_bill_payment_id_seq</param>
 			</generator>
@@ -104,7 +104,7 @@
 	<class name="PaymentAttribute" table="cashier_bill_payment_attribute">
 		<cache usage="read-write" />
 
-		<id name="paymentAttributeId" type="int" column="bill_payment_attribute_id">
+		<id name="id" type="int" column="bill_payment_attribute_id">
 			<generator class="native">
 				<param name="sequence">cashier_bill_payment_attribute_bill_payment_attribute_id_seq</param>
 			</generator>
@@ -121,7 +121,7 @@
 	<class name="PaymentMode" table="cashier_payment_mode">
 		<cache usage="read-write"/>
 
-		<id name="paymentModeId" type="int" column="payment_mode_id">
+		<id name="id" type="int" column="payment_mode_id">
 			<generator class="native">
 				<param name="sequence">cashier_payment_mode_payment_mode_id_seq</param>
 			</generator>
@@ -151,7 +151,7 @@
 	<class name="PaymentModeAttributeType" table="cashier_payment_mode_attribute">
 		<cache usage="read-write"/>
 
-		<id name="paymentModeAttributeTypeId" type="int" column="payment_mode_attribute_type_id">
+		<id name="id" type="int" column="payment_mode_attribute_type_id">
 			<generator class="native">
 				<param name="sequence">cashier_payment_mode_attribute_type_payment_mode_attribute_type_id_seq</param>
 			</generator>

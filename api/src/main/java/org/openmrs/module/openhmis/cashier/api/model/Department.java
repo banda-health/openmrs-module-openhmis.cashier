@@ -31,14 +31,6 @@ public class Department extends BaseOpenmrsMetadata {
 		departmentId = id;
 	}
 
-	public Integer getDepartmentId() {
-		return departmentId;
-	}
-
-	public void setDepartmentId(Integer departmentId) {
-		this.departmentId = departmentId;
-	}
-
 	public String getName() {
 		return name;
 	}

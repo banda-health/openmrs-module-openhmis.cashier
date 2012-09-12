@@ -35,12 +35,4 @@ public class ItemAttribute extends BaseAttribute<ItemAttributeType, Item> {
 	public void setItem(Item item) {
 		setOwner(item);
 	}
-
-	public Integer getItemAttributeId() {
-		return itemAttributeId;
-	}
-
-	public void setItemAttributeId(Integer itemAttributeId) {
-		this.itemAttributeId = itemAttributeId;
-	}
 }

@@ -45,14 +45,6 @@ public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Cus
 		this.itemId = id;
 	}
 
-	public Integer getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(Integer itemId) {
-		this.itemId = itemId;
-	}
-
 	public Set<ItemCode> getCodes() {
 		return codes;
 	}

@@ -43,14 +43,6 @@ public class BillLineItem extends BaseOpenmrsData {
 		billLineItemId = id;
 	}
 
-	public int getBillLineItemId() {
-		return billLineItemId;
-	}
-
-	public void setBillLineItemId(int billLineItemId) {
-		this.billLineItemId = billLineItemId;
-	}
-
 	/**
 	 * Get the total price for the line item
 	 * @return double the total price for the line item

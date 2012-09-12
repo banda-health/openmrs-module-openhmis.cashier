@@ -44,14 +44,6 @@ public class ItemPrice extends BaseOpenmrsMetadata {
 		itemPriceId = id;
 	}
 
-	public Integer getItemPriceId() {
-		return itemPriceId;
-	}
-
-	public void setItemPriceId(Integer itemPriceId) {
-		this.itemPriceId = itemPriceId;
-	}
-
 	public Item getItem() {
 		return item;
 	}

@@ -42,14 +42,6 @@ public class ItemCode extends BaseOpenmrsMetadata {
 		itemCodeId = id;
 	}
 
-	public Integer getItemCodeId() {
-		return itemCodeId;
-	}
-
-	public void setItemCodeId(Integer itemCodeId) {
-		this.itemCodeId = itemCodeId;
-	}
-
 	public Item getItem() {
 		return item;
 	}

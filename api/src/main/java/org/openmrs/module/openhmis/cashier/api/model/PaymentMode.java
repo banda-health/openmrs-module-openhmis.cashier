@@ -37,14 +37,6 @@ public class PaymentMode extends BaseOpenmrsMetadata {
 		paymentModeId = id;
 	}
 
-	public Integer getPaymentModeId() {
-		return paymentModeId;
-	}
-
-	public void setPaymentModeId(Integer paymentModeId) {
-		this.paymentModeId = paymentModeId;
-	}
-
 	public Set<PaymentModeAttributeType> getAttributeTypes() {
 		return attributeTypes;
 	}

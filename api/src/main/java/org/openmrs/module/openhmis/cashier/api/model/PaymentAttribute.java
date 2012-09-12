@@ -35,14 +35,6 @@ public class PaymentAttribute extends BaseOpenmrsObject {
 		paymentAttributeId = id;
 	}
 
-	public Integer getPaymentAttributeId() {
-		return paymentAttributeId;
-	}
-
-	public void setPaymentAttributeId(Integer paymentAttributeId) {
-		this.paymentAttributeId = paymentAttributeId;
-	}
-
 	public Payment getPayment() {
 		return payment;
 	}

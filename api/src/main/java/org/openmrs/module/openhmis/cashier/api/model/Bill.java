@@ -55,14 +55,6 @@ public class Bill extends BaseOpenmrsData {
 		billId = id;
 	}
 
-	public Integer getBillId() {
-		return billId;
-	}
-
-	public void setBillId(Integer billId) {
-		this.billId = billId;
-	}
-
 	public String getReceiptNumber() {
 		return receiptNumber;
 	}

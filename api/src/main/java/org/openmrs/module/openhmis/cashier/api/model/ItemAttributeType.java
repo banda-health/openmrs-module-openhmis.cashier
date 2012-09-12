@@ -27,12 +27,4 @@ public class ItemAttributeType extends BaseAttributeType<Item> {
 	public void setId(Integer id) {
 		this.itemAttributeTypeId = id;
 	}
-
-	public Integer getItemAttributeTypeId() {
-		return itemAttributeTypeId;
-	}
-
-	public void setItemAttributeTypeId(Integer itemAttributeTypeId) {
-		this.itemAttributeTypeId = itemAttributeTypeId;
-	}
 }
