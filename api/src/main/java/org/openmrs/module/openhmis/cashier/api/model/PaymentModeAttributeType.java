@@ -11,7 +11,6 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsMetadata;
@@ -29,16 +28,16 @@ public class PaymentModeAttributeType extends BaseOpenmrsMetadata {
 
 	private Integer paymentModeAttributeTypeId;
 	private PaymentMode paymentMode;
+	private Integer attributeOrder;
 
 	private String format;
 	private String regExp;
 	private Boolean required;
-	private Integer attributeOrder;
 
-	// Getters & setters
 	public Integer getId() {
 		return paymentModeAttributeTypeId;
 	}
+
 	public void setId(Integer id) {
 		paymentModeAttributeTypeId = id;
 	}
@@ -51,28 +50,35 @@ public class PaymentModeAttributeType extends BaseOpenmrsMetadata {
 		this.paymentMode = paymentMode;
 	}
 
-	public String getFormat() {
-		return format;
-	}
-	public void setFormat(String format) {
-		this.format = format;
-	}
-	public String getRegExp() {
-		return regExp;
-	}
-	public void setRegExp(String regExp) {
-		this.regExp = regExp;
-	}
-	public Boolean getRequired() {
-		return required;
-	}
-	public void setRequired(Boolean required) {
-		this.required = required;
-	}
 	public Integer getAttributeOrder() {
 		return attributeOrder;
 	}
+
 	public void setAttributeOrder(Integer attributeOrder) {
 		this.attributeOrder = attributeOrder;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+	public String getRegExp() {
+		return regExp;
+	}
+
+	public void setRegExp(String regExp) {
+		this.regExp = regExp;
+	}
+
+	public Boolean getRequired() {
+		return required;
+	}
+
+	public void setRequired(Boolean required) {
+		this.required = required;
 	}
 }

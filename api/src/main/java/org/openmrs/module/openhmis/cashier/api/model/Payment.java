@@ -11,7 +11,6 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsData;
@@ -37,7 +36,7 @@ public class Payment extends BaseOpenmrsData {
 		paymentId = id;
 	}
 
-	public PaymentMode getPaymentMode() {
+		public PaymentMode getPaymentMode() {
 		return paymentMode;
 	}
 

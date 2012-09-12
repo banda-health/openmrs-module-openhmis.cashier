@@ -13,7 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import org.junit.Assert;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
+
+import java.util.List;
 
 public class IPaymentModeServiceTest extends IMetadataServiceTest<IPaymentModeService, PaymentMode> {
 	public static final String PAYMENT_MODE_DATASET = BASE_DATASET_DIR + "PaymentModeTest.xml";
@@ -27,15 +31,67 @@ public class IPaymentModeServiceTest extends IMetadataServiceTest<IPaymentModeSe
 
 	@Override
 	protected PaymentMode createEntity(boolean valid) {
-		return null;
+		PaymentMode mode = new PaymentMode();
+
+		if (valid) {
+			mode.setName("Test Payment Mode");
+		}
+
+		mode.setDescription("Test Description");
+
+		mode.addAttributeType("Test 1 Attribute Type", "", "", true);
+		mode.addAttributeType("Test 2 Attribute Type", "", "", false);
+
+		return mode;
 	}
 
 	@Override
 	protected int getTestEntityCount() {
-		return 0;
+		return 3;
 	}
 
 	@Override
-	protected void updateEntityFields(PaymentMode entity) {
+	protected void updateEntityFields(PaymentMode mode) {
+		mode.setName(mode.getName() + " updated");
+		mode.setDescription(mode.getDescription() + " updated");
+
+		List<PaymentModeAttributeType> attributeTypes = mode.getAttributeTypes();
+		if (attributeTypes.size() > 0) {
+			PaymentModeAttributeType attributeType = attributeTypes.get(0);
+			attributeType.setName(attributeType.getName() + " updated");
+			attributeType.setFormat("updated");
+			attributeType.setRegExp("updated");
+			attributeType.setRequired(!attributeType.getRequired());
+
+			if (attributeTypes.size() > 1) {
+				attributeType = attributeTypes.get(1);
+
+				mode.removeAttributeType(attributeType);
+			}
+		}
+
+		mode.addAttributeType("Test 3 Attribute Type", "", "", true);
+	}
+
+	@Override
+	protected void assertEntity(PaymentMode expected, PaymentMode actual) {
+		super.assertEntity(expected, actual);
+
+		Assert.assertEquals(expected.getName(),  actual.getName());
+		Assert.assertEquals(expected.getDescription(), actual.getDescription());
+
+		List<PaymentModeAttributeType> expectedTypes = expected.getAttributeTypes();
+		List<PaymentModeAttributeType> actualTypes = actual.getAttributeTypes();
+		Assert.assertEquals(expectedTypes.size(), actualTypes.size());
+
+		for (int i = 0; i <expectedTypes.size(); i++) {
+			PaymentModeAttributeType expectedType = expectedTypes.get(i);
+			PaymentModeAttributeType actualType = actualTypes.get(i);
+
+			Assert.assertEquals(expectedType.getName(), actualType.getName());
+			Assert.assertEquals(expectedType.getFormat(), actualType.getFormat());
+			Assert.assertEquals(expectedType.getRegExp(), actualType.getRegExp());
+			Assert.assertEquals(expectedType.getRequired(), actualType.getRequired());
+		}
 	}
 }
