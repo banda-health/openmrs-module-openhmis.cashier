@@ -1,6 +1,10 @@
 package org.openmrs.module.webservices.rest.resource;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import org.openmrs.OpenmrsData;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IDataService;
 import org.openmrs.module.openhmis.cashier.api.IEntityService;
@@ -83,5 +87,37 @@ public abstract class BaseRestDataResource<E extends OpenmrsData> extends DataDe
 	protected AlreadyPaged<E> doSearch(String query, RequestContext context) {
 		return new ServiceSearcher<E>(IItemService.class, "getResources", "getCountOfResources").search(query,
                context);
+	}
+	
+	/**
+	 * Update a collection according to another collection
+	 * 
+	 * **WARNING**: Side effects: modifies first collection
+	 * @param collection
+	 * @param update
+	 */
+	public static void updateCollection(Collection<OpenmrsObject> collection, Collection<OpenmrsObject> update) {
+		Map<String, OpenmrsObject> collectionMap = new HashMap<String, OpenmrsObject>();
+		Map<String, OpenmrsObject> updateMap = new HashMap<String, OpenmrsObject>();
+		for (OpenmrsObject item : collection)
+			collectionMap.put(item.getUuid(), item);
+		for (OpenmrsObject item : update)
+			updateMap.put(item.getUuid(), item);
+		// First compare update to existing collection
+		for (OpenmrsObject item : collectionMap.values()) {
+			// Update existing items
+			if (updateMap.containsKey(item.getUuid())) {
+				OpenmrsObject updateObj = updateMap.get(item.getUuid());
+				updateObj.setId(item.getId());
+				collection.remove(item);
+				collection.add(updateObj);
+			} else // Remove existing items that do not appear in the update
+				collection.remove(item);
+		}
+		// Second add any new items
+		for (OpenmrsObject item : updateMap.values()) {
+			if (!collectionMap.containsKey(item.getUuid()))
+				collection.add(item);
+		}
 	}
 }

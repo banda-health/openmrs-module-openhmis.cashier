@@ -26,5 +26,14 @@ openhmis.Item = openhmis.GenericModel.extend({
 			})
 		},
 		codes: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemCode }
-    }
+    },
+	
+	toJSON: function() {
+		if (this.attributes.codes !== undefined) {
+			for (var code in this.attributes.codes) {
+				delete this.attributes.codes[code].resourceVersion;
+			}
+		}
+		return openhmis.GenericModel.prototype.toJSON.call(this);
+	}
 });

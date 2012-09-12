@@ -9,42 +9,15 @@ openhmis.GenericModel = Backbone.Model.extend({
 		if (this.schema === undefined) return Backbone.Model.prototype.toJSON.call(this, options);
 		var attributes = {};
 		for (var attr in this.attributes) {
+			// This gets added to representations but cannot be set
+			if (attr === 'resourceVersion') continue;
+			
 			if (this.schema[attr] !== undefined
 				&& (this.schema[attr].readOnly === undefined
-					|| this.schema[attr].readOnly === false)
-				&& this.schema[attr].type !== 'List')
+					|| this.schema[attr].readOnly === false))
 				attributes[attr] = this.attributes[attr];
 		}
 		return _.clone(attributes);
-	},
-	
-	save: function(key, value, options) {
-		if (key == null && this.schema !== undefined) {
-			options = value;
-			for (var attr in this.attributes) {
-				if (this.schema[attr] !== undefined) {
-					if (this.schema[attr].type === 'List'
-						&& this.schema[attr].itemType === 'NestedModel') {
-						this.saveSubResource(this.schema[attr].model, this.attributes[attr]);
-					}
-					
-				}
-			}
-			Backbone.Model.prototype.save.call(this, null, options);
-		}
-		else
-			Backbone.Model.prototype.save.call(this, key, value, options);
-	},
-	
-	saveSubResource: function(modelType, object) {
-		if (_.isArray(object)) {
-			for (var item in object) {
-				var model = new modelType(object[item], {
-					urlRoot: this.url() + '/' + modelType.prototype.meta.resourcePath
-				});
-				model.save();
-			}
-		}
 	}
 });
 
