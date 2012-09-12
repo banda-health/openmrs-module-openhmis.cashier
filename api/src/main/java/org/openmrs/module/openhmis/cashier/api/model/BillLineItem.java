@@ -51,15 +51,6 @@ public class BillLineItem extends BaseOpenmrsData {
 		return price.multiply(BigDecimal.valueOf(quantity));
 	}
 
-	// Getters & setters
-	public Item getBillableItem() {
-		return item;
-	}
-
-	public void setBillableItem(Item billableItem) {
-		this.item = billableItem;
-	}
-
 	public Integer getQuantity() {
 		return quantity;
 	}

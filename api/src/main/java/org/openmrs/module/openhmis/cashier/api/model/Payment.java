@@ -21,8 +21,6 @@ import java.util.Set;
 
 /**
  * A class to represent a payment toward a bill
- * @author daniel
- *
  */
 public class Payment extends BaseOpenmrsData {
 	private Integer paymentId;
@@ -30,30 +28,43 @@ public class Payment extends BaseOpenmrsData {
 	private PaymentMode paymentMode;
 	private Set<PaymentAttribute> attributes;
 	private BigDecimal amount;
-	
-	
-	// Getters & setters
+
 	public Integer getId() {
 		return paymentId;
 	}	
+
 	public void setId(Integer id) {
 		paymentId = id;
 	}
+
+	public Integer getPaymentId() {
+		return paymentId;
+	}
+
+	public void setPaymentId(Integer paymentId) {
+		this.paymentId = paymentId;
+	}
+
 	public PaymentMode getPaymentMode() {
 		return paymentMode;
 	}
+
 	public void setPaymentMode(PaymentMode mode) {
 		this.paymentMode = mode;
 	}
+
 	public Set<PaymentAttribute> getAttributes() {
 		return attributes;
 	}
+
 	public void setAttributes(Set<PaymentAttribute> attributes) {
 		this.attributes = attributes;
 	}
+
 	public BigDecimal getAmount() {
 		return amount;
 	}
+
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}

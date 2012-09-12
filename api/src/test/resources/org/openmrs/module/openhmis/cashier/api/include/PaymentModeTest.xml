@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<cashier_payment_mode payment_mode_id="0" name="Test 1 Payment Mode" description="test description"
+	                      creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39B565A20139B565A2200000" />
+	<cashier_payment_mode payment_mode_id="1" name="Test 2 Payment Mode" description="test description"
+	                      creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39B565A20139B56638E60001" />
+	<cashier_payment_mode payment_mode_id="2" name="Test 3 Payment Mode" description="test description"
+	                      creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39B565A20139B56642F50002" />
+
+	<cashier_payment_mode_attribute_type payment_mode_attribute_type_id="0" payment_mode_id="0" attribute_order="0"
+	                                     name="Test 1 Attribute Type" description="test description"
+	                                     format="" reg_exp="" required="true"
+	                                     creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39B565A20139B56712DD0003"/>
+	<cashier_payment_mode_attribute_type payment_mode_attribute_type_id="1" payment_mode_id="0" attribute_order="1"
+	                                     name="Test 1 Attribute Type" description="test description"
+	                                     format="" reg_exp="" required="false"
+	                                     creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39B565A20139B9A880DA000C"/>
+	<cashier_payment_mode_attribute_type payment_mode_attribute_type_id="2" payment_mode_id="0" attribute_order="2"
+	                                     name="Test 1 Attribute Type" description="test description"
+	                                     format="" reg_exp="" required="false"
+	                                     creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39B565A20139B9A89509000E"/>
+</dataset>

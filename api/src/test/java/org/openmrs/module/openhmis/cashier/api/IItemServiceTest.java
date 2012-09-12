@@ -31,7 +31,7 @@ import java.util.Set;
 public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 	IDepartmentService departmentService;
 
-	public static final String ITEM_DATASET = "org/openmrs/module/openhmis/cashier/api/include/ItemTest.xml";
+	public static final String ITEM_DATASET = BASE_DATASET_DIR + "ItemTest.xml";
 
 	@Override
 	public void before() throws Exception {
@@ -41,11 +41,6 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 
 		executeDataSet(IDepartmentServiceTest.DEPARTMENT_DATASET);
 		executeDataSet(ITEM_DATASET);
-	}
-
-	@Override
-	protected IItemService createService() {
-		return Context.getService(IItemService.class);
 	}
 
 	@Override

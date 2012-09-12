@@ -11,24 +11,31 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+package org.openmrs.module.openhmis.cashier.api;
 
-package org.openmrs.module.openhmis.cashier.api.impl;
-
-import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
-import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
-import org.openmrs.module.openhmis.cashier.api.util.BasicMetadataAuthorizationPrivileges;
 
-public class PaymentModeServiceImpl
-		extends BaseMetadataServiceImpl<PaymentMode>
-		implements IPaymentModeService {
+public class IPaymentModeServiceTest extends IMetadataServiceTest<IPaymentModeService, PaymentMode> {
+	public static final String PAYMENT_MODE_DATASET = BASE_DATASET_DIR + "PaymentModeTest.xml";
+
 	@Override
-	protected IMetadataAuthorizationPrivileges getPrivileges() {
-		return new BasicMetadataAuthorizationPrivileges();
+	public void before() throws Exception {
+		super.before();
+
+		executeDataSet(PAYMENT_MODE_DATASET);
 	}
 
 	@Override
-	protected void validate(PaymentMode entity) throws APIException {
+	protected PaymentMode createEntity(boolean valid) {
+		return null;
+	}
+
+	@Override
+	protected int getTestEntityCount() {
+		return 0;
+	}
+
+	@Override
+	protected void updateEntityFields(PaymentMode entity) {
 	}
 }
