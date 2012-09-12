@@ -11,7 +11,6 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsMetadata;
@@ -42,14 +41,6 @@ public class ItemPrice extends BaseOpenmrsMetadata {
 	@Override
 	public void setId(Integer id) {
 		itemPriceId = id;
-	}
-
-	public Integer getItemPriceId() {
-		return itemPriceId;
-	}
-
-	public void setItemPriceId(Integer itemPriceId) {
-		this.itemPriceId = itemPriceId;
 	}
 
 	public Item getItem() {

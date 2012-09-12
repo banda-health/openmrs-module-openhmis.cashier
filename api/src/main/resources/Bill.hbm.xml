@@ -6,7 +6,7 @@
 	<class name="Bill" table="cashier_bill">
 		<cache usage="read-write"/>
 
-		<id name="billId" type="int" column="bill_id">
+		<id name="id" type="int" column="bill_id">
 			<generator class="native">
 				<param name="sequence">cashier_bill_bill_id_seq</param>
 			</generator>
@@ -17,10 +17,16 @@
 		<many-to-one name="cashier" class="org.openmrs.Provider" not-null="true" column="provider_id" />
 		<many-to-one name="patient" class="org.openmrs.Patient" not-null="true" column="patient_id" />
 
-		<set name="lineItems" lazy="true" inverse="true" cascade="all-delete-orphan">
+		<property name="status" column="status" not-null="true">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">org.openmrs.module.openhmis.cashier.api.model.BillStatus</param>
+			</type>
+		</property>
+
+		<bag name="lineItems" lazy="true" inverse="true" cascade="all-delete-orphan" order-by="bill_line_item_id">
 			<key column="bill_id" />
 			<one-to-many class="BillLineItem" />
-		</set>
+		</bag>
 		<set name="payments" lazy="true" inverse="true" cascade="all-delete-orphan">
 			<key column="bill_id" />
 			<one-to-many class="Payment" />
@@ -45,7 +51,7 @@
 	<class name="BillLineItem" table="cashier_bill_line_item">
 		<cache usage="read-write"/>
 
-		<id name="billLineItemId" type="int" column="bill_line_item_id">
+		<id name="id" type="int" column="bill_line_item_id">
 			<generator class="native">
 				<param name="sequence">cashier_bill_line_item_bill_line_item_id_seq</param>
 			</generator>
@@ -77,7 +83,7 @@
 	<class name="Payment" table="cashier_bill_payment">
 		<cache usage="read-write" />
 
-		<id name="paymentId" type="int" column="bill_payment_id">
+		<id name="id" type="int" column="bill_payment_id">
 			<generator class="native">
 				<param name="sequence">cashier_bill_payment_bill_payment_id_seq</param>
 			</generator>
@@ -88,6 +94,11 @@
 		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
 
 		<property name="amount" type="java.math.BigDecimal" column="amount" not-null="true" />
+
+		<set name="attributes" lazy="true" inverse="true" cascade="all-delete-orphan">
+			<key column="bill_payment_id" />
+			<one-to-many class="PaymentAttribute" />
+		</set>
 
 		<!-- BaseOpenmrsData Fields-->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
@@ -104,7 +115,7 @@
 	<class name="PaymentAttribute" table="cashier_bill_payment_attribute">
 		<cache usage="read-write" />
 
-		<id name="paymentAttributeId" type="int" column="bill_payment_attribute_id">
+		<id name="id" type="int" column="bill_payment_attribute_id">
 			<generator class="native">
 				<param name="sequence">cashier_bill_payment_attribute_bill_payment_attribute_id_seq</param>
 			</generator>
@@ -121,7 +132,7 @@
 	<class name="PaymentMode" table="cashier_payment_mode">
 		<cache usage="read-write"/>
 
-		<id name="paymentModeId" type="int" column="payment_mode_id">
+		<id name="id" type="int" column="payment_mode_id">
 			<generator class="native">
 				<param name="sequence">cashier_payment_mode_payment_mode_id_seq</param>
 			</generator>
@@ -131,10 +142,11 @@
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
 		<property name="description" type="java.lang.String" column="description" length="1024" />
 
-		<set name="attributeTypes" lazy="true" inverse="true" cascade="all-delete-orphan">
+		<list name="attributeTypes" lazy="true" inverse="true" cascade="all-delete-orphan">
 			<key column="payment_mode_id" />
+			<list-index column="attribute_order" />
 			<one-to-many class="PaymentModeAttributeType" />
-		</set>
+		</list>
 
 		<!-- BaseOpenmrsMetadata fields -->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
@@ -148,10 +160,10 @@
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
 	</class>
 
-	<class name="PaymentModeAttributeType" table="cashier_payment_mode_attribute">
+	<class name="PaymentModeAttributeType" table="cashier_payment_mode_attribute_type">
 		<cache usage="read-write"/>
 
-		<id name="paymentModeAttributeTypeId" type="int" column="payment_mode_attribute_type_id">
+		<id name="id" type="int" column="payment_mode_attribute_type_id">
 			<generator class="native">
 				<param name="sequence">cashier_payment_mode_attribute_type_payment_mode_attribute_type_id_seq</param>
 			</generator>
@@ -160,12 +172,12 @@
 
 		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
 
+		<property name="attributeOrder" type="int" column="attribute_order" generated="always" />
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
 		<property name="description" type="java.lang.String" column="description" length="1024" />
 		<property name="format" type="java.lang.String" column="format" length="255" />
 		<property name="regExp" type="java.lang.String" column="reg_exp" length="255" />
 		<property name="required" type="boolean" column="required" length="1" not-null="true" />
-		<property name="attributeOrder" type="int" column="attribute_order" />
 
 		<!-- BaseOpenmrsMetadata fields -->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />

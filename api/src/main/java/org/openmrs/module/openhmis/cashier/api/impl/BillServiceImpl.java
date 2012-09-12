@@ -14,14 +14,18 @@
 
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.api.APIException;
+import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
 public class BillServiceImpl
 		extends BaseDataServiceImpl<Bill>
-		implements IDataAuthorizationPrivileges {
+		implements IDataAuthorizationPrivileges, IBillService {
 	@Override
 	protected IDataAuthorizationPrivileges getPrivileges() {
 		return this;
@@ -29,6 +33,21 @@ public class BillServiceImpl
 
 	@Override
 	protected void validate(Bill entity) throws APIException {
+	}
+
+	@Override
+	public Bill getBillByReceiptNumber(String receiptNumber) throws APIException {
+		if (StringUtils.isEmpty(receiptNumber)) {
+			throw new IllegalArgumentException("The receipt number must be defined.");
+		}
+		if (receiptNumber.length() > 255) {
+			throw new IllegalArgumentException("The receipt number must be less than 256 characters.");
+		}
+
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("receiptNumber", receiptNumber));
+
+		return dao.selectSingle(getEntityClass(), criteria);
 	}
 
 	@Override

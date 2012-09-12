@@ -11,7 +11,6 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsObject;
@@ -33,14 +32,6 @@ public class PaymentAttribute extends BaseOpenmrsObject {
 	}
 	public void setId(Integer id) {
 		paymentAttributeId = id;
-	}
-
-	public Integer getPaymentAttributeId() {
-		return paymentAttributeId;
-	}
-
-	public void setPaymentAttributeId(Integer paymentAttributeId) {
-		this.paymentAttributeId = paymentAttributeId;
 	}
 
 	public Payment getPayment() {

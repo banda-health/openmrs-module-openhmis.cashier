@@ -61,7 +61,7 @@
 	</class>
 
 	<class name="ItemAttribute" table="cashier_item_attribute">
-		<id name="itemAttributeId" type="int" column="item_attribute_id">
+		<id name="id" type="int" column="item_attribute_id">
 			<generator class="native">
 				<param name="sequence">cashier_item_attribute_item_attribute_id_seq</param>
 			</generator>
@@ -90,7 +90,7 @@
 	</class>
 
 	<class name="ItemAttributeType" table="cashier_item_attribute_type">
-		<id name="itemAttributeTypeId" type="int" column="item_attribute_type_id">
+		<id name="id" type="int" column="item_attribute_type_id">
 			<generator class="native">
 				<param name="sequence">cashier_item_attribute_type_item_attribute_type_id_seq</param>
 			</generator>
@@ -121,7 +121,7 @@
 	</class>
 
 	<class name="ItemPrice" table="cashier_item_price">
-		<id name="itemPriceId" type="int" column="item_price_id">
+		<id name="id" type="int" column="item_price_id">
 			<generator class="native">
 				<param name="sequence">cashier_item_price_item_price_id_seq</param>
 			</generator>
@@ -149,7 +149,7 @@
 	</class>
 
 	<class name="ItemCode" table="cashier_item_code">
-		<id name="itemCodeId" type="int" column="item_code_id">
+		<id name="id" type="int" column="item_code_id">
 			<generator class="native">
 				<param name="sequence">cashier_item_code_item_code_id_seq</param>
 			</generator>

@@ -6,7 +6,7 @@
 	<class name="Department" table="cashier_department">
 		<cache usage="read-write"/>
 
-		<id name="departmentId" type="int" column="department_id">
+		<id name="id" type="int" column="department_id">
 			<generator class="native">
 				<param name="sequence">cashier_department_department_id_seq</param>
 			</generator>
