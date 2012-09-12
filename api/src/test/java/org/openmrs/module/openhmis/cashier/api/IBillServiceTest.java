@@ -33,6 +33,7 @@ public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 	private PatientService patientService;
 	private IItemService itemService;
 	private IPaymentModeService paymentModeService;
+	private ICashPointService cashPointService;
 
 	@Override
 	public void before() throws Exception {
@@ -42,9 +43,11 @@ public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 		patientService = Context.getPatientService();
 		itemService = Context.getService(IItemService.class);
 		paymentModeService = Context.getService(IPaymentModeService.class);
+		cashPointService = Context.getService(ICashPointService.class);
 
 		executeDataSet(IItemServiceTest.ITEM_DATASET);
 		executeDataSet(IPaymentModeServiceTest.PAYMENT_MODE_DATASET);
+		executeDataSet(ICashPointServiceTest.CASH_POINT_DATASET);
 		executeDataSet(BILL_DATASET);
 	}
 
@@ -55,6 +58,7 @@ public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 		if (valid) {
 			bill.setCashier(providerService.getProvider(0));
 			bill.setPatient(patientService.getPatient(0));
+			bill.setCashPoint(cashPointService.getById(0));
 			bill.setReceiptNumber("Test 1234");
 			bill.setStatus(BillStatus.PAID);
 		}

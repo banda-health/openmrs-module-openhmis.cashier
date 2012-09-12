@@ -16,7 +16,7 @@
 	<patient_identifier_type patient_identifier_type_id="0" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false" uuid="0cbecb62-7249-4f91-8edf-d0206ecceb63"/>
 	<person_name person_name_id="0" preferred="true" person_id="0" given_name="John" middle_name=" " family_name="Doe" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="0f1f7d08-076b-4fc6-acac-4bb91515141e"/>
 
-	<cashier_bill bill_id="0" receipt_number="test 1 receipt number" provider_id="0" patient_id="0" status="1"
+	<cashier_bill bill_id="0" receipt_number="test 1 receipt number" provider_id="0" patient_id="0" cash_point_id="0" status="1"
 	              creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B95D74360004" />
 	<cashier_bill_line_item bill_line_item_id="0" bill_id="0" item_id="0" price="101.01" price_name="default" quantity="1"
 							creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B95FB3440005" />
