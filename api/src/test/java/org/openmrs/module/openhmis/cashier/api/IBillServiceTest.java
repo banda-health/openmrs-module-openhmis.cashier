@@ -13,7 +13,9 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import liquibase.util.StringUtils;
 import org.junit.Assert;
+import org.junit.Test;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
@@ -154,5 +156,57 @@ public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 			Assert.assertEquals(expectedPayments[i].getAmount(), actualPayments[i].getAmount());
 			Assert.assertEquals(expectedPayments[i].getUuid(), actualPayments[i].getUuid());
 		}
+	}
+
+	/**
+	 * @verifies throw IllegalArgumentException if the receipt number is null
+	 * @see IBillService#getBillByReceiptNumber(String)
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void getBillByReceiptNumber_shouldThrowIllegalArgumentExceptionIfTheReceiptNumberIsNull() throws Exception {
+		service.getBillByReceiptNumber(null);
+	}
+
+	/**
+	 * @verifies throw IllegalArgumentException if the receipt number is empty
+	 * @see IBillService#getBillByReceiptNumber(String)
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void getBillByReceiptNumber_shouldThrowIllegalArgumentExceptionIfTheReceiptNumberIsEmpty() throws Exception {
+		service.getBillByReceiptNumber("");
+	}
+
+	/**
+	 * @verifies throw IllegalArgumentException if the receipt number is longer than 255 characters
+	 * @see IBillService#getBillByReceiptNumber(String)
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void getBillByReceiptNumber_shouldThrowIllegalArgumentExceptionIfTheReceiptNumberIsLongerThan255Characters() throws Exception {
+		service.getBillByReceiptNumber(StringUtils.repeat("A", 256));
+	}
+
+	/**
+	 * @verifies return the bill with the specified reciept number
+	 * @see IBillService#getBillByReceiptNumber(String)
+	 */
+	@Test
+	public void getBillByReceiptNumber_shouldReturnTheBillWithTheSpecifiedRecieptNumber() throws Exception {
+		Bill bill = service.getBillByReceiptNumber("test 1 receipt number");
+		Assert.assertNotNull(bill);
+
+		Bill expected = service.getById(0);
+
+		assertEntity(expected, bill);
+	}
+
+	/**
+	 * @verifies return null if the receipt number is not found
+	 * @see IBillService#getBillByReceiptNumber(String)
+	 */
+	@Test
+	public void getBillByReceiptNumber_shouldReturnNullIfTheReceiptNumberIsNotFound() throws Exception {
+		Bill bill = service.getBillByReceiptNumber("not a valid number");
+
+		Assert.assertNull(bill);
 	}
 }
