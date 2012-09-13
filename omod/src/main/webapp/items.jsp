@@ -7,6 +7,7 @@
 <script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/view/list.js"></script>
 <script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/sprintf-0.7-beta1.js"></script>
 <script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/util.js"></script>
+<script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/view/editors.js"></script>
 <script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/i18n/english.js"></script>
 <script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/view/generic.js"></script>
 <script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/model/department.js"></script>

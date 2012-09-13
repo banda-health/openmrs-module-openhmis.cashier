@@ -17,7 +17,7 @@ openhmis.ItemPrice = openhmis.GenericModel.extend({
 		openmrsType: 'metadata'
 	},
 	schema: {
-		price: 'Number'
+		price: 'BasicNumber'
 	},
 	format: function(price) {
 		return price.toFixed(2);
