@@ -135,6 +135,8 @@
 
       //Create it
       $el.dialog({
+        modal: true,
+        width: 400
       });
 
       //Focus OK button

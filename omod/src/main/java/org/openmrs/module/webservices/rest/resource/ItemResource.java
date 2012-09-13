@@ -1,9 +1,8 @@
 package org.openmrs.module.webservices.rest.resource;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
-import org.openmrs.OpenmrsObject;
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
@@ -40,19 +39,21 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		return description;
 	}	
 
-	@SuppressWarnings("unchecked")
 	@PropertySetter(value="codes")
 	public void setItemCodes(Item instance, Set<ItemCode> codes) {
-		BaseRestDataResource.updateCollection((Collection<OpenmrsObject>)(Object) instance.getCodes(), (Collection<OpenmrsObject>)(Object) codes);
+		if (instance.getCodes() == null)
+			instance.setCodes(new HashSet<ItemCode>());
+		BaseRestDataResource.updateCollection(instance.getCodes(), codes);
 		for (ItemCode code : instance.getCodes()) {
 			code.setItem(instance);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@PropertySetter(value="prices")
 	public void setItemPrices(Item instance, Set<ItemPrice> prices) {
-		BaseRestDataResource.updateCollection((Collection<OpenmrsObject>)(Object) instance.getCodes(), (Collection<OpenmrsObject>)(Object) prices);
+		if (instance.getPrices() == null)
+			instance.setPrices(new HashSet<ItemPrice>());
+		BaseRestDataResource.updateCollection(instance.getPrices(), prices);
 		for (ItemPrice price : instance.getPrices()) {
 			price.setItem(instance);
 		}

@@ -18,6 +18,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.resource.impl.ServiceSearcher;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
+import org.springframework.beans.BeanUtils;
 
 public abstract class BaseRestDataResource<E extends OpenmrsData> extends DataDelegatingCrudResource<E> implements IDataServiceResource<E> {
 
@@ -96,26 +97,25 @@ public abstract class BaseRestDataResource<E extends OpenmrsData> extends DataDe
 	 * @param collection
 	 * @param update
 	 */
-	public static void updateCollection(Collection<OpenmrsObject> collection, Collection<OpenmrsObject> update) {
-		Map<String, OpenmrsObject> collectionMap = new HashMap<String, OpenmrsObject>();
-		Map<String, OpenmrsObject> updateMap = new HashMap<String, OpenmrsObject>();
-		for (OpenmrsObject item : collection)
+	public static <E extends OpenmrsObject> void updateCollection(Collection<E> collection, Collection<E> update) {
+		Map<String, E> collectionMap = new HashMap<String, E>();
+		Map<String, E> updateMap = new HashMap<String, E>();
+		for (E item : collection)
 			collectionMap.put(item.getUuid(), item);
-		for (OpenmrsObject item : update)
+		for (E item : update)
 			updateMap.put(item.getUuid(), item);
 		// First compare update to existing collection
-		for (OpenmrsObject item : collectionMap.values()) {
+		for (E item : collectionMap.values()) {
 			// Update existing items
 			if (updateMap.containsKey(item.getUuid())) {
-				OpenmrsObject updateObj = updateMap.get(item.getUuid());
+				E updateObj = updateMap.get(item.getUuid());
 				updateObj.setId(item.getId());
-				collection.remove(item);
-				collection.add(updateObj);
+				BeanUtils.copyProperties(updateObj, item);
 			} else // Remove existing items that do not appear in the update
 				collection.remove(item);
 		}
 		// Second add any new items
-		for (OpenmrsObject item : updateMap.values()) {
+		for (E item : updateMap.values()) {
 			if (!collectionMap.containsKey(item.getUuid()))
 				collection.add(item);
 		}

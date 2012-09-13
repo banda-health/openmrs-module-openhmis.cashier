@@ -6,7 +6,8 @@ openhmis.ItemCode = openhmis.GenericModel.extend({
 	},
 	schema: {
 		code: 'Text'
-	}
+	},
+	toString: function() { return this.get('code'); }
 });
 
 openhmis.ItemPrice = openhmis.GenericModel.extend({
@@ -17,7 +18,12 @@ openhmis.ItemPrice = openhmis.GenericModel.extend({
 	},
 	schema: {
 		price: 'Number'
-	}
+	},
+	format: function(price) {
+		return price.toFixed(2);
+	},
+	
+	toString: function() { return this.format(this.get('price')); }
 });
 
 openhmis.Item = openhmis.GenericModel.extend({
@@ -39,11 +45,19 @@ openhmis.Item = openhmis.GenericModel.extend({
 		prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice }
     },
 	
+	parse: function(resp) {
+		if (resp && resp.department && resp.department.uuid)
+			resp.department = resp.department.uuid;
+		return resp;
+	},
+	
 	toJSON: function() {
 		if (this.attributes.codes !== undefined) {
-			for (var code in this.attributes.codes) {
+			// Can't set these, so need to remove them from JSON
+			for (var code in this.attributes.codes)
 				delete this.attributes.codes[code].resourceVersion;
-			}
+			for (var price in this.attributes.prices)
+				delete this.attributes.prices[price].resourceVersion;
 		}
 		return openhmis.GenericModel.prototype.toJSON.call(this);
 	}

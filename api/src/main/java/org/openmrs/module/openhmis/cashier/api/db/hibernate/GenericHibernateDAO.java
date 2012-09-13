@@ -41,11 +41,7 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 		Session session = sessionFactory.getCurrentSession();
 
 		try {
-			if (entity.getId() != null) {
-				session.merge(entity);
-			} else {
-				session.saveOrUpdate(entity);
-			}
+			session.saveOrUpdate(entity);
 		} catch (Exception ex) {
 			throw new APIException("An exception occurred while attempting to add a " + entity.getClass().getSimpleName() + " entity.", ex);
 		}

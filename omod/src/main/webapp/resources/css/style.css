@@ -1,8 +1,37 @@
+/* General form styles */
+/* Table styles */
 table.form td { padding-right: 10px; }
 table.form td.end { padding-right: 0px; }
 table.form tbody th { font-weight: normal; }
 
+/* List styles */
+form.bbf-form fieldset { border: none; }
+form.bbf-form ul { padding: 0; }
+li.bbf-field, .bbf-list li { list-style: none; }
+li.bbf-field label { }
+li.bbf-field div.bbf-editor { position: relative; top: -1.3em; margin-left: 150px; }
+
+/* Generic Add/Edit */
+input.reason { width: 25em; }
+.selectable { cursor: pointer; }
+
+/* List editor styles */
+.bbf-list li { display: block; clear: both; height: 2em; margin-left: -2em; }
+.bbf-list button.bbf-remove { float: left; width: 2em; margin-top: -.2em; margin-right: 10px; }
+.bbf-list-modal { cursor: pointer; }
+.bbf-actions { clear: both; }
+
+/* Generic data table styles */
 table.display { width: 100%; border-spacing: 0; }
+table.display tr.even.row_selected td, table.display tr.odd.row_selected td,
+table.display tr.row_selected
+{ background-color: #f0e68c !important; }
+
+td.item-actions input { visibility: hidden; }
+tr.row_selected td.item-actions input, tr:hover td.item-actions input
+{ visibility: visible; }
+
+/* Bill table styles */
 th.item-quantity, th.item-price, th.item-total {
 	width: 13%;
 }
@@ -12,14 +41,6 @@ table.bill td input[type="text"] {
 	background-color: transparent;
 }
 table.bill td.item-actions { width: 20px; }
-td.item-actions input { visibility: hidden; }
-
-
-table.display tr.even.row_selected td, table.display tr.odd.row_selected td,
-table.display tr.row_selected
-{ background-color: #f0e68c !important; }
-tr.row_selected td.item-actions input, tr:hover td.item-actions input
-{ visibility: visible; }
 
 table.bill td, table.bill th {
 	padding: 0px 5px;
@@ -30,15 +51,3 @@ table.bill td.end, table.bill th.end { border-right: none; }
 input.item-quantity, input.item-price, input.item-total {
 	text-align: right;
 }
-
-form.bbf-form fieldset { border: none; }
-form.bbf-form ul { padding: 0; }
-li.bbf-field { list-style: none; }
-li.bbf-field label { display: inline-block; width: 150px; }
-li.bbf-field div.bbf-editor { display: inline-block; }
-
-/*IE inline-block hack*/
-li.bbf-field label, li.bbf-field div.bbf-editor { zoom:1;*display:inline; margin: 0; }
-
-input.reason { width: 25em; }
-.selectable { cursor: pointer; }

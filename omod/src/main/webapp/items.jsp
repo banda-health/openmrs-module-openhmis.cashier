@@ -13,7 +13,9 @@
 <script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/model/item.js"></script>
 <script type="text/javascript">
 $(function() {
-	openhmis.startAddEditScreen(openhmis.Item, "/item");
+	openhmis.startAddEditScreen(openhmis.Item, "/item", {
+		listFields: ['codes', 'name']
+	});
 });
 </script>
 <%@ include file="template/localHeader.jsp"%>

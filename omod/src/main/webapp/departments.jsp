@@ -10,7 +10,9 @@
 <script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/model/department.js"></script>
 <script type="text/javascript">
 $(function() {
-	openhmis.startAddEditScreen(openhmis.Department, "/department");
+	openhmis.startAddEditScreen(openhmis.Department, "/department", {
+		listFields: ['name', 'description']
+	});
 });
 </script>
 <%@ include file="template/localHeader.jsp"%>
