@@ -8,6 +8,11 @@ _.templateSettings = {
 if (window.openhmis === undefined) window.openhmis = {};
 if (window.openhmis.template === undefined) window.openhmis.templates = {};
 
+openhmis.displayError = function(data) {
+	var o = $.parseJSON(data.response).error;
+	alert("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
+}
+
 // Use uuid for id
 Backbone.Model.prototype.idAttribute = 'uuid';
 
@@ -80,9 +85,4 @@ Backbone.View.prototype.getTemplate = function(context) {
 		});
 	}
 	return _.template($(openhmis.templates[view.tmplFile]).find(view.tmplSelector).html());
-}
-
-// Capitalize first letter
-capitalize = function(string) {
-	return string.charAt(0).toUpperCase() + string.substring(1);
 }

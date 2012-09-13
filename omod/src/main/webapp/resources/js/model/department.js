@@ -1,4 +1,4 @@
-openhmis.Department = Backbone.Model.extend({
+openhmis.Department = openhmis.GenericModel.extend({
 	meta: {
 		name: __("Department"),
 		namePlural: __("Departments"),
@@ -6,9 +6,14 @@ openhmis.Department = Backbone.Model.extend({
 	},
 	
 	schema: {
+		uuid: { type: 'Text', readOnly: true },
 		name: 'Text',
 		description: 'Text',
 		retired: 'Text',
 		retireReason: { type: 'Text', readOnly: true }
+	},
+	
+	toString: function() {
+		return this.get('name');
 	}
 });

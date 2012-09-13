@@ -14,32 +14,16 @@
 package org.openmrs.module.openhmis.cashier.web.controller;
 
 import java.io.IOException;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.openmrs.module.openhmis.cashier.api.model.Department;
-import org.openmrs.module.webservices.docs.ResourceDoc;
-import org.openmrs.module.webservices.docs.ResourceDocCreator;
-import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/**
- * The main controller.
- */
 @Controller
 @RequestMapping("/module/openhmis/cashier/departments")
 public class DepartmentsController {
-	
-	protected final Log log = LogFactory.getLog(getClass());
-	
 	@RequestMapping(method = RequestMethod.GET)
 	public void departments(ModelMap model) throws JsonGenerationException, JsonMappingException, IOException {
 		model.addAttribute("modelBase", "openhmis.cashier.department");
