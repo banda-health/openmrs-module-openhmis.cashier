@@ -39,7 +39,7 @@
 		<thead>
 			<tr>
 			<? for (var field in fields) { ?>
-				<th><?= modelSchema[fields[field]].title === undefined ? Backbone.Form.helpers.keyToTitle(fields[field]) : modelSchema[fields[field]].title ?></th>
+				<th><?= modelSchema[fields[field]].title === undefined ? helpers.keyToTitle(fields[field]) : modelSchema[fields[field]].title ?></th>
 			<? } ?>
 			</tr>
 		</thead>
