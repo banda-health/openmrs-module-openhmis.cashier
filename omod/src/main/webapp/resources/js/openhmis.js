@@ -16,9 +16,7 @@ define(
 		
 		var openhmis = {};
 		openhmis.templates = {};
-		
-		openhmis.baseUrl = '/openmrs/moduleResources/openhmis/cashier/js';
-		
+				
 		openhmis.displayError = function(data) {
 			var o = $.parseJSON(data.response).error;
 			alert("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
