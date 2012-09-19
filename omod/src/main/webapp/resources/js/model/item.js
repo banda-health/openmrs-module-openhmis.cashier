@@ -12,7 +12,7 @@ define(
 				openmrsType: 'metadata'
 			},
 			schema: {
-				code: 'Text'
+				code: { type: 'Text' }
 			},
 			toString: function() { return this.get('code'); }
 		});
@@ -24,7 +24,7 @@ define(
 				openmrsType: 'metadata'
 			},
 			schema: {
-				price: 'BasicNumber'
+				price: { type: 'BasicNumber' }
 			},
 			format: function(price) {
 				return price.toFixed(2);
@@ -40,7 +40,7 @@ define(
 				openmrsType: 'metadata'
 			},
 			schema: {
-				name: 'Text',
+				name: { type: 'Text' },
 				department: {
 					type: 'Select',
 					options: new openhmis.GenericCollection(null, {

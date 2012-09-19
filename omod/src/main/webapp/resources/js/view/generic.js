@@ -3,10 +3,14 @@ define(
 		'lib/jquery',
 		'lib/underscore',
 		'lib/backbone',
+		'lib/i18n',
 		'openhmis',
-		'model/generic'
+		'lib/backbone-forms',
+		'model/generic',
+		'view/list',
+		'view/editors'
 	],
-	function($, _, Backbone, openhmis) {
+	function($, _, Backbone, __, openhmis) {
 		openhmis.GenericAddEditView = Backbone.View.extend({
 			tmplFile: 'generic.html',
 			tmplSelector: '#add-edit-template',
@@ -26,18 +30,18 @@ define(
 				'click button.purge': 'purge'
 			},
 			
-			renderModelForm: function() {
+			prepareModelForm: function(model, options) {
+				options = options ? options : {};
 				var formFields = [];
-				for (var key in this.model.schema) {
+				for (var key in model.schema) {
 					if (key === 'retired') continue;
-					if (this.model.schema[key].readOnly === true) continue;
+					//if (model.schema[key].readOnly === true) continue;
 					formFields.push(key);
 				}
-				this.modelForm = new Backbone.Form({
-					model: this.model,
-					fields: formFields
-				});
-				this.modelForm.render();		
+				var formOptions = { model: model, fields: formFields };
+				formOptions = _.extend(options, formOptions);
+				var modelForm = new Backbone.Form(options)
+				return modelForm;
 			},
 		
 			beginAdd: function() {
@@ -46,7 +50,7 @@ define(
 				$(this.addLinkEl).hide();
 				$(this.retireVoidPurgeEl).hide();
 				$(this.titleEl).show();
-				this.renderModelForm();
+				this.modelForm = this.prepareModelForm(this.model).render();
 				$(this.formEl).prepend(this.modelForm.el);
 				$(this.formEl).show();
 				$(this.formEl).find('input')[0].focus();
@@ -64,7 +68,7 @@ define(
 				this.model = model;
 				this.render();
 				$(this.titleEl).show();
-				this.renderModelForm();
+				this.modelForm = this.prepareModelForm(this.model).render();
 				$(this.formEl).prepend(this.modelForm.el);
 				$(this.formEl).show();
 				$(this.retireVoidPurgeEl).show();
@@ -131,11 +135,16 @@ define(
 		openhmis.GenericListView = Backbone.View.extend({
 			tmplFile: 'generic.html',
 			tmplSelector: '#generic-list',
+			itemView: openhmis.GenericListItemView,
+			itemActions: [],
 			
 			initialize: function(options) {
 				_.bindAll(this);
 				if (options !== undefined) {
 					this.addEditView = options.addEditView;
+					this.itemView = options.itemView ? options.itemView : openhmis.GenericListItemView
+					if (options.itemActions) this.itemActions = options.itemActions;
+					if (options.schema) this.schema = options.schema;
 					this.template = this.getTemplate();
 					this.includeFields = options.listFields;
 					this.excludeFields = options.listExcludeFields;
@@ -172,14 +181,19 @@ define(
 				}
 			},
 			
-			render: function() {
-				this.$el.html(this.template({
+			render: function(extraContext) {
+				var schema = _.extend({}, this.model.model.prototype.schema, this.schema || {});
+				var context = {
 					list: this.model,
 					fields: this.fields,
 					modelMeta: this.model.model.prototype.meta,
 					modelSchema: this.model.model.prototype.schema,
-					showRetired: this.showRetired
-				}));
+					showRetired: this.showRetired,
+					listTitle: undefined, // custom title for list
+					itemActions: this.itemActions
+				}
+				if (extraContext !== undefined) context = _.extend(context, extraContext);
+				this.$el.html(this.template(context));
 				var view = this;
 				var tbody = this.$('tbody');
 				var lineNumber = 0;
@@ -188,7 +202,9 @@ define(
 					var itemView = new openhmis.GenericListItemView({
 						model: model,
 						fields: view.fields,
-						className: (lineNumber % 2 === 0) ? "evenRow" : "oddRow"
+						schema: schema,
+						className: (lineNumber % 2 === 0) ? "evenRow" : "oddRow",
+						actions: view.itemActions
 					});
 					tbody.append(itemView.render().el);
 					itemView.on('select', view.deselectAll);
@@ -204,17 +220,34 @@ define(
 			tagName: "tr",
 			tmplFile: "generic.html",
 			tmplSelector: '#generic-list-item',
+			actions: [], // see enableActions()
 			initialize: function(options) {
-				if (options !== undefined)
+				if (options !== undefined) {
 					this.fields = options.fields ? options.fields : _.keys(this.model.schema);
+					if (options.actions) this.actions = options.actions;
+					if (options.schema) this.schema = options.schema;
+				}
 				_.bindAll(this);
 				this.template = this.getTemplate();
 				this.model.on('sync', this.render);
 				this.model.on('destroy', this.remove);
+				this.enableOperations();
 			},
 			
 			events: {
 				'click td': 'select'
+			},
+			
+			enableOperations: function() {
+				for (var act in this.actions) {
+					switch (this.actions[act]) {
+						// Display remove action for the item
+						case 'remove':
+							this.events['click .remove'] = 'itemRemove';
+							break;
+					}
+				}
+				this.delegateEvents();
 			},
 			
 			select: function() {
@@ -222,8 +255,37 @@ define(
 				this.$el.addClass("row_selected");
 			},
 			
+			itemRemove: function(event) {
+				if (confirm(__("Are you sure you want to remove the selected item?"))) {
+					this.model.destroy();
+					Backbone.View.prototype.remove.call(this);
+					this.trigger('remove');
+					return true;
+				}
+				// Prevent this event from propagating
+				else return false;
+			},
+			
 			render: function() {
-				this.$el.html(this.template({ model: this.model, fields: this.fields })).addClass("selectable");
+				this.$el.html(this.template({
+					model: this.model,
+					actions: this.actions,
+					fields: this.fields
+				})).addClass("selectable");
+
+				if (_.indexOf(this.actions, 'inlineEdit') !== -1) {
+					var schema = _.extend({}, this.model.schema, this.schema || {});
+					this.form = openhmis.GenericAddEditView.prototype.prepareModelForm.call(this, this.model, {
+						schema: schema,
+						template: 'trForm',
+						fieldsetTemplate: 'blankFieldset',
+						fieldTemplate: 'tableField'
+					});
+					this.form.render();
+					this.$el.append(this.form.$('td'));
+					//this.setElement(this.form.el);
+					//this.$el.html(this.$el.html() + this.form.$('b.fieldset').html());
+				}
 				return this;
 			}
 		});
@@ -246,6 +308,12 @@ define(
 			listView.setElement($('#existing-form'));
 			collection.fetch();
 		}
+		
+		Backbone.Form.setTemplates({
+			trForm: '<b>{{fieldsets}}</b>',
+			blankFieldset: '<b class="fieldset">{{fields}}</b>',
+			tableField: '<td class="bbf-field field-{{key}}">{{editor}}</td>'
+		})
 		
 		return openhmis;
 	}

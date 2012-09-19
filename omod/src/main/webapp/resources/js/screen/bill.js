@@ -4,8 +4,7 @@ curl(
 		'lib/jquery',
 		'view/patient',
 		'view/bill',
-		'model/lineItem',
-		'view/lineItem'
+		'model/lineItem'
 	],
 	function($, openhmis) {
 		var patientView = new openhmis.PatientView();

@@ -32,7 +32,7 @@ tr.row_selected td.item-actions input, tr:hover td.item-actions input
 { visibility: visible; }
 
 /* Bill table styles */
-th.item-quantity, th.item-price, th.item-total {
+table.bill th.quantity, table.bill th.price, table.bill th.total {
 	width: 13%;
 }
 table.bill td input[type="text"] {
@@ -40,7 +40,6 @@ table.bill td input[type="text"] {
 	border: 0;
 	background-color: transparent;
 }
-table.bill td.item-actions { width: 20px; }
 
 table.bill td, table.bill th {
 	padding: 0px 5px;
@@ -48,6 +47,6 @@ table.bill td, table.bill th {
 }
 table.bill td.end, table.bill th.end { border-right: none; }
 
-input.item-quantity, input.item-price, input.item-total {
+table.bill .field-quantity input, table.bill .field-price input, table.bill .field-total input {
 	text-align: right;
 }

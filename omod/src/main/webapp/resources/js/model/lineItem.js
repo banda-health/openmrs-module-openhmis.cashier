@@ -12,13 +12,22 @@ define(
 			},
 			schema: {
 				item: { type: 'NestedModel', model: openhmis.Item },
-				quantity: 'BasicNumber',
-				price: 'BasicNumber',
-				total: { type: 'BasicNumber' }
+				quantity: { type: 'BasicNumber' },
+				price: { type: 'BasicNumber' },
+				total: { type: 'BasicNumber', readOnly: true }
 			},
 			
 			initialize: function() {
 				this.schema.total.value = this.getTotal;
+			},
+			
+			get: function(attr) {
+				switch (attr) {
+					case 'total':
+						return this.getTotal();
+					default:
+						return openhmis.GenericModel.prototype.get.call(this, attr);
+				}
 			},
 			
 			getTotal: function() {
