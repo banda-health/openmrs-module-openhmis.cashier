@@ -38,8 +38,8 @@
 	<table class="display" width="100%">
 		<thead>
 			<tr>
-			<? for (var attr in modelSchema) { ?>
-				<th><?= modelSchema[attr].title === undefined ? Backbone.Form.helpers.keyToTitle(attr) : modelSchema[attr].title ?></th>
+			<? for (var field in fields) { ?>
+				<th><?= modelSchema[fields[field]].title === undefined ? Backbone.Form.helpers.keyToTitle(fields[field]) : modelSchema[fields[field]].title ?></th>
 			<? } ?>
 			</tr>
 		</thead>
@@ -53,7 +53,13 @@
 </script>
 
 <script id="generic-list-item" type="text/template">
-	<? for (var attr in model.schema) { ?>
-	<td<?= model.isRetired() ? ' class="retired"' : '' ?>><?= model.get(attr) ?></td>
+	<? for (var field in fields) { ?>
+	<td<?= model.isRetired() ? ' class="retired"' : '' ?>>
+		<? if (model.schema[fields[field]].type === 'List' && model.schema[fields[field]].model !== undefined) {
+			print(model.listToString(fields[field]));
+		} else {
+			print(model.get(fields[field]));
+		} ?>
+	</td>
 	<? } ?>
 </script>
