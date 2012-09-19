@@ -48,6 +48,7 @@ public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 		executeDataSet(IItemServiceTest.ITEM_DATASET);
 		executeDataSet(IPaymentModeServiceTest.PAYMENT_MODE_DATASET);
 		executeDataSet(ICashPointServiceTest.CASH_POINT_DATASET);
+		executeDataSet(CORE_DATASET);
 		executeDataSet(BILL_DATASET);
 	}
 
@@ -86,6 +87,7 @@ public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 	protected void updateEntityFields(Bill bill) {
 		bill.setCashier(providerService.getProvider(1));
 		bill.setPatient(patientService.getPatient(2));
+		bill.setCashPoint(cashPointService.getById(0));
 		bill.setReceiptNumber(bill.getReceiptNumber() + " updated");
 		bill.setStatus(BillStatus.PENDING);
 
@@ -129,8 +131,13 @@ public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 
 		Assert.assertNotNull(expected.getCashier());
 		Assert.assertNotNull(actual.getCashier());
+		Assert.assertEquals(expected.getCashier().getId(), actual.getCashier().getId());
 		Assert.assertNotNull(expected.getPatient());
 		Assert.assertNotNull(actual.getPatient());
+		Assert.assertEquals(expected.getPatient().getId(), actual.getPatient().getId());
+		Assert.assertNotNull(expected.getCashPoint());
+		Assert.assertNotNull(actual.getCashPoint());
+		Assert.assertEquals(expected.getCashPoint().getId(), actual.getCashPoint().getId());
 
 		Assert.assertEquals(expected.getReceiptNumber(), actual.getReceiptNumber());
 		Assert.assertEquals(expected.getStatus(), actual.getStatus());

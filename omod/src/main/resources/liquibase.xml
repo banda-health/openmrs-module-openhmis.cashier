@@ -257,6 +257,26 @@
 			<column name="uuid" type="char(38)" />
 		</createTable>
 
+		<createTable tableName="cashier_timesheet">
+			<column name="timesheet_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="provider_id" type="int"><constraints nullable="false"/></column>
+			<column name="cash_point_id" type="int"><constraints nullable="false" /></column>
+			<column name="clock_in" type="datetime"><constraints nullable="false" /></column>
+			<column name="clock_out" type="datetime" />
+
+			<column name="creator" type="int"><constraints nullable="false"/></column>
+			<column name="date_created" type="datetime"><constraints nullable="false"/></column>
+			<column name="changed_by" type="int"/>
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false"><constraints nullable="false"/></column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" defaultValue="null"/>
+			<column name="uuid" type="char(38)"><constraints nullable="false" unique="true" /></column>
+		</createTable>
+
 		<createTable tableName="cashier_bill">
 			<column name="bill_id" type="int" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
@@ -264,7 +284,7 @@
 			<column name="receipt_number" type="varchar(255)" />
 			<column name="provider_id" type="int"><constraints nullable="false"/></column>
 			<column name="patient_id" type="int"><constraints nullable="false" /></column>
-			<column name="cash_point_id" type="int"><constraints nullable="false" </column>
+			<column name="cash_point_id" type="int"><constraints nullable="false" /></column>
 			<column name="status" type="varchar(25)"><constraints nullable="false" /></column>
 			<column name="adjusted_bill_id" type="int" />
 
@@ -378,6 +398,10 @@
 			<column name="uuid" type="char(38)"><constraints nullable="false" unique="true" /></column>
 		</createTable>
 
+		<createIndex tableName="cashier_timesheet" indexName="cashier_timesheet_provider_clock_in">
+			<column name="provider_id" />
+			<column name="clock_in" />
+		</createIndex>
 		<createIndex indexName="cashier_bill_receipt_number_idx" tableName="cashier_bill" unique="true">
 			<column name="receipt_number"/>
 		</createIndex>
@@ -398,6 +422,22 @@
 		                         referencedTableName="users" referencedColumnNames="user_id"
 		                         deferrable="false" initiallyDeferred="false" />
 
+		<addForeignKeyConstraint constraintName="cashier_timesheet_provider_fk"
+		                         baseTableName="cashier_timesheet" baseColumnNames="provider_id"
+		                         referencedTableName="provider" referencedColumnNames="provider_id"/>
+		<addForeignKeyConstraint constraintName="cashier_timesheet_cash_point_fk"
+		                         baseTableName="cashier_timesheet" baseColumnNames="cash_point_id"
+		                         referencedTableName="cashier_cash_point" referencedColumnNames="cash_point_id"/>
+		<addForeignKeyConstraint constraintName="cashier_timesheet_creator_fk"
+		                         baseTableName="cashier_timesheet" baseColumnNames="creator"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_timesheet_changed_by_fk"
+		                         baseTableName="cashier_timesheet" baseColumnNames="changed_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="cashier_timesheet_voided_by_fk"
+		                         baseTableName="cashier_timesheet" baseColumnNames="voided_by"
+		                         referencedTableName="users" referencedColumnNames="user_id"/>
+
 		<addForeignKeyConstraint constraintName="cashier_bill_provider_fk"
 		                         baseTableName="cashier_bill" baseColumnNames="provider_id"
 		                         referencedTableName="provider" referencedColumnNames="provider_id"/>
@@ -406,7 +446,7 @@
 		                         referencedTableName="patient" referencedColumnNames="patient_id"/>
 		<addForeignKeyConstraint constraintName="cashier_bill_cash_point_fk"
 		                         baseTableName="cashier_bill" baseColumnNames="cash_point_id"
-		                         referencedTableName="patient" referencedColumnNames="patient_id"/>
+		                         referencedTableName="cashier_cash_point" referencedColumnNames="cash_point_id"/>
 		<addForeignKeyConstraint constraintName="cashier_bill_creator_fk"
 		                         baseTableName="cashier_bill" baseColumnNames="creator"
 		                         referencedTableName="users" referencedColumnNames="user_id"/>

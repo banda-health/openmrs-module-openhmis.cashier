@@ -36,3 +36,4 @@ public class BasicMetadataAuthorizationPrivileges implements IMetadataAuthorizat
 		return CashierPrivilegeConstants.VIEW_METADATA;
 	}
 }
+
