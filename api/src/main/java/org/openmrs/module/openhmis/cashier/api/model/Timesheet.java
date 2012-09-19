@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import net.sourceforge.jtds.jdbc.DateTime;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Provider;
 
