@@ -33,6 +33,7 @@ public class Bill extends BaseOpenmrsData {
 	private String receiptNumber;
 	private Provider cashier;
 	private Patient patient;
+	private CashPoint cashPoint;
 	private Bill billAdjusted;
 	private BillStatus status;
 	private List<BillLineItem> lineItems;
@@ -71,6 +72,14 @@ public class Bill extends BaseOpenmrsData {
 
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+
+	public CashPoint getCashPoint() {
+		return cashPoint;
+	}
+
+	public void setCashPoint(CashPoint cashPoint) {
+		this.cashPoint = cashPoint;
 	}
 
 	public Bill getBillAdjusted() {

@@ -27,6 +27,7 @@ import java.util.List;
 
 public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends BaseOpenmrsObject> extends BaseModuleContextSensitiveTest {
 	public static final String BASE_DATASET_DIR = "org/openmrs/module/openhmis/cashier/api/include/";
+	public static final String CORE_DATASET = BASE_DATASET_DIR + "CoreTest.xml";
 
 	protected S service;
 

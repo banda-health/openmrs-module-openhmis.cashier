@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<cashier_cash_point cash_point_id="0" name="Test 1 Cash Point" description="Some cash point location"
+	                    creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04B98B0000" />
+	<cashier_cash_point cash_point_id="1" name="Test 2 Cash Point" description="Another test cash point"
+	                    creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04C3380001" />
+	<cashier_cash_point cash_point_id="2" name="Test 3 Cash Point"
+	                    creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04CD210002" />
+</dataset>

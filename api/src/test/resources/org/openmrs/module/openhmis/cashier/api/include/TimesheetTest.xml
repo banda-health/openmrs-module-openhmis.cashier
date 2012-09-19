@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<cashier_timesheet timesheet_id="0" provider_id="0" cash_point_id="0" clock_in="2012-01-01 09:02:32.8" clock_out="2012-01-01 18:01:29.0"
+	                   creator="1" date_created="2012-01-01 09:02:32.8" voided="false" uuid="4028814B39DD958D0139DD9FF6C70007" />
+	<cashier_timesheet timesheet_id="1" provider_id="0" cash_point_id="1" clock_in="2012-01-02 09:00:00.0"
+	                   creator="1" date_created="2012-01-02 09:00:00.0" voided="false" uuid="4028814B39DD958D0139DD9FC9560004" />
+	<cashier_timesheet timesheet_id="2" provider_id="1" cash_point_id="0" clock_in="2012-01-02 12:01:00.0" clock_out="2012-01-02 20:10:00.0"
+	                   creator="1" date_created="2012-01-02 12:01:00.0" voided="false" uuid="4028814B39DD958D0139DDA3975C0008" />
+</dataset>

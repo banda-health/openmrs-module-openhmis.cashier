@@ -25,6 +25,7 @@
 .idea/libraries
 .idea/*datasources.*
 .idea/encodings.xml
+.idea/dictionaries/*
 
 # building
 target
