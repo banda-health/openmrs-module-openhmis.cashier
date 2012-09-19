@@ -4,16 +4,13 @@ curl(
 		'lib/jquery',
 		'openhmis',
 		'lib/backbone-forms',
-		'model/item',
 		'model/department',
-		'view/generic',
-		'view/list',
-		'view/editors',
+		'view/generic'
 	],
 	function($, openhmis) {
 		$(function() {
-			openhmis.startAddEditScreen(openhmis.Item, "/item", {
-				listFields: ['name', 'codes']
+			openhmis.startAddEditScreen(openhmis.Department, "/department", {
+				listFields: ['name', 'description']
 			});
 		});
 	}

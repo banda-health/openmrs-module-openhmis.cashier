@@ -192,7 +192,7 @@ define(
 					});
 					tbody.append(itemView.render().el);
 					itemView.on('select', view.deselectAll);
-					itemView.on('select', view.addEditView.edit);
+					if (view.addEditView) itemView.on('select', view.addEditView.edit);
 					model.on('retired', function() { if (!view.showRetired) itemView.remove(); });
 					lineNumber++;
 				});
@@ -245,6 +245,8 @@ define(
 			collection.on('reset', listView.render);
 			listView.setElement($('#existing-form'));
 			collection.fetch();
-		}		
+		}
+		
+		return openhmis;
 	}
 );

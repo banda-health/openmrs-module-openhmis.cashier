@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/curl.js"></script>
+<script id="curl" type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/curl.js"></script>
 <script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/screen/items.js"></script>
 <%@ include file="template/localHeader.jsp"%>
 

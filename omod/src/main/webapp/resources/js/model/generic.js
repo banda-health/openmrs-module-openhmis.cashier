@@ -66,6 +66,8 @@ define(
 				}
 				return results;
 			}
-		});		
+		});
+		
+		return openhmis;
 	}
 );
