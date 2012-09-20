@@ -14,27 +14,23 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
-import org.openmrs.module.openhmis.cashier.api.IDataService;
-import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
-import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
-@Resource("department")
-@Handler(supports = { Department.class }, order = 0)
-public class DepartmentResource extends BaseRestMetadataResource<Department> {
+@Resource("paymentMode")
+@Handler(supports = { PaymentMode.class }, order = 0)
+public class PaymentModeResource extends BaseRestMetadataResource<PaymentMode> {
 
 	@Override
-	public Department newDelegate() {
-		return new Department();
+	public PaymentMode newDelegate() {
+		return new PaymentMode();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataService<Department>> getServiceClass() {
-		return (Class<IMetadataService<Department>>)(Object)IDepartmentService.class;
+	public Class<IMetadataService<PaymentMode>> getServiceClass() {
+		return (Class<IMetadataService<PaymentMode>>)(Object) IPaymentModeService.class;
 	}
 }
-
