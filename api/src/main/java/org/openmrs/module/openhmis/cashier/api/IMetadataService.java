@@ -16,6 +16,7 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.OpenmrsMetadata;
 import org.openmrs.api.APIException;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.RequestContext;
 
@@ -57,9 +58,25 @@ public interface IMetadataService<E extends OpenmrsMetadata> extends IEntityServ
 	List<E> getAll(boolean retired) throws APIException;
 
 	/**
+	 * Returns all entity records that have the specified retirement status and paging.
+	 * @param retired {@code true} to return only retired entities, {@code false} to return only unretired entities.
+	 * @param paging The paging information.
+	 * @return All the entity records that have the specified retirement status.
+	 * @throws APIException
+	 * @should return all retired entities when retired is set to true
+	 * @should return all unretired entities when retired is set to false
+	 * @should return all specified entity records if paging is null
+	 * @should return all specified entity records if paging page or size is less than one
+	 * @should set the paging total records to the total number of entity records
+	 * @should not get the total paging record count if it is more than zero
+	 * @should return paged entity records if paging is specified
+	 */
+	List<E> getAll(boolean retired, PagingInfo paging) throws APIException;
+
+	/**
 	 * Finds all the entities that start with the specified name.
 	 * @param nameFragment The name fragment.
-	 * @param includeRetired Whether retired item should be included in the results.
+	 * @param includeRetired Whether retired items should be included in the results.
 	 * @return All items that start with the specified name.
 	 * @throws APIException
 	 * @should throw IllegalArgumentException if the name is null
@@ -70,7 +87,20 @@ public interface IMetadataService<E extends OpenmrsMetadata> extends IEntityServ
 	 * @should return entities that start with the specified name
 	 */
 	List<E> findByName(String nameFragment, boolean includeRetired) throws APIException;
-	
-	List<E> queryByString(String query, Integer startIndex, Integer limit, Boolean includeRetired);
-	Integer getQueryCount(String query, Boolean includeRetired);
+
+	/**
+	 * Finds all the entities that start with the specified name and paging.
+	 * @param nameFragment The name fragment.
+	 * @param includeRetired Whether retired items should be included in the results.
+	 * @param paging The paging information.
+	 * @return All items that start with the specified name.
+	 * @throws APIException
+	 * @should throw IllegalArgumentException if the name is null
+	 * @should throw IllegalArgumentException if the name is empty
+	 * @should throw IllegalArgumentException if the name is longer than 255 characters
+	 * @should return an empty list if no entities are found
+	 * @should not return retired entities unless specified
+	 * @should return entities that start with the specified name
+	 */
+	List<E> findByName(String nameFragment, boolean includeRetired, PagingInfo paging) throws APIException;
 }

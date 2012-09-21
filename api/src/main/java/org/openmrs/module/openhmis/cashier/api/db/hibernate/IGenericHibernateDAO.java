@@ -56,6 +56,14 @@ public interface IGenericHibernateDAO {
     <E extends BaseOpenmrsObject> void delete(E entity) throws APIException;
 
 	/**
+	 * Executes the specified {@link Criteria} and returns the resulting value.
+	 * @param criteria The criteria to execute which must result in a single value.
+	 * @param <T> The expected value type.
+	 * @return The result of the criteria.
+	 */
+	<T> T selectValue(Criteria criteria);
+
+	/**
 	 * Selects a single entity from the database with the specified id.
 	 * @param cls The entity class.
 	 * @param id The id of the entity.

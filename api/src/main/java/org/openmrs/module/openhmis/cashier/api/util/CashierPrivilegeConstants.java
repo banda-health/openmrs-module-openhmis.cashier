@@ -41,4 +41,11 @@ public class CashierPrivilegeConstants {
 
 	public static final String PURGE_METADATA = "Purge Cashier Metadata";
 
+	@AddOnStartup(description = "Able to add/edit/delete timesheets", core = false)
+	public static final String MANAGE_TIMESHEETS = "Manage Cashier Timesheets";
+
+	@AddOnStartup(description = "Able to view timesheets", core = false)
+	public static final String VIEW_TIMESHEETS = "View Cashier Timesheets";
+
+	public static final String PURGE_TIMESHEETS = "Purge Cashier Timesheets";
 }
