@@ -281,7 +281,7 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 
 		Assert.assertNotNull(entities);
 		Assert.assertEquals(1, entities.size());
-		Assert.assertEquals((Integer) getTestEntityCount(), paging.getTotalRecordCount());
+		Assert.assertEquals(Long.valueOf(getTestEntityCount()), paging.getTotalRecordCount());
 	}
 
 	/**
@@ -291,12 +291,12 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 	@Test
 	public void getAll_shouldNotGetTheTotalPagingRecordCountIfItIsMoreThanZero() throws Exception {
 		PagingInfo paging = new PagingInfo(1, 1);
-		paging.setTotalRecordCount(1l);
+		paging.setLoadRecordCount(false);
 		List<E> entities = service.getAll(paging);
 
 		Assert.assertNotNull(entities);
 		Assert.assertEquals(1, entities.size());
-		Assert.assertEquals(Long.valueOf(getTestEntityCount()), paging.getTotalRecordCount());
+		Assert.assertNull(paging.getTotalRecordCount());
 	}
 
 	/**
