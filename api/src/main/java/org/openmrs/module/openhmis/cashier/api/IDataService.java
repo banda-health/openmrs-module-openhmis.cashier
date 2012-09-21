@@ -16,7 +16,10 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.OpenmrsObject;
 import org.openmrs.api.APIException;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 public interface IDataService<E extends OpenmrsObject> extends IEntityService<E> {
@@ -27,7 +30,7 @@ public interface IDataService<E extends OpenmrsObject> extends IEntityService<E>
 	 * @param reason The reason for voiding.
 	 * @should void the entity
 	 * @should throw IllegalArgumentException with null reason parameter
-	 * @should throw IllegalArgumentException with null entity
+	 * @should throw NullPointerException with null entity
 	 */
 	public E voidEntity(E entity, String reason);
 
@@ -36,7 +39,59 @@ public interface IDataService<E extends OpenmrsObject> extends IEntityService<E>
 	 *
 	 * @param entity The entity to be revived.
 	 * @should unvoid the entity
-	 * @should throw IllegalArgumentException with null entity
+	 * @should throw NullPointerException with null entity
 	 */
 	public E unvoidEntity(E entity) throws APIException;
+
+	/**
+	 * Returns all entity records that have the specified voided status.
+	 * @param voided {@code true} to return only voided entities, {@code false} to return only voided entities.
+	 * @return All the entity records that have the specified voided status.
+	 * @throws APIException
+	 * @should return all voided entities when voided is set to true
+	 * @should return all unvoided entities when voided is set to false
+	 */
+	List<E> getAll(boolean voided) throws APIException;
+
+	/**
+	 * Returns all entity records that have the specified voided status and paging.
+	 * @param voided {@code true} to return only voided entities, {@code false} to return only voided entities.
+	 * @param paging The paging information.
+	 * @return All the entity records that have the specified voided status.
+	 * @throws APIException
+	 * @should return all voided entities when voided is set to true
+	 * @should return all unvoided entities when voided is set to false
+	 */
+	List<E> getAll(boolean voided, PagingInfo paging) throws APIException;
+
+	/**
+	 * Finds all the entities that start with the specified name.
+	 * @param nameFragment The name fragment.
+	 * @param includeVoided Whether voided items should be included in the results.
+	 * @return All items that start with the specified name.
+	 * @throws APIException
+	 * @should throw IllegalArgumentException if the name is null
+	 * @should throw IllegalArgumentException if the name is empty
+	 * @should throw IllegalArgumentException if the name is longer than 255 characters
+	 * @should return an empty list if no entities are found
+	 * @should not return voided entities unless specified
+	 * @should return entities that start with the specified name
+	 */
+	List<E> findByName(String nameFragment, boolean includeVoided) throws APIException;
+
+	/**
+	 * Finds all the entities that start with the specified name and paging.
+	 * @param nameFragment The name fragment.
+	 * @param includeRetired Whether voided items should be included in the results.
+	 * @param paging The paging information.
+	 * @return All items that start with the specified name.
+	 * @throws APIException
+	 * @should throw IllegalArgumentException if the name is null
+	 * @should throw IllegalArgumentException if the name is empty
+	 * @should throw IllegalArgumentException if the name is longer than 255 characters
+	 * @should return an empty list if no entities are found
+	 * @should not return voided entities unless specified
+	 * @should return entities that start with the specified name
+	 */
+	List<E> findByName(String nameFragment, boolean includeRetired, PagingInfo paging) throws APIException;
 }

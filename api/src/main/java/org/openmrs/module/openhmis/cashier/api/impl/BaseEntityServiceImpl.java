@@ -16,6 +16,7 @@ package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
@@ -24,6 +25,7 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.openhmis.cashier.api.IEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IEntityService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -98,12 +100,19 @@ public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P exten
 
 	@Override
 	public List<E> getAll() throws APIException {
+		return getAll(null);
+	}
+
+	@Override
+	public List<E> getAll(PagingInfo pagingInfo) {
 		P privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
 			Context.requirePrivilege(privileges.getGetPrivilege());
 		}
 
-		return dao.select(getEntityClass());
+		loadPagingTotal(pagingInfo);
+
+		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo));
 	}
 
 	@Override
@@ -142,6 +151,45 @@ public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P exten
 		}
 
 		return entityClass;
+	}
+
+	protected void loadPagingTotal(PagingInfo pagingInfo) {
+		loadPagingTotal(pagingInfo, null);
+	}
+
+	protected void loadPagingTotal(PagingInfo pagingInfo, Criteria criteria) {
+		if (pagingInfo != null && pagingInfo.getPage() > 0 && pagingInfo.getPageSize() > 0) {
+			if (criteria == null) {
+				criteria = dao.createCriteria(getEntityClass());
+			}
+
+			if (pagingInfo.shouldLoadRecordCount()) {
+				criteria.setProjection(Projections.rowCount());
+
+				pagingInfo.setTotalRecordCount(dao.<Long>selectValue(criteria));
+				pagingInfo.setLoadRecordCount(false);
+			}
+		}
+	}
+
+	protected Criteria createPagingCriteria(PagingInfo pagingInfo) {
+		return createPagingCriteria(pagingInfo, null);
+	}
+
+	protected Criteria createPagingCriteria(PagingInfo pagingInfo, Criteria criteria) {
+		if (pagingInfo != null && pagingInfo.getPage() > 0 && pagingInfo.getPageSize() > 0) {
+			if (criteria == null) {
+				criteria = dao.createCriteria(getEntityClass());
+			}
+
+			criteria.setFirstResult((pagingInfo.getPage() - 1) * pagingInfo.getPageSize());
+			criteria.setMaxResults(pagingInfo.getPageSize());
+			criteria.setFetchSize(pagingInfo.getPageSize());
+
+
+		}
+
+		return criteria;
 	}
 }
 

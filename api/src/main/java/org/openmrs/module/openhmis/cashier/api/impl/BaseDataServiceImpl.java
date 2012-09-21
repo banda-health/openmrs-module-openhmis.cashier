@@ -14,13 +14,18 @@
 package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IDataService;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * The base type for data entity services.
@@ -67,5 +72,54 @@ public abstract class BaseDataServiceImpl<E extends BaseOpenmrsData>
 		entity.setVoidedBy(null);
 
 		return save(entity);
+	}
+
+	@Override
+	public List<E> getAll(boolean voided) throws APIException {
+		return getAll(voided, null);
+	}
+
+	@Override
+	public List<E> getAll(boolean voided, PagingInfo pagingInfo) throws APIException {
+		IDataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
+			Context.requirePrivilege(privileges.getGetPrivilege());
+		}
+
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("voided", voided));
+
+		loadPagingTotal(pagingInfo, criteria);
+		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
+	}
+
+	@Override
+	public List<E> findByName(String nameFragment, boolean includeVoided) throws APIException {
+		return findByName(nameFragment, includeVoided, null);
+	}
+
+	@Override
+	public List<E> findByName(String nameFragment, boolean includeVoided, PagingInfo pagingInfo) throws APIException {
+		IDataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
+			Context.requirePrivilege(privileges.getGetPrivilege());
+		}
+
+		if (StringUtils.isEmpty(nameFragment)) {
+			throw new IllegalArgumentException("The name fragment must be defined.");
+		}
+		if (nameFragment.length() > 255) {
+			throw new IllegalArgumentException("the name fragment must be less than 256 characters long.");
+		}
+
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.add(Restrictions.ilike("name", nameFragment, MatchMode.START));
+
+		if (!includeVoided) {
+			criteria.add(Restrictions.eq("voided", false));
+		}
+
+		loadPagingTotal(pagingInfo, criteria);
+		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
 	}
 }

@@ -23,6 +23,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 
 import java.util.Date;
 import java.util.List;
@@ -76,6 +77,11 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 
 	@Override
 	public List<E> getAll(boolean retired) throws APIException {
+		return getAll(retired, null);
+	}
+
+	@Override
+	public List<E> getAll(boolean retired, PagingInfo pagingInfo) throws APIException {
 		IMetadataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
 			Context.requirePrivilege(privileges.getGetPrivilege());
@@ -84,11 +90,17 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 		Criteria criteria = dao.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("retired", retired));
 
-		return dao.select(getEntityClass(), criteria);
+		loadPagingTotal(pagingInfo, criteria);
+		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
 	}
 
 	@Override
 	public List<E> findByName(String nameFragment, boolean includeRetired) throws APIException {
+		return findByName(nameFragment, includeRetired, null);
+	}
+
+	@Override
+	public List<E> findByName(String nameFragment, boolean includeRetired, PagingInfo pagingInfo) throws APIException {
 		IMetadataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
 			Context.requirePrivilege(privileges.getGetPrivilege());
@@ -108,6 +120,7 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 			criteria.add(Restrictions.eq("retired", false));
 		}
 
-		return dao.select(getEntityClass(), criteria);
+		loadPagingTotal(pagingInfo, criteria);
+		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
 	}
 }
