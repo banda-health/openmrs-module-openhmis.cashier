@@ -37,7 +37,8 @@ define(
 			meta: {
 				name: "Item",
 				namePlural: "Items",
-				openmrsType: 'metadata'
+				openmrsType: 'metadata',
+				restUrl: 'item'
 			},
 			schema: {
 				name: { type: 'Text' },

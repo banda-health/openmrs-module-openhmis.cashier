@@ -12,7 +12,7 @@ curl(
 	],
 	function($, openhmis) {
 		$(function() {
-			openhmis.startAddEditScreen(openhmis.Item, "/item", {
+			openhmis.startAddEditScreen(openhmis.Item, {
 				listFields: ['name', 'codes']
 			});
 		});

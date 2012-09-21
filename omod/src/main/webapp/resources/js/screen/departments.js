@@ -9,7 +9,7 @@ curl(
 	],
 	function($, openhmis) {
 		$(function() {
-			openhmis.startAddEditScreen(openhmis.Department, "/department", {
+			openhmis.startAddEditScreen(openhmis.Department, {
 				listFields: ['name', 'description']
 			});
 		});

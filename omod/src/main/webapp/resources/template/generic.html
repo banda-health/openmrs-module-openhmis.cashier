@@ -40,7 +40,7 @@
 			<tr>
 			<? if (itemActions.length > 0) { ?><th class="item-actions end" style="width: <?= itemActions.length * 10 ?>px;"></td> <? } ?>
 			<? for (var field in fields) { ?>
-				<th class="<?= fields[field] ?>"><?= modelSchema[fields[field]].title === undefined ? helpers.keyToTitle(fields[field]) : modelSchema[fields[field]].title ?></th>
+				<th class="field-<?= fields[field] ?>"><?= modelSchema[fields[field]].title === undefined ? helpers.keyToTitle(fields[field]) : modelSchema[fields[field]].title ?></th>
 			<? } ?>
 			</tr>
 		</thead>

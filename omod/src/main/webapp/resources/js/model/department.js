@@ -9,7 +9,8 @@ define(
 			meta: {
 				name: __("Department"),
 				namePlural: __("Departments"),
-				openmrsType: 'metadata'
+				openmrsType: 'metadata',
+				restUrl: 'department'
 			},
 			
 			schema: {
@@ -23,6 +24,8 @@ define(
 			toString: function() {
 				return this.get('name');
 			}
-		});		
+		});
+		
+		return openhmis;
 	}
 );

@@ -160,6 +160,11 @@ define(
 				'change #showRetired': 'toggleShowRetired'
 			},
 			
+			// Called when a list item is removed
+			itemRemoved: function(item) {
+				this.colorRows();
+			},
+			
 			deselectAll: function() {
 				this.$('tr').removeClass('row_selected');
 			},
@@ -167,6 +172,16 @@ define(
 			toggleShowRetired: function(event) {
 				this.showRetired = event.target.checked;
 				this.model.fetch();
+			},
+			
+			colorRows: function() {
+				var lineNumber = 0;
+				this.$el.find('tbody tr').each(function() {
+					$(this)
+					.removeClass("evenRow oddRow")
+					.addClass((lineNumber % 2 === 0) ? "evenRow" : "oddRow");
+					lineNumber++;
+				});
 			},
 			
 			_determineFields: function() {
@@ -199,7 +214,7 @@ define(
 				var lineNumber = 0;
 				this.model.each(function(model) {
 					if (view.showRetired === false && model.isRetired()) return;
-					var itemView = new openhmis.GenericListItemView({
+					var itemView = new view.itemView({
 						model: model,
 						fields: view.fields,
 						schema: schema,
@@ -208,6 +223,7 @@ define(
 					});
 					tbody.append(itemView.render().el);
 					itemView.on('select', view.deselectAll);
+					itemView.on('remove', view.itemRemoved);
 					if (view.addEditView) itemView.on('select', view.addEditView.edit);
 					model.on('retired', function() { if (!view.showRetired) itemView.remove(); });
 					lineNumber++;
@@ -231,19 +247,28 @@ define(
 				this.template = this.getTemplate();
 				this.model.on('sync', this.render);
 				this.model.on('destroy', this.remove);
-				this.enableOperations();
+				this.enableActions();
 			},
 			
 			events: {
 				'click td': 'select'
 			},
 			
-			enableOperations: function() {
+			enableActions: function() {
 				for (var act in this.actions) {
 					switch (this.actions[act]) {
 						// Display remove action for the item
 						case 'remove':
-							this.events['click .remove'] = 'itemRemove';
+							this.events['click .remove'] = 'removeItem';
+							break;
+						case 'inlineEdit':
+							var schema = _.extend({}, this.model.schema, this.schema || {});
+							this.form = openhmis.GenericAddEditView.prototype.prepareModelForm.call(this, this.model, {
+								schema: schema,
+								template: 'trForm',
+								fieldsetTemplate: 'blankFieldset',
+								fieldTemplate: 'tableField'
+							});
 							break;
 					}
 				}
@@ -255,15 +280,20 @@ define(
 				this.$el.addClass("row_selected");
 			},
 			
-			itemRemove: function(event) {
+			removeItem: function(event) {
 				if (confirm(__("Are you sure you want to remove the selected item?"))) {
-					this.model.destroy();
+					var copy = this.model.clone();
+					this.removeModel();
 					Backbone.View.prototype.remove.call(this);
-					this.trigger('remove');
+					this.trigger('remove', copy);
 					return true;
 				}
 				// Prevent this event from propagating
 				else return false;
+			},
+			
+			removeModel: function() {
+				this.model.destroy();
 			},
 			
 			render: function() {
@@ -272,28 +302,18 @@ define(
 					actions: this.actions,
 					fields: this.fields
 				})).addClass("selectable");
-
 				if (_.indexOf(this.actions, 'inlineEdit') !== -1) {
-					var schema = _.extend({}, this.model.schema, this.schema || {});
-					this.form = openhmis.GenericAddEditView.prototype.prepareModelForm.call(this, this.model, {
-						schema: schema,
-						template: 'trForm',
-						fieldsetTemplate: 'blankFieldset',
-						fieldTemplate: 'tableField'
-					});
 					this.form.render();
 					this.$el.append(this.form.$('td'));
-					//this.setElement(this.form.el);
-					//this.$el.html(this.$el.html() + this.form.$('b.fieldset').html());
 				}
 				return this;
 			}
 		});
 		
 		// Create new generic add/edit screen
-		openhmis.startAddEditScreen = function(model, restResourceUrl, options) {
+		openhmis.startAddEditScreen = function(model, options) {
 			var collection = new openhmis.GenericCollection([], {
-				url: restResourceUrl,
+				url: model.prototype.meta.restUrl,
 				model: model
 			});
 			var addEditView = new openhmis.GenericAddEditView({ collection: collection });

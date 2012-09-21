@@ -15,16 +15,11 @@ curl(
 		
 			var billView = new openhmis.BillView({ model: new openhmis.GenericCollection(
 				[
-					new openhmis.LineItem({
-						description: "Consultation Fee",
-						quantity: 1,
-						price: 50
-					}),
-					new openhmis.LineItem({
-						description: "File Retrieval Fee",
-						quantity: 1,
-						price: 10
-					})					
+					new openhmis.LineItem({ uuid: 'asd', item: new openhmis.Item({ uuid: 'asd' }) }),
+					new openhmis.LineItem({ uuid: 'fgh', item: new openhmis.Item({ uuid: 'fgh' }) }),
+					new openhmis.LineItem({ uuid: 'jkl', item: new openhmis.Item({ uuid: 'jkl' }) }),
+					new openhmis.LineItem({ uuid: 'qwe', item: new openhmis.Item({ uuid: 'qwe' }) }),
+					new openhmis.LineItem()
 				],
 				{
 					model: openhmis.LineItem,

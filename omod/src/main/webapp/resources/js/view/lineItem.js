@@ -1,9 +1,0 @@
-define(
-	[
-		'lib/jquery',
-		'lib/underscore',
-		'lib/backbone',
-		'lib/i18n',
-		'openhmis'
-	],
-);

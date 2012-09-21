@@ -1,16 +1,22 @@
 define(
 	[
+		'lib/jquery',
 		'lib/backbone',
-		'lib/backbone-forms'
+		'lib/underscore',
+		'model/item',
+		'model/department',
+		'lib/backbone-forms',
+		'lib/labelOver',
 	],
-	function(Backbone) {
+	function($, Backbone, _, openhmis) {
 		var editors = Backbone.Form.editors;
 		editors.BasicNumber = editors.Number.extend({
 			initialize: function(options) {
+				this.defaultValue = null;
 				editors.Text.prototype.initialize.call(this, options);
 			},
 			
-				/**
+			/**
 			* Check value is numeric
 			*/
 			onKeyPress: function(event) {
@@ -40,6 +46,60 @@ define(
 				}
 		   },
 			
-		});		
+		});
+		
+		editors.Item = editors.Base.extend({
+			tagName: "span",
+			className: "editor",
+			tmplFile: 'editors.html',
+			tmplSelector: '#item-editor',
+			departmentMap: function() {
+				var collection = new openhmis.GenericCollection([], { model: openhmis.Department });
+				var map = {};
+				collection.fetch({ success: function(collection) {
+					collection.each(function(item) { map[item.id] = item.get('name') });
+				}});
+				return map;
+			}(),
+			initialize: function(options) {
+				_.bindAll(this);
+				editors.Base.prototype.initialize.call(this, options);
+				this.template = this.getTemplate();
+				this.cache = {};
+			},
+			doItemSearch: function(request, response) {
+				this.doSearch(request, response, openhmis.Item);
+			},			
+			doSearch: function(request, response, model) {
+				var term = request.term;
+				if (term in this.cache) {
+					response(this.cache[term]);
+					return;
+				}
+				var resultCollection = new openhmis.GenericCollection([], { model: model });
+				var view = this;
+				resultCollection.fetch({
+					url: resultCollection.url + "?q=" + encodeURIComponent(term),
+					success: function(collection, resp) {
+						var data = collection.map(function(model) { return model.get('name') });
+						view.cache[term] = data;
+						response(data);
+					}
+				});
+			},
+			render: function() {
+				this.$el.html(this.template({
+					departments: this.departmentMap,
+					item: this.value
+				}));
+				this.$('label').labelOver('over-apply');
+				
+				this.$('.item-name').autocomplete({
+					minLength: 2,
+					source: this.doItemSearch
+				});
+				return this;
+			}
+		});
 	}
 )

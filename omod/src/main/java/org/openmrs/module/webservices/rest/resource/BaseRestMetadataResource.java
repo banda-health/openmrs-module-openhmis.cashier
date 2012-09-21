@@ -76,7 +76,7 @@ public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extend
 
 	@Override
 	protected AlreadyPaged<E> doSearch(String query, RequestContext context) {
-		return new ServiceSearcher<E>(IItemService.class, "getResources", "getCountOfResources").search(query,
+		return new ServiceSearcher<E>(getServiceClass(), "queryByString", "getQueryCount").search(query,
                context);
 	}
 }

@@ -17,6 +17,7 @@ package org.openmrs.module.openhmis.cashier.api;
 import org.openmrs.OpenmrsMetadata;
 import org.openmrs.api.APIException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.RequestContext;
 
 import java.util.List;
 
@@ -69,4 +70,7 @@ public interface IMetadataService<E extends OpenmrsMetadata> extends IEntityServ
 	 * @should return entities that start with the specified name
 	 */
 	List<E> findByName(String nameFragment, boolean includeRetired) throws APIException;
+	
+	List<E> queryByString(String query, Integer startIndex, Integer limit, Boolean includeRetired);
+	Integer getQueryCount(String query, Boolean includeRetired);
 }

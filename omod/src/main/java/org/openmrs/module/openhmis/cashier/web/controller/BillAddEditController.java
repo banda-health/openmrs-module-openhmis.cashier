@@ -2,7 +2,6 @@ package org.openmrs.module.openhmis.cashier.web.controller;
 
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.api.PatientService;
@@ -13,13 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ca.uhn.hl7v2.Log;
-
 @Controller
 @RequestMapping(value = "/module/openhmis/cashier/bill.form")
 public class BillAddEditController {
-	
-	private final Logger log = Logger.getLogger(getClass());
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public void bill(ModelMap model, @RequestParam(value = "patientId", required = false) Integer patientId) {

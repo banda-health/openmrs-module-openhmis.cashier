@@ -1,0 +1,13 @@
+<script id="item-editor" type="text/template">
+	<? var department = item ? item.get('department') : null ?>
+	<? var id = item ? item.cid + '-' : "" ?>
+	<select class="<?= id ?>-department">
+		<option value=""><em>--department--</em></option>
+	<? for (var key in departments) { ?>
+		<option value="<?= key ?>"<?= (department && department.id === key) ? ' selected="selected"' : '' ?>><?= departments[key] ?></option>
+	<? } ?>
+	</select>
+	<input type="hidden" class="department-uuid" />
+	<span class="label-hint"><label for="<?= id ?>item-name">search for item</label><input type="text" class="item-name" id="<?= id ?>item-name" value="<?= item ? item.get('name') : "" ?>" /></span>
+	<input type="hidden" class="item-uuid" />
+</script>

@@ -41,10 +41,13 @@ define(
 		});
 		
 		openhmis.GenericCollection = Backbone.Collection.extend({
-			baseUrl: '/openmrs/ws/rest',
+			baseUrl: '/openmrs/ws/rest/',
 			
 			initialize: function(models, options) {
-				this.url = this.baseUrl + options.url;
+				if (this.model && this.model.prototype.meta && this.model.prototype.meta.restUrl)
+					this.url = this.baseUrl + this.model.prototype.meta.restUrl;
+				else
+					this.url = this.baseUrl + options.url;
 			},
 			
 			fetch: function(options) {
