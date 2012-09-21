@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 import java.lang.reflect.ParameterizedType;
@@ -183,7 +184,7 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 	public void getById_shouldReturnTheEntityWithTheSpecifiedId() throws Exception {
 		E entity = service.getById(0);
 
-		Assert.assertEquals((Integer)0, entity.getId());
+		Assert.assertEquals((Integer) 0, entity.getId());
 	}
 
 	/**
@@ -236,6 +237,85 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 	@Test(expected = IllegalArgumentException.class)
 	public void getByUuid_shouldThrowIllegalArgumentExceptionIfUuidIsEmpty() throws Exception {
 		service.getByUuid("");
+	}
+
+	/**
+	 * @verifies return all entity records if paging is null
+	 * @see IEntityService#getAll(org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void getAll_shouldReturnAllEntityRecordsIfPagingIsNull() throws Exception {
+		List<E> entities = service.getAll(null);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(getTestEntityCount(), entities.size());
+	}
+
+	/**
+	 * @verifies return all entity records if paging page or size is less than one
+	 * @see IEntityService#getAll(org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void getAll_shouldReturnAllEntityRecordsIfPagingPageOrSizeIsLessThanOne() throws Exception {
+		PagingInfo paging = new PagingInfo(0, 1);
+		List<E> entities = service.getAll(paging);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(getTestEntityCount(), entities.size());
+
+		paging = new PagingInfo(1, 0);
+		entities = service.getAll(paging);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(getTestEntityCount(), entities.size());
+	}
+
+	/**
+	 * @verifies set the paging total records to the total number of entity records
+	 * @see IEntityService#getAll(org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void getAll_shouldSetThePagingTotalRecordsToTheTotalNumberOfEntityRecords() throws Exception {
+		PagingInfo paging = new PagingInfo(1, 1);
+		List<E> entities = service.getAll(paging);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		Assert.assertEquals((Integer) getTestEntityCount(), paging.getTotalRecordCount());
+	}
+
+	/**
+	 * @verifies not get the total paging record count if it is more than zero
+	 * @see IEntityService#getAll(org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void getAll_shouldNotGetTheTotalPagingRecordCountIfItIsMoreThanZero() throws Exception {
+		PagingInfo paging = new PagingInfo(1, 1);
+		paging.setTotalRecordCount(1l);
+		List<E> entities = service.getAll(paging);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		Assert.assertEquals(Long.valueOf(getTestEntityCount()), paging.getTotalRecordCount());
+	}
+
+	/**
+	 * @verifies return paged entity records if paging is specified
+	 * @see IEntityService#getAll(org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void getAll_shouldReturnPagedEntityRecordsIfPagingIsSpecified() throws Exception {
+		PagingInfo paging = new PagingInfo(1, 1);
+
+		List<E> entities;
+		for (int i = 0; i < getTestEntityCount(); i++) {
+			paging.setPage(i + 1);
+			entities = service.getAll(paging);
+
+			Assert.assertNotNull(entities);
+			Assert.assertEquals(1, entities.size());
+			Assert.assertEquals(i, (int)entities.get(0).getId());
+		}
 	}
 
 	@SuppressWarnings("unchecked")

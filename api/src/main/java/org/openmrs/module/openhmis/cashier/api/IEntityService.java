@@ -18,6 +18,7 @@ import org.openmrs.OpenmrsObject;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -63,6 +64,22 @@ public interface IEntityService<E extends OpenmrsObject> extends OpenmrsService 
 	 */
 	@Transactional(readOnly = true)
 	List<E> getAll() throws APIException;
+
+	/**
+	 * Returns all entity records with the specified paging.
+	 *
+	 * @param paging The paging information.
+	 * @return All entity records that are in the database.
+	 * @should return all entity records
+	 * @should return an empty list if there are no entities
+	 * @should return all entity records if paging is null
+	 * @should return all entity records if paging page or size is less than one
+	 * @should set the paging total records to the total number of entity records
+	 * @should not get the total paging record count if it is more than zero
+	 * @should return paged entity records if paging is specified
+	 */
+	@Transactional(readOnly = true)
+	List<E> getAll(PagingInfo paging) throws APIException;
 
 	/**
 	 * Gets the entity with the specified entity id or {@code null} if not found.

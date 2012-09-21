@@ -60,6 +60,17 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
+	public <T> T selectValue(Criteria criteria) {
+		try {
+			return (T)criteria.uniqueResult();
+		}
+		catch (Exception ex) {
+			throw new APIException("An exception occurred while attempting to selecting a value.", ex);
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
 	public <E extends BaseOpenmrsObject> E selectSingle(Class<E> cls, Serializable id) throws APIException {
 		Session session = sessionFactory.getCurrentSession();
 
@@ -74,7 +85,6 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <E extends BaseOpenmrsObject> E selectSingle(Class<E> cls, Criteria criteria) throws APIException {
-		Session session = sessionFactory.getCurrentSession();
 		E result = null;
 		try {
 			List<E> results = criteria.list();
@@ -106,8 +116,12 @@ public class GenericHibernateDAO implements IGenericHibernateDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <E extends BaseOpenmrsObject> List<E> select(Class<E> cls, Criteria criteria) throws APIException {
-		Session session = sessionFactory.getCurrentSession();
-		List<E> results = null;
+		// If the criteria is not defined just use the default select method
+		if (criteria == null) {
+			return select(cls);
+		}
+
+		List<E> results;
 
 		try {
 			results = criteria.list();
