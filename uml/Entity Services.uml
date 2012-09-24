@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.openmrs.module.openhmis.cashier.api.IEntityService</OriginalElement>
+  <nodes>
+    <node x="42.82499999999993" y="156.0">org.openmrs.module.openhmis.cashier.api.IDataService</node>
+    <node x="303.208125" y="0.0">org.openmrs.api.OpenmrsService</node>
+    <node x="255.708125" y="78.0">org.openmrs.module.openhmis.cashier.api.IEntityService</node>
+    <node x="558.833125" y="322.0">org.openmrs.module.openhmis.cashier.api.impl.DepartmentServiceImpl</node>
+    <node x="705.958125" y="156.0">org.openmrs.module.openhmis.cashier.api.IMetadataService</node>
+    <node x="137.99999999999994" y="322.0">org.openmrs.module.openhmis.cashier.api.impl.TimesheetServiceImpl</node>
+    <node x="278.99999999999994" y="156.0">org.openmrs.module.openhmis.cashier.api.impl.BaseEntityServiceImpl</node>
+    <node x="629.208125" y="244.0">org.openmrs.module.openhmis.cashier.api.impl.BaseMetadataServiceImpl</node>
+    <node x="354.833125" y="322.0">org.openmrs.module.openhmis.cashier.api.impl.PaymentModeServiceImpl</node>
+    <node x="749.833125" y="322.0">org.openmrs.module.openhmis.cashier.api.impl.ItemServiceImpl</node>
+    <node x="0.0" y="322.0">org.openmrs.module.openhmis.cashier.api.impl.BillServiceImpl</node>
+    <node x="172.82499999999993" y="244.0">org.openmrs.module.openhmis.cashier.api.impl.BaseDataServiceImpl</node>
+    <node x="899.833125" y="322.0">org.openmrs.module.openhmis.cashier.api.impl.CashPointServiceImpl</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.PaymentModeServiceImpl" target="org.openmrs.module.openhmis.cashier.api.impl.BaseMetadataServiceImpl">
+      <point x="46.0" y="-14.0" />
+      <point x="492.833125" y="302.0" />
+      <point x="655.583125" y="302.0" />
+      <point x="-79.125" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.BaseMetadataServiceImpl" target="org.openmrs.module.openhmis.cashier.api.IMetadataService">
+      <point x="52.75" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.IMetadataService" target="org.openmrs.module.openhmis.cashier.api.IEntityService">
+      <point x="0.0" y="-14.0" />
+      <point x="787.458125" y="126.0" />
+      <point x="373.208125" y="126.0" />
+      <point x="47.0" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.CashPointServiceImpl" target="org.openmrs.module.openhmis.cashier.api.impl.BaseMetadataServiceImpl">
+      <point x="-39.5" y="-14.0" />
+      <point x="939.333125" y="292.0" />
+      <point x="813.833125" y="292.0" />
+      <point x="79.125" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.BillServiceImpl" target="org.openmrs.module.openhmis.cashier.api.impl.BaseDataServiceImpl">
+      <point x="29.5" y="-14.0" />
+      <point x="88.49999999999994" y="302.0" />
+      <point x="218.57499999999993" y="302.0" />
+      <point x="-45.75" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.BaseMetadataServiceImpl" target="org.openmrs.module.openhmis.cashier.api.impl.BaseEntityServiceImpl">
+      <point x="-52.75" y="-14.0" />
+      <point x="681.958125" y="204.0" />
+      <point x="420.74999999999994" y="204.0" />
+      <point x="47.25" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.IDataService" target="org.openmrs.module.openhmis.cashier.api.IEntityService">
+      <point x="0.0" y="-14.0" />
+      <point x="110.32499999999993" y="136.0" />
+      <point x="279.208125" y="136.0" />
+      <point x="-47.0" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.BaseDataServiceImpl" target="org.openmrs.module.openhmis.cashier.api.impl.BaseEntityServiceImpl">
+      <point x="45.75" y="-14.0" />
+      <point x="310.07499999999993" y="224.0" />
+      <point x="326.24999999999994" y="224.0" />
+      <point x="-47.25" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.ItemServiceImpl" target="org.openmrs.module.openhmis.cashier.api.IMetadataService">
+      <point x="32.5" y="-14.0" />
+      <point x="847.333125" y="302.0" />
+      <point x="859.645625" y="302.0" />
+      <point x="859.645625" y="224.0" />
+      <point x="820.058125" y="224.0" />
+      <point x="32.599999999999966" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.BillServiceImpl" target="org.openmrs.module.openhmis.cashier.api.IDataService">
+      <point x="-29.5" y="-14.0" />
+      <point x="29.5" y="224.0" />
+      <point x="65.32499999999993" y="224.0" />
+      <point x="-45.0" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.ItemServiceImpl" target="org.openmrs.module.openhmis.cashier.api.impl.BaseMetadataServiceImpl">
+      <point x="-32.5" y="-14.0" />
+      <point x="782.333125" y="302.0" />
+      <point x="761.083125" y="302.0" />
+      <point x="26.375" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.BaseDataServiceImpl" target="org.openmrs.module.openhmis.cashier.api.IDataService">
+      <point x="-45.75" y="-14.0" />
+      <point x="218.57499999999993" y="214.0" />
+      <point x="155.32499999999993" y="214.0" />
+      <point x="45.0" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.TimesheetServiceImpl" target="org.openmrs.module.openhmis.cashier.api.impl.BaseDataServiceImpl">
+      <point x="40.5" y="-14.0" />
+      <point x="259.49999999999994" y="302.0" />
+      <point x="310.07499999999993" y="302.0" />
+      <point x="45.75" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.BaseEntityServiceImpl" target="org.openmrs.api.OpenmrsService">
+      <point x="47.25" y="-14.0" />
+      <point x="420.74999999999994" y="136.0" />
+      <point x="413.99999999999994" y="136.0" />
+      <point x="413.99999999999994" y="53.0" />
+      <point x="398.458125" y="53.0" />
+      <point x="31.75" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.BaseEntityServiceImpl" target="org.openmrs.module.openhmis.cashier.api.IEntityService">
+      <point x="-47.25" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.PaymentModeServiceImpl" target="org.openmrs.module.openhmis.cashier.api.IMetadataService">
+      <point x="-46.0" y="-14.0" />
+      <point x="400.833125" y="214.0" />
+      <point x="722.2581250000001" y="214.0" />
+      <point x="-65.19999999999999" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.IEntityService" target="org.openmrs.api.OpenmrsService">
+      <point x="0.0" y="-14.0" />
+      <point x="326.208125" y="53.0" />
+      <point x="334.958125" y="53.0" />
+      <point x="-31.75" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.TimesheetServiceImpl" target="org.openmrs.module.openhmis.cashier.api.IDataService">
+      <point x="-40.5" y="-14.0" />
+      <point x="178.49999999999994" y="292.0" />
+      <point x="162.32499999999993" y="292.0" />
+      <point x="162.32499999999993" y="224.0" />
+      <point x="110.32499999999993" y="224.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.DepartmentServiceImpl" target="org.openmrs.module.openhmis.cashier.api.impl.BaseMetadataServiceImpl">
+      <point x="42.75" y="-14.0" />
+      <point x="687.083125" y="302.0" />
+      <point x="708.333125" y="302.0" />
+      <point x="-26.375" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.CashPointServiceImpl" target="org.openmrs.module.openhmis.cashier.api.IMetadataService">
+      <point x="39.5" y="-14.0" />
+      <point x="1018.3331249999999" y="214.0" />
+      <point x="852.6581249999999" y="214.0" />
+      <point x="65.19999999999999" y="14.0" />
+    </edge>
+    <edge source="org.openmrs.module.openhmis.cashier.api.impl.DepartmentServiceImpl" target="org.openmrs.module.openhmis.cashier.api.IMetadataService">
+      <point x="-42.75" y="-14.0" />
+      <point x="601.583125" y="292.0" />
+      <point x="599.520625" y="292.0" />
+      <point x="599.520625" y="224.0" />
+      <point x="754.858125" y="224.0" />
+      <point x="-32.60000000000002" y="14.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="529.0" y="175.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

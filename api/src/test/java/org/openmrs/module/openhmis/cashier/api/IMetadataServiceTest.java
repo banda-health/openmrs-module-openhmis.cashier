@@ -45,7 +45,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 
 	/**
 	 * @verifies retire the entity successfully
-	 * @see IMetadataService#retire(E, String)
+	 * @see IMetadataService#retire(org.openmrs.OpenmrsMetadata, String)
 	 */
 	@Test
 	public void retire_shouldRetireTheEntitySuccessfully() throws Exception {
@@ -66,7 +66,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 
 	/**
 	 * @verifies throw NullPointerException when the entity is null
-	 * @see IMetadataService#retire(E, String)
+	 * @see IMetadataService#retire(org.openmrs.OpenmrsMetadata, String)
 	 */
 	@Test(expected = NullPointerException.class)
 	public void retire_shouldThrowNullPointerExceptionWhenTheEntityIsNull() throws Exception {
@@ -75,7 +75,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 
 	/**
 	 * @verifies throw IllegalArgumentException when no reason is given
-	 * @see IMetadataService#retire(E, String)
+	 * @see IMetadataService#retire(org.openmrs.OpenmrsMetadata, String)
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void retire_shouldThrowIllegalArgumentExceptionWhenNoReasonIsGiven() throws Exception {
@@ -86,7 +86,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 
 	/**
 	 * @verifies throw NullPointerException if the entity is null
-	 * @see IMetadataService#unretire(E)
+	 * @see IMetadataService#unretire(org.openmrs.OpenmrsMetadata)
 	 */
 	@Test(expected = NullPointerException.class)
 	public void unretire_shouldThrowNullPointerExceptionIfTheEntityIsNull() throws Exception {
@@ -95,7 +95,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 
 	/**
 	 * @verifies unretire the entity
-	 * @see IMetadataService#unretire(E)
+	 * @see IMetadataService#unretire(org.openmrs.OpenmrsMetadata)
 	 */
 	@Test
 	public void unretire_shouldUnretireTheEntity() throws Exception {
@@ -221,7 +221,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 		E entity = service.getById(0);
 
 		// Search using the first four characters in the name
-		List<E> entities = service.findByName(entity.getName().substring(0, 4), false);
+		List<E> entities = service.findByName(entity.getName(), false);
 		Assert.assertTrue(entities.size() > 0);
 
 		// Make sure the entity is in the results
@@ -234,6 +234,114 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 		}
 
 		Assert.assertNotNull("Could not find entity in search results", found);
+	}
+
+	/**
+	 * @verifies return all specified entity records if paging is null
+	 * @see IMetadataService#findByName(String, boolean, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void findByName_shouldReturnAllSpecifiedEntityRecordsIfPagingIsNull() throws Exception {
+		E entity = service.getById(0);
+
+		// This assumes that the entity name is unique
+		List<E> entities = service.findByName(entity.getName(), false, null);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		assertEntity(entity, entities.get(0));
+	}
+
+	/**
+	 * @verifies return all specified entity records if paging page or size is less than one
+	 * @see IMetadataService#findByName(String, boolean, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void findByName_shouldReturnAllSpecifiedEntityRecordsIfPagingPageOrSizeIsLessThanOne() throws Exception {
+		E entity = service.getById(0);
+
+		PagingInfo paging = new PagingInfo(0, 1);
+		// This assumes that the entity name is unique
+		List<E> entities = service.findByName(entity.getName(), false, paging);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		assertEntity(entity, entities.get(0));
+
+		paging = new PagingInfo(1, 0);
+		entities = service.findByName(entity.getName(), false, paging);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		assertEntity(entity, entities.get(0));
+	}
+
+	/**
+	 * @verifies set the paging total records to the total number of entity records
+	 * @see IMetadataService#findByName(String, boolean, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void findByName_shouldSetThePagingTotalRecordsToTheTotalNumberOfEntityRecords() throws Exception {
+		PagingInfo paging = new PagingInfo(1, 1);
+		List<E> entities = service.findByName("T", false, paging);
+
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		Assert.assertEquals(Long.valueOf(getTestEntityCount()), paging.getTotalRecordCount());
+	}
+
+	/**
+	 * @verifies not get the total paging record count if it is more than zero
+	 * @see IMetadataService#findByName(String, boolean, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void findByName_shouldNotGetTheTotalPagingRecordCountIfItIsMoreThanZero() throws Exception {
+		E entity = service.getById(0);
+		PagingInfo paging = new PagingInfo(1, 1);
+
+		// First check that the full total is set
+		List<E> entities = service.findByName(entity.getName(), false, paging);
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		Assert.assertEquals((Long)1L, paging.getTotalRecordCount());
+
+		// Now manually set the total and check that it is not reset
+		paging = new PagingInfo(1, 1);
+		paging.setTotalRecordCount(10L);
+
+		entities = service.findByName(entity.getName(), false, paging);
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		Assert.assertEquals((Long)10L, paging.getTotalRecordCount());
+
+		// Finally, explicitly set the paging to not load the total and make sure it is not counted
+		paging = new PagingInfo(1, 1);
+		paging.setLoadRecordCount(false);
+
+		entities = service.findByName(entity.getName(), false, paging);
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		Assert.assertNull(paging.getTotalRecordCount());
+	}
+
+	/**
+	 * @verifies return paged entity records if paging is specified
+	 * @see IMetadataService#findByName(String, boolean, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void findByName_shouldReturnPagedEntityRecordsIfPagingIsSpecified() throws Exception {
+		PagingInfo paging = new PagingInfo(1, 1);
+		List<E> entities;
+
+		for (int i = 0; i < getTestEntityCount(); i++) {
+			paging.setPage(i + 1);
+			entities = service.findByName("T", false, paging);
+
+			Assert.assertNotNull(entities);
+			Assert.assertEquals(1, entities.size());
+			Assert.assertEquals(Long.valueOf(getTestEntityCount()), paging.getTotalRecordCount());
+			assertEntity(service.getById(i), entities.get(0));
+		}
 	}
 
 	/**
@@ -303,10 +411,30 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 	@Test
 	public void getAll_shouldNotGetTheTotalPagingRecordCountIfItIsMoreThanZero() throws Exception {
 		PagingInfo paging = new PagingInfo(1, 1);
-		List<E> entities = service.getAll(false, paging);
 
+		// First check that the full total is set
+		List<E> entities = service.getAll(false, paging);
 		Assert.assertNotNull(entities);
 		Assert.assertEquals(1, entities.size());
+		Assert.assertEquals(Long.valueOf(getTestEntityCount()), paging.getTotalRecordCount());
+
+		// Now manually set the total and check that it is not reset
+		paging = new PagingInfo(1, 1);
+		paging.setTotalRecordCount(10L);
+
+		entities = service.getAll(false, paging);
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		Assert.assertEquals((Long)10L, paging.getTotalRecordCount());
+
+		// Finally, explicitly set the paging to not load the total and make sure it is not counted
+		paging = new PagingInfo(1, 1);
+		paging.setLoadRecordCount(false);
+
+		entities = service.getAll(false, paging);
+		Assert.assertNotNull(entities);
+		Assert.assertEquals(1, entities.size());
+		Assert.assertNull(paging.getTotalRecordCount());
 	}
 
 	/**
@@ -324,7 +452,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 
 			Assert.assertNotNull(entities);
 			Assert.assertEquals(1, entities.size());
-			Assert.assertEquals(i, (int)entities.get(0).getId());
+			assertEntity(service.getById(i), entities.get(0));
 		}
 	}
 }

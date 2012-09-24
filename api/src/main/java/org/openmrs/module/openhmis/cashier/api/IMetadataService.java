@@ -100,6 +100,11 @@ public interface IMetadataService<E extends OpenmrsMetadata> extends IEntityServ
 	 * @should return an empty list if no entities are found
 	 * @should not return retired entities unless specified
 	 * @should return entities that start with the specified name
+	 * @should return all specified entity records if paging is null
+	 * @should return all specified entity records if paging page or size is less than one
+	 * @should set the paging total records to the total number of entity records
+	 * @should not get the total paging record count if it is more than zero
+	 * @should return paged entity records if paging is specified
 	 */
 	List<E> findByName(String nameFragment, boolean includeRetired, PagingInfo paging) throws APIException;
 }
