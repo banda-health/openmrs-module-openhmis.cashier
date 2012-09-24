@@ -164,10 +164,16 @@ public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P exten
 			}
 
 			if (pagingInfo.shouldLoadRecordCount()) {
+				try {
 				criteria.setProjection(Projections.rowCount());
 
 				pagingInfo.setTotalRecordCount(dao.<Long>selectValue(criteria));
 				pagingInfo.setLoadRecordCount(false);
+				} finally {
+					// Reset the criteria to return the result rather than the row count
+					criteria.setProjection(null);
+				}
+
 			}
 		}
 	}
