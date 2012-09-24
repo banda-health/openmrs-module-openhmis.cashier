@@ -30,7 +30,7 @@ define(
 			
 			render: function() {
 				openhmis.GenericListItemView.prototype.render.call(this);
-				this.$(".field-total input").attr("readonly", "readonly");
+				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
 				return this;
 			}
 		});
@@ -43,7 +43,8 @@ define(
 			itemActions: ['remove', 'inlineEdit'],
 			schema: {
 				item: { type: 'Item' },
-				quantity: { type: 'Number'}
+				quantity: { type: 'CustomNumber', nonNegative: true },
+				price: { type: 'BasicNumber', readOnly: true }
 			},
 			
 			itemRemoved: function(item) {

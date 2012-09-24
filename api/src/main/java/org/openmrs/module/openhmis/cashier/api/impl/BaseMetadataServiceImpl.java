@@ -23,11 +23,9 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
-import java.util.ArrayList;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -124,23 +122,5 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 
 		loadPagingTotal(pagingInfo, criteria);
 		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
-	}
-	
-	@Override
-	public List<E> queryByString(String query, Integer startIndex, Integer limit, Boolean includeRetired) {
-		if (query.matches("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}")) {
-			List<E> result = new ArrayList<E>(1);
-			result.add(getByUuid(query));
-			return result;
-		}
-		List<E> results = new LinkedList<E>();
-		results.addAll(findByName(query, includeRetired));
-		return results;
-	}
-	
-	@Override
-	public Integer getQueryCount(String query, Boolean includeRetired) {
-		List<E> results = queryByString(query, 0, Integer.MAX_VALUE, includeRetired);
-		return results.size();
 	}
 }

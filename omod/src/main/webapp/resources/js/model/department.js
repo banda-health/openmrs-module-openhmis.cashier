@@ -14,11 +14,8 @@ define(
 			},
 			
 			schema: {
-				uuid: { type: 'Text', readOnly: true },
 				name: 'Text',
-				description: 'Text',
-				retired: 'Text',
-				retireReason: { type: 'Text', readOnly: true }
+				description: 'Text'
 			},
 			
 			toString: function() {

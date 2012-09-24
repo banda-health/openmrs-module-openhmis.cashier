@@ -48,6 +48,31 @@ define(
 			
 		});
 		
+		editors.CustomNumber = editors.Number.extend({
+			initialize: function(options) {
+				editors.Number.prototype.initialize.call(this, options);
+				if (options && options.schema) this.nonNegative = options.schema.nonNegative;
+			},
+			
+			events: {
+				'change': 'valueChanged'
+			},
+			
+			setValue: function(value) {
+				this.el.defaultValue = value;
+				editors.Number.prototype.setValue.call(this, value);
+			},
+			
+			valueChanged: function(event) {
+				if (this.nonNegative && parseInt(this.$el.val()) < 0) {
+					this.$el.val(this.el.defaultValue);
+					event.preventDefault();
+					return;
+				}
+				event.target.defaultValue = event.target.value;
+			}
+		});
+		
 		editors.Item = editors.Base.extend({
 			tagName: "span",
 			className: "editor",
