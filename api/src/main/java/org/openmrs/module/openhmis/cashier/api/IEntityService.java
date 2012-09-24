@@ -23,6 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Represents classes that provide data access services to model types that implement {@link OpenmrsObject}.
+ * @param <E> The entity model class.
+ */
 @Transactional
 public interface IEntityService<E extends OpenmrsObject> extends OpenmrsService {
 	/**

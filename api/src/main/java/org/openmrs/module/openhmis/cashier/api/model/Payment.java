@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 /**
- * A class to represent a payment toward a bill
+ * Model class that represents the {@link Bill} payment information.
  */
 public class Payment extends BaseOpenmrsData {
 	private Integer paymentId;

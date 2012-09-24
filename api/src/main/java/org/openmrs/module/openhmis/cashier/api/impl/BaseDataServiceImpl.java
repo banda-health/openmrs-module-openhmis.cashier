@@ -28,8 +28,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The base type for data entity services.
- * @param <E> The entity type.
+ * The base type for {@link IDataService}s.
+ * @param <E> The entity model type.
  */
 public abstract class BaseDataServiceImpl<E extends BaseOpenmrsData>
 		extends BaseEntityServiceImpl<E, IDataAuthorizationPrivileges> implements IDataService<E> {

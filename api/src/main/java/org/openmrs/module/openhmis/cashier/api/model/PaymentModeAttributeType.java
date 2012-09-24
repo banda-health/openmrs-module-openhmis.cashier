@@ -16,14 +16,14 @@ package org.openmrs.module.openhmis.cashier.api.model;
 import org.openmrs.BaseOpenmrsMetadata;
 
 /**
- * Metadata class to describe an attribute of a payment mode.  For example, a credit card mode of payment may require
- * a transaction number as an attribute. *
+ * Model class to describe an attribute of a payment mode.  For example, a credit card mode of payment may require
+ * a transaction number as an attribute.
  */
 public class PaymentModeAttributeType extends BaseOpenmrsMetadata {
 	/**
 	 * Note that this type can not use the org.openmrs.attribute.BaseAttributeType class because these attributes vary
-	 * per payment mode, rather than being defined for all payment modes.  In the future we might want to move to a
-	 * similar design to the BaseAttributeType or even extend it to support instance-based attribute types.
+	 * per payment mode, rather than being defined for all payment modes.  In the future we might want to use a
+	 * similar design as BaseAttributeType or even extend it to support instance-based attribute types.
 	 */
 
 	private Integer paymentModeAttributeTypeId;

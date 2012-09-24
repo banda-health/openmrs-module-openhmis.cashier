@@ -15,6 +15,9 @@ package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsMetadata;
 
+/**
+ * Model class to represent an externally defined code for an {@link Item}.
+ */
 public class ItemCode extends BaseOpenmrsMetadata {
 	private Integer itemCodeId;
 	private String code;

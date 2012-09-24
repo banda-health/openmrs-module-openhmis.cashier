@@ -29,8 +29,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The base type for metadata entity services.
- * @param <E> THe entity type.
+ * The base type for {@link IMetadataService}s.
+ * @param <E> THe entity model type.
  */
 public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 		extends BaseEntityServiceImpl<E, IMetadataAuthorizationPrivileges> implements IMetadataService<E> {

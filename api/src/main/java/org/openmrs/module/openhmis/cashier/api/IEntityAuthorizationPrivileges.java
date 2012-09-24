@@ -15,7 +15,7 @@
 package org.openmrs.module.openhmis.cashier.api;
 
 /**
- * Represents types that define the required privileges for the core entity service operations.
+ * Represents types that define the privileges for core {@link IEntityService} operations.
  */
 public interface IEntityAuthorizationPrivileges {
 	/**
