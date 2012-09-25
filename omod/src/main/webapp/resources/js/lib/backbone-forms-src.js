@@ -1321,7 +1321,7 @@ Form.editors = (function() {
     },
     
     getValue: function() {
-      return this.$el.prop('checked');
+      return this.el.checked;
     },
     
     setValue: function(value) {
