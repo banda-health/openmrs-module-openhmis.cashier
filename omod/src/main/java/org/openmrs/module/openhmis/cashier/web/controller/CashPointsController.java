@@ -1,6 +1,6 @@
-/**
+/*
  * The contents of this file are subject to the OpenMRS Public License
- * Version 1.0 (the "License"); you may not use this file except in
+ * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://license.openmrs.org
  *
@@ -23,11 +23,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/module/openhmis/cashier/departments")
-public class DepartmentsController {
+@RequestMapping("/module/openhmis/cashier/cashPoints")
+public class CashPointsController {
 	@RequestMapping(method = RequestMethod.GET)
-	public void departments(ModelMap model) throws JsonGenerationException, JsonMappingException, IOException {
-		model.addAttribute("modelBase", "openhmis.cashier.department");
+	public void cashPoints(ModelMap model) throws JsonGenerationException, JsonMappingException, IOException {
+		model.addAttribute("modelBase", "openhmis.cashier.cashPoint");
 	}
 }
-

@@ -13,11 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.extension.html;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * This class defines the links that will appear on the administration page under the
@@ -45,6 +45,7 @@ public class AdminList extends AdministrationSectionExt {
 	public Map<String, String> getLinks() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
 		map.put("/module/openhmis/cashier/departments.form", "openhmis.cashier.admin.departments");
+		map.put("/module/openhmis/cashier/cashPoints.form", "openhmis.cashier.admin.cashPoints");
 		map.put("/module/openhmis/cashier/items.form", "openhmis.cashier.admin.items");
 		return map;
 	}
