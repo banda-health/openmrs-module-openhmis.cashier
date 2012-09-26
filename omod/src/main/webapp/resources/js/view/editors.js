@@ -100,7 +100,11 @@ define(
 			
 			events: {
 				'change select.department': 'modified',
-				'change input.item-name' : 'modified'
+				'change input.item-name' : 'modified',
+				'focus select': 'handleFocus',
+				'focus .item-name': 'handleFocus',
+				'blur select': 'handleBlur',
+				'blur .item-name': 'handleBlur'
 			},
 			
 			getUuid: function() {
@@ -109,6 +113,22 @@ define(
 			
 			getValue: function() {
 				return this.value;
+			},
+			
+			handleFocus: function(event) {
+				if (this.hasFocus) return;
+				this.trigger("focus", this);
+			},
+			
+			handleBlur: function(event) {
+				if (!this.hasFocus) return;
+				var self = this;
+				setTimeout(function() {
+					// Check if another input from this editor has come into focus
+					if (self.$('select:focus')[0] || self.$('.item-name:focus')[0] || self.$('label:focus')[0])
+						return;
+					self.trigger("blur", self);
+				}, 0);
 			},
 			
 			modified: function(event) {
@@ -137,8 +157,8 @@ define(
 					url: resultCollection.url + fetchQuery,
 					success: function(collection, resp) {
 						var data = collection.map(function(model) { return {
-							id: model.id,
-							name: model.get('name'),
+							val: model.id,
+							label: model.get('name'),
 							department_uuid: model.get('department')
 						}});
 						view.cache[query] = data;
@@ -148,10 +168,10 @@ define(
 			},
 			
 			selectItem: function(event, ui) {
-				this.$('.item-name').val(ui.item.name);
-				this.$('.item-uuid').val(ui.item.id);
+				this.$('.item-name').val(ui.item.label);
+				this.$('.item-uuid').val(ui.item.val);
 				this.$('.department').val(ui.item.department_uuid);
-				var uuid = ui.item.id;
+				var uuid = ui.item.val;
 				this.value = new openhmis.Item({ uuid: uuid });
 				var view = this;
 				this.value.fetch({ success: function(model, resp) {
@@ -172,7 +192,7 @@ define(
 				}));
 				this.$('select').keydown(this.departmentKeyDown);
 				this.$('label').labelOver('over-apply');
-				
+				var self = this;
 				this.$('.item-name').autocomplete({
 					minLength: 2,
 					source: this.doItemSearch,
@@ -180,7 +200,7 @@ define(
 				})
 				// Tricky stuff here to get the autocomplete list to render with our custom data
 				.data("autocomplete")._renderItem = function(ul, item) {
-					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.name + "</a>").appendTo(ul);
+					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
 				};
 				return this;
 			}

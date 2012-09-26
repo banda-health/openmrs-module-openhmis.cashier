@@ -83,20 +83,22 @@ define(
 		 * and cached.
 		 */
 		Backbone.View.prototype.tmplFileRoot = openhmis.config.wwwUrlRoot + 'template/';
-		Backbone.View.prototype.getTemplate = function(context) {
+		Backbone.View.prototype.getTemplate = function(tmplFile, tmplSelector) {
+			tmplFile = tmplFile ? tmplFile : this.tmplFile;
+			tmplSelector = tmplSelector ? tmplSelector : this.tmplSelector;
 			var view = this;
-			if (openhmis.templates[view.tmplFile] === undefined) {
-				var uri = view.tmplFileRoot === undefined ? view.tmplFile : view.tmplFileRoot + view.tmplFile;
+			if (openhmis.templates[tmplFile] === undefined) {
+				var uri = view.tmplFileRoot === undefined ? tmplFile : view.tmplFileRoot + tmplFile;
 				$.ajax({
 					url: uri,
 					async: false,
 					dataType: "html",
 					success: function(data, status, jq) {
-						openhmis.templates[view.tmplFile] = $("<div/>").html(data);
+						openhmis.templates[tmplFile] = $("<div/>").html(data);
 					}
 				});
 			}
-			var template = _.template($(openhmis.templates[view.tmplFile]).find(view.tmplSelector).html());
+			var template = _.template($(openhmis.templates[tmplFile]).find(tmplSelector).html());
 			var augmentedTemplate = function(context) {
 				if (context !== undefined) {
 					context.__ = context.__ ? context.__ : __;

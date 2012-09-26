@@ -35,17 +35,25 @@ define(
 					var price = view.form.getValue("price");
 					var quantity = view.form.getValue("quantity");
 					view.form.setValue({ total: price * quantity });
+					view.trigger("change", view);
 				}
 				this.updateTimeout = setTimeout(update, 200);
 			},
 			
 			onKeyPress: function(event) {
 				if (event.charCode === 13) {
-					var errors = this.form.commit();
-					if (!errors) {
-						this.model.trigger('validated', this.model);
-					}
+					this.validate();
 				}
+			},
+			
+			validate: function() {
+				var errors = this.form.commit();
+				if (!errors) {
+					this.model.trigger("validated", this.model);
+				} else {
+					alert(JSON.stringify(errors));
+				}
+				return errors;
 			},
 			
 			focus: function(event) {
@@ -56,7 +64,7 @@ define(
 				else
 					this.$('.item-name').focus();
 			},
-			
+						
 			removeModel: function() {
 				this.model.collection.remove(this.model);
 			},
@@ -65,13 +73,15 @@ define(
 				openhmis.GenericListItemView.prototype.render.call(this);
 				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
 				return this;
-			}
+			},			
 		});
 
 		openhmis.BillView = openhmis.GenericListView.extend({
 			initialize: function(options) {
 				openhmis.GenericListView.prototype.initialize.call(this, options);
 				this.itemView = openhmis.BillLineItemView;
+				this.totalsTemplate = this.getTemplate("bill.html", '#bill-totals');
+				this.model.on('all', this.updateTotal);
 			},
 			itemActions: ['remove', 'inlineEdit'],
 			schema: {
@@ -87,6 +97,11 @@ define(
 				return view;
 			},
 			
+			itemSelected: function(itemView) {
+				openhmis.GenericListView.prototype.itemSelected.call(this, itemView);
+				this.updateTotal();
+			},
+
 			itemRemoved: function(item) {
 				openhmis.GenericListView.prototype.itemRemoved.call(this, item);
 				if (item === this.newItem) {
@@ -112,12 +127,23 @@ define(
 				}
 			},
 			
+			getTotal: function() {
+				var total = 0;
+				this.model.each(function(item) {
+					if (item.isClean()) total += item.getTotal();
+				});
+				return total;
+			},
+			
+			updateTotal: function() { this.$('td.total').text(this.getTotal()); },
+
 			render: function() {
 				openhmis.GenericListView.prototype.render.call(this, {
 					listTitle: ""
 				});
-				this.$("table").addClass("bill");
-				this.$('#showRetired').remove();
+				this.$('table').addClass("bill");
+				this.$('div.box').append(this.totalsTemplate({ getTotal: this.getTotal }));
+				this.$('.showRetired').remove();
 				return this;
 			}
 		});

@@ -64,8 +64,8 @@ define(
 				$(this.retireVoidPurgeEl).hide();
 			},
 			
-			edit: function(view) {
-				this.model = view.model;
+			edit: function(model) {
+				this.model = model;
 				var self = this;
 				this.model.fetch({ success: function(model, resp) {
 					self.render();
@@ -170,7 +170,7 @@ define(
 				if (lineNumber)
 					className = lineNumber % 2 === 0 ? "evenRow" : "oddRow";
 				else {
-					var $rows = this.$('tbody tr');
+					var $rows = this.$('tbody.list tr');
 					if ($rows.length > 0) {
 						var lastRow = $rows[$rows.length - 1];
 						if ($(lastRow).hasClass("evenRow"))
@@ -185,10 +185,9 @@ define(
 					actions: this.itemActions
 				});
 				model.view = itemView;
-				this.$('tbody').append(itemView.render().el);
+				this.$('tbody.list').append(itemView.render().el);
 				itemView.on('select', this.itemSelected);
 				itemView.on('remove', this.itemRemoved);
-				if (this.addEditView) itemView.on('select', this.addEditView.edit);
 				var view = this;
 				model.on('retired', function() { if (!view.showRetired) itemView.remove(); });
 				return itemView;
@@ -202,6 +201,7 @@ define(
 			itemSelected: function(view) {
 				this.deselectAll();
 				this.selectedItem = view;
+				if (this.addEditView) this.addEditView.edit(view.model);
 			},
 			
 			deselectAll: function() {
@@ -321,6 +321,10 @@ define(
 				this.$el.addClass("row_selected");
 			},
 			
+			formBlur: function(form) {
+				this.form.commit();
+			},
+			
 			removeItem: function(event) {
 				if (confirm(__("Are you sure you want to remove the selected item?"))) {
 					this.trigger('remove', this.model);
@@ -345,6 +349,7 @@ define(
 				if (_.indexOf(this.actions, 'inlineEdit') !== -1) {
 					this.form.render();
 					this.$el.append(this.form.$('td'));
+					this.form.on('blur', this.formBlur);
 				}
 				return this;
 			}

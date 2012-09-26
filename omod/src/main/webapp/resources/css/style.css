@@ -21,9 +21,12 @@ input.reason { width: 25em; }
 .bbf-list-modal { cursor: pointer; }
 .bbf-actions { clear: both; }
 
+/* Item editor styles */
+.editor .item-name { position: relative; z-index: 1; }
+
 /* Input hint styles */
 span.label-hint { position: relative; }
-.label-hint label { position: absolute; bottom: 0px; left: 3px; font-style: italic; color: #999; cursor: text; }
+.label-hint label { position: absolute; bottom: 0px; left: 3px; font-style: italic; color: #999; cursor: text; z-index: 0; }
 
 /* Generic data table styles */
 table.display { width: 100%; border-spacing: 0; }
@@ -63,3 +66,8 @@ table.bill .field-quantity input, table.bill .field-price input, table.bill .fie
 }
 table.bill .field-item .editor .department-name { width: 31%; }
 table.bill .field-item .editor .item-name { width: 66%; }
+
+table.totals { width: 100%; }
+table.totals td.total { width: 13%; text-align: right; }
+table.totals td.label { width: 13%; }
+table.totals td.label, table.totals td.total { padding: 3px 7px 3px 10px; font-weight: bold; }
