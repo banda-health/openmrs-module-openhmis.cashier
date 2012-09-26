@@ -19,6 +19,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -58,5 +59,9 @@ public interface IItemService extends IMetadataService<Item> {
 	@Transactional(readOnly = true)
 	@Authorized( {CashierPrivilegeConstants.VIEW_ITEMS})
 	List<Item> findItems(Department department, String name, boolean includeRetired) throws APIException;
+
+	@Transactional(readOnly = true)
+	@Authorized( {CashierPrivilegeConstants.VIEW_ITEMS})
+	List<Item> findItems(Department department, String name, boolean includeRetired, PagingInfo pagingInfo) throws APIException;
 }
 

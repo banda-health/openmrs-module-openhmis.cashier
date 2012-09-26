@@ -27,7 +27,8 @@ public class ItemPriceResource extends BaseRestMetadataResource<ItemPrice> imple
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(
 			Representation rep) {
-		DelegatingResourceDescription description = getDefaultRepresentationDescription();
+		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		description.removeProperty("name");
 		description.addProperty("price");
 		return description;
 	}

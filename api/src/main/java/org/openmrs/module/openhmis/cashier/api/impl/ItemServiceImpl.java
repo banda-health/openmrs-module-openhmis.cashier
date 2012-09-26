@@ -24,6 +24,7 @@ import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 
 import java.util.List;
 
@@ -69,6 +70,12 @@ public class ItemServiceImpl
 	@Override
 	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
 	public List<Item> findItems(Department department, String name, boolean includeRetired) throws APIException {
+		return findItems(department, name, includeRetired, null);
+	}
+	
+	@Override
+	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
+	public List<Item> findItems(Department department, String name, boolean includeRetired, PagingInfo pagingInfo) throws APIException {
 		if (department == null) {
 			throw new NullPointerException("The department must be defined");
 		}
@@ -87,6 +94,7 @@ public class ItemServiceImpl
 			criteria.add(Restrictions.eq("retired", false));
 		}
 
+		loadPagingTotal(pagingInfo, criteria);
 		return dao.select(getEntityClass(), criteria);
 	}
 
