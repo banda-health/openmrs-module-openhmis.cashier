@@ -163,20 +163,29 @@ define(
 				'change #showRetired': 'toggleShowRetired'
 			},
 			
-			addOne: function(model, schema) {
+			addOne: function(model, schema, lineNumber) {
 				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				if (this.showRetired === false && model.isRetired()) return null;
-				var tbody = this.$('tbody');
-				var lineNumber = this.model.length;
+				var className = "evenRow";
+				if (lineNumber)
+					className = lineNumber % 2 === 0 ? "evenRow" : "oddRow";
+				else {
+					var $rows = this.$('tbody tr');
+					if ($rows.length > 0) {
+						var lastRow = $rows[$rows.length - 1];
+						if ($(lastRow).hasClass("evenRow"))
+							className = "oddRow";
+					}
+				}
 				var itemView = new this.itemView({
 					model: model,
 					fields: this.fields,
 					schema: schema,
-					className: lineNumber % 2 === 0 ? "evenRow" : "oddRow",
+					className: className,
 					actions: this.itemActions
 				});
 				model.view = itemView;
-				tbody.append(itemView.render().el);
+				this.$('tbody').append(itemView.render().el);
 				itemView.on('select', this.itemSelected);
 				itemView.on('remove', this.itemRemoved);
 				if (this.addEditView) itemView.on('select', this.addEditView.edit);
@@ -250,7 +259,11 @@ define(
 				if (extraContext !== undefined) context = _.extend(context, extraContext);
 				this.$el.html(this.template(context));
 				var view = this;
-				this.model.each(function(model) { view.addOne(model, schema) });
+				var lineNumber = 0;
+				this.model.each(function(model) {
+					view.addOne(model, schema, lineNumber)
+					lineNumber++;
+				});
 				return this;
 			}
 		});
