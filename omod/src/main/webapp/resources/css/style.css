@@ -21,6 +21,10 @@ input.reason { width: 25em; }
 .bbf-list-modal { cursor: pointer; }
 .bbf-actions { clear: both; }
 
+/* Input hint styles */
+span.label-hint { position: relative; }
+.label-hint label { position: absolute; bottom: 0px; left: 3px; font-style: italic; color: #999; cursor: text; }
+
 /* Generic data table styles */
 table.display { width: 100%; border-spacing: 0; }
 table.display tr.even.row_selected td, table.display tr.odd.row_selected td,
@@ -32,15 +36,21 @@ tr.row_selected td.item-actions input, tr:hover td.item-actions input
 { visibility: visible; }
 
 /* Bill table styles */
-th.item-quantity, th.item-price, th.item-total {
+table.bill th.field-quantity, table.bill th.field-price, table.bill th.field-total {
 	width: 13%;
 }
-table.bill td input[type="text"] {
+table.bill td input[type="text"], table.bill td input[type="number"] {
 	width: 100%;
-	border: 0;
 	background-color: transparent;
 }
-table.bill td.item-actions { width: 20px; }
+
+table.bill td input, table.bill td select {
+	border: 1px solid transparent;
+}
+
+table.bill td input:focus, table.bill td select:focus {
+	border: 1px solid #1AAC9B;
+}
 
 table.bill td, table.bill th {
 	padding: 0px 5px;
@@ -48,6 +58,8 @@ table.bill td, table.bill th {
 }
 table.bill td.end, table.bill th.end { border-right: none; }
 
-input.item-quantity, input.item-price, input.item-total {
+table.bill .field-quantity input, table.bill .field-price input, table.bill .field-total input {
 	text-align: right;
 }
+table.bill .field-item .editor .department-name { width: 31%; }
+table.bill .field-item .editor .item-name { width: 66%; }
