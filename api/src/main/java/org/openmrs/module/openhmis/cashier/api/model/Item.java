@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Model class that represents an item that can be billed by an institution.
+ */
 public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Customizable<ItemAttribute> {
 	private Integer itemId;
 	private Set<ItemCode> codes;

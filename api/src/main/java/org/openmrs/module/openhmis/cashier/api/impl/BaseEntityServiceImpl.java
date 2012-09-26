@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * The base type for entity services. Provides the core implementation for the common {@link BaseOpenmrsObject} operations.
- * @param <E> The entity type.
+ * @param <E> The entity model type.
  */
 public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P extends IEntityAuthorizationPrivileges>
 		extends BaseOpenmrsService implements IEntityService<E> {

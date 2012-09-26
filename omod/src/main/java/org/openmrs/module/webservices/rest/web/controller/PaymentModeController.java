@@ -11,21 +11,13 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.api.model;
+package org.openmrs.module.webservices.rest.web.controller;
 
-public interface IScheme {
+import org.openmrs.module.webservices.rest.resource.PaymentModeResource;
+import org.openmrs.module.webservices.rest.web.v1_0.controller.BaseCrudController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-	/**
-	 * A Scheme should use a reference to a bill to determine how much of the
-	 * bill it will cover
-	 *  
-	 * @param bill
-	 */
-	public void setBill(Bill bill);
-	
-	/**
-	 * Determine how much of the bill will be covered by the scheme
-	 * @return Double the portion of the bill covered by the scheme 
-	 */
-	public Double getCoveredAmount();
-}
+@Controller
+@RequestMapping(value = "/rest/paymentMode")
+public class PaymentModeController extends BaseCrudController<PaymentModeResource> { }

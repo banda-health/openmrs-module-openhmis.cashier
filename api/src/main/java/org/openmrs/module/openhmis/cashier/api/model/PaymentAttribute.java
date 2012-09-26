@@ -16,10 +16,7 @@ package org.openmrs.module.openhmis.cashier.api.model;
 import org.openmrs.BaseOpenmrsObject;
 
 /**
- * A class to store the value of a payment mode attribute for a particular
- * payment.
- * @author daniel
- *
+ * Model class that represents a payment mode attribute for a particular {@link Payment}.
  */
 public class PaymentAttribute extends BaseOpenmrsObject {
 	private Integer paymentAttributeId;

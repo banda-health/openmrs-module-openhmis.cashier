@@ -24,9 +24,7 @@ import java.util.Set;
 import java.util.Vector;
 
 /**
- * A Bill is a list of {@link BillLineItem}s created by a cashier for a patient.  It can have multiple payments
- * associated with it.
- *
+ * Model class that represents a list of {@link BillLineItem}s and {@link Payment}s created by a cashier for a patient.
  */
 public class Bill extends BaseOpenmrsData {
 	private Integer billId;

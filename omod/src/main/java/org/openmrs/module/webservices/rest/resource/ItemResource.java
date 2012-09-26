@@ -13,10 +13,6 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
@@ -39,6 +35,10 @@ import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Resource("item")
 @Handler(supports = { Item.class }, order = 0)
 public class ItemResource extends BaseRestMetadataResource<Item> {
@@ -47,14 +47,14 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		IItemService service = (IItemService) Context.getService(getServiceClass());
 		IDepartmentService deptService = (IDepartmentService) Context.getService(IDepartmentService.class);
 		Department department = deptService.getByUuid(department_uuid);
-		
+
 		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
 		List<Item> items = service.findItems(department, query, context.getIncludeAll(), pagingInfo);
 		Boolean hasMoreResults = (pagingInfo.getPage() * pagingInfo.getPageSize()) < pagingInfo.getTotalRecordCount();
 		AlreadyPaged<Item> results = new AlreadyPaged<Item>(context, items, hasMoreResults);
 		return results.toSimpleObject();
 	}
-	
+
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(
 			Representation rep) {
@@ -72,7 +72,7 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		}
 		return description;
 	}
-	
+
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = super.getCreatableProperties();
@@ -82,7 +82,7 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		description.addProperty("department");
 		description.addProperty("defaultPrice");
 		return description;
-	}	
+	}
 
 	@PropertySetter(value="codes")
 	public void setItemCodes(Item instance, Set<ItemCode> codes) {
@@ -103,7 +103,7 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 			price.setItem(instance);
 		}
 	}
-	
+
 	@PropertySetter(value="defaultPrice")
 	public void setDefaultPrice(Item instance, String price_uuid) {
 		for (ItemPrice price : instance.getPrices()) {
@@ -118,7 +118,7 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 	public Item newDelegate() {
 		return new Item();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<IMetadataService<Item>> getServiceClass() {

@@ -14,7 +14,7 @@
 package org.openmrs.module.openhmis.cashier.api;
 
 /**
- * Represents types that define the required privileges for the core metadata service operations.
+ * Represents types that define the privileges for the core {@link IMetadataService} operations.
  */
 public interface IMetadataAuthorizationPrivileges extends IEntityAuthorizationPrivileges {
 	/**

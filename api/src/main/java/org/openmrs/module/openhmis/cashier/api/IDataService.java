@@ -14,15 +14,19 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.OpenmrsObject;
+import org.openmrs.OpenmrsData;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Represents classes that provide data access services to model types that implement {@link OpenmrsData}.
+ * @param <E> The entity model class.
+ */
 @Transactional
-public interface IDataService<E extends OpenmrsObject> extends IEntityService<E> {
+public interface IDataService<E extends OpenmrsData> extends IEntityService<E> {
 	/**
 	 * Voiding an entity essentially removes it from circulation.
 	 *

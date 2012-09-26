@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * Class to represent a mode of payment (e.g., cash, check, credit card)
- * @author daniel
- *
+ * Model class that represents a mode of payment (e.g., cash, check, credit card).
  */
 public class PaymentMode extends BaseOpenmrsMetadata {
 	private Integer paymentModeId;
