@@ -45,6 +45,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target/dependency-maven-plugin-markers" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/openhmis.cashier-0.1-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -159,8 +160,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.javassist:javassist:3.15.0-GA" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-mockito:1.4.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-support:1.4.10" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.openmrs.module:webservices.rest-api:1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.openmrs.module:webservices.rest-omod:1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.openmrs.module:webservices.rest-api:1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.openmrs.module:webservices.rest-omod:1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-codec:commons-codec:1.5" level="project" />
   </component>
 </module>
