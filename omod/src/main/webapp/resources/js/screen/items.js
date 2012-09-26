@@ -13,6 +13,7 @@ curl(
 	function($, openhmis) {
 		$(function() {
 			openhmis.startAddEditScreen(openhmis.Item, {
+				listView: openhmis.GenericSearchableListView,
 				listFields: ['name', 'codes']
 			});
 		});

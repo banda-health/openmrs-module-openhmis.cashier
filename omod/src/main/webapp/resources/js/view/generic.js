@@ -350,6 +350,10 @@ define(
 			}
 		});
 		
+		openhmis.GenericSearchableListView = openhmis.GenericListView.extend({
+			
+		});
+		
 		// Create new generic add/edit screen
 		openhmis.startAddEditScreen = function(model, options) {
 			var collection = new openhmis.GenericCollection([], {
@@ -363,7 +367,8 @@ define(
 				model: collection,
 				addEditView: addEditView
 			}, options);
-			var listView = new openhmis.GenericListView(viewOptions);
+			var listViewType = options.listView ? options.listView : openhmis.GenericListView;
+			var listView = new listViewType(viewOptions);
 			collection.on('reset', listView.render);
 			listView.setElement($('#existing-form'));
 			collection.fetch();
