@@ -1,5 +1,5 @@
 curl(
-	{ baseUrl: curl.getRootUrl() },
+	{ baseUrl: openhmis.config.wwwUrlRoot + 'js/' },
 	[
 		'lib/jquery',
 		'openhmis',

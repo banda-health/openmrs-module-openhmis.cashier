@@ -1,5 +1,5 @@
 curl(
-	{ baseUrl: curl.getRootUrl() },
+	{ baseUrl: openhmis.config.wwwUrlRoot + 'js/' },
 	[
 		'lib/jquery',
 		'view/patient',
@@ -13,20 +13,17 @@ curl(
 			patientView.setElement($('#patient-view'));
 			patientView.render();
 		
-			var billView = new openhmis.BillView({ model: new openhmis.GenericCollection(
-				[
-					new openhmis.LineItem({ uuid: 'asd', item: new openhmis.Item({ uuid: 'asd' }) }),
-					new openhmis.LineItem({ uuid: 'fgh', item: new openhmis.Item({ uuid: 'fgh' }) }),
-					new openhmis.LineItem({ uuid: 'jkl', item: new openhmis.Item({ uuid: 'jkl' }) }),
-					new openhmis.LineItem({ uuid: 'qwe', item: new openhmis.Item({ uuid: 'qwe' }) }),
-					new openhmis.LineItem()
-				],
+			var billView = new openhmis.BillView({ model: new openhmis.GenericCollection([],
 				{
 					model: openhmis.LineItem,
 				})
 			});
 			billView.setElement($('#bill'));
 			billView.render();
+			billView.setupNewItem();
+			$('#inputNode').focus();
+			patientView.on('selected', billView.focus);
+			patientView.on('editing', billView.blur);
 		});
 	}
 );

@@ -14,7 +14,7 @@ define(
 			interpolate: /<\?=(.+?)\?>/g
 		};
 		
-		var openhmis = {};
+		var openhmis = window.openhmis || {};
 		openhmis.templates = {};
 				
 		openhmis.displayError = function(data) {
@@ -79,7 +79,7 @@ define(
 		 * Fetches a template from a remote URI unless it has been previously fetched
 		 * and cached.
 		 */
-		Backbone.View.prototype.tmplFileRoot = '/openmrs/moduleResources/openhmis/cashier/template/';
+		Backbone.View.prototype.tmplFileRoot = openhmis.config.wwwUrlRoot + 'template/';
 		Backbone.View.prototype.getTemplate = function(context) {
 			var view = this;
 			if (openhmis.templates[view.tmplFile] === undefined) {

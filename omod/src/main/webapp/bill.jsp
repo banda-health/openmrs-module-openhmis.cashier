@@ -1,8 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<script id="curl" type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/curl.js"></script>
-<script type="text/javascript" src="/openmrs/moduleResources/openhmis/cashier/js/screen/bill.js"></script>
 <%@ include file="template/localHeader.jsp"%>
+<openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
 
 <h2>
 	<spring:message code="openhmis.cashier.newBill" />

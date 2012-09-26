@@ -12,7 +12,22 @@ define(
 				}
 				//_.bindAll(this, 'saveSubResource');
 			},
-				
+			
+		    url: function() {
+				var url;
+				try {
+					url = Backbone.Model.prototype.url.call(this);
+				} catch (e) {
+					if (this.meta && this.meta.restUrl) {
+						this.urlRoot = openhmis.config.restUrlRoot + this.meta.restUrl;
+						url = Backbone.Model.prototype.url.call(this);
+					}
+					else
+						throw e;
+				}
+				return url;
+			},
+			
 			toJSON: function(options) {
 				if (this.schema === undefined) return Backbone.Model.prototype.toJSON.call(this, options);
 				var attributes = {};
@@ -41,7 +56,7 @@ define(
 		});
 		
 		openhmis.GenericCollection = Backbone.Collection.extend({
-			baseUrl: '/openmrs/ws/rest/',
+			baseUrl: openhmis.config.restUrlRoot,
 			
 			initialize: function(models, options) {
 				if (this.model && this.model.prototype.meta && this.model.prototype.meta.restUrl)

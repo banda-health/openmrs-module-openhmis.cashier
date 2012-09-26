@@ -18,7 +18,8 @@ public class ItemCodeResource extends BaseRestMetadataResource<ItemCode> impleme
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(
 			Representation rep) {
-		DelegatingResourceDescription description = getDefaultRepresentationDescription();
+		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		description.removeProperty("name");
 		description.addProperty("code");
 		return description;
 	}

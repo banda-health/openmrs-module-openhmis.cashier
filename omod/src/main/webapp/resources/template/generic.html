@@ -33,7 +33,7 @@
 <b class="boxHeader"><?= listTitle !== undefined ? listTitle : __("Current %s", modelMeta.namePlural) ?></b>
 <div class="box">
 	<? if (list.length === 0) { ?>
-		<p><?= __("There are currently no %s", modelMeta.namePlural.toLowerCase()) ?></p>
+		<p class="empty"><?= __("There are currently no %s", modelMeta.namePlural.toLowerCase()) ?></p>
 	<? } else { ?>
 	<table class="display" width="100%">
 		<thead>

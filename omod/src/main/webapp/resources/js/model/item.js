@@ -1,10 +1,10 @@
 define(
 	[
-		'openhmis',
+		'lib/underscore',
 		'model/generic',
 		'model/department'
 	],
-	function(openhmis) {
+	function(_, openhmis) {
 		openhmis.ItemCode = openhmis.GenericModel.extend({
 			meta: {
 				name: "Item Code",
@@ -50,7 +50,24 @@ define(
 					})
 				},
 				codes: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemCode },
-				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice }
+				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice },
+				defaultPrice: { type: 'Select', options: [] }
+			},
+			
+			fetch: function(options) {
+				options = options || {};
+				var success = options.success;
+				options.success = function(model, resp) {
+					// Load price options
+					model.schema.defaultPrice.options = model.getPriceOptions();
+					if (success) success(model, resp);
+				}
+				return openhmis.GenericModel.prototype.fetch.call(this, options);
+			},
+			
+			getPriceOptions: function() {
+				var prices = this.get('prices');
+				return _.map(prices, function(price) { return { val: price.uuid, label: openhmis.ItemPrice.prototype.format(price.price) } });
 			},
 			
 			parse: function(resp) {

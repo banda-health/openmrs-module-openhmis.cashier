@@ -19,6 +19,28 @@ define(
 			
 			initialize: function() {
 				this.schema.total.value = this.getTotal;
+				this.clean = true;
+			},
+			
+			validate: function(attrs, options) {
+				if (!attrs.item || !attrs.item.id) return { item: "Please choose an item" };
+				if (!attrs.item.get('department')) return { item: "Item must belong to a department" };
+				return null;
+			},
+			
+			_validate: function(attrs, options) {
+				var valid = openhmis.GenericModel.prototype._validate.call(this, attrs, options);
+				if (valid)
+					this.clean = true;
+				return valid;
+			},
+			
+			isClean: function() {
+				return this.clean;
+			},
+			
+			dirty: function() {
+				this.clean = false;
 			},
 			
 			get: function(attr) {

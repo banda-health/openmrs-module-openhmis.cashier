@@ -50,12 +50,11 @@ define(
 		
 		editors.CustomNumber = editors.Number.extend({
 			initialize: function(options) {
+				this.events = _.extend(this.events, {
+					'click': 'determineChange'
+				});
 				editors.Number.prototype.initialize.call(this, options);
 				if (options && options.schema) this.nonNegative = options.schema.nonNegative;
-			},
-			
-			events: {
-				'change': 'valueChanged'
 			},
 			
 			setValue: function(value) {
@@ -63,14 +62,19 @@ define(
 				editors.Number.prototype.setValue.call(this, value);
 			},
 			
-			valueChanged: function(event) {
+			determineChange: function(event) {
 				if (this.nonNegative && parseInt(this.$el.val()) < 0) {
-					this.$el.val(this.el.defaultValue);
-					event.preventDefault();
+					this.$el.val(0);
 					return;
 				}
-				event.target.defaultValue = event.target.value;
+				editors.Number.prototype.determineChange.call(this, event);
 			}
+			//valueChanged: function(event) {
+			//		this.$el.val(this.el.defaultValue);
+			//		return;
+			//	}
+			//	event.target.defaultValue = event.target.value;
+			//}
 		});
 		
 		editors.Item = editors.Base.extend({
@@ -86,43 +90,98 @@ define(
 				}});
 				return map;
 			}(),
+			
 			initialize: function(options) {
 				_.bindAll(this);
 				editors.Base.prototype.initialize.call(this, options);
 				this.template = this.getTemplate();
 				this.cache = {};
 			},
+			
+			events: {
+				'change select.department': 'modified',
+				'change input.item-name' : 'modified'
+			},
+			
+			getUuid: function() {
+				return this.$('.item-uuid').val();
+			},
+			
+			getValue: function() {
+				return this.value;
+			},
+			
+			modified: function(event) {
+				// TODO: Some logic to handle messing with the form after
+				//       successful validation
+			},
+			
 			doItemSearch: function(request, response) {
-				this.doSearch(request, response, openhmis.Item);
-			},			
-			doSearch: function(request, response, model) {
 				var term = request.term;
-				if (term in this.cache) {
-					response(this.cache[term]);
+				var department_uuid = this.$('.department').val();
+				var query = "?q=" + encodeURIComponent(term);
+				if (department_uuid) query += "&department_uuid=" + encodeURIComponent(department_uuid);
+				this.doSearch(request, response, openhmis.Item, query);
+			},
+			
+			doSearch: function(request, response, model, query) {
+				var term = request.term;
+				if (query in this.cache) {
+					response(this.cache[query]);
 					return;
 				}
 				var resultCollection = new openhmis.GenericCollection([], { model: model });
 				var view = this;
+				var fetchQuery = query ? query : "?q=" + encodeURIComponent(term);
 				resultCollection.fetch({
-					url: resultCollection.url + "?q=" + encodeURIComponent(term),
+					url: resultCollection.url + fetchQuery,
 					success: function(collection, resp) {
-						var data = collection.map(function(model) { return model.get('name') });
-						view.cache[term] = data;
+						var data = collection.map(function(model) { return {
+							id: model.id,
+							name: model.get('name'),
+							department_uuid: model.get('department')
+						}});
+						view.cache[query] = data;
 						response(data);
 					}
 				});
 			},
+			
+			selectItem: function(event, ui) {
+				this.$('.item-name').val(ui.item.name);
+				this.$('.item-uuid').val(ui.item.id);
+				this.$('.department').val(ui.item.department_uuid);
+				var uuid = ui.item.id;
+				this.value = new openhmis.Item({ uuid: uuid });
+				var view = this;
+				this.value.fetch({ success: function(model, resp) {
+					view.trigger('change', view);
+				}});
+			},
+			
+			departmentKeyDown: function(event) {
+				if (event.keyCode === 8) {
+					$(event.target).val('');
+				}
+			},
+			
 			render: function() {
 				this.$el.html(this.template({
 					departments: this.departmentMap,
 					item: this.value
 				}));
+				this.$('select').keydown(this.departmentKeyDown);
 				this.$('label').labelOver('over-apply');
 				
 				this.$('.item-name').autocomplete({
 					minLength: 2,
-					source: this.doItemSearch
-				});
+					source: this.doItemSearch,
+					select: this.selectItem
+				})
+				// Tricky stuff here to get the autocomplete list to render with our custom data
+				.data("autocomplete")._renderItem = function(ul, item) {
+					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.name + "</a>").appendTo(ul);
+				};
 				return this;
 			}
 		});

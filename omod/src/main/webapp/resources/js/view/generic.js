@@ -64,15 +64,18 @@ define(
 				$(this.retireVoidPurgeEl).hide();
 			},
 			
-			edit: function(model) {
-				this.model = model;
-				this.render();
-				$(this.titleEl).show();
-				this.modelForm = this.prepareModelForm(this.model).render();
-				$(this.formEl).prepend(this.modelForm.el);
-				$(this.formEl).show();
-				$(this.retireVoidPurgeEl).show();
-				$(this.formEl).find('input')[0].focus();
+			edit: function(view) {
+				this.model = view.model;
+				var self = this;
+				this.model.fetch({ success: function(model, resp) {
+					self.render();
+					$(self.titleEl).show();
+					self.modelForm = self.prepareModelForm(self.model).render();
+					$(self.formEl).prepend(self.modelForm.el);
+					$(self.formEl).show();
+					$(self.retireVoidPurgeEl).show();
+					$(self.formEl).find('input')[0].focus();
+				}});
 			},
 			
 			save: function() {
@@ -151,7 +154,7 @@ define(
 				}
 				if (this.addEditView !== undefined)
 					this.addEditView.on('cancel', this.deselectAll);
-				this.model.on('reset', this.render);
+				this.model.on('reset remove', this.render);
 				this.showRetired = false;
 				this._determineFields();
 			},
@@ -160,13 +163,50 @@ define(
 				'change #showRetired': 'toggleShowRetired'
 			},
 			
+			addOne: function(model, schema) {
+				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
+				if (this.showRetired === false && model.isRetired()) return null;
+				var tbody = this.$('tbody');
+				var lineNumber = this.model.length;
+				var itemView = new this.itemView({
+					model: model,
+					fields: this.fields,
+					schema: schema,
+					className: lineNumber % 2 === 0 ? "evenRow" : "oddRow",
+					actions: this.itemActions
+				});
+				model.view = itemView;
+				tbody.append(itemView.render().el);
+				itemView.on('select', this.itemSelected);
+				itemView.on('remove', this.itemRemoved);
+				if (this.addEditView) itemView.on('select', this.addEditView.edit);
+				var view = this;
+				model.on('retired', function() { if (!view.showRetired) itemView.remove(); });
+				return itemView;
+			},
+			
 			// Called when a list item is removed
 			itemRemoved: function(item) {
 				this.colorRows();
 			},
 			
+			itemSelected: function(view) {
+				this.deselectAll();
+				this.selectedItem = view;
+			},
+			
 			deselectAll: function() {
 				this.$('tr').removeClass('row_selected');
+			},
+			
+			blur: function() {
+				this.deselectAll();
+			},
+			
+			focus: function() {
+				if (this.selectedItem) {
+					this.selectedItem.focus();
+				}
 			},
 			
 			toggleShowRetired: function(event) {
@@ -210,24 +250,7 @@ define(
 				if (extraContext !== undefined) context = _.extend(context, extraContext);
 				this.$el.html(this.template(context));
 				var view = this;
-				var tbody = this.$('tbody');
-				var lineNumber = 0;
-				this.model.each(function(model) {
-					if (view.showRetired === false && model.isRetired()) return;
-					var itemView = new view.itemView({
-						model: model,
-						fields: view.fields,
-						schema: schema,
-						className: (lineNumber % 2 === 0) ? "evenRow" : "oddRow",
-						actions: view.itemActions
-					});
-					tbody.append(itemView.render().el);
-					itemView.on('select', view.deselectAll);
-					itemView.on('remove', view.itemRemoved);
-					if (view.addEditView) itemView.on('select', view.addEditView.edit);
-					model.on('retired', function() { if (!view.showRetired) itemView.remove(); });
-					lineNumber++;
-				});
+				this.model.each(function(model) { view.addOne(model, schema) });
 				return this;
 			}
 		});
@@ -251,7 +274,7 @@ define(
 			},
 			
 			events: {
-				'click td': 'select'
+				'click td': 'select',
 			},
 			
 			enableActions: function() {
@@ -276,16 +299,20 @@ define(
 			},
 			
 			select: function() {
-				this.trigger('select', this.model);
+				if (this.$el.hasClass("row_selected")) return;
+				this.trigger('select', this);
+				this.$el.addClass("row_selected");
+			},
+			
+			focus: function() {
 				this.$el.addClass("row_selected");
 			},
 			
 			removeItem: function(event) {
 				if (confirm(__("Are you sure you want to remove the selected item?"))) {
-					var copy = this.model.clone();
-					this.removeModel();
+					this.trigger('remove', this.model);
 					Backbone.View.prototype.remove.call(this);
-					this.trigger('remove', copy);
+					this.removeModel();
 					return true;
 				}
 				// Prevent this event from propagating

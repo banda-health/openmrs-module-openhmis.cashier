@@ -23,7 +23,7 @@ input.reason { width: 25em; }
 
 /* Input hint styles */
 span.label-hint { position: relative; }
-.label-hint label { position: absolute; bottom: 0px; font-style: italic; color: #999; cursor: text; }
+.label-hint label { position: absolute; bottom: 0px; left: 3px; font-style: italic; color: #999; cursor: text; }
 
 /* Generic data table styles */
 table.display { width: 100%; border-spacing: 0; }
@@ -41,8 +41,15 @@ table.bill th.field-quantity, table.bill th.field-price, table.bill th.field-tot
 }
 table.bill td input[type="text"], table.bill td input[type="number"] {
 	width: 100%;
-	border: 0;
 	background-color: transparent;
+}
+
+table.bill td input, table.bill td select {
+	border: 1px solid transparent;
+}
+
+table.bill td input:focus, table.bill td select:focus {
+	border: 1px solid #1AAC9B;
 }
 
 table.bill td, table.bill th {

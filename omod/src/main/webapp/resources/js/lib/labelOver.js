@@ -11,11 +11,11 @@ define(
 					var input = label.siblings('#' + f);
 					
 					this.hide = function() {
-					  label.css({ textIndent: -10000 })
+					  label.css({ visibility: "hidden" })
 					}
 					
 					this.show = function() {
-					  if (input.val() == '') label.css({ textIndent: 0 })
+					  if (input.val() == '') label.css({ visibility: "visible" })
 					}
 		
 					// handlers

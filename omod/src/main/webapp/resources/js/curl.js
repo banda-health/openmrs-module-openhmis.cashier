@@ -21,8 +21,3 @@ define("js",["curl/_privileged"],function(a){function b(b,d,c){function e(){g||(
 x,G,v;s=a.indexOf("!order")>0;x=a.indexOf("!exports=");G=x>0&&a.substr(x+9);v="prefetch"in k?k.prefetch:h;a=s||x>0?a.substr(0,a.indexOf("!")):a;if(a in c)o(c[a]);else{c[a]=void 0;j={name:a,url:j.toUrl(a.lastIndexOf(".")<=a.lastIndexOf("/")?a+".js":a),Y:s,a:G,aa:k.timeout};k={resolve:function(b){c[a]=b;(o.resolve||o)(b)},reject:o.reject||function(a){throw a;}};if(s&&!g&&f){e.push([j,k]);if(v){j.H="text/cache";b(j,function(a){a&&a.parentNode.removeChild(a)},function(){});j.H=""}}else{f=f||s;d(j,k)}}}}});
 var $=this.document,ua=/^\/\//,va;$&&(va=$.head||($.head=$.getElementsByTagName("head")[0]));define("link",{load:function(a,b,d,c){a=b.toUrl(a.lastIndexOf(".")<=a.lastIndexOf("/")?a+".css":a);c=a=(c="fixSchemalessUrls"in c?c.fixSchemalessUrls:$.location.protocol)?a.replace(ua,c+"//"):a;a=$.createElement("link");a.rel="stylesheet";a.type="text/css";a.href=c;va.appendChild(a);d(a.sheet||a.styleSheet)}});define("domReady",["curl/domReady"],function(a){return{load:function(b,d,c){a(c)}}});
 }());
-
-curl.getRootUrl = function() {
-	var url = document.getElementById("curl").src;
-	return url.substring(0, url.lastIndexOf('/'));
-}
