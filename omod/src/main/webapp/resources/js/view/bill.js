@@ -117,6 +117,7 @@ define(
 					listTitle: ""
 				});
 				this.$("table").addClass("bill");
+				this.$('#showRetired').remove();
 				return this;
 			}
 		});

@@ -30,5 +30,4 @@ public class BillAddEditController {
 		model.addAttribute("patient", patient);
 		model.addAttribute("patientIdentifier", patientIdentifier);
 	}
-
 }

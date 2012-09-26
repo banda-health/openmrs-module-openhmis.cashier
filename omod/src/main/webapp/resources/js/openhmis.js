@@ -17,9 +17,12 @@ define(
 		var openhmis = window.openhmis || {};
 		openhmis.templates = {};
 				
-		openhmis.displayError = function(data) {
+		openhmis.error = function(data) {
 			var o = $.parseJSON(data.response).error;
-			alert("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
+			if (o.detail.indexOf("ContextAuthenticationException") !== -1)
+				window.location.reload();
+			else
+				alert("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
 		}
 		
 		// Use uuid for id

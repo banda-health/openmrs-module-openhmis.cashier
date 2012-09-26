@@ -69,7 +69,7 @@ define(
 				options = options ? options : {};
 				var error = options.error;
 				options.error = function(model, data) {
-					openhmis.displayError(data);
+					openhmis.error(data);
 					if (error !== undefined)
 						error(model, data);
 				}

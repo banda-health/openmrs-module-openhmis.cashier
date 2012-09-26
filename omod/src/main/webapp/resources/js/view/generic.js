@@ -89,7 +89,7 @@ define(
 					}
 					view.cancel();
 				}, error: function(model, resp) {
-					openhmis.displayError(resp);
+					openhmis.error(resp);
 				}});
 			},
 			
