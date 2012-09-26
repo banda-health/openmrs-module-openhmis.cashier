@@ -19,5 +19,5 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/rest/payment_mode")
+@RequestMapping(value = "/rest/paymentMode")
 public class PaymentModeController extends BaseCrudController<PaymentModeResource> { }

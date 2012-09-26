@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/module/openhmis/cashier/payment_modes")
+@RequestMapping("/module/openhmis/cashier/paymentModes")
 public class PaymentModesController {
 	@RequestMapping(method = RequestMethod.GET)
 	public void paymentModes(ModelMap model) throws JsonGenerationException, JsonMappingException, IOException {
