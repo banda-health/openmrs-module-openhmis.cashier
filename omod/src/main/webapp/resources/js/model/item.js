@@ -49,9 +49,25 @@ define(
 						url: '/department'
 					})
 				},
+				'department.name': { title: "Department" }, // Pseudo attribute to access department name
 				codes: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemCode },
 				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice },
 				defaultPrice: { type: 'Select', options: [] }
+			},
+			
+			get: function(attr) {
+				switch (attr) {
+					case 'department':
+						if (this.attributes.department)
+							return this.attributes.department.uuid;
+						return undefined;
+					case 'department.name':
+						if (this.attributes.department)
+							return this.attributes.department.name;
+						return undefined;						
+					default:
+						return openhmis.GenericModel.prototype.get.call(this, attr);
+				}
 			},
 			
 			fetch: function(options) {
@@ -71,8 +87,8 @@ define(
 			},
 			
 			parse: function(resp) {
-				if (resp && resp.department && resp.department.uuid)
-					resp.department = resp.department.uuid;
+				//if (resp && resp.department && resp.department.uuid)
+				//	resp.department = resp.department.uuid;
 				return resp;
 			},
 			

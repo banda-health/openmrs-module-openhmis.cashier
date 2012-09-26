@@ -51,7 +51,7 @@ define(
 				if (!errors) {
 					this.model.trigger("validated", this.model);
 				} else {
-					alert(JSON.stringify(errors));
+					//alert(JSON.stringify(errors));
 				}
 				return errors;
 			},
