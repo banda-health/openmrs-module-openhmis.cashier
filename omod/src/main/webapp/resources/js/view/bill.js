@@ -116,7 +116,7 @@ define(
 					this.deselectAll();
 					dept_uuid = lineItem.get('item').get('department');
 				}
-				this.newItem = new openhmis.LineItem({ item: new openhmis.Item({ department: dept_uuid }) });
+				this.newItem = new openhmis.LineItem({ item: new openhmis.Item({ department: { uuid: dept_uuid } }) });
 				this.newItem.on('validated', this.setupNewItem);
 				this.model.add(this.newItem);
 				if (this.$('p.empty').length > 0)
