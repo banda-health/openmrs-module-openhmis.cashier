@@ -61,7 +61,8 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 		Assert.assertTrue(entity.getRetired());
 		Assert.assertEquals(Context.getAuthenticatedUser(), entity.getRetiredBy());
 		Assert.assertEquals(reason, entity.getRetireReason());
-		Assert.assertTrue(entity.getDateRetired().before(new Date()));
+		Date now = new Date();
+		Assert.assertTrue(entity.getDateRetired().before(now) || entity.getDateRetired().equals(now));
 	}
 
 	/**

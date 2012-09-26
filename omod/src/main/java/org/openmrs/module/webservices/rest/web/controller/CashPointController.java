@@ -11,12 +11,13 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.webservices.rest.resource;
+package org.openmrs.module.webservices.rest.web.controller;
 
-import org.openmrs.OpenmrsMetadata;
-import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+import org.openmrs.module.webservices.rest.resource.CashPointResource;
+import org.openmrs.module.webservices.rest.web.v1_0.controller.BaseCrudController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-public interface IMetadataServiceResource<T extends OpenmrsMetadata> {
-	public Class<IMetadataService<T>> getServiceClass();
-
-}
+@Controller
+@RequestMapping(value = "/rest/cashPoint")
+public class CashPointController extends BaseCrudController<CashPointResource> { }

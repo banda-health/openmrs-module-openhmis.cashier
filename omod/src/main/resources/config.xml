@@ -62,6 +62,7 @@
 	<mappingFiles>
 		Department.hbm.xml
 		Item.hbm.xml
+		Cashier.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->
