@@ -1,19 +1,28 @@
-openhmis.CashPoint = openhmis.GenericModel.extend({
-    meta: {
-        name: __("Cash Point"),
-        namePlural: __("Cash Points"),
-        openmrsType: 'metadata'
-    },
+define(
+    [
+        'openhmis',
+        'lib/i18n',
+        'model/generic'
+    ],
+    function(openhmis, __) {
+        openhmis.CashPoint = openhmis.GenericModel.extend({
+            meta: {
+                name: __("Cash Point"),
+                namePlural: __("Cash Points"),
+                openmrsType: 'metadata',
+                restUrl: 'cashPoint'
+            },
 
-    schema: {
-        uuid: { type: 'Text', readOnly: true },
-        name: 'Text',
-        description: 'Text',
-        retired: 'Text',
-        retireReason: { type: 'Text', readOnly: true }
-    },
+            schema: {
+                name: 'Text',
+                description: 'Text'
+            },
 
-    toString: function() {
-        return this.get('name');
+            toString: function() {
+                return this.get('name');
+            }
+        });
+
+        return openhmis;
     }
-});
+);
