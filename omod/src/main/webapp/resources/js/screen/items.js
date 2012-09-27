@@ -13,7 +13,7 @@ curl(
 	function($, openhmis) {
 		$(function() {
 			openhmis.startAddEditScreen(openhmis.Item, {
-				listFields: ['name', 'department.name', 'codes']
+				listFields: ['name', 'department', 'codes']
 			});
 		});
 	}

@@ -35,6 +35,7 @@ define(
 				var formFields = [];
 				for (var key in model.schema) {
 					if (key === 'retired') continue;
+					if (model.schema[key].hidden === true) continue;
 					//if (model.schema[key].readOnly === true) continue;
 					formFields.push(key);
 				}

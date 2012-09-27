@@ -18,7 +18,7 @@ define(
 		openhmis.templates = {};
 				
 		openhmis.error = function(data) {
-			var o = $.parseJSON(data.response).error;
+			var o = $.parseJSON(data.responseText).error;
 			if (o.detail.indexOf("ContextAuthenticationException") !== -1)
 				window.location.reload();
 			else

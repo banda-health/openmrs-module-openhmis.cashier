@@ -1,10 +1,10 @@
 <script id="item-editor" type="text/template">
-	<? var department = item ? item.get('department') : null ?>
+	<? var department_uuid = (item && item.get("department")) ? item.get("department").id : null ?>
 	<? var id = item ? item.cid + '-' : "" ?>
 	<select id="<?= id ?>department" class="department">
 		<option value=""><em>--department--</em></option>
 	<? for (var key in departments) { ?>
-		<option value="<?= key ?>"<?= (key === department) ? ' selected="selected"' : '' ?>><?= departments[key] ?></option>
+		<option value="<?= key ?>"<?= (key === department_uuid) ? ' selected="selected"' : '' ?>><?= departments[key] ?></option>
 	<? } ?>
 	</select>
 	<input type="hidden" class="department-uuid" />

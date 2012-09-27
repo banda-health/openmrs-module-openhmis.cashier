@@ -10,6 +10,7 @@ define(
 	],
 	function($, Backbone, _, openhmis) {
 		var editors = Backbone.Form.editors;
+		
 		editors.BasicNumber = editors.Number.extend({
 			initialize: function(options) {
 				this.defaultValue = null;
@@ -75,6 +76,22 @@ define(
 			//	}
 			//	event.target.defaultValue = event.target.value;
 			//}
+		});
+		
+		editors.DepartmentSelect = editors.Select.extend({
+		    getValue: function() {
+				$selected = this.$('option:selected');
+				return new openhmis.Department({ uuid: $selected.val(), name: $selected.text() });
+			},
+			
+			setValue: function(value) {
+				if (_.isString(value))
+					this.$el.val(value);
+				else {
+					if (value.attributes) this.$el.val(value.id); // Backbone model
+					else this.$el.val(value.uuid); // bare object
+				}
+			},
 		});
 		
 		editors.Item = editors.Base.extend({
@@ -159,7 +176,7 @@ define(
 						var data = collection.map(function(model) { return {
 							val: model.id,
 							label: model.get('name'),
-							department_uuid: model.get('department')
+							department_uuid: model.get('department').id
 						}});
 						view.cache[query] = data;
 						response(data);

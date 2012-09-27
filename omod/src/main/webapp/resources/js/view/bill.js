@@ -58,11 +58,7 @@ define(
 			
 			focus: function(event) {
 				openhmis.GenericListItemView.prototype.focus.call(this, event);
-				var $department = this.$('.department');
-				if ($department.val() === "")
-					$department.focus();
-				else
-					this.$('.item-name').focus();
+				this.$('.item-name').focus();
 			},
 						
 			removeModel: function() {
@@ -114,9 +110,9 @@ define(
 				if (lineItem !== undefined) {
 					lineItem.off('validated', this.setupNewItem);
 					this.deselectAll();
-					dept_uuid = lineItem.get('item').get('department');
+					dept_uuid = lineItem.get('item').get('department').id;
 				}
-				this.newItem = new openhmis.LineItem({ item: new openhmis.Item({ department: { uuid: dept_uuid } }) });
+				this.newItem = new openhmis.LineItem();
 				this.newItem.on('validated', this.setupNewItem);
 				this.model.add(this.newItem);
 				if (this.$('p.empty').length > 0)
