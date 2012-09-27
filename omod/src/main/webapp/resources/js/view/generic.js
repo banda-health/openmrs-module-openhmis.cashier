@@ -351,7 +351,16 @@ define(
 		});
 		
 		openhmis.GenericSearchableListView = openhmis.GenericListView.extend({
+			initialize: function(options) {
+				_.bindAll(this);
+				this.searchViewType = options.searchView;
+			},
 			
+			render: function() {
+				this.searchView = new this.searchViewType({ model: this.model.model });
+				this.$el.prepend(this.searchView.render().el);
+				return this;
+			}
 		});
 		
 		// Create new generic add/edit screen
