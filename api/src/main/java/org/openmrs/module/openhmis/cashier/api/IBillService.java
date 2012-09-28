@@ -14,11 +14,15 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
+import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 public interface IBillService extends IDataService<Bill> {
@@ -36,4 +40,27 @@ public interface IBillService extends IDataService<Bill> {
 	@Transactional(readOnly =  true)
 	@Authorized( {CashierPrivilegeConstants.VIEW_BILLS})
 	Bill getBillByReceiptNumber(String receiptNumber) throws APIException;
+
+	/**
+	 *  Returns all {@link Bill}s for the specified patient with the specified paging.
+	 * @param patient The {@link Patient}.
+	 * @param paging The paging information.
+	 * @return All of the bills for the specified patient.
+	 * @should throw NullPointerException if patient is null
+	 * @should return all bills for the specified patient
+	 * @should return an empty list if the specified patient has no bills
+	 */
+	List<Bill> findPatientBills(Patient patient, PagingInfo paging);
+
+	/**
+	 *  Returns all {@link Bill}s for the specified patient with the specified paging.
+	 * @param patientId The patient id.
+	 * @param paging The paging information.
+	 * @return All of the bills for the specified patient.
+	 * @should throw IllegalArgumentException if the patientId is less than zero
+	 * @should throw NullPointerException if patient is null
+	 * @should return all bills for the specified patient
+	 * @should return an empty list if the specified patient has no bills
+	 */
+	List<Bill> findPatientBills(int patientId, PagingInfo paging);
 }

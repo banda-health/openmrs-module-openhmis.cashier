@@ -17,11 +17,15 @@ package org.openmrs.module.openhmis.cashier.api.impl;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
+
+import java.util.List;
 
 public class BillServiceImpl
 		extends BaseDataServiceImpl<Bill>
@@ -48,6 +52,30 @@ public class BillServiceImpl
 		criteria.add(Restrictions.eq("receiptNumber", receiptNumber));
 
 		return dao.selectSingle(getEntityClass(), criteria);
+	}
+
+	@Override
+	public List<Bill> findPatientBills(Patient patient, PagingInfo paging) {
+		if (patient == null) {
+			throw new NullPointerException("The patient must be defined.");
+		}
+
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("patient", patient));
+
+		return dao.select(getEntityClass(), criteria);
+	}
+
+	@Override
+	public List<Bill> findPatientBills(int patientId, PagingInfo paging) {
+		if (patientId < 0) {
+			throw new IllegalArgumentException("The patient id must be a valid identifier.");
+		}
+
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("patient.id", patientId));
+
+		return dao.select(getEntityClass(), criteria);
 	}
 
 	@Override
