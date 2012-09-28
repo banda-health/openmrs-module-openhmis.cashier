@@ -14,7 +14,15 @@ define(
 			schema: {
 				code: { type: 'Text' }
 			},
-			toString: function() { return this.get('code'); }
+			toString: function() { return this.get('code'); },
+			
+			listToString: function(list) {
+				var string = "";
+				for (var id in list) {
+					string += ((id == 0) ? "" : ", ") + list[id].code
+				}
+				return string;
+			}
 		});
 		
 		openhmis.ItemPrice = openhmis.GenericModel.extend({
@@ -43,7 +51,7 @@ define(
 			schema: {
 				name: { type: 'Text' },
 				department: {
-					type: 'Select',
+					type: 'DepartmentSelect',
 					options: new openhmis.GenericCollection(null, {
 						model: openhmis.Department,
 						url: '/department'
@@ -71,8 +79,8 @@ define(
 			},
 			
 			parse: function(resp) {
-				if (resp && resp.department && resp.department.uuid)
-					resp.department = resp.department.uuid;
+				if (resp && resp.department && _.isObject(resp.department))
+					resp.department = new openhmis.Department(resp.department);
 				return resp;
 			},
 			
@@ -84,7 +92,10 @@ define(
 					for (var price in this.attributes.prices)
 						delete this.attributes.prices[price].resourceVersion;
 				}
-				return openhmis.GenericModel.prototype.toJSON.call(this);
+				var cloned_attributes = openhmis.GenericModel.prototype.toJSON.call(this);
+				// Send department as UUID string
+				cloned_attributes.department = cloned_attributes.department.id;
+				return cloned_attributes;
 			}
 		});
 		return openhmis;

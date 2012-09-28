@@ -44,13 +44,13 @@
 			<? } ?>
 			</tr>
 		</thead>
-		<tbody>
-		</tbody>
+		<tbody class="list"></tbody>
+		<tfoot></tfoot>
 	</table>
 	<? } ?>
 </div>
 <? var strRetiredOrVoided = (modelMeta.openmrsType === 'data') ? "voided" : "retired" ?>
-<input id="showRetired" type="checkbox"<?= showRetired ? ' checked="checked"' : '' ?>/><label for="showRetired"><?= __("Show " + strRetiredOrVoided) ?></label>
+<span class="showRetired"><input id="showRetired" type="checkbox"<?= showRetired ? ' checked="checked"' : '' ?>/><label for="showRetired"><?= __("Show " + strRetiredOrVoided) ?></label></span>
 </script>
 
 <script id="generic-list-item" type="text/template">

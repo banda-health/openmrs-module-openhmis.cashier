@@ -19,7 +19,7 @@ define(
 			
 			initialize: function() {
 				this.schema.total.value = this.getTotal;
-				this.clean = true;
+				this.clean = false;
 			},
 			
 			validate: function(attrs, options) {
