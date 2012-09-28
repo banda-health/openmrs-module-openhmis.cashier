@@ -176,6 +176,7 @@ define(
 						var data = collection.map(function(model) { return {
 							val: model.id,
 							label: model.get('name'),
+							codes: model.get('codes'),
 							department_uuid: model.get('department').id
 						}});
 						view.cache[query] = data;
@@ -217,7 +218,8 @@ define(
 				})
 				// Tricky stuff here to get the autocomplete list to render with our custom data
 				.data("autocomplete")._renderItem = function(ul, item) {
-					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
+					return $("<li></li>").data("item.autocomplete", item)
+						.append("<a>" + openhmis.ItemCode.prototype.listToString(item.codes) + ": " + item.label + "</a>").appendTo(ul);
 				};
 				return this;
 			}

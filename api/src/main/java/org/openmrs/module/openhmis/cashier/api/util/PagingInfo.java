@@ -65,4 +65,8 @@ public class PagingInfo {
 	public void setLoadRecordCount(boolean loadRecordCount) {
 		this.loadRecordCount = loadRecordCount;
 	}
+	
+	public Boolean hasMoreResults() {
+		return (page * pageSize) < totalRecordCount;
+	}
 }

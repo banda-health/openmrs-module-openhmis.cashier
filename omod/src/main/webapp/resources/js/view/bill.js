@@ -56,9 +56,10 @@ define(
 				return errors;
 			},
 			
-			focus: function(event) {
-				openhmis.GenericListItemView.prototype.focus.call(this, event);
-				this.$('.item-name').focus();
+			focus: function(form) {
+				openhmis.GenericListItemView.prototype.focus.call(this, form);
+				if (!form)
+					this.$('.item-name').focus();
 			},
 						
 			removeModel: function() {

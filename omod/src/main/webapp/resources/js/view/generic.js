@@ -322,7 +322,8 @@ define(
 				this.$el.addClass("row_selected");
 			},
 			
-			formBlur: function(form) {
+			blur: function(event, other) {
+				this.$el.removeClass("row_selected");
 				this.form.commit();
 			},
 			
@@ -350,7 +351,8 @@ define(
 				if (_.indexOf(this.actions, 'inlineEdit') !== -1) {
 					this.form.render();
 					this.$el.append(this.form.$('td'));
-					this.form.on('blur', this.formBlur);
+					this.form.on('blur', this.blur);
+					this.form.on('focus', this.focus);
 				}
 				return this;
 			}
