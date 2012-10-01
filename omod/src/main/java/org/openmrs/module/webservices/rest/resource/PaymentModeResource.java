@@ -13,6 +13,9 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
@@ -22,9 +25,6 @@ import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 @Resource("paymentMode")
 @Handler(supports = { PaymentMode.class }, order = 0)
@@ -50,7 +50,7 @@ public class PaymentModeResource extends BaseRestMetadataResource<PaymentMode> {
 	}
 
 	@PropertySetter(value="attributeTypes")
-	public void setAttributeTypes(PaymentMode instance, Set<PaymentModeAttributeType> attributeTypes) {
+	public void setAttributeTypes(PaymentMode instance, List<PaymentModeAttributeType> attributeTypes) {
 		if (instance.getAttributeTypes() == null) {
 			instance.setAttributeTypes(new ArrayList<PaymentModeAttributeType>());
 		}

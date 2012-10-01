@@ -20,7 +20,7 @@ define(
                     options: new openhmis.FieldFormatCollection()
                 },
                 foreignKey: { type: 'BasicNumber' },
-                regexp: { type: 'Text' },
+                regExp: { type: 'Text' },
                 required: { type: 'Checkbox' }
             },
             toString: function() { return this.get('name'); }
