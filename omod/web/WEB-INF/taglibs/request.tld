@@ -9,7 +9,7 @@
   <info>The REQUEST custom tag library contains tags which can be used to
       access all the information about the HTTP request for a JSP page.Tags are provided to access information in the HTTP request for
       HTTP input parameters from a POST or GET, HTTP Headers, Cookies,
-      request attributeTypes, and session information related to this request.</info>
+      request attributes, and session information related to this request.</info>
   <tag>
     <name>log</name>
     <tagclass>org.apache.taglibs.request.LogTag</tagclass>
@@ -92,7 +92,7 @@
     </attribute>
   </tag>
   <tag>
-    <name>attributeTypes</name>
+    <name>attributes</name>
     <tagclass>org.apache.taglibs.request.AttributesTag</tagclass>
     <teiclass>org.apache.taglibs.request.AttributesTEI</teiclass>
     <bodycontent>JSP</bodycontent>
