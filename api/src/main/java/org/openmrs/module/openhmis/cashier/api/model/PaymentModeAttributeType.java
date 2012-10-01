@@ -31,6 +31,8 @@ public class PaymentModeAttributeType extends BaseOpenmrsMetadata {
 	private Integer attributeOrder;
 
 	private String format;
+	private Integer foreignKey;
+
 	private String regExp;
 	private Boolean required;
 
@@ -64,6 +66,14 @@ public class PaymentModeAttributeType extends BaseOpenmrsMetadata {
 
 	public void setFormat(String format) {
 		this.format = format;
+	}
+
+	public Integer getForeignKey() {
+		return foreignKey;
+	}
+
+	public void setForeignKey(Integer foreignKey) {
+		this.foreignKey = foreignKey;
 	}
 
 	public String getRegExp() {

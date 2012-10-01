@@ -22,22 +22,6 @@
 
 <div id="bill"></div>
 
-<!-- <div class="box"> -->
-<!-- 	<table class="bill display"> -->
-<!-- 		<thead> -->
-<!-- 			<tr> -->
-<!-- 				<td class="item-actions end"></td> -->
-<!-- 				<th class="item-description"><spring:message code="openhmis.cashier.item.description" /></th> -->
-<!-- 				<th class="item-quantity"><spring:message code="openhmis.cashier.item.quantity" /></th> -->
-<!-- 				<th class="item-price"><spring:message code="openhmis.cashier.item.price" /></th> -->
-<!-- 				<th class="item-total end"><spring:message code="openhmis.cashier.item.total" /></th> -->
-<!-- 			</tr> -->
-<!-- 		</thead> -->
-<!-- 		<tbody id="bill"> -->
-<!-- 		</tbody> -->
-<!-- 	</table> -->
-<!-- </div> -->
-
 <%@ include file="/WEB-INF/template/footer.jsp"%>
 
 <script id="line-item-template" type="text/template">

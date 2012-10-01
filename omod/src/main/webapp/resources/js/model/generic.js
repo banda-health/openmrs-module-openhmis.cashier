@@ -59,8 +59,12 @@ define(
 			baseUrl: openhmis.config.restUrlRoot,
 			
 			initialize: function(models, options) {
-				if (this.model && this.model.prototype.meta && this.model.prototype.meta.restUrl)
-					this.url = this.baseUrl + this.model.prototype.meta.restUrl;
+				if (this.model) {
+					if (this.model.prototype.urlRoot !== undefined)
+						this.url = this.model.prototype.urlRoot;
+					else if (this.model.prototype.meta && this.model.prototype.meta.restUrl)
+						this.url = this.baseUrl + this.model.prototype.meta.restUrl;
+				}
 				else
 					this.url = this.baseUrl + options.url;
 			},
@@ -77,12 +81,7 @@ define(
 			},
 			
 			parse: function(response) {
-				var results = response.results;
-				for (var result in results) {
-					if (this.model.prototype.parse !== undefined)
-						results[result] = this.model.prototype.parse.call(this, results[result]);
-				}
-				return results;
+				return response.results;
 			}
 		});
 		

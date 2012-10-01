@@ -1,9 +1,11 @@
 define(
     [
         'lib/underscore',
-        'model/generic'
+        'lib/backbone',
+        'model/generic',
+        'model/fieldGenHandler'
     ],
-    function(_, openhmis) {
+    function(_, Backbone, openhmis) {
         openhmis.PaymentModeAttributeType = openhmis.GenericModel.extend({
             meta: {
                 name: "Attribute Type",
@@ -13,7 +15,11 @@ define(
 
             schema: {
                 name: { type: 'Text' },
-                format: { type: 'Text' },
+                format: {
+                    type: 'Select',
+                    options: new openhmis.FieldFormatCollection()
+                },
+                foreignKey: { type: 'BasicNumber' },
                 regexp: { type: 'Text' },
                 required: { type: 'Checkbox' }
             },
