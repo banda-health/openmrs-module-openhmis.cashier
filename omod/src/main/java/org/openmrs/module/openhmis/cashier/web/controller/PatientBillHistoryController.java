@@ -11,13 +11,13 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.extension.html;
+package org.openmrs.module.openhmis.cashier.web.controller;
 
+import org.directwebremoting.util.Logger;
 import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
-import org.openmrs.module.openhmis.cashier.api.impl.BillServiceImpl;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,9 +25,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
-@RequestMapping(value = "/module/openhmis/cashier/patientBillHistory")
+@RequestMapping(value = "/module/openhmis/cashier/portlets/patientBillHistory")
 public class PatientBillHistoryController {
+	protected final Logger log = Logger.getLogger(getClass());
+
 	private IBillService billService;
 	private PatientService patientService;
 
@@ -38,11 +42,13 @@ public class PatientBillHistoryController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public void billHistory(ModelMap model, @RequestParam(value = "patientId", required = true) Integer patientId) {
-		Patient patient = null;
-		String patientIdentifier = null;
+	public void billHistory(ModelMap model, @RequestParam(value = "patientId", required = true) int patientId) {
+		log.warn("In bill history controller");
 
-		patient = patientService.getPatient(patientId);
+		List<Bill> bills = billService.findPatientBills(patientId, null);
 
+		model.addAttribute("bills", bills);
+
+		//return "module/openhmis/cashier/portlet/patientBillHistory";
 	}
 }

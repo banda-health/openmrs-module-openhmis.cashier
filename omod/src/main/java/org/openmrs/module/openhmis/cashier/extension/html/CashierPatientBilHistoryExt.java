@@ -34,6 +34,6 @@ public class CashierPatientBilHistoryExt extends PatientDashboardTabExt {
 
 	@Override
 	public String getPortletUrl() {
-		return "/module/openhmis/cashier/patientBillHistory";
+		return "patientBillHistory";
 	}
 }
