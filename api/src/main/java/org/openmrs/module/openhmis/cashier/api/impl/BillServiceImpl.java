@@ -14,6 +14,7 @@
 
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -32,7 +33,21 @@ public class BillServiceImpl
 	}
 
 	@Override
-	protected void validate(Bill entity) throws APIException {
+	protected void validate(Bill bill) throws APIException {
+	}
+
+	/**
+	 * Saves the bill to the database, creating a new bill or updating an existing one.
+	 *
+	 * @param bill The bill to be saved.
+	 * @return The saved bill.
+	 * @should Generate a new receipt number if one has not been defined.
+	 * @should Not generate a receipt number if one has already been defined.
+	 * @should Throw APIException if receipt number cannot be generated.
+	 */
+	@Override
+	public Bill save(Bill bill) throws APIException {
+		throw new NotImplementedException();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public interface IEntityService<E extends OpenmrsObject> extends OpenmrsService 
 	void setDao(IGenericHibernateDAO dao);
 
 	/**
-	 * Saves the entity to the database, creating a new item or updating an existing one.
+	 * Saves the entity to the database, creating a new entity or updating an existing one.
 	 *
 	 * @param entity The entity to be saved to the database
 	 * @return The saved entity.

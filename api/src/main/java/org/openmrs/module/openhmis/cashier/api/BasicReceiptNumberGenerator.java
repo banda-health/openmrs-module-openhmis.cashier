@@ -16,6 +16,16 @@ package org.openmrs.module.openhmis.cashier.api;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 
 public class BasicReceiptNumberGenerator implements IReceiptNumberGenerator {
+	@Override
+	public String getName() {
+		return "Basic Receipt Number Generator";
+	}
+
+	@Override
+	public String getDescription() {
+		return "This receipt number generator provides support for grouped sequential receipt numbers.";
+	}
+
 	public String generateNumber(Bill bill) {
 		return null;
 	}

@@ -11,16 +11,32 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.test;
 
+import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 
-public interface IReceiptNumberGenerator {
-	String getName();
-	String getDescription();
+public class InvalidReceiptNumberGenerator implements IReceiptNumberGenerator {
+	public InvalidReceiptNumberGenerator(String name) {
+	}
 
-	String generateNumber(Bill bill);
+	@Override
+	public String getName() {
+		return null;
+	}
 
-	String getConfigurationPage();
+	@Override
+	public String getDescription() {
+		return null;
+	}
+
+	@Override
+	public String generateNumber(Bill bill) {
+		return null;
+	}
+
+	@Override
+	public String getConfigurationPage() {
+		return null;
+	}
 }
-

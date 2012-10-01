@@ -11,16 +11,29 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.test;
 
+import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 
-public interface IReceiptNumberGenerator {
-	String getName();
-	String getDescription();
+public class AnotherTestReceiptNumberGenerator implements IReceiptNumberGenerator {
+	@Override
+	public String getName() {
+		return "Secondary Test Receipt Number Generator";
+	}
 
-	String generateNumber(Bill bill);
+	@Override
+	public String getDescription() {
+		return "This is a secondary receipt number generator.";
+	}
 
-	String getConfigurationPage();
+	@Override
+	public String generateNumber(Bill bill) {
+		return null;
+	}
+
+	@Override
+	public String getConfigurationPage() {
+		return null;
+	}
 }
-
