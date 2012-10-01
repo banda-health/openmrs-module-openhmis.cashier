@@ -62,20 +62,25 @@ define(
 				defaultPrice: { type: 'Select', options: [] }
 			},
 			
+			initialize: function(attributes, options) {
+				openhmis.GenericModel.prototype.initialize.call(this, attributes, options);
+				this.setPriceOptions();
+			},
+			
 			fetch: function(options) {
 				options = options || {};
 				var success = options.success;
 				options.success = function(model, resp) {
 					// Load price options
-					model.schema.defaultPrice.options = model.getPriceOptions();
+					model.setPriceOptions();
 					if (success) success(model, resp);
 				}
 				return openhmis.GenericModel.prototype.fetch.call(this, options);
 			},
 			
-			getPriceOptions: function() {
-				var prices = this.get('prices');
-				return _.map(prices, function(price) { return { val: price.uuid, label: openhmis.ItemPrice.prototype.format(price.price) } });
+			setPriceOptions: function(prices) {
+				prices = prices ? prices : this.get('prices');
+				this.schema.defaultPrice.options = _.map(prices, function(price) { return { val: price.uuid, label: openhmis.ItemPrice.prototype.format(price.price) } });
 			},
 			
 			parse: function(resp) {

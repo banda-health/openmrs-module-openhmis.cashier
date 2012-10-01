@@ -42,6 +42,7 @@ define(
 				var formOptions = { model: model, fields: formFields };
 				formOptions = _.extend(options, formOptions);
 				var modelForm = new Backbone.Form(options)
+				modelForm.render();
 				return modelForm;
 			},
 		
@@ -51,7 +52,7 @@ define(
 				$(this.addLinkEl).hide();
 				$(this.retireVoidPurgeEl).hide();
 				$(this.titleEl).show();
-				this.modelForm = this.prepareModelForm(this.model).render();
+				this.modelForm = this.prepareModelForm(this.model);
 				$(this.formEl).prepend(this.modelForm.el);
 				$(this.formEl).show();
 				$(this.formEl).find('input')[0].focus();
@@ -71,7 +72,7 @@ define(
 				this.model.fetch({ success: function(model, resp) {
 					self.render();
 					$(self.titleEl).show();
-					self.modelForm = self.prepareModelForm(self.model).render();
+					self.modelForm = self.prepareModelForm(self.model);
 					$(self.formEl).prepend(self.modelForm.el);
 					$(self.formEl).show();
 					$(self.retireVoidPurgeEl).show();
@@ -349,7 +350,7 @@ define(
 					fields: this.fields
 				})).addClass("selectable");
 				if (_.indexOf(this.actions, 'inlineEdit') !== -1) {
-					this.form.render();
+					//this.form.render();
 					this.$el.append(this.form.$('td'));
 					this.form.on('blur', this.blur);
 					this.form.on('focus', this.focus);
@@ -364,7 +365,9 @@ define(
 				url: model.prototype.meta.restUrl,
 				model: model
 			});
-			var addEditView = new openhmis.GenericAddEditView({ collection: collection });
+			var addEditView = options.addEditViewType
+				? new options.addEditViewType({ collection: collection })
+				: new openhmis.GenericAddEditView({ collection: collection });
 			addEditView.setElement($('#add-edit-form'));
 			addEditView.render();
 			var viewOptions = _.extend({

@@ -85,7 +85,9 @@ define(
 			},
 			
 			setValue: function(value) {
-				if (_.isString(value))
+				if (value === null)
+					return;
+				else if (_.isString(value))
 					this.$el.val(value);
 				else {
 					if (value.attributes) this.$el.val(value.id); // Backbone model

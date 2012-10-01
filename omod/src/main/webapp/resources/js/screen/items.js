@@ -8,11 +8,12 @@ curl(
 		'model/department',
 		'view/generic',
 		'view/list',
-		'view/editors',
+		'view/item',
 	],
 	function($, openhmis) {
 		$(function() {
 			openhmis.startAddEditScreen(openhmis.Item, {
+				addEditViewType: openhmis.ItemAddEditView,
 				listFields: ['name', 'department', 'codes']
 			});
 		});
