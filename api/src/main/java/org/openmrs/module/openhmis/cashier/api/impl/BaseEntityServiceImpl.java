@@ -22,7 +22,7 @@ import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.openhmis.cashier.api.IEntityAuthorizationPrivileges;
+import org.openmrs.module.openhmis.cashier.api.security.IEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IEntityService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;

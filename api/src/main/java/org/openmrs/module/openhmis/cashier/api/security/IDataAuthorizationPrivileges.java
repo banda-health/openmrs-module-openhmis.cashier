@@ -11,10 +11,10 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.security;
 
 /**
- * Represents types that define the privileges for the core {@link IDataService} operations.
+ * Represents types that define the privileges for the core {@link org.openmrs.module.openhmis.cashier.api.IDataService} operations.
  */
 public interface IDataAuthorizationPrivileges extends IEntityAuthorizationPrivileges{
 	/**

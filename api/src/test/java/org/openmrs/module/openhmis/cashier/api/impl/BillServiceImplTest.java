@@ -13,16 +13,37 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillServiceTest;
+import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.*;
+
 @RunWith(PowerMockRunner.class)
+@PrepareForTest(ReceiptNumberGeneratorFactory.class)
 public class BillServiceImplTest extends IBillServiceTest {
-	ReceiptNumberGeneratorFactory factory;
+	IReceiptNumberGenerator receiptNumberGenerator;
+
+	@Before
+	public void before() throws Exception {
+		super.before();
+
+		mockStatic(ReceiptNumberGeneratorFactory.class);
+		receiptNumberGenerator = mock(IReceiptNumberGenerator.class);
+
+		when(ReceiptNumberGeneratorFactory.getGenerator())
+				.thenReturn(receiptNumberGenerator);
+	}
 
 	/**
 	 * @verifies Generate a new receipt number if one has not been defined.
@@ -33,7 +54,17 @@ public class BillServiceImplTest extends IBillServiceTest {
 		Bill bill = createEntity(true);
 		bill.setReceiptNumber(null);
 
+		String receiptNumber = "Test Number";
+		when(receiptNumberGenerator.generateNumber(bill))
+				.thenReturn(receiptNumber);
 
+		service.save(bill);
+		Context.flushSession();
+
+		Bill savedBill = service.getById(bill.getId());
+		Assert.assertEquals(receiptNumber, savedBill.getReceiptNumber());
+
+		verify(receiptNumberGenerator, times(1)).generateNumber(bill);
 	}
 
 	/**
@@ -42,6 +73,16 @@ public class BillServiceImplTest extends IBillServiceTest {
 	 */
 	@Test
 	public void save_shouldNotGenerateAReceiptNumberIfOneHasAlreadyBeenDefined() throws Exception {
+		String receiptNumber = "Test Number";
+		Bill bill = createEntity(true);
+		bill.setReceiptNumber(receiptNumber);
 
+		service.save(bill);
+		Context.flushSession();
+
+		Bill savedBill = service.getById(bill.getId());
+		Assert.assertEquals(receiptNumber, savedBill.getReceiptNumber());
+
+		verify(receiptNumberGenerator, times(0)).generateNumber(bill);
 	}
 }

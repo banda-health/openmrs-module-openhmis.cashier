@@ -20,7 +20,7 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
-import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.cashier.api.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;

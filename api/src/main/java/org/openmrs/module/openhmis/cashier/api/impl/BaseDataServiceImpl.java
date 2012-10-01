@@ -20,7 +20,7 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.cashier.api.security.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IDataService;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 

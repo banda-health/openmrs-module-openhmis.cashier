@@ -20,7 +20,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
-import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.cashier.api.security.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
