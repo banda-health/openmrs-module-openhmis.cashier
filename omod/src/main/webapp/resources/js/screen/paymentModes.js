@@ -2,16 +2,15 @@ curl(
     { baseUrl: openhmis.config.wwwUrlRoot + 'js/' },
     [
         'lib/jquery',
-        'openhmis',
-        'lib/backbone-forms',
         'model/paymentMode',
         'view/generic',
-        'view/list',
-        'view/editors'
+        'view/paymentMode'
+        
     ],
     function($, openhmis) {
         $(function() {
             openhmis.startAddEditScreen(openhmis.PaymentMode, {
+                addEditViewType: openhmis.PaymentModeAddEditView,
                 listFields: ['name', 'description']
             });
         });

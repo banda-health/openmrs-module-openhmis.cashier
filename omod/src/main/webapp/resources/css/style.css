@@ -16,10 +16,18 @@ input.reason { width: 25em; }
 .selectable { cursor: pointer; }
 
 /* List editor styles */
-.bbf-list li { display: block; clear: both; height: 2em; margin-left: -2em; }
-.bbf-list button.bbf-remove { float: left; width: 2em; margin-top: -.2em; margin-right: 10px; }
+.bbf-list li { display: block; clear: both; height: 2em; padding-left: 1px; }
+.bbf-list button.bbf-remove { float: left; width: 1.9em; }
 .bbf-list-modal { cursor: pointer; }
 .bbf-actions { clear: both; }
+
+.bbf-list .bbf-editor-container { margin-top: 3px; }
+.bbf-list .bbf-editor-container div div { margin-left: 4.5em; }
+.bbf-list ul.ui-sortable li {
+	margin: 0 0 1px -2em; border: 1px solid #bbb;
+	cursor: move;
+	background: #f9f9f9 url('../images/handle.png') 2.2em center no-repeat;
+}
 
 /* Item editor styles */
 .editor .item-name { position: relative; z-index: 1; }

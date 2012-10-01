@@ -14,7 +14,7 @@ define(
             schema: {
                 name: { type: 'Text' },
                 format: { type: 'Text' },
-                regexp: { type: 'Text' },
+                regExp: { type: 'Text' },
                 required: { type: 'Checkbox' }
             },
             toString: function() { return this.get('name'); }
