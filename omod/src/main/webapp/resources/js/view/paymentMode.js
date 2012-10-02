@@ -8,12 +8,13 @@ define(
 			prepareModelForm: function(model, options) {
 				var form = openhmis.GenericAddEditView.prototype.prepareModelForm.call(this, model, options);
 				form.on('attributeTypes:change', this.makeTypesSortable);
+				this.makeTypesSortable(form);
 				return form;
 			},
 			
-			makeTypesSortable: function() {
-				var self = this;
-				this.$('.bbf-list ul').sortable();
+			makeTypesSortable: function(form) {
+				form = form ? form : this.modelForm;
+				form.$('.bbf-list ul').sortable();
 			},
 			
 			save: function() {
@@ -35,11 +36,6 @@ define(
 				}
 				openhmis.GenericAddEditView.prototype.save.call(this);
 			}
-			//render: function() {
-			//	openhmis.GenericAddEditView.prototype.render.call(this);
-			//	this.$('.bbf-list ul').sortable();
-			//	return this;
-			//}
 		});
 		
 		return openhmis;
