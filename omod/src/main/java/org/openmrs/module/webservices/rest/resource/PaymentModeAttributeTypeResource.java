@@ -15,6 +15,9 @@ public class PaymentModeAttributeTypeResource extends BaseRestMetadataResource<P
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
+			description.addProperty("format");
+			description.addProperty("foreignKey");
+			description.addProperty("regExp");
 			description.addProperty("required");
 		}
 		return description;

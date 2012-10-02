@@ -1,9 +1,13 @@
 define(
 	[
 		'lib/jquery',
+		'lib/backbone',
+		'model/paymentMode',
+		'lib/i18n',
+		'lib/backbone-forms',
 		'view/generic'
 	],
-	function($, openhmis) {
+	function($, Backbone, openhmis, i18n) {
 		openhmis.PaymentModeAddEditView = openhmis.GenericAddEditView.extend({
 			prepareModelForm: function(model, options) {
 				var form = openhmis.GenericAddEditView.prototype.prepareModelForm.call(this, model, options);
@@ -35,6 +39,41 @@ define(
 					items[id].getValue = newGetValue;
 				}
 				openhmis.GenericAddEditView.prototype.save.call(this);
+			}
+		});
+		
+		openhmis.PaymentView = Backbone.View.extend({
+			tmplFile: 'payment.html',
+			tmplSelector: '#payment-view',
+			initialize: function(options) {
+				this.template = this.getTemplate();
+				this.modeChoice = new Backbone.Form({
+					schema: {
+						paymentMode: {
+							type: 'Select',
+							options: new openhmis.GenericCollection([], { model: openhmis.PaymentMode })
+						},
+						paymentAmount: {
+							type: 'BasicNumber'
+						}
+					}
+				});
+			},
+			
+            events: {
+                'change #paymentMode': 'paymentModeChange'
+            },
+			
+			paymentModeChange: function(event) {
+				var paymentModeUuid = $(event.target).val();
+				this.$attributes.load(openhmis.config.pageUrlRoot + "paymentModeFragment.form?uuid=" + paymentModeUuid);
+			},
+			
+			render: function() {
+				this.$el.html(this.template({ __: i18n }));
+				this.$el.prepend(this.modeChoice.render().el);
+				this.$attributes = this.$('#paymentAttributes');
+				return this;
 			}
 		});
 		

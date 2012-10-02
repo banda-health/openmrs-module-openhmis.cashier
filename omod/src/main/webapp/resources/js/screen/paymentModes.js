@@ -4,7 +4,7 @@ curl(
         'lib/jquery',
         'model/paymentMode',
         'view/generic',
-        'view/paymentMode'
+        'view/payment'
         
     ],
     function($, openhmis) {

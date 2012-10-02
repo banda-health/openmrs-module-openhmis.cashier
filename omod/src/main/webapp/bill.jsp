@@ -21,6 +21,7 @@
 </div>
 
 <div id="bill"></div>
+<div id="payment" class="box"></div>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
 

@@ -10,7 +10,8 @@ define(
             meta: {
                 name: "Attribute Type",
                 namePlural: "Attribute Types",
-                openmrsType: 'metadata'
+                openmrsType: 'metadata',
+                restUrl: 'paymentMode'
             },
 
             schema: {
@@ -33,7 +34,7 @@ define(
                 openmrsType: 'metadata',
                 restUrl: 'paymentMode'
             },
-
+            
             schema: {
                 name: { type: 'Text' },
                 description: { type: 'Text' },
@@ -47,6 +48,10 @@ define(
                         delete this.attributes.attributeTypes[attributeType].resourceVersion;
                 }
                 return openhmis.GenericModel.prototype.toJSON.call(this);
+            },
+            
+            toString: function() {
+                return this.get('name');
             }
         });
 
