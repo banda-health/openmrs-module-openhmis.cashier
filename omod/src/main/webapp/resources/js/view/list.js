@@ -298,6 +298,7 @@ define(
   
         //Create main element
         var $el = $(Form.templates[this.schema.listItemTemplate]({
+          id: this.value,
           editor: '<b class="bbf-tmp"></b>'
         }));
   
