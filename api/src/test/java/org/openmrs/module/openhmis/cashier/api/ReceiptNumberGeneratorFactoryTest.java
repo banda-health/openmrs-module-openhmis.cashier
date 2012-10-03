@@ -80,6 +80,41 @@ public class ReceiptNumberGeneratorFactoryTest {
 	}
 
 	/**
+	 * @verifies Load the generator if it has not been loaded.
+	 * @see ReceiptNumberGeneratorFactory#getGenerator()
+	 */
+	@Test
+	public void getGenerator_shouldLoadTheGeneratorIfItHasNotBeenLoaded() throws Exception {
+		when(administrationService.getGlobalProperty(ReceiptNumberGeneratorFactory.SYSTEM_RECEIPT_NUMBER_GENERATOR))
+				.thenReturn(TestReceiptNumberGenerator.class.getName());
+
+		TestReceiptNumberGenerator generator = (TestReceiptNumberGenerator)ReceiptNumberGeneratorFactory.getGenerator();
+
+		Assert.assertNotNull(generator);
+		Assert.assertEquals(true, generator.isLoaded());
+		Assert.assertEquals(1, generator.getLoadedCount());
+	}
+
+	/**
+	 * @verifies not load the generator if it has been loaded.
+	 * @see ReceiptNumberGeneratorFactory#getGenerator()
+	 */
+	@Test
+	public void getGenerator_shouldNotLoadTheGeneratorIfItHasBeenLoaded() throws Exception {
+		TestReceiptNumberGenerator generator = new TestReceiptNumberGenerator();
+		generator.load();
+
+		Assert.assertEquals(true, generator.isLoaded());
+		Assert.assertEquals(1, generator.getLoadedCount());
+
+		ReceiptNumberGeneratorFactory.setGenerator(generator);
+		generator = (TestReceiptNumberGenerator)ReceiptNumberGeneratorFactory.getGenerator();
+
+		Assert.assertEquals(true, generator.isLoaded());
+		Assert.assertEquals(1, generator.getLoadedCount());
+	}
+
+	/**
 	 * @verifies Throw APIException if there is no generator defined
 	 * @see ReceiptNumberGeneratorFactory#getGenerator()
 	 */

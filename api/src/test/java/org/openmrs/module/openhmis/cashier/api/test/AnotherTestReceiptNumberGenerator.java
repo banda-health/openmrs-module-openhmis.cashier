@@ -28,6 +28,10 @@ public class AnotherTestReceiptNumberGenerator implements IReceiptNumberGenerato
 	}
 
 	@Override
+	public void load() {
+	}
+
+	@Override
 	public String generateNumber(Bill bill) {
 		return null;
 	}
@@ -35,5 +39,10 @@ public class AnotherTestReceiptNumberGenerator implements IReceiptNumberGenerato
 	@Override
 	public String getConfigurationPage() {
 		return null;
+	}
+
+	@Override
+	public boolean isLoaded() {
+		return false;
 	}
 }

@@ -15,12 +15,19 @@ package org.openmrs.module.openhmis.cashier.api.security;
 
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
-public class BasicMetadataAuthorizationPrivileges
-		extends BasicEntityAuthorizationPrivileges
-		implements IMetadataAuthorizationPrivileges {
+public class BasicEntityAuthorizationPrivileges implements IEntityAuthorizationPrivileges {
 	@Override
-	public String getRetirePrivilege() {
+	public String getSavePrivilege() {
 		return CashierPrivilegeConstants.MANAGE_METADATA;
 	}
-}
 
+	@Override
+	public String getPurgePrivilege() {
+		return CashierPrivilegeConstants.PURGE_METADATA;
+	}
+
+	@Override
+	public String getGetPrivilege() {
+		return CashierPrivilegeConstants.VIEW_METADATA;
+	}
+}

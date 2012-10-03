@@ -13,24 +13,15 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
 
-public class BasicReceiptNumberGenerator implements IReceiptNumberGenerator {
-	@Override
-	public String getName() {
-		return "Basic Receipt Number Generator";
-	}
+public interface ISequentialReceiptNumberGeneratorService
+		extends IEntityService<SequentialReceiptNumberGeneratorModel> {
 
-	@Override
-	public String getDescription() {
-		return "This receipt number generator provides support for grouped sequential receipt numbers.";
-	}
-
-	public String generateNumber(Bill bill) {
-		return null;
-	}
-
-	public String getConfigurationPage() {
-		return null;
-	}
+	/**
+	 * Reserves the next sequence value for the specified group.
+	 * @param group The grouping value.
+	 * @return The next sequence value.
+	 */
+	int reserveNextSequence(String group);
 }

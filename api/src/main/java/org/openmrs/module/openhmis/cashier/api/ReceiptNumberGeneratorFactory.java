@@ -66,6 +66,8 @@ public class ReceiptNumberGeneratorFactory {
 	 * Returns the currently defined {@link IReceiptNumberGenerator} for the system.
 	 * @return The {@link IReceiptNumberGenerator}.
 	 * @should Return the currently defined receipt number generator
+	 * @should Load the generator if it has not been loaded.
+	 * @should not load the generator if it has been loaded.
 	 * @should Throw APIException if there is no generator defined
 	 * @should Throw APIException if generator class cannot be found
 	 * @should Throw APIException if generator class cannot be instantiated
@@ -89,6 +91,11 @@ public class ReceiptNumberGeneratorFactory {
 			} catch (IllegalAccessException accessEx) {
 				throw new APIException("Could not access the '" + cls.getClass().getName() + "' class.", accessEx);
 			}
+		}
+
+		// Ensure that the generator is loaded
+		if (!generator.isLoaded()) {
+			generator.load();
 		}
 
 		return generator;

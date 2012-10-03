@@ -17,6 +17,9 @@ import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 
 public class TestReceiptNumberGenerator implements IReceiptNumberGenerator {
+	private int loadedCount = 0;
+	private boolean loaded = false;
+
 	@Override
 	public String getName() {
 		return "Test Receipt Number Generator";
@@ -28,6 +31,12 @@ public class TestReceiptNumberGenerator implements IReceiptNumberGenerator {
 	}
 
 	@Override
+	public void load() {
+		loadedCount++;
+		loaded = true;
+	}
+
+	@Override
 	public String generateNumber(Bill bill) {
 		return null;
 	}
@@ -35,5 +44,14 @@ public class TestReceiptNumberGenerator implements IReceiptNumberGenerator {
 	@Override
 	public String getConfigurationPage() {
 		return null;
+	}
+
+	@Override
+	public boolean isLoaded() {
+		return loaded;
+	}
+
+	public int getLoadedCount() {
+		return loadedCount;
 	}
 }
