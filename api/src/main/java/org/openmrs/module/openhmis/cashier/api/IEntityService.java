@@ -42,7 +42,7 @@ public interface IEntityService<E extends OpenmrsObject> extends OpenmrsService 
 	 *
 	 * @param entity The entity to be saved to the database
 	 * @return The saved entity.
-	 * @should throw IllegalArgumentException if the entity is null
+	 * @should throw NullPointerException if the entity is null
 	 * @should validate the entity before saving
 	 * @should return saved entity
 	 * @should update the entity successfully
@@ -54,7 +54,7 @@ public interface IEntityService<E extends OpenmrsObject> extends OpenmrsService 
 	 * Completely remove an entity from the database (not reversible).
 	 *
 	 * @param entity the entity to remove from the database.
-	 * @should throw IllegalArgumentException if the entity is null
+	 * @should throw NullPointerException if the entity is null
 	 * @should delete the specified entity
 	 */
 	void purge(E entity) throws APIException;

@@ -19,7 +19,9 @@ import org.openmrs.module.openhmis.cashier.api.security.IMetadataAuthorizationPr
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizationPrivileges;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class PaymentModeServiceImpl
 		extends BaseMetadataServiceImpl<PaymentMode>
 		implements IPaymentModeService {

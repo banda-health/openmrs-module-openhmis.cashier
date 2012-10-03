@@ -25,7 +25,7 @@ public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
 	public static final String DEFAULT_CASH_POINT_PREFIX = "CP";
 	public static final int DEFAULT_SEQUENCE_PADDING = 4;
 
-	private int id;
+	private Integer id;
 	private SequentialReceiptNumberGenerator.GroupingType groupingType;
 	private SequentialReceiptNumberGenerator.SequenceType sequenceType;
 	private String separator;
@@ -110,11 +110,11 @@ public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
 		this.sequencePadding = sequencePadding;
 	}
 
-	public boolean hasCheckDigit() {
+	public boolean isIncludeCheckDigit() {
 		return includeCheckDigit;
 	}
 
-	public void includeCheckDigit(boolean includeCheckDigit) {
+	public void setIncludeCheckDigit(boolean includeCheckDigit) {
 		this.includeCheckDigit = includeCheckDigit;
 	}
 }

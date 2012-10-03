@@ -18,7 +18,9 @@ import org.openmrs.module.openhmis.cashier.api.ICashPointService;
 import org.openmrs.module.openhmis.cashier.api.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizationPrivileges;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class CashPointServiceImpl
 		extends BaseMetadataServiceImpl<CashPoint>
 		implements ICashPointService {

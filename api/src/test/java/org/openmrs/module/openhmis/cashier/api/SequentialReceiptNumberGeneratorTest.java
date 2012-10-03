@@ -69,7 +69,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setCashierPrefix(SequentialReceiptNumberGeneratorModel.DEFAULT_CASHIER_PREFIX);
 		model.setCashPointPrefix(SequentialReceiptNumberGeneratorModel.DEFAULT_CASH_POINT_PREFIX);
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
-		model.includeCheckDigit(false);
+		model.setIncludeCheckDigit(false);
 
 		when(service.getAll()).thenReturn(Arrays.asList(model));
 		when(service.reserveNextSequence("")).thenReturn(1);
@@ -122,7 +122,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setCashierPrefix(SequentialReceiptNumberGeneratorModel.DEFAULT_CASHIER_PREFIX);
 		model.setCashPointPrefix(SequentialReceiptNumberGeneratorModel.DEFAULT_CASH_POINT_PREFIX);
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
-		model.includeCheckDigit(false);
+		model.setIncludeCheckDigit(false);
 
 		when(service.getAll()).thenReturn(Arrays.asList(model));
 		when(service.reserveNextSequence("")).thenReturn(1);
@@ -170,7 +170,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setCashierPrefix(SequentialReceiptNumberGeneratorModel.DEFAULT_CASHIER_PREFIX);
 		model.setCashPointPrefix(SequentialReceiptNumberGeneratorModel.DEFAULT_CASH_POINT_PREFIX);
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
-		model.includeCheckDigit(false);
+		model.setIncludeCheckDigit(false);
 
 		when(service.getAll()).thenReturn(Arrays.asList(model));
 		when(service.reserveNextSequence("")).thenReturn(1);
@@ -194,7 +194,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		Assert.assertNotNull(number);
 		Assert.assertEquals("P1-CP3-" + format.format(date) + "52013", number);
 
-		model.includeCheckDigit(true);
+		model.setIncludeCheckDigit(true);
 		generator.load();
 
 		number = generator.generateNumber(bill);
@@ -216,7 +216,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setCashPointPrefix(SequentialReceiptNumberGeneratorModel.DEFAULT_CASH_POINT_PREFIX);
 		model.setSequencePadding(4);
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
-		model.includeCheckDigit(true);
+		model.setIncludeCheckDigit(true);
 
 		when(service.getAll()).thenReturn(Arrays.asList(model));
 		when(service.reserveNextSequence("")).thenReturn(1);
@@ -260,7 +260,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setCashPointPrefix(SequentialReceiptNumberGeneratorModel.DEFAULT_CASH_POINT_PREFIX);
 		model.setSequencePadding(4);
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
-		model.includeCheckDigit(true);
+		model.setIncludeCheckDigit(true);
 
 		when(service.getAll()).thenReturn(Arrays.asList(model));
 		when(service.reserveNextSequence("")).thenReturn(1);

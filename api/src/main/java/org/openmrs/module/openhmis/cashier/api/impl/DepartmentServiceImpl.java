@@ -19,7 +19,9 @@ import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizationPrivileges;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class DepartmentServiceImpl
 		extends BaseMetadataServiceImpl<Department>
 		implements IDepartmentService {

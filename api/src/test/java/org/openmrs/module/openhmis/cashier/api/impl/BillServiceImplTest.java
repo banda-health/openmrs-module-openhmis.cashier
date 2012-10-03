@@ -15,23 +15,32 @@ package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.IBillServiceTest;
 import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.agent.PowerMockAgent;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 
-@RunWith(PowerMockRunner.class)
 @PrepareForTest(ReceiptNumberGeneratorFactory.class)
 public class BillServiceImplTest extends IBillServiceTest {
+	@Rule
+	public PowerMockRule rule = new PowerMockRule();
+
+	static {
+		PowerMockAgent.initializeIfNeeded();
+	}
+
 	IReceiptNumberGenerator receiptNumberGenerator;
 
 	@Before
@@ -43,6 +52,11 @@ public class BillServiceImplTest extends IBillServiceTest {
 
 		when(ReceiptNumberGeneratorFactory.getGenerator())
 				.thenReturn(receiptNumberGenerator);
+	}
+
+	@Override
+	protected IBillService createService() {
+		return Context.getService(IBillService.class);
 	}
 
 	/**
@@ -84,5 +98,20 @@ public class BillServiceImplTest extends IBillServiceTest {
 		Assert.assertEquals(receiptNumber, savedBill.getReceiptNumber());
 
 		verify(receiptNumberGenerator, times(0)).generateNumber(bill);
+	}
+
+	/**
+	 * @verifies Throw APIException if receipt number cannot be generated.
+	 * @see BillServiceImpl#save(org.openmrs.module.openhmis.cashier.api.model.Bill)
+	 */
+	@Test(expected = APIException.class)
+	public void save_shouldThrowAPIExceptionIfReceiptNumberCannotBeGenerated() throws Exception {
+		Bill bill = createEntity(true);
+		bill.setReceiptNumber(null);
+
+		when(receiptNumberGenerator.generateNumber(bill))
+				.thenThrow(new APIException("Test exception"));
+
+		service.save(bill);
 	}
 }

@@ -18,7 +18,9 @@ import org.openmrs.module.openhmis.cashier.api.security.IDataAuthorizationPrivil
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class TimesheetServiceImpl
 		extends BaseDataServiceImpl<Timesheet>
 		implements ITimesheetService, IDataAuthorizationPrivileges {

@@ -59,13 +59,19 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- End OpenMRS core -->
+
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
 		</dependency>
 
-		<!-- End OpenMRS core -->
-		
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-rule-agent</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 	
 	<build>

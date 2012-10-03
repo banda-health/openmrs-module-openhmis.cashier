@@ -25,26 +25,14 @@ import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public class ItemServiceImpl
 		extends BaseMetadataServiceImpl<Item>
 		implements IItemService, IMetadataAuthorizationPrivileges {
-	public static final int NAME_FIELD_LENGTH = 255;
-	public static final int DESC_FIELD_SIZE = 1024;
-
-	/**
-	 * Validates the entity.
-	 * @param entity The {@link Item} to be validated
-	 * @return
-	 * @throws APIException
-	 * @should throw APIException if the item has no name
-	 * @should throw APIException if the item has no department
-	 * @should throw APIException if the item name is longer than 255 characters
-	 * @should throw APIException if the item description is longer than 1024 characters
-	 * @should throw APIException if the item has an item code that is already defined
-	 */
 	@Override
 	protected void validate(Item entity) throws APIException {
 		return;
@@ -52,6 +40,7 @@ public class ItemServiceImpl
 
 	@Override
 	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
+	@Transactional(readOnly = true)
 	public Item getItemByCode(String itemCode) throws APIException {
 		if (StringUtils.isEmpty(itemCode)) {
 			throw new IllegalArgumentException("The item code must be defined.");
@@ -69,12 +58,14 @@ public class ItemServiceImpl
 
 	@Override
 	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
+	@Transactional(readOnly = true)
 	public List<Item> findItems(Department department, String name, boolean includeRetired) throws APIException {
 		return findItems(department, name, includeRetired, null);
 	}
 	
 	@Override
 	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
+	@Transactional(readOnly = true)
 	public List<Item> findItems(Department department, String name, boolean includeRetired, PagingInfo pagingInfo) throws APIException {
 		if (department == null) {
 			throw new NullPointerException("The department must be defined");
