@@ -354,8 +354,8 @@
 			<column name="patient_id"/>
 		</createIndex>
 
-		<createIndex indexName="cashier_seq_group_sequence_group_idx" tableName="cashier_seq_group_sequence">
-			<column name="group" />
+		<createIndex indexName="cashier_seq_group_sequence_sequence_group_idx" tableName="cashier_seq_group_sequence">
+			<column name="sequence_group" />
 		</createIndex>
 		
 		<addForeignKeyConstraint constraintName="cashier_item_creator_fk"
