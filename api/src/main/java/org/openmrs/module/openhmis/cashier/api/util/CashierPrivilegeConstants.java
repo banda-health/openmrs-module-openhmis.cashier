@@ -15,36 +15,37 @@
 package org.openmrs.module.openhmis.cashier.api.util;
 
 import org.openmrs.annotation.AddOnStartup;
+import org.openmrs.util.PrivilegeConstants;
 
-public class CashierPrivilegeConstants {
-	@AddOnStartup(description = "Able to add/edit/delete billing items", core = false)
+public class CashierPrivilegeConstants extends PrivilegeConstants {
+	@AddOnStartup(description = "Able to add/edit/delete billing items")
 	public static final String MANAGE_ITEMS = "Manage Cashier Items";
 
-	@AddOnStartup(description = "Able to view billing items", core = false)
+	@AddOnStartup(description = "Able to view billing items")
 	public static final String VIEW_ITEMS = "View Cashier Items";
 
 	public static final String PURGE_ITEMS = "Purge Cashier Items";
 
-	@AddOnStartup(description = "Able to add/edit/delete bills", core = false)
+	@AddOnStartup(description = "Able to add and edit bills")
 	public static final String MANAGE_BILLS = "Manage Cashier Bills";
 
-	@AddOnStartup(description = "Able to view bills", core = false)
+	@AddOnStartup(description = "Able to view bills")
 	public static final String VIEW_BILLS = "View Cashier Bills";
 
 	public static final String PURGE_BILLS = "Purge Cashier Bills";
 
-	@AddOnStartup(description = "Able to add/edit/delete cashier module metadata", core = false)
+	@AddOnStartup(description = "Able to add/edit/delete cashier module metadata")
 	public static final String MANAGE_METADATA = "Manage Cashier Metadata";
 
-	@AddOnStartup(description = "Able to view cashier module metadata", core = false)
+	@AddOnStartup(description = "Able to view cashier module metadata")
 	public static final String VIEW_METADATA = "View Cashier Metadata";
 
 	public static final String PURGE_METADATA = "Purge Cashier Metadata";
 
-	@AddOnStartup(description = "Able to add/edit/delete timesheets", core = false)
+	@AddOnStartup(description = "Able to add/edit/delete timesheets")
 	public static final String MANAGE_TIMESHEETS = "Manage Cashier Timesheets";
 
-	@AddOnStartup(description = "Able to view timesheets", core = false)
+	@AddOnStartup(description = "Able to view timesheets")
 	public static final String VIEW_TIMESHEETS = "View Cashier Timesheets";
 
 	public static final String PURGE_TIMESHEETS = "Purge Cashier Timesheets";

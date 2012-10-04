@@ -13,17 +13,15 @@
  */
 package org.openmrs.module.openhmis.cashier.extension.html;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.openmrs.module.web.extension.HeaderIncludeExt;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-public class CashierHeadIncludes extends HeaderIncludeExt {
+import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
+import java.util.List;
 
+public class CashierHeadIncludes extends HeaderIncludeExt {
 	@Override
 	public List<String> getHeaderFiles() {
 		List<String> files = new LinkedList<String>();
@@ -33,5 +31,4 @@ public class CashierHeadIncludes extends HeaderIncludeExt {
 		}
 		return files;
 	}
-
 }
