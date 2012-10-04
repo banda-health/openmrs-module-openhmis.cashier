@@ -72,7 +72,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.openmrs.simpleframework:simple-xml:1.6.1-mod" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: stax:stax:1.2.0" level="project" />
-    <orderEntry type="library" name="Maven: javassist:javassist:3.12.1.GA" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javassist:javassist:3.12.1.GA" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.openmrs.hibernate:hibernate-core:3.6.5.Final-mod" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
