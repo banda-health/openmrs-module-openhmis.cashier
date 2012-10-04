@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.openmrs.module.openhmis.cashier.api.model">
+	<class name="SequentialReceiptNumberGeneratorModel" table="cashier_seq_receipt_number_generator">
+		<cache usage="read-write"/>
+
+		<id name="id" type="int" column="seq_receipt_number_generator_id">
+			<generator class="native">
+				<param name="sequence">cashier_seq_receipt_number_generator_seq_receipt_number_generator_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="seq_receipt_number_generator_id" insert="false" />
+
+		<property name="groupingType" column="grouping_type" not-null="true">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator$GroupingType</param>
+			</type>
+		</property>
+		<property name="sequenceType" column="sequence_type" not-null="true">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator$SequenceType</param>
+			</type>
+		</property>
+
+		<property name="separator" type="java.lang.String" column="separator" length="5" not-null="true"/>
+		<property name="cashierPrefix" type="java.lang.String" column="cashier_prefix" length="5" not-null="true"/>
+		<property name="cashPointPrefix" type="java.lang.String" column="cash_point_prefix" length="5" not-null="true"/>
+		<property name="sequencePadding" type="int" column="sequence_padding" not-null="true"/>
+		<property name="includeCheckDigit" type="boolean" column="has_check_digit" not-null="true"/>
+
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+	</class>
+
+	<class name="GroupSequence" table="cashier_seq_group_sequence">
+		<cache usage="read-write"/>
+
+		<id name="id" type="int" column="seq_group_sequence_id">
+			<generator class="native">
+				<param name="sequence">cashier_seq_group_sequence_seq_group_sequence_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="seq_group_sequence_id" insert="false" />
+
+		<property name="group" type="java.lang.String" column="sequence_group" length="50" not-null="true" unique="true"/>
+		<property name="value" type="int" column="sequence_value" not-null="true"/>
+
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+	</class>
+</hibernate-mapping>

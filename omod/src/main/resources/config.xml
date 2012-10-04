@@ -112,6 +112,7 @@
 		Item.hbm.xml
 		Bill.hbm.xml
 		Cashier.hbm.xml
+		SequentialReceiptNumberGenerator.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

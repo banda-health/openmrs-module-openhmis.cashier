@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
+public abstract class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 	public static final String BILL_DATASET = BASE_DATASET_DIR + "BillTest.xml";
 
 	private ProviderService providerService;

@@ -11,16 +11,11 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.api.util;
+package org.openmrs.module.openhmis.cashier.api.security;
 
-import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
-public class BasicMetadataAuthorizationPrivileges implements IMetadataAuthorizationPrivileges {
-	@Override
-	public String getRetirePrivilege() {
-		return CashierPrivilegeConstants.MANAGE_METADATA;
-	}
-
+public class BasicEntityAuthorizationPrivileges implements IEntityAuthorizationPrivileges {
 	@Override
 	public String getSavePrivilege() {
 		return CashierPrivilegeConstants.MANAGE_METADATA;
@@ -36,4 +31,3 @@ public class BasicMetadataAuthorizationPrivileges implements IMetadataAuthorizat
 		return CashierPrivilegeConstants.VIEW_METADATA;
 	}
 }
-

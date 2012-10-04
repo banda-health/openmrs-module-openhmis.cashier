@@ -22,10 +22,11 @@ import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.openhmis.cashier.api.IEntityAuthorizationPrivileges;
+import org.openmrs.module.openhmis.cashier.api.security.IEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IEntityService;
 import org.openmrs.module.openhmis.cashier.api.db.hibernate.IGenericHibernateDAO;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -34,6 +35,7 @@ import java.util.List;
  * The base type for entity services. Provides the core implementation for the common {@link BaseOpenmrsObject} operations.
  * @param <E> The entity model type.
  */
+@Transactional
 public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P extends IEntityAuthorizationPrivileges>
 		extends BaseOpenmrsService implements IEntityService<E> {
 	protected IGenericHibernateDAO dao;
@@ -69,6 +71,7 @@ public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P exten
 	}
 
 	@Override
+	@Transactional
 	public E save(E entity) throws APIException {
 		P privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getSavePrivilege())) {
@@ -76,7 +79,7 @@ public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P exten
 		}
 
 		if (entity == null) {
-			throw new IllegalArgumentException("The entity to save cannot be null.");
+			throw new NullPointerException("The entity to save cannot be null.");
 		}
 
 		validate(entity);
@@ -85,6 +88,7 @@ public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P exten
 	}
 
 	@Override
+	@Transactional
 	public void purge(E entity) throws APIException {
 		P privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getPurgePrivilege())) {
@@ -92,18 +96,20 @@ public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P exten
 		}
 
 		if (entity == null) {
-			throw new IllegalArgumentException("The entity to purge cannot be null.");
+			throw new NullPointerException("The entity to purge cannot be null.");
 		}
 
 		dao.delete(entity);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> getAll() throws APIException {
 		return getAll(null);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> getAll(PagingInfo pagingInfo) {
 		P privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
@@ -116,6 +122,7 @@ public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P exten
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public E getById(int entityId) throws APIException {
 		P privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
@@ -126,6 +133,7 @@ public abstract class BaseEntityServiceImpl<E extends BaseOpenmrsObject, P exten
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public E getByUuid(String uuid) throws APIException {
 		P privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {

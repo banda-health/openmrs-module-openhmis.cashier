@@ -21,9 +21,10 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.cashier.api.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -32,10 +33,12 @@ import java.util.List;
  * The base type for {@link IMetadataService}s.
  * @param <E> THe entity model type.
  */
+@Transactional
 public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 		extends BaseEntityServiceImpl<E, IMetadataAuthorizationPrivileges> implements IMetadataService<E> {
 
 	@Override
+	@Transactional
 	public E retire(E entity, String reason) throws APIException {
 		IMetadataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getRetirePrivilege())) {
@@ -58,6 +61,7 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 	}
 
 	@Override
+	@Transactional
 	public E unretire(E entity) throws APIException {
 		IMetadataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getRetirePrivilege())) {
@@ -76,11 +80,13 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> getAll(boolean retired) throws APIException {
 		return getAll(retired, null);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> getAll(boolean retired, PagingInfo pagingInfo) throws APIException {
 		IMetadataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
@@ -95,11 +101,13 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> findByName(String nameFragment, boolean includeRetired) throws APIException {
 		return findByName(nameFragment, includeRetired, null);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> findByName(String nameFragment, boolean includeRetired, PagingInfo pagingInfo) throws APIException {
 		IMetadataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
