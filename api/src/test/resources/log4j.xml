@@ -30,7 +30,7 @@
 	<logger name="log4j.logger.org.hibernate.SQL">
 		<level value="DEBUG" />
 	</logger>
-	-->
+	 -->
 
 	<!-- 
 		This controls the LoggingAdvice class that wraps around the OpenMRS services 
