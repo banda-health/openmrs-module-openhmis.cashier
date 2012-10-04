@@ -23,15 +23,20 @@ curl(
 			});
 			billView.setElement($('#bill'));
 			billView.render();
+			$('#saveBill').click(billView.saveBill);
 			billView.setupNewItem();
-			$('#inputNode').focus();
-			patientView.on('selected', billView.focus);
+			
+			patientView.on('selected', billView.patientSelected);
 			patientView.on('editing', billView.blur);
 			
 			// Payment View
-			var paymentView = new openhmis.PaymentView();
+			var paymentView = new openhmis.PaymentView({
+				paymentCallback: billView.processPayment
+			});
 			paymentView.setElement($('#payment'));
 			paymentView.render();
+
+			$('#inputNode').focus();
 		});
 	}
 );

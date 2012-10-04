@@ -38,6 +38,22 @@ public class Bill extends BaseOpenmrsData {
 	private Set<Payment> payments;
 	private Set<Bill> adjustedBy;
 	
+	public BigDecimal getTotal() {
+		if (lineItems == null) return new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
+		for (BillLineItem line : lineItems)
+			total = total.add(line.getTotal());
+		return total;
+	}
+	
+	public BigDecimal getTotalPaid() {
+		if (payments == null) return new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
+		for (Payment payment : payments)
+			total = total.add(payment.getAmount());
+		return total;
+	}
+	
 	@Override
 	public Integer getId() {
 		return billId;

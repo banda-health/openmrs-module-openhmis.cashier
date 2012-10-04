@@ -19,8 +19,10 @@ define(
 				
 		openhmis.error = function(data) {
 			var o = $.parseJSON(data.responseText).error;
-			if (o.detail.indexOf("ContextAuthenticationException") !== -1)
+			if (o.detail.indexOf("ContextAuthenticationException") !== -1) {
+				alert(__("Your session has timed out.  You will be redirected to the login page."));
 				window.location.reload();
+			}
 			else
 				alert("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
 		}

@@ -57,6 +57,14 @@ define(
 					|| this.get('price') === undefined)
 					return undefined;
 				return this.get('price') * this.get('quantity');
+			},
+			
+			toJSON: function() {
+				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
+				if (attrs.item) {
+					attrs.item = attrs.item.id;
+				}
+				return attrs;
 			}
 		});
 		

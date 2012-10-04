@@ -27,7 +27,7 @@ define(
 			takeRawPatient: function(index, data) {
 				this.model = new openhmis.Patient(data);
 				this.render();
-				this.trigger('selected');
+				this.trigger('selected', this.model);
 			},
 			
 			editPatient: function() {

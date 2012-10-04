@@ -3,9 +3,11 @@ define(
 		'lib/jquery',
 		'lib/underscore',
 		'view/generic',
-		'view/editors'
+		'lib/i18n',
+		'view/editors',
+		'model/bill'
 	],
-	function($, _, openhmis) {
+	function($, _, openhmis, __) {
 		openhmis.BillLineItemView = openhmis.GenericListItemView.extend({
 			initialize: function(options) {
 				this.events = _.extend(this.events, {
@@ -70,12 +72,13 @@ define(
 				openhmis.GenericListItemView.prototype.render.call(this);
 				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
 				return this;
-			},			
+			},
 		});
 
 		openhmis.BillView = openhmis.GenericListView.extend({
 			initialize: function(options) {
 				openhmis.GenericListView.prototype.initialize.call(this, options);
+				this.bill = new openhmis.Bill();
 				this.itemView = openhmis.BillLineItemView;
 				this.totalsTemplate = this.getTemplate("bill.html", '#bill-totals');
 				this.model.on('all', this.updateTotal);
@@ -106,6 +109,11 @@ define(
 				}
 			},
 			
+			patientSelected: function(patient) {
+				this.bill.set("patient", patient);
+				this.focus();
+			},
+			
 			setupNewItem: function(lineItem) {
 				var dept_uuid;
 				if (lineItem !== undefined) {
@@ -133,7 +141,22 @@ define(
 			},
 			
 			updateTotal: function() { this.$('td.total').text(this.getTotal()); },
-
+			
+			processPayment: function(payment) {
+				this.bill.addPayment(payment);
+				if (this.bill.isNew()) {
+					this.bill.save();
+				}
+				else {
+					payment.save();
+				}
+			},
+			
+			saveBill: function() {
+				this.bill.set("lineItems", this.model.filter(function(item) { return item.isClean(); }));
+				this.bill.save([], { error: function(model, resp) { openhmis.error(resp) }});
+			},
+			
 			render: function() {
 				openhmis.GenericListView.prototype.render.call(this, {
 					listTitle: ""

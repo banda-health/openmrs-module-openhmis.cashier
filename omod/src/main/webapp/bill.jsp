@@ -23,6 +23,8 @@
 <div id="bill"></div>
 <div id="payment" class="box"></div>
 
+<input type="submit" id="saveBill" value="Save Bill" />
+
 <%@ include file="/WEB-INF/template/footer.jsp"%>
 
 <script id="line-item-template" type="text/template">

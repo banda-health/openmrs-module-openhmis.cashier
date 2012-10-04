@@ -14,12 +14,9 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
-import org.openmrs.module.openhmis.cashier.api.IDataService;
 import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
-import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
-import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
 @Resource("department")

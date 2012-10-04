@@ -61,10 +61,10 @@ table.bill td input, table.bill td select {
 	border: 1px solid transparent;
 }
 
-input:focus, select:focus {
+/*input:focus, select:focus {
 	border: 1px solid #1AAC9B;
 }
-
+*/
 table.bill td, table.bill th {
 	padding: 0px 5px;
 	border-right: 1px solid #aaa;
@@ -82,4 +82,4 @@ table.totals td.total { width: 13%; text-align: right; }
 table.totals td.label { width: 13%; }
 table.totals td.label, table.totals td.total { padding: 3px 7px 3px 10px; font-weight: bold; }
 
-div#bill { margin-bottom: 1em; }
+div.box { margin-bottom: 1em; }

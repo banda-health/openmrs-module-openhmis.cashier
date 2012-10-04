@@ -6,6 +6,10 @@ define(
         'model/fieldGenHandler'
     ],
     function(_, Backbone, openhmis) {
+        openhmis.Payment = openhmis.GenericModel.extend({
+            
+        });
+        
         openhmis.PaymentModeAttributeType = openhmis.GenericModel.extend({
             meta: {
                 name: "Attribute Type",

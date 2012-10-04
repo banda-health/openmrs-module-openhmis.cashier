@@ -24,6 +24,7 @@ import org.openmrs.module.openhmis.cashier.api.IEntityService;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
@@ -49,6 +50,7 @@ public abstract class BaseRestDataResource<E extends OpenmrsData> extends DataDe
 	protected DelegatingResourceDescription getDefaultRepresentationDescription() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("uuid");
+		//description.addProperty("display", findMethod("getDisplayString"));
 		description.addProperty("voided");
 		description.addProperty("voidReason");
 		return description;
@@ -57,16 +59,16 @@ public abstract class BaseRestDataResource<E extends OpenmrsData> extends DataDe
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(
 			Representation rep) {
-		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		DelegatingResourceDescription description;
+		if (rep instanceof RefRepresentation) {
+			description = new DelegatingResourceDescription();
+			description.addProperty("uuid");
+			description.addProperty("display", findMethod("getDisplayString"));
+			return description;
+		}
+		description = getDefaultRepresentationDescription();
 		if (rep instanceof FullRepresentation)
 			description.addProperty("auditInfo", findMethod("getAuditInfo"));
-		return description;
-	}
-
-	@Override
-	public DelegatingResourceDescription getCreatableProperties() {
-		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.removeProperty("voidReason");
 		return description;
 	}
 
