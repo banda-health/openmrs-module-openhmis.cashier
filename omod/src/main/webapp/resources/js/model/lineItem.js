@@ -17,7 +17,10 @@ define(
 				total: { type: 'BasicNumber', readOnly: true }
 			},
 			
-			initialize: function() {
+			initialize: function(attributes, options) {
+				if (attributes && attributes.item && !(attributes.item instanceof Backbone.Model)) {
+					this.set("item", new openhmis.Item(attributes.item));
+				}
 				this.schema.total.value = this.getTotal;
 				this.clean = false;
 			},
@@ -57,6 +60,12 @@ define(
 					|| this.get('price') === undefined)
 					return undefined;
 				return this.get('price') * this.get('quantity');
+			},
+			
+			parse: function(resp) {
+				if (resp.item)
+					resp.item = new openhmis.Item(resp.item);
+				return resp;
 			},
 			
 			toJSON: function() {

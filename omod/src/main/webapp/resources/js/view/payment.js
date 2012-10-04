@@ -82,8 +82,16 @@ define(
 				)
 			},
 			
-			processPayment: function(event) {
-				this.paymentCallback(this.model);
+			processPayment: function(event, something) {
+				var form = this.$attributes.serializeArray();
+				var attributes = [];
+				for (var i in form) {
+					attributes[i] = { paymentModeAttributeType: form[i].name, value: form[i].value }
+				}
+				this.model.set("attributes", attributes);
+				this.model.set("amount", this.$('#paymentAmount').val());
+				this.model.set("paymentMode", this.$('#paymentMode').val());							   
+				//this.processCallback(this.model);
 			},
 			
 			render: function() {

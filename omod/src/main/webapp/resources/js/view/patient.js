@@ -25,6 +25,8 @@ define(
 			},
 			
 			takeRawPatient: function(index, data) {
+				data.identifiers = [{ display: data.identifier }];
+				data.person = { display: data.personName };
 				this.model = new openhmis.Patient(data);
 				this.render();
 				this.trigger('selected', this.model);

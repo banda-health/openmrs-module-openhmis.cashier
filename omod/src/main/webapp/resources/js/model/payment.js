@@ -7,7 +7,17 @@ define(
     ],
     function(_, Backbone, openhmis) {
         openhmis.Payment = openhmis.GenericModel.extend({
+            meta: {
+                name: "Payment",
+                namePlural: "Payments",
+                restUrl: "payment"
+            },
             
+            url: function() {
+                if (this.meta.parentRestUrl)
+                    return this.meta.parentRestUrl + this.meta.restUrl;
+                return openhmis.GenericModel.prototype.url.call(this);
+            }
         });
         
         openhmis.PaymentModeAttributeType = openhmis.GenericModel.extend({

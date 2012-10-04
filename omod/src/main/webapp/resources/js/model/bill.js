@@ -11,9 +11,16 @@ define(
 				restUrl: "bill"
 			},
 			
+			schema: {
+				lineItems: { type: 'Object'},
+				patient: { type: 'Object' },
+				payments: { type: 'Object'}
+			},
+			
 			addPayment: function(payment) {
 				if (!this.get("payments"))
 					this.set("payments", []);
+				payment.meta.parentRestUrl = this.url() + '/';
 				this.get("payments").push(payment);
 			},
 			

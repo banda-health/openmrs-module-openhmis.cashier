@@ -92,7 +92,7 @@ define(
 			
 			addOne: function(model, schema) {
 				var view = openhmis.GenericListView.prototype.addOne.call(this, model, schema);
-				if (view.model.cid === this.newItem.cid)
+				if (this.newItem && view.model.cid === this.newItem.cid)
 					this.selectedItem = view;
 				return view;
 			},

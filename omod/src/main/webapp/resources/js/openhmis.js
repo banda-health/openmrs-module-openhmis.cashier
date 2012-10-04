@@ -27,6 +27,18 @@ define(
 				alert("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
 		}
 		
+		openhmis.getQueryStringParameter = function(name)
+		{
+			name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+			var regexS = "[\\?&]" + name + "=([^&#]*)";
+			var regex = new RegExp(regexS);
+			var results = regex.exec(window.location.search);
+			if(results == null)
+				  return "";
+			else
+				return decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+		
 		// Use uuid for id
 		Backbone.Model.prototype.idAttribute = 'uuid';
 		

@@ -16,6 +16,9 @@ import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.springframework.web.client.RestClientException;
 
@@ -55,6 +58,24 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			line.setBill(delegate);
 		return super.save(delegate);
 	}
+	
+	@Override
+	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
+		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
+			description.addProperty("adjustedBy");
+			description.addProperty("billAdjusted");
+			description.addProperty("cashPoint");
+			description.addProperty("cashier", Representation.REF);
+			description.addProperty("lineItems");
+			description.addProperty("patient");
+			description.addProperty("payments");
+			description.addProperty("receiptNumber");
+			description.addProperty("status");
+		}
+		return description;
+	}
+
 	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
