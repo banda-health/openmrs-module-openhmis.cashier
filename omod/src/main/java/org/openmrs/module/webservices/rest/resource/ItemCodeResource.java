@@ -46,7 +46,7 @@ public class ItemCodeResource extends BaseRestMetadataResource<ItemCode> impleme
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataService<ItemCode>> getServiceClass() {
+	public Class<? extends IMetadataService<ItemCode>> getServiceClass() {
 		return (Class<IMetadataService<ItemCode>>)(Object)IItemService.class;
 	}
 }
