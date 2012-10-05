@@ -48,6 +48,7 @@ public class AdminList extends AdministrationSectionExt {
 		map.put("/module/openhmis/cashier/cashPoints.form", "openhmis.cashier.admin.cashPoints");
 		map.put("/module/openhmis/cashier/paymentModes.form", "openhmis.cashier.admin.paymentModes");
 		map.put("/module/openhmis/cashier/items.form", "openhmis.cashier.admin.items");
+		map.put("/module/openhmis/cashier/admin/receiptNumberGenerator.form", "openhmis.cashier.admin.receiptNumberGenerator");
 		return map;
 	}
 	

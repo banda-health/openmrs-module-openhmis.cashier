@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,7 +75,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 
 	@Override
 	public String getConfigurationPage() {
-		throw new NotImplementedException();
+		return "/module/openhmis/cashier/admin/seqReceiptNumberGenerator";
 	}
 
 	@Override

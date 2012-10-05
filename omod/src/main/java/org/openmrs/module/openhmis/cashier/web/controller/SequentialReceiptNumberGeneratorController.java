@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping(value = "/module/openhmis/cashier/seqReceiptNumberGenerator")
+@RequestMapping(value = "/module/openhmis/cashier/admin/seqReceiptNumberGenerator")
 public class SequentialReceiptNumberGeneratorController {
 	ISequentialReceiptNumberGeneratorService service;
 
