@@ -23,6 +23,14 @@ public interface ISequentialReceiptNumberGeneratorService
 		extends IEntityService<SequentialReceiptNumberGeneratorModel> {
 
 	/**
+	 * Gets the first {@link SequentialReceiptNumberGeneratorModel} or creates a new model if none have been defined.
+	 * @return The first or new model.
+	 * @should return the first model.
+	 * @should return a new model if none has been defined.
+	 */
+	SequentialReceiptNumberGeneratorModel getOnly();
+
+	/**
 	 * Reserves the next sequence value for the specified group.
 	 * @param group The grouping value.
 	 * @return The next sequence value.
