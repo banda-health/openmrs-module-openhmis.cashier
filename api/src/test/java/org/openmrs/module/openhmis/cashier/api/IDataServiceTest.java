@@ -24,7 +24,7 @@ import java.util.Date;
 public abstract class IDataServiceTest<S extends IDataService<E>, E extends BaseOpenmrsData> extends IEntityServiceTest<S, E> {
 	/**
 	 * @verifies void the entity
-	 * @see IDataService#voidEntity(org.openmrs.OpenmrsObject, String)
+	 * @see IDataService#voidEntity(org.openmrs.OpenmrsData, String)
 	 */
 	@Test
 	public void voidEntity_shouldVoidTheEntity() throws Exception {
@@ -38,12 +38,13 @@ public abstract class IDataServiceTest<S extends IDataService<E>, E extends Base
 		Assert.assertTrue(entity.getVoided());
 		Assert.assertEquals(Context.getAuthenticatedUser(), entity.getVoidedBy());
 		Assert.assertEquals(reason, entity.getVoidReason());
-		Assert.assertTrue(entity.getDateVoided().before(new Date()));
+		Date now = new Date();
+		Assert.assertTrue(entity.getDateVoided().before(now) || entity.getDateVoided().equals(now));
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException with null reason parameter
-	 * @see IDataService#voidEntity(org.openmrs.OpenmrsObject, String)
+	 * @see IDataService#voidEntity(org.openmrs.OpenmrsData, String)
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void voidEntity_shouldThrowIllegalArgumentExceptionWithNullReasonParameter() throws Exception {
@@ -54,7 +55,7 @@ public abstract class IDataServiceTest<S extends IDataService<E>, E extends Base
 
 	/**
 	 * @verifies throw NullPointerException with null entity
-	 * @see IDataService#voidEntity(org.openmrs.OpenmrsObject, String)
+	 * @see IDataService#voidEntity(org.openmrs.OpenmrsData, String)
 	 */
 	@Test(expected = NullPointerException.class)
 	public void voidEntity_shouldThrowNullPointerExceptionWithNullEntity() throws Exception {
@@ -63,7 +64,7 @@ public abstract class IDataServiceTest<S extends IDataService<E>, E extends Base
 
 	/**
 	 * @verifies unvoid the entity
-	 * @see IDataService#unvoidEntity(org.openmrs.OpenmrsObject)
+	 * @see IDataService#unvoidEntity(org.openmrs.OpenmrsData)
 	 */
 	@Test
 	public void unvoidEntity_shouldUnvoidTheEntity() throws Exception {
@@ -90,7 +91,7 @@ public abstract class IDataServiceTest<S extends IDataService<E>, E extends Base
 
 	/**
 	 * @verifies throw NullPointerException with null entity
-	 * @see IDataService#unvoidEntity(org.openmrs.OpenmrsObject)
+	 * @see IDataService#unvoidEntity(org.openmrs.OpenmrsData)
 	 */
 	@Test(expected = NullPointerException.class)
 	public void unvoidEntity_shouldThrowNullPointerExceptionWithNullEntity() throws Exception {

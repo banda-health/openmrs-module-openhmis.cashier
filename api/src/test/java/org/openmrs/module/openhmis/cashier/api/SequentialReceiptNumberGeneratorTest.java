@@ -27,7 +27,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -71,7 +70,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
 		model.setIncludeCheckDigit(false);
 
-		when(service.getAll()).thenReturn(Arrays.asList(model));
+		when(service.getOnly()).thenReturn(model);
 		when(service.reserveNextSequence("")).thenReturn(1);
 		generator.load();
 
@@ -124,7 +123,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
 		model.setIncludeCheckDigit(false);
 
-		when(service.getAll()).thenReturn(Arrays.asList(model));
+		when(service.getOnly()).thenReturn(model);
 		when(service.reserveNextSequence("")).thenReturn(1);
 		generator.load();
 
@@ -172,7 +171,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
 		model.setIncludeCheckDigit(false);
 
-		when(service.getAll()).thenReturn(Arrays.asList(model));
+		when(service.getOnly()).thenReturn(model);
 		when(service.reserveNextSequence("")).thenReturn(1);
 		generator.load();
 
@@ -218,7 +217,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
 		model.setIncludeCheckDigit(true);
 
-		when(service.getAll()).thenReturn(Arrays.asList(model));
+		when(service.getOnly()).thenReturn(model);
 		when(service.reserveNextSequence("")).thenReturn(1);
 		generator.load();
 
@@ -262,7 +261,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);
 		model.setIncludeCheckDigit(true);
 
-		when(service.getAll()).thenReturn(Arrays.asList(model));
+		when(service.getOnly()).thenReturn(model);
 		when(service.reserveNextSequence("")).thenReturn(1);
 		generator.load();
 

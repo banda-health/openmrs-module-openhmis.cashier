@@ -13,23 +13,32 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
+import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.patient.impl.LuhnIdentifierValidator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator {
-	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
+	public static enum SequenceType {
+		COUNTER(0),
+		DATE_COUNTER(1),
+		DATE_TIME_COUNTER(2);
 
-	public enum GroupingType {
+		private int value;
+
+		private SequenceType(int value) {
+			this.value = value;
+		}
+	}
+
+	public static enum GroupingType {
 		NONE(0),
 		CASHIER(1),
 		CASH_POINT(2),
@@ -42,17 +51,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 		}
 	}
 
-	public enum SequenceType {
-		COUNTER(0),
-		DATE_COUNTER(1),
-		DATE_TIME_COUNTER(2);
-
-		private int value;
-
-		private SequenceType(int value) {
-			this.value = value;
-		}
-	}
+	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
 
 	private ISequentialReceiptNumberGeneratorService service;
 	private SequentialReceiptNumberGeneratorModel model;
@@ -76,7 +75,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 
 	@Override
 	public String getConfigurationPage() {
-		throw new NotImplementedException();
+		return CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE;
 	}
 
 	@Override
@@ -89,19 +88,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 	 */
 	@Override
 	public void load() {
-		// Load the first (and what should be the only) model record from the service
-		List<SequentialReceiptNumberGeneratorModel> records = service.getAll();
-
-		if (records.size() > 0) {
-			log.debug("At least one receipt number generator model found.  Using defined generator settings.");
-			model = records.get(0);
-		} else if (model == null) {
-			log.debug("No sequential receipt number generator model found.  Creating a new model with the default settings.");
-
-			// No settings have been saved so create a new model and just use the defaults
-			model = new SequentialReceiptNumberGeneratorModel();
-		}
-
+		model = service.getOnly();
 		loaded = true;
 	}
 
@@ -208,3 +195,4 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 		return number;
 	}
 }
+

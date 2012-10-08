@@ -56,7 +56,8 @@ public class ReceiptNumberGeneratorFactory {
 		}
 
 		public void setGeneratorClass(Class<? extends IReceiptNumberGenerator> generatorClass) {
-			GlobalProperty property = new GlobalProperty(SYSTEM_RECEIPT_NUMBER_GENERATOR, generatorClass.getName());
+			String className = (generatorClass == null) ? "" : generatorClass.getName();
+			GlobalProperty property = new GlobalProperty(SYSTEM_RECEIPT_NUMBER_GENERATOR, className);
 
 			Context.getAdministrationService().saveGlobalProperty(property);
 		}
@@ -66,9 +67,9 @@ public class ReceiptNumberGeneratorFactory {
 	 * Returns the currently defined {@link IReceiptNumberGenerator} for the system.
 	 * @return The {@link IReceiptNumberGenerator}.
 	 * @should Return the currently defined receipt number generator
-	 * @should Load the generator if it has not been loaded.
-	 * @should not load the generator if it has been loaded.
-	 * @should Throw APIException if there is no generator defined
+	 * @should Load the generator if it has not been loaded
+	 * @should not load the generator if it has been loaded
+	 * @should Return null if no generator has been defined
 	 * @should Throw APIException if generator class cannot be found
 	 * @should Throw APIException if generator class cannot be instantiated
 	 */
@@ -78,7 +79,7 @@ public class ReceiptNumberGeneratorFactory {
 			try {
 				cls = FactoryImpl.INSTANCE.getGeneratorClass();
 				if (cls == null) {
-					throw new APIException("The receipt number generator class could be found or could be loaded.");
+					return null;
 				}
 
 				generator = (IReceiptNumberGenerator) cls.newInstance();
@@ -106,10 +107,12 @@ public class ReceiptNumberGeneratorFactory {
 	 * @param generator The generator.
 	 * @throws APIException
 	 * @should Set the receipt number generator for the system
-	 * @should Throw NullPointerException if the generator class is null
+	 * @should Remove the current generator if set to null
 	 */
 	public static void setGenerator(IReceiptNumberGenerator generator) throws APIException {
-		FactoryImpl.INSTANCE.setGeneratorClass(generator.getClass());
+		Class<? extends IReceiptNumberGenerator> cls = (generator == null) ? null : generator.getClass();
+
+		FactoryImpl.INSTANCE.setGeneratorClass(cls);
 
 		ReceiptNumberGeneratorFactory.generator = generator;
 	}

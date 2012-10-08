@@ -115,15 +115,16 @@ public class ReceiptNumberGeneratorFactoryTest {
 	}
 
 	/**
-	 * @verifies Throw APIException if there is no generator defined
+	 * @verifies Return null if no generator has been defined
 	 * @see ReceiptNumberGeneratorFactory#getGenerator()
 	 */
-	@Test(expected = APIException.class)
-	public void getGenerator_shouldThrowAPIExceptionIfThereIsNoGeneratorDefined() throws Exception {
+	@Test
+	public void getGenerator_shouldReturnNullIfNoGeneratorHasBeenDefined() throws Exception {
 		when(administrationService.getGlobalProperty(ReceiptNumberGeneratorFactory.SYSTEM_RECEIPT_NUMBER_GENERATOR))
 				.thenReturn(null);
 
-		ReceiptNumberGeneratorFactory.getGenerator();
+		IReceiptNumberGenerator generator = ReceiptNumberGeneratorFactory.getGenerator();
+		Assert.assertNull(generator);
 	}
 
 	/**
@@ -252,11 +253,23 @@ public class ReceiptNumberGeneratorFactoryTest {
 	}
 
 	/**
-	 * @verifies Throw NullPointerException if the generator class is null
+	 * @verifies Remove the current generator if set to null
 	 * @see ReceiptNumberGeneratorFactory#setGenerator(IReceiptNumberGenerator)
 	 */
-	@Test(expected = NullPointerException.class)
-	public void setGenerator_shouldThrowNullPointerExceptionIfTheGeneratorClassIsNull() throws Exception {
+	@Test
+	public void setGenerator_shouldRemoveTheCurrentGeneratorIfSetToNull() throws Exception {
+		// Set the generator
+		IReceiptNumberGenerator generator = new TestReceiptNumberGenerator();
+		ReceiptNumberGeneratorFactory.setGenerator(generator);
+
+		generator = ReceiptNumberGeneratorFactory.getGenerator();
+		Assert.assertNotNull(generator);
+
 		ReceiptNumberGeneratorFactory.setGenerator(null);
+
+		generator = ReceiptNumberGeneratorFactory.getGenerator();
+		Assert.assertNull(generator);
 	}
+
+
 }

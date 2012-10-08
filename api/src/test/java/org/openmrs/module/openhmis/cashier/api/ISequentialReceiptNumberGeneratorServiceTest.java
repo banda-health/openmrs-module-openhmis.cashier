@@ -103,11 +103,11 @@ public class ISequentialReceiptNumberGeneratorServiceTest
 	}
 
 	/**
-	 * @verifies Increment and return the sequence value
+	 * @verifies Increment and return the sequence value for existing groups
 	 * @see ISequentialReceiptNumberGeneratorService#reserveNextSequence(String)
 	 */
 	@Test
-	public void reserveNextSequence_shouldIncrementAndReturnTheSequenceValue() throws Exception {
+	public void reserveNextSequence_shouldIncrementAndReturnTheSequenceValueForExistingGroups() throws Exception {
 		GroupSequence sequence = createSequence("test", 1);
 		service.saveSequence(sequence);
 		sequence = createSequence("test2", 53);
@@ -350,4 +350,29 @@ public class ISequentialReceiptNumberGeneratorServiceTest
 	}
 
 
+	/**
+	 * @verifies return the first model.
+	 * @see ISequentialReceiptNumberGeneratorService#getOnly()
+	 */
+	@Test
+	public void getOnly_shouldReturnTheFirstModel() throws Exception {
+		SequentialReceiptNumberGeneratorModel model = service.getOnly();
+
+		Assert.assertNotNull(model);
+		Assert.assertEquals((Integer)0, model.getId());
+	}
+
+	/**
+	 * @verifies return a new model if none has been defined.
+	 * @see ISequentialReceiptNumberGeneratorService#getOnly()
+	 */
+	@Test
+	public void getOnly_shouldReturnANewModelIfNoneHasBeenDefined() throws Exception {
+		SequentialReceiptNumberGeneratorModel model = service.getOnly();
+		service.purge(model);
+
+		model = service.getOnly();
+		Assert.assertNotNull(model);
+		Assert.assertNull(model.getId());
+	}
 }
