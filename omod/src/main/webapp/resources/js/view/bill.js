@@ -129,7 +129,7 @@ define(
 				}
 				this.newItem = new openhmis.LineItem();
 				this.newItem.on('validated', this.setupNewItem);
-				this.model.add(this.newItem);
+				this.model.add(this.newItem, { silent: true });
 				if (this.$('p.empty').length > 0)
 					this.render();
 				else {
@@ -148,17 +148,23 @@ define(
 			
 			updateTotal: function() { this.$('td.total').text(this.getTotal()); },
 			
-			processPayment: function(payment) {
+			processPayment: function(payment, options) {
+				options = options ? options : {};
 				this.bill.addPayment(payment);
 				if (this.bill.isNew()) {
-					this.saveBill();
+					var success = options.success ? options.success : undefined;
+					options.success = function(model, resp) {
+						var a = model.get("payments").getByCid(payment.cid);
+						if (success) success(a, resp);
+					}
+					this.saveBill(options);
 				}
 				else {
-					payment.save();
+					payment.save([], options);
 				}
 			},
 			
-			saveBill: function() {
+			saveBill: function(options) {
 				this.bill.set("lineItems", this.model.filter(function(item) { return item.isClean(); }));
 				this.bill.save([], { error: function(model, resp) { openhmis.error(resp) }});
 			},

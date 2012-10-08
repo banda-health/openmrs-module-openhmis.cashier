@@ -135,4 +135,11 @@ public abstract class BaseRestDataResource<E extends OpenmrsData> extends DataDe
 				collection.add(item);
 		}
 	}
+	
+	public static <E extends OpenmrsObject> Map<String, E> mapUuidToObject(Collection<E> collection) {
+		Map<String, E> map = new HashMap<String, E>(collection.size());
+		for (E item : collection)
+			map.put(item.getUuid(), item);
+		return map;
+	}
 }

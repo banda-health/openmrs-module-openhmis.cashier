@@ -17,12 +17,26 @@ define(
             schema: {
                 dateCreated: { type: 'Text', title: __("Date") },
                 amount: { type: 'BasicNumber' },
+                paymentMode: { type: 'Text' }
             },
             
             url: function() {
                 if (this.meta.parentRestUrl)
                     this.urlRoot = this.meta.parentRestUrl + this.meta.restUrl;
                 return openhmis.GenericModel.prototype.url.call(this);
+            },
+            
+            parse: function(resp) {
+                if (resp.paymentMode)
+                    resp.paymentMode = new openhmis.PaymentMode(resp.paymentMode);
+                return resp;
+            },
+            
+            toJSON: function() {
+                var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
+                if (attrs.paymentMode)
+                    attrs.paymentMode = attrs.paymentMode.id;
+                return attrs;
             }
         });
         

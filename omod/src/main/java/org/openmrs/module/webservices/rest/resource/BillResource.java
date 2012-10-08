@@ -2,6 +2,7 @@ package org.openmrs.module.webservices.rest.resource;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.openmrs.Provider;
 import org.openmrs.User;
@@ -15,6 +16,8 @@ import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
+import org.openmrs.module.openhmis.cashier.api.model.Payment;
+import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
@@ -25,6 +28,49 @@ import org.springframework.web.client.RestClientException;
 @Resource("bill")
 @Handler(supports = { Bill.class }, order = 0)
 public class BillResource extends BaseRestDataResource<Bill> {
+	
+	@Override
+	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
+		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
+			description.addProperty("adjustedBy");
+			description.addProperty("billAdjusted");
+			description.addProperty("cashPoint");
+			description.addProperty("cashier", Representation.REF);
+			description.addProperty("lineItems");
+			description.addProperty("patient");
+			description.addProperty("payments");
+			description.addProperty("status");
+		}
+		return description;
+	}
+
+	
+	@Override
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("adjustedBy");
+		description.addProperty("billAdjusted");
+		description.addProperty("lineItems");
+		description.addProperty("patient");
+		description.addProperty("payments");
+		description.addProperty("receiptNumber");
+		return description;
+	}
+
+	@PropertySetter("lineItems")
+	public void setBillLineItems(Bill instance, List<BillLineItem> lineItems) {
+		for (BillLineItem item: lineItems)
+			item.setBill(instance);
+		instance.setLineItems(lineItems);
+	}
+
+	@PropertySetter("payments")
+	public void setBillPayments(Bill instance, Set<Payment> payments) {
+		for (Payment payment: payments)
+			payment.setBill(instance);
+		instance.setPayments(payments);
+	}
 
 	@Override
 	public Bill save (Bill delegate) {
@@ -54,40 +100,9 @@ public class BillResource extends BaseRestDataResource<Bill> {
 					delegate.setStatus(BillStatus.PENDING);
 			}
 		}
-		for (BillLineItem line : delegate.getLineItems())
-			line.setBill(delegate);
 		return super.save(delegate);
 	}
-	
-	@Override
-	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
-		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
-			description.addProperty("adjustedBy");
-			description.addProperty("billAdjusted");
-			description.addProperty("cashPoint");
-			description.addProperty("cashier", Representation.REF);
-			description.addProperty("lineItems");
-			description.addProperty("patient");
-			description.addProperty("payments");
-			description.addProperty("receiptNumber");
-			description.addProperty("status");
-		}
-		return description;
-	}
 
-	
-	@Override
-	public DelegatingResourceDescription getCreatableProperties() {
-		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("adjustedBy");
-		description.addProperty("billAdjusted");
-		description.addProperty("lineItems");
-		description.addProperty("patient");
-		description.addProperty("payments");
-		description.addProperty("receiptNumber");
-		return description;
-	}
 	
 	@SuppressWarnings("unchecked")
 	@Override

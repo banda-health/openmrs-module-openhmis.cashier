@@ -161,6 +161,7 @@ define(
 				if (this.addEditView !== undefined)
 					this.addEditView.on('cancel', this.deselectAll);
 				this.model.on('reset remove', this.render);
+				this.model.on('add', this.addOne);
 				this.showRetired = false;
 				this._determineFields();
 			},

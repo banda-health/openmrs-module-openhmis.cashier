@@ -1,6 +1,7 @@
 define(
 	[
-		'model/generic'
+		'model/generic',
+		'model/payment'
 	],
 	function(openhmis) {
 		openhmis.Bill = openhmis.GenericModel.extend({
@@ -31,8 +32,18 @@ define(
 						attrs.lineItems[item] = attrs.lineItems[item].toJSON();
 				}
 				if (attrs.patient) attrs.patient = attrs.patient.id;
-				attrs.receiptNumber = "bogus";
 				return attrs;
+			},
+			
+			parse: function(resp) {
+				if (resp.payments) {
+					var urlRoot = this.url() + '/payment/';
+					var paymentCollection = new openhmis.GenericCollection([], { model: openhmis.Payment });
+					paymentCollection.add(resp.payments, { parse: true, urlRoot: urlRoot });
+					//paymentCollection.reset(paymentCollection.reject(function(payment) { return payment.get("voided"); }));
+					resp.payments = paymentCollection;
+				}
+				return resp;
 			}
 		});
 	}

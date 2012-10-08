@@ -46,8 +46,13 @@ define(
 			tmplFile: 'payment.html',
 			tmplSelector: '#payment-view',
 			initialize: function(options) {
-				this.paymentCollection =
-					new openhmis.GenericCollection([], { model: openhmis.Payment });
+				if (options) {
+					this.processCallback = options.processCallback;
+					if (options.paymentCollection)
+						this.paymentCollection = options.paymentCollection;
+				}
+				this.paymentCollection = this.paymentCollection ? this.paymentCollection
+					: new openhmis.GenericCollection([], { model: openhmis.Payment });
 				this.paymentListView = new openhmis.GenericListView({
 					model: this.paymentCollection,
 					id: "paymentList",
@@ -55,16 +60,6 @@ define(
 					showRetiredOption: false,
 					hideIfEmpty: true
 				});
-				if (options) {
-					this.processCallback = options.processCallback;
-					if (options.bill) {
-						if (options.bill.get("payments"))
-							this.paymentCollection.add(options.bill.get("payments"));
-						this.paymentCollection.each(function(payment) {
-							payment.meta.parentRestUrl = options.bill.url() + '/';
-						});
-					}
-				}
 				this.template = this.getTemplate();
 				if (this.model === undefined) this.model = new openhmis.Payment();
 				this.form = new Backbone.Form({
@@ -106,15 +101,24 @@ define(
 				}
 				this.model.set("attributes", attributes);
 				this.model.set("amount", this.form.getValue("paymentAmount"));
-				this.model.set("paymentMode", this.form.getValue("paymentMode"));							   
-				this.processCallback(this.model);
+				this.model.set("paymentMode", new openhmis.PaymentMode({
+					uuid: this.form.getValue("paymentMode"),
+					name: this.form.fields["paymentMode"].editor.$('option:selected').text()
+				}));
+				var self = this;
+				this.processCallback(this.model, { success: function(model, resp) {
+					self.paymentCollection.add(model);
+				}});
 			},
 			
 			render: function() {
 				this.$el.html(this.template({ __: i18n }));
 				this.$el.prepend(this.form.render().el);
-				this.$el.prepend(this.paymentListView.render().el);
-				this.paymentListView.render();
+				if (this.paymentCollection.filter(function(payment) { return !payment.get("voided"); }).length === 0
+						&& this.paymentListView.options.hideIfEmpty) {
+					// Skip payment list
+				} else
+					this.$el.prepend(this.paymentListView.render().el);
 				this.$attributes = this.$('#paymentAttributes');
 				return this;
 			}

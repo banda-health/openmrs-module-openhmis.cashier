@@ -36,7 +36,7 @@ curl(
 				
 				// Payment View
 				var paymentView = new openhmis.PaymentView({
-					bill: billView.bill,
+					paymentCollection: billView.bill.get("payments"),
 					processCallback: billView.processPayment
 				});
 				paymentView.setElement($('#payment'));
@@ -52,7 +52,7 @@ curl(
 			var bill = new openhmis.Bill({ uuid: billUuid });
 			bill.fetch({ success: function(bill, resp) {
 				billView.bill = bill;
-				billView.model.add(bill.get("lineItems"));
+				billView.model.add(bill.get("lineItems"), { silent: true });
 				patientView.model = new openhmis.Patient(bill.get("patient"));
 				displayBillView(billView, patientView);
 			}});
