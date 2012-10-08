@@ -36,6 +36,7 @@ curl(
 				
 				// Payment View
 				var paymentView = new openhmis.PaymentView({
+					bill: billView.bill,
 					processCallback: billView.processPayment
 				});
 				paymentView.setElement($('#payment'));

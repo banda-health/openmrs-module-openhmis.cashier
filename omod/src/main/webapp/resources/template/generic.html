@@ -50,7 +50,7 @@
 	<? } ?>
 </div>
 <? var strRetiredOrVoided = (modelMeta.openmrsType === 'data') ? "voided" : "retired" ?>
-<span class="showRetired"><input id="showRetired" type="checkbox"<?= showRetired ? ' checked="checked"' : '' ?>/><label for="showRetired"><?= __("Show " + strRetiredOrVoided) ?></label></span>
+<? if (showRetiredOption) { ?><span class="showRetired"><input id="showRetired" type="checkbox"<?= showRetired ? ' checked="checked"' : '' ?>/><label for="showRetired"><?= __("Show " + strRetiredOrVoided) ?></label></span><? } ?>
 </script>
 
 <script id="generic-list-item" type="text/template">

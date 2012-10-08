@@ -46,12 +46,26 @@ define(
 			tmplFile: 'payment.html',
 			tmplSelector: '#payment-view',
 			initialize: function(options) {
+				this.paymentCollection =
+					new openhmis.GenericCollection([], { model: openhmis.Payment });
+				this.paymentListView = new openhmis.GenericListView({
+					model: this.paymentCollection,
+					id: "paymentList",
+					itemActions: ["remove"],
+					showRetiredOption: false
+				});
 				if (options) {
 					this.processCallback = options.processCallback;
+					if (options.bill) {
+						this.paymentCollection.add(options.bill.get("payments"));
+						this.paymentCollection.each(function(payment) {
+							payment.meta.parentRestUrl = options.bill.url() + '/';
+						});
+					}
 				}
 				this.template = this.getTemplate();
 				if (this.model === undefined) this.model = new openhmis.Payment();
-				this.modeChoice = new Backbone.Form({
+				this.form = new Backbone.Form({
 					schema: {
 						paymentMode: {
 							type: 'Select',
@@ -89,14 +103,16 @@ define(
 					attributes[i] = { paymentModeAttributeType: form[i].name, value: form[i].value }
 				}
 				this.model.set("attributes", attributes);
-				this.model.set("amount", this.$('#paymentAmount').val());
-				this.model.set("paymentMode", this.$('#paymentMode').val());							   
-				//this.processCallback(this.model);
+				this.model.set("amount", this.form.getValue("paymentAmount"));
+				this.model.set("paymentMode", this.form.getValue("paymentMode"));							   
+				this.processCallback(this.model);
 			},
 			
 			render: function() {
 				this.$el.html(this.template({ __: i18n }));
-				this.$el.prepend(this.modeChoice.render().el);
+				this.$el.prepend(this.form.render().el);
+				this.$el.prepend(this.paymentListView.render().el);
+				this.paymentListView.render();
 				this.$attributes = this.$('#paymentAttributes');
 				return this;
 			}

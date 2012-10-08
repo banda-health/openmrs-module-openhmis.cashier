@@ -10,7 +10,7 @@ define(
 	function($, _, openhmis, __) {
 		openhmis.BillLineItemView = openhmis.GenericListItemView.extend({
 			initialize: function(options) {
-				this.events = _.extend(this.events, {
+				this.events = _.extend({}, this.events, {
 					'keypress': 'onKeyPress'
 				});
 				openhmis.GenericListItemView.prototype.initialize.call(this, options);

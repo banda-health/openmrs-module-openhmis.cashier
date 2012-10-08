@@ -13,12 +13,12 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.BaseOpenmrsData;
 
 /**
  * Model class that represents a payment mode attribute for a particular {@link Payment}.
  */
-public class PaymentAttribute extends BaseOpenmrsObject {
+public class PaymentAttribute extends BaseOpenmrsData {
 	private Integer paymentAttributeId;
 	private Payment payment;
 	private PaymentModeAttributeType paymentModeAttributeType;

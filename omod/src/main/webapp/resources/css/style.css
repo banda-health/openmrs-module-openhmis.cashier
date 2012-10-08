@@ -83,3 +83,4 @@ table.totals td.label { width: 13%; }
 table.totals td.label, table.totals td.total { padding: 3px 7px 3px 10px; font-weight: bold; }
 
 div.box { margin-bottom: 1em; }
+#paymentList b.boxHeader, #paymentList div.box { width: auto; }

@@ -3,9 +3,10 @@ define(
         'lib/underscore',
         'lib/backbone',
         'model/generic',
+        'lib/i18n',
         'model/fieldGenHandler'
     ],
-    function(_, Backbone, openhmis) {
+    function(_, Backbone, openhmis, __) {
         openhmis.Payment = openhmis.GenericModel.extend({
             meta: {
                 name: "Payment",
@@ -13,9 +14,14 @@ define(
                 restUrl: "payment"
             },
             
+            schema: {
+                dateCreated: { type: 'Text', title: __("Date") },
+                amount: { type: 'BasicNumber' },
+            },
+            
             url: function() {
                 if (this.meta.parentRestUrl)
-                    return this.meta.parentRestUrl + this.meta.restUrl;
+                    this.urlRoot = this.meta.parentRestUrl + this.meta.restUrl;
                 return openhmis.GenericModel.prototype.url.call(this);
             }
         });

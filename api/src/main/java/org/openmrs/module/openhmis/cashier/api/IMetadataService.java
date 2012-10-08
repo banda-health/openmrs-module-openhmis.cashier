@@ -18,8 +18,6 @@ import org.openmrs.OpenmrsMetadata;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.support.RequestContext;
-
 import java.util.List;
 
 /**

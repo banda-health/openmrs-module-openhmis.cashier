@@ -53,6 +53,14 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list merge="true">
+				<value>org.openmrs.module.openhmis.cashier.api.IPaymentModeAttributeTypeService</value>
+				<ref bean="cashierPaymentModeAttributeTypeService" />
+			</list>
+		</property>
+	</bean>
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list merge="true">
 				<value>org.openmrs.module.openhmis.cashier.api.ICashPointService</value>
 				<ref bean="cashierCashPointService" />
 			</list>
@@ -115,6 +123,16 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.PaymentModeServiceImpl">
+				<property name="dao" ref="genericDAO" />
+			</bean>
+		</property>
+		<property name="preInterceptors" ref="serviceInterceptors" />
+		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
+	</bean>
+	<bean id="cashierPaymentModeAttributeTypeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target">
+			<bean class="org.openmrs.module.openhmis.cashier.api.impl.PaymentModeAttributeTypeServiceImpl">
 				<property name="dao" ref="genericDAO" />
 			</bean>
 		</property>

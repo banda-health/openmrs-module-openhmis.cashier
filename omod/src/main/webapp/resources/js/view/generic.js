@@ -153,6 +153,7 @@ define(
 					this.template = this.getTemplate();
 					this.includeFields = options.listFields;
 					this.excludeFields = options.listExcludeFields;
+					this.showRetiredOption = options.showRetiredOption !== undefined ? options.showRetiredOption : true;
 				}
 				if (this.addEditView !== undefined)
 					this.addEditView.on('cancel', this.deselectAll);
@@ -255,6 +256,7 @@ define(
 					modelMeta: this.model.model.prototype.meta,
 					modelSchema: this.model.model.prototype.schema,
 					showRetired: this.showRetired,
+					showRetiredOption: this.showRetiredOption,
 					listTitle: undefined, // custom title for list
 					itemActions: this.itemActions
 				}
