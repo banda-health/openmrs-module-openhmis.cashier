@@ -350,7 +350,7 @@
 		<createIndex indexName="cashier_bill_receipt_number_idx" tableName="cashier_bill" unique="true">
 			<column name="receipt_number"/>
 		</createIndex>
-		<createIndex indexName="cashier_bill_patient_id_idx" tableName="cashier_bill" unique="true">
+		<createIndex indexName="cashier_bill_patient_id_idx" tableName="cashier_bill">
 			<column name="patient_id"/>
 		</createIndex>
 

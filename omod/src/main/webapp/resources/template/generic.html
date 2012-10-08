@@ -30,7 +30,7 @@
 </script>
 
 <script id="generic-list" type="text/template">
-<b class="boxHeader"><?= listTitle !== undefined ? listTitle : __("Current %s", modelMeta.namePlural) ?></b>
+<b class="boxHeader"><?= options.listTitle !== undefined ? options.listTitle : __("Current %s", modelMeta.namePlural) ?></b>
 <div class="box">
 	<? if (list.length === 0) { ?>
 		<p class="empty"><?= __("There are currently no %s", modelMeta.namePlural.toLowerCase()) ?></p>
@@ -38,7 +38,7 @@
 	<table class="display" width="100%">
 		<thead>
 			<tr>
-			<? if (itemActions.length > 0) { ?><th class="item-actions end" style="width: <?= itemActions.length * 10 ?>px;"></td> <? } ?>
+			<? if (options.itemActions.length > 0) { ?><th class="item-actions end" style="width: <?= options.itemActions.length * 10 ?>px;"></td> <? } ?>
 			<? for (var field in fields) { ?>
 				<th class="field-<?= fields[field] ?>"><?= modelSchema[fields[field]].title === undefined ? helpers.keyToTitle(fields[field]) : modelSchema[fields[field]].title ?></th>
 			<? } ?>
@@ -50,7 +50,7 @@
 	<? } ?>
 </div>
 <? var strRetiredOrVoided = (modelMeta.openmrsType === 'data') ? "voided" : "retired" ?>
-<? if (showRetiredOption) { ?><span class="showRetired"><input id="showRetired" type="checkbox"<?= showRetired ? ' checked="checked"' : '' ?>/><label for="showRetired"><?= __("Show " + strRetiredOrVoided) ?></label></span><? } ?>
+<? if (options.showRetiredOption) { ?><span class="showRetired"><input id="showRetired" type="checkbox"<?= showRetired ? ' checked="checked"' : '' ?>/><label for="showRetired"><?= __("Show " + strRetiredOrVoided) ?></label></span><? } ?>
 </script>
 
 <script id="generic-list-item" type="text/template">

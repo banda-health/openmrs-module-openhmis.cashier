@@ -77,13 +77,19 @@ define(
 
 		openhmis.BillView = openhmis.GenericListView.extend({
 			initialize: function(options) {
+				options = _.extend(this.options, options);
 				openhmis.GenericListView.prototype.initialize.call(this, options);
 				this.bill = new openhmis.Bill();
 				this.itemView = openhmis.BillLineItemView;
 				this.totalsTemplate = this.getTemplate("bill.html", '#bill-totals');
 				this.model.on('all', this.updateTotal);
 			},
-			itemActions: ['remove', 'inlineEdit'],
+			
+			options: {
+				itemActions: ['remove', 'inlineEdit'],
+				showRetiredOption: false
+			},
+			
 			schema: {
 				item: { type: 'Item' },
 				quantity: { type: 'CustomNumber', nonNegative: true },
@@ -145,7 +151,7 @@ define(
 			processPayment: function(payment) {
 				this.bill.addPayment(payment);
 				if (this.bill.isNew()) {
-					this.bill.save();
+					this.saveBill();
 				}
 				else {
 					payment.save();
@@ -163,7 +169,6 @@ define(
 				});
 				this.$('table').addClass("bill");
 				this.$('div.box').append(this.totalsTemplate({ getTotal: this.getTotal }));
-				this.$('.showRetired').remove();
 				return this;
 			}
 		});

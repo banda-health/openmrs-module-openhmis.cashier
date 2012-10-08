@@ -52,12 +52,14 @@ define(
 					model: this.paymentCollection,
 					id: "paymentList",
 					itemActions: ["remove"],
-					showRetiredOption: false
+					showRetiredOption: false,
+					hideIfEmpty: true
 				});
 				if (options) {
 					this.processCallback = options.processCallback;
 					if (options.bill) {
-						this.paymentCollection.add(options.bill.get("payments"));
+						if (options.bill.get("payments"))
+							this.paymentCollection.add(options.bill.get("payments"));
 						this.paymentCollection.each(function(payment) {
 							payment.meta.parentRestUrl = options.bill.url() + '/';
 						});
