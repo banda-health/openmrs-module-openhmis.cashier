@@ -26,9 +26,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator {
-	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
+	public static enum SequenceType {
+		COUNTER(0),
+		DATE_COUNTER(1),
+		DATE_TIME_COUNTER(2);
 
-	public enum GroupingType {
+		private int value;
+
+		private SequenceType(int value) {
+			this.value = value;
+		}
+	}
+
+	public static enum GroupingType {
 		NONE(0),
 		CASHIER(1),
 		CASH_POINT(2),
@@ -41,17 +51,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 		}
 	}
 
-	public enum SequenceType {
-		COUNTER(0),
-		DATE_COUNTER(1),
-		DATE_TIME_COUNTER(2);
-
-		private int value;
-
-		private SequenceType(int value) {
-			this.value = value;
-		}
-	}
+	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
 
 	private ISequentialReceiptNumberGeneratorService service;
 	private SequentialReceiptNumberGeneratorModel model;
@@ -195,3 +195,4 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 		return number;
 	}
 }
+

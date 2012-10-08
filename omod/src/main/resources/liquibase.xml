@@ -312,7 +312,7 @@
 
 			<column name="grouping_type" type="int"><constraints nullable="false"/></column>
 			<column name="sequence_type" type="int"><constraints nullable="false"/></column>
-			<column name="separator" type="varchar(5)"><constraints nullable="false"/></column>
+			<column name="sequence_separator" type="varchar(5)"><constraints nullable="false"/></column>
 			<column name="cashier_prefix" type="varchar(5)"><constraints nullable="false"/></column>
 			<column name="cash_point_prefix" type="varchar(5)"><constraints nullable="false"/></column>
 			<column name="sequence_padding" type="int"><constraints nullable="false"/></column>
@@ -349,7 +349,7 @@
 		<createIndex indexName="cashier_bill_receipt_number_idx" tableName="cashier_bill" unique="true">
 			<column name="receipt_number"/>
 		</createIndex>
-		<createIndex indexName="cashier_bill_patient_id_idx" tableName="cashier_bill" unique="true">
+		<createIndex indexName="cashier_bill_patient_id_idx" tableName="cashier_bill" unique="false">
 			<column name="patient_id"/>
 		</createIndex>
 

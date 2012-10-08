@@ -16,8 +16,11 @@ package org.openmrs.module.openhmis.cashier.web.controller;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +28,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value = "/module/openhmis/cashier/admin/receiptNumberGenerator")
+@RequestMapping(value = CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE)
 public class ReceiptNumberGeneratorController {
 	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorController.class);
 
 	@RequestMapping(method = RequestMethod.GET)
+	@Authorized(CashierPrivilegeConstants.MANAGE_BILLS)
 	public void render(ModelMap model) {
 		IReceiptNumberGenerator currentGenerator = ReceiptNumberGeneratorFactory.getGenerator();
 		IReceiptNumberGenerator[] generators = ReceiptNumberGeneratorFactory.locateGenerators();
@@ -39,6 +43,7 @@ public class ReceiptNumberGeneratorController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Authorized(CashierPrivilegeConstants.MANAGE_BILLS)
 	public String submit(ModelMap model, @RequestParam(value = "selectedGenerator", required = true) String generatorName) {
 		IReceiptNumberGenerator[] generators = ReceiptNumberGeneratorFactory.locateGenerators();
 		IReceiptNumberGenerator selectedGenerator = null;
@@ -57,9 +62,11 @@ public class ReceiptNumberGeneratorController {
 			// Load the generator configuration page, if defined
 			if (selectedGenerator == null) {
 				log.warn("Could not locate a receipt number generator named '" + generatorName + "'.");
-			} else if (!StringUtils.isEmpty(selectedGenerator.getConfigurationPage())) {
+			} else if (StringUtils.isEmpty(selectedGenerator.getConfigurationPage())) {
+				// There is no generator configuration page so just set the system generator and reload the page
 				ReceiptNumberGeneratorFactory.setGenerator(selectedGenerator);
-
+			} else {
+				// The configuration page should set the system generator when saved so it is not done here
 				return selectedGenerator.getConfigurationPage();
 			}
 		}
@@ -68,6 +75,6 @@ public class ReceiptNumberGeneratorController {
 		model.addAttribute("currentGenerator", selectedGenerator);
 		model.addAttribute("generators", generators);
 
-		return "/module/openhmis/cashier/admin/receiptNumberGenerator";
+		return CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE;
 	}
 }

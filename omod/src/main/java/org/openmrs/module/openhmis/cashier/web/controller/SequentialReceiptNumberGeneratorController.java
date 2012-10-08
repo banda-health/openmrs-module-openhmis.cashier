@@ -13,17 +13,19 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
-import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ISequentialReceiptNumberGeneratorService;
-import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
+import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
+import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(value = "/module/openhmis/cashier/admin/seqReceiptNumberGenerator")
+@RequestMapping(value = CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE)
 public class SequentialReceiptNumberGeneratorController {
 	ISequentialReceiptNumberGeneratorService service;
 
@@ -33,11 +35,26 @@ public class SequentialReceiptNumberGeneratorController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public void render(ModelMap model) {
-		IReceiptNumberGenerator currentGenerator = ReceiptNumberGeneratorFactory.getGenerator();
-		IReceiptNumberGenerator[] generators = ReceiptNumberGeneratorFactory.locateGenerators();
+	public void render(ModelMap modelMap) {
+		SequentialReceiptNumberGeneratorModel model = service.getOnly();
 
-		model.addAttribute("currentGenerator", currentGenerator);
-		model.addAttribute("generators", generators);
+		modelMap.addAttribute("generator", model);
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String post(@ModelAttribute("generator") SequentialReceiptNumberGeneratorModel generator,
+	                   WebRequest request) {
+		if (generator.getSeparator().equals("<space>")) {
+			generator.setSeparator(" ");
+		}
+
+		// The check digit checkbox value is only bound if checked
+		if (request.getParameter("includeCheckDigit") == null) {
+			generator.setIncludeCheckDigit(false);
+		}
+
+		service.save(generator);
+
+		return "redirect:" + CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE + ".form";
 	}
 }
