@@ -67,7 +67,7 @@ public class ReceiptNumberGeneratorController {
 				ReceiptNumberGeneratorFactory.setGenerator(selectedGenerator);
 			} else {
 				// The configuration page should set the system generator when saved so it is not done here
-				return selectedGenerator.getConfigurationPage();
+				return "redirect:" + selectedGenerator.getConfigurationPage() + ".form";
 			}
 		}
 
@@ -75,6 +75,6 @@ public class ReceiptNumberGeneratorController {
 		model.addAttribute("currentGenerator", selectedGenerator);
 		model.addAttribute("generators", generators);
 
-		return CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE;
+		return "redirect:" + CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE + ".form";
 	}
 }
