@@ -13,8 +13,6 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import java.util.List;
-
 import org.openmrs.OpenmrsMetadata;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
@@ -22,10 +20,12 @@ import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 
+import java.util.List;
+
 public class MetadataSearcher<E extends OpenmrsMetadata> {
 	protected IMetadataService<E> service;
 	
-	public MetadataSearcher(Class<IMetadataService<E>> serviceClass) {
+	public MetadataSearcher(Class<? extends IMetadataService<E>> serviceClass) {
 		this.service = Context.getService(serviceClass);
 	}
 	

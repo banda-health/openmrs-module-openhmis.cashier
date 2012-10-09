@@ -40,6 +40,18 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+	public SequentialReceiptNumberGeneratorModel getOnly() {
+		List<SequentialReceiptNumberGeneratorModel> records = getAll();
+
+		if (records.size() > 0) {
+			return records.get(0);
+		} else {
+			return new SequentialReceiptNumberGeneratorModel();
+		}
+	}
+
+	@Override
 	@Transactional
 	public int reserveNextSequence(String group) throws APIException {
 		// Get the sequence

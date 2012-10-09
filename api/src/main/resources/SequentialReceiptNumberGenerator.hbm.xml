@@ -24,7 +24,7 @@
 			</type>
 		</property>
 
-		<property name="separator" type="java.lang.String" column="separator" length="5" not-null="true"/>
+		<property name="separator" type="java.lang.String" column="sequence_separator" length="5" not-null="true"/>
 		<property name="cashierPrefix" type="java.lang.String" column="cashier_prefix" length="5" not-null="true"/>
 		<property name="cashPointPrefix" type="java.lang.String" column="cash_point_prefix" length="5" not-null="true"/>
 		<property name="sequencePadding" type="int" column="sequence_padding" not-null="true"/>

@@ -26,6 +26,7 @@ public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
 	public static final int DEFAULT_SEQUENCE_PADDING = 4;
 
 	private Integer id;
+
 	private SequentialReceiptNumberGenerator.GroupingType groupingType;
 	private SequentialReceiptNumberGenerator.SequenceType sequenceType;
 	private String separator;

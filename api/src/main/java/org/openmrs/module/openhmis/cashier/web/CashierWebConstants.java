@@ -11,12 +11,11 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.webservices.rest.resource;
+package org.openmrs.module.openhmis.cashier.web;
 
-import org.openmrs.OpenmrsMetadata;
-import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+public class CashierWebConstants {
+	public static final String MODULE_ROOT = "/module/openhmis/cashier/";
 
-public interface IMetadataServiceResource<T extends OpenmrsMetadata> {
-	public Class<? extends IMetadataService<T>> getServiceClass();
-
+	public static final String RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = MODULE_ROOT + "admin/receiptNumberGenerator";
+	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = MODULE_ROOT + "admin/seqReceiptNumberGenerator";
 }

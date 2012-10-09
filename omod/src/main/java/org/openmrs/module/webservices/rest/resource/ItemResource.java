@@ -13,11 +13,6 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
@@ -39,6 +34,11 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Resource("item")
 @Handler(supports = { Item.class }, order = 0)
@@ -164,7 +164,7 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataService<Item>> getServiceClass() {
-		return (Class<IMetadataService<Item>>)(Object)IItemService.class;
+	public Class<? extends IMetadataService<Item>> getServiceClass() {
+		return IItemService.class;
 	}
 }

@@ -19,8 +19,9 @@
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="fileset1" name="Xml Application Context" removed="false">
-          <file>file://$MODULE_DIR$/src/main/resources/webModuleApplicationContext.xml</file>
+        <fileset id="fileset2" name="Xml Application Context" removed="false">
+          <file>file://$MODULE_DIR$/../api/src/main/resources/moduleApplicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../api/src/main/resources/parent-OpenmrsContext.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -28,6 +29,7 @@
       <configuration>
         <datasource-map>
           <unit-entry name="hibernate.cfg.xml" />
+          <unit-entry name="sessionFactory" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/resources/hibernate.cfg.xml" />
       </configuration>

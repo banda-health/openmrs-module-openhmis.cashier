@@ -18,5 +18,5 @@ import org.openmrs.module.openhmis.cashier.api.IDataService;
 
 public interface IDataServiceResource<T extends OpenmrsData> {
 
-	public Class<IDataService<T>> getServiceClass();
+	public Class<? extends IDataService<T>> getServiceClass();
 }

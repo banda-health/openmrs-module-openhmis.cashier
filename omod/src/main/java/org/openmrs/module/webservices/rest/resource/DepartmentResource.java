@@ -28,10 +28,9 @@ public class DepartmentResource extends BaseRestMetadataResource<Department> {
 		return new Department();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataService<Department>> getServiceClass() {
-		return (Class<IMetadataService<Department>>)(Object)IDepartmentService.class;
+	public Class<? extends IMetadataService<Department>> getServiceClass() {
+		return IDepartmentService.class;
 	}
 }
 
