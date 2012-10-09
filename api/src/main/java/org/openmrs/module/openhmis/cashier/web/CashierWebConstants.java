@@ -18,4 +18,11 @@ public class CashierWebConstants {
 
 	public static final String RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = MODULE_ROOT + "admin/receiptNumberGenerator";
 	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = MODULE_ROOT + "admin/seqReceiptNumberGenerator";
+
+	public static final String TIMESHEET_PAGE = MODULE_ROOT + "timesheet";
+	public static final String TIMESHEET_ENTRY_PAGE = TIMESHEET_PAGE + "/entry";
+
+	public static String redirectUrl(String page) {
+		return page.endsWith(".form") ? "redirect:" + page : "redirect:" + page + ".form";
+	}
 }
