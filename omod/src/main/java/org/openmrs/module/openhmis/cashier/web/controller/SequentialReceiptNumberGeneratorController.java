@@ -14,6 +14,8 @@
 package org.openmrs.module.openhmis.cashier.web.controller;
 
 import org.openmrs.module.openhmis.cashier.api.ISequentialReceiptNumberGeneratorService;
+import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
+import org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,7 @@ public class SequentialReceiptNumberGeneratorController {
 		}
 
 		service.save(generator);
+		ReceiptNumberGeneratorFactory.setGenerator(new SequentialReceiptNumberGenerator());
 
 		return "redirect:" + CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE + ".form";
 	}
