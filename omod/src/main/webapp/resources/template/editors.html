@@ -1,5 +1,5 @@
 <script id="item-editor" type="text/template">
-	<? var department_uuid = (item && item.get("department")) ? item.get("department").id : null ?>
+	<? var department_uuid = (item && item.get("department")) ? item.get("department").uuid : null ?>
 	<? var id = item ? item.cid + '-' : "" ?>
 	<select id="<?= id ?>department" class="department">
 		<option value=""><em>--department--</em></option>

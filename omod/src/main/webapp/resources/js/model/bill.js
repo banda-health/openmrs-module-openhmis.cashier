@@ -36,6 +36,7 @@ define(
 			},
 			
 			parse: function(resp) {
+				if (resp === null) return resp;
 				if (resp.payments) {
 					var urlRoot = this.url() + '/payment/';
 					var paymentCollection = new openhmis.GenericCollection([], { model: openhmis.Payment });

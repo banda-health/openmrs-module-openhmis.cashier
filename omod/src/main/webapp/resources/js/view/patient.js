@@ -27,7 +27,13 @@ define(
 			takeRawPatient: function(index, data) {
 				data.identifiers = [{ display: data.identifier }];
 				data.person = { display: data.personName };
-				this.model = new openhmis.Patient(data);
+				var model = new openhmis.Patient(data);
+				this.selectPatient(model);
+			},
+			
+			selectPatient: function(patient) {
+				patient = patient ? patient : this.model;
+				this.model = patient;
 				this.render();
 				this.trigger('selected', this.model);
 			},
@@ -40,6 +46,14 @@ define(
 			},
 				
 			render: function() {
+				if (this.$findPatient === undefined)
+					this.$findPatient = this.$('#findPatients');
+				if (this.$findPatient.find('.cancel').length === 0 && this.model) {
+					var cancelBtn = $('<input type="button" class="cancel" value="Cancel" />');
+					this.$findPatient.append(cancelBtn);
+					var self = this;
+					cancelBtn.click(function() { self.selectPatient(); });
+				}
 				if (this.model === undefined) {
 					this.findEl.show();
 					this.detailsEl.hide();

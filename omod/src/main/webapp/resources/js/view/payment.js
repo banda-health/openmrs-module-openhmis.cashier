@@ -4,6 +4,7 @@ define(
 		'lib/backbone',
 		'model/payment',
 		'lib/i18n',
+		'model/bill',
 		'lib/backbone-forms',
 		'view/generic'
 	],
@@ -53,9 +54,14 @@ define(
 				}
 				this.paymentCollection = this.paymentCollection ? this.paymentCollection
 					: new openhmis.GenericCollection([], { model: openhmis.Payment });
+				this.paymentCollection.comparator = function(payment) {
+					return payment.get("dateCreated");
+				}
+				this.paymentCollection.sort();
 				this.paymentListView = new openhmis.GenericListView({
 					model: this.paymentCollection,
 					id: "paymentList",
+					listFields: ['dateCreatedFmt', 'amountFmt', 'paymentMode'],
 					itemActions: ["remove"],
 					showRetiredOption: false,
 					hideIfEmpty: true
@@ -105,20 +111,31 @@ define(
 					uuid: this.form.getValue("paymentMode"),
 					name: this.form.fields["paymentMode"].editor.$('option:selected').text()
 				}));
+				this.model.set("dateCreated", new Date().getTime());
 				var self = this;
 				this.processCallback(this.model, { success: function(model, resp) {
-					self.paymentCollection.add(model);
+					if (model instanceof openhmis.Bill) {
+						// Entire bill was saved, so let's reset collection
+						var payments = model.get("payments");
+						if (payments)
+							self.paymentListView.model.reset(payments.models);
+					} else {
+						// Payment has been saved; add it to the collection,
+						// triggering rendering
+						self.paymentCollection.add(model);
+					}
 				}});
 			},
 			
 			render: function() {
 				this.$el.html(this.template({ __: i18n }));
 				this.$el.prepend(this.form.render().el);
+				this.$el.prepend(this.paymentListView.el);
 				if (this.paymentCollection.filter(function(payment) { return !payment.get("voided"); }).length === 0
 						&& this.paymentListView.options.hideIfEmpty) {
 					// Skip payment list
 				} else
-					this.$el.prepend(this.paymentListView.render().el);
+					this.paymentListView.render();
 				this.$attributes = this.$('#paymentAttributes');
 				return this;
 			}

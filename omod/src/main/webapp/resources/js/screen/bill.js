@@ -26,9 +26,12 @@ curl(
 				patientView.setElement($('#patient-view'));
 				patientView.render();
 				
+				billView.on("save", function(bill) {
+					window.location = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
+				});
 				billView.setElement($('#bill'));
 				billView.render();
-				$('#saveBill').click(billView.saveBill);
+				$('#saveBill').click(function() { billView.saveBill() });
 				billView.setupNewItem();
 				
 				patientView.on('selected', billView.patientSelected);

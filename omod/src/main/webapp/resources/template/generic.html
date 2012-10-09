@@ -40,7 +40,8 @@
 			<tr>
 			<? if (options.itemActions.length > 0) { ?><th class="item-actions end" style="width: <?= options.itemActions.length * 10 ?>px;"></td> <? } ?>
 			<? for (var field in fields) { ?>
-				<th class="field-<?= fields[field] ?>"><?= modelSchema[fields[field]].title === undefined ? helpers.keyToTitle(fields[field]) : modelSchema[fields[field]].title ?></th>
+				<? var fieldClassName = "field-" + fields[field]; ?>
+				<th class="<?= fieldClassName ?>"><?= modelSchema[fields[field]].title === undefined ? helpers.keyToTitle(fields[field]) : modelSchema[fields[field]].title ?></th>
 			<? } ?>
 			</tr>
 		</thead>
@@ -71,7 +72,10 @@
 	 } else { ?>
 		<? var cssClass; ?>
 		<? for (var field in fields) { ?>
-		<? cssClass = "field-" + fields[field]; if (model.isRetired()) cssClass += " retired"; ?>
+		<? cssClass = "field-" + fields[field];
+			if (model.isRetired()) cssClass += " retired";
+			if (model.schema[fields[field]].type in {'Number':0, 'BasicNumber':0})
+				cssClass += " numeric"; ?>
 		<td class="<?= cssClass ?>">
 			<? if (model.schema[fields[field]].type === 'List' && model.schema[fields[field]].model !== undefined) {
 				print(model.listToString(fields[field]));

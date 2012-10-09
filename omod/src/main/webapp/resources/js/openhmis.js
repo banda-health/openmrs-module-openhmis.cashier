@@ -37,7 +37,16 @@ define(
 				  return "";
 			else
 				return decodeURIComponent(results[1].replace(/\+/g, " "));
-		}
+		},
+		
+		openhmis.dateFormat = function(date) {
+			var day = date.getDate();
+			var month = date.getMonth();
+			var year = date.getFullYear();
+			day = day < 10 ? "0" + day : day.toString();
+			month = month < 10 ? "0" + month: month.toString();
+			return day + '-' + month + '-' + year;
+		},
 		
 		// Use uuid for id
 		Backbone.Model.prototype.idAttribute = 'uuid';

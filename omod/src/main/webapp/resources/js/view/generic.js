@@ -171,8 +171,10 @@ define(
 			},
 			
 			addOne: function(model, schema, lineNumber) {
-				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				if (this.showRetired === false && model.isRetired()) return null;
+				if (this.$el.html() === "" && this.options.hideIfEmpty === true)
+					this.render();
+				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var className = "evenRow";
 				if (lineNumber)
 					className = lineNumber % 2 === 0 ? "evenRow" : "oddRow";

@@ -1,6 +1,5 @@
 package org.openmrs.module.webservices.rest.resource;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,7 +17,6 @@ import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.SubResource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
@@ -72,9 +70,10 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	}
 	
 	@PropertyGetter("dateCreated")
-	public String getPaymentDate(Payment instance) {
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-		return format.format(instance.getDateCreated());
+	public Long getPaymentDate(Payment instance) {
+//		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+//		return format.format(instance.getDateCreated());
+		return instance.getDateCreated().getTime();
 	}
 
 	@Override

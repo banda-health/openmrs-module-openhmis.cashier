@@ -71,7 +71,7 @@ table.bill td, table.bill th {
 }
 table.bill td.end, table.bill th.end { border-right: none; }
 
-table.bill .field-quantity input, table.bill .field-price input, table.bill .field-total input {
+td.numeric, td.numeric input {
 	text-align: right;
 }
 table.bill .field-item .editor .department-name { width: 31%; }
@@ -84,3 +84,4 @@ table.totals td.label, table.totals td.total { padding: 3px 7px 3px 10px; font-w
 
 div.box { margin-bottom: 1em; }
 #paymentList b.boxHeader, #paymentList div.box { width: auto; }
+#paymentList .field-amountFmt, #paymentList .field-paymentMode { width: 13%; }

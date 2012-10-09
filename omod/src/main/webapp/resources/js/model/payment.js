@@ -4,6 +4,7 @@ define(
         'lib/backbone',
         'model/generic',
         'lib/i18n',
+        'model/item',
         'model/fieldGenHandler'
     ],
     function(_, Backbone, openhmis, __) {
@@ -15,8 +16,10 @@ define(
             },
             
             schema: {
-                dateCreated: { type: 'Text', title: __("Date") },
+                dateCreated: { type: 'Text', readOnly: true },
+                dateCreatedFmt: { type: 'Text', title: __("Date"), readOnly: true },
                 amount: { type: 'BasicNumber' },
+                amountFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
                 paymentMode: { type: 'Text' }
             },
             
@@ -25,6 +28,18 @@ define(
                     this.urlRoot = this.meta.parentRestUrl + this.meta.restUrl;
                 return openhmis.GenericModel.prototype.url.call(this);
             },
+            
+   			get: function(attr) {
+				switch (attr) {
+					case 'dateCreatedFmt':
+                        var date = new Date(this.get("dateCreated"));
+						return openhmis.dateFormat(date);
+					case 'amountFmt':
+                        return openhmis.ItemPrice.prototype.format.call(this, this.get("amount"));
+					default:
+						return openhmis.GenericModel.prototype.get.call(this, attr);
+				}
+			},
             
             parse: function(resp) {
                 if (resp.paymentMode)
