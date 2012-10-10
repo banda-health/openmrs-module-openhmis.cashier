@@ -151,14 +151,13 @@ define(
 					if (model instanceof openhmis.Bill) {
 						// Entire bill was saved, so we expect the page to be
 						// refreshed soon
-						//var payments = model.get("payments");
-						//if (payments)
-						//	self.paymentListView.model.reset(payments.models);
 					} else {
-						// Payment has been saved; add it to the collection,
-						// triggering rendering
-						self.paymentCollection.add(model);
+						// Payment has been saved, so it will be automatically
+						// added to the payment collection, triggering rendering
 					}
+					// Set up new empty Payment
+					self.model = new openhmis.Payment();
+					self.form.fields["amount"].setValue("");
 				}});
 			},
 			

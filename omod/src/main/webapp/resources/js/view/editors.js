@@ -101,13 +101,10 @@ define(
 			className: "editor",
 			tmplFile: 'editors.html',
 			tmplSelector: '#item-editor',
-			departmentMap: function() {
+			departmentCollection: function() {
 				var collection = new openhmis.GenericCollection([], { model: openhmis.Department });
-				var map = {};
-				collection.fetch({ success: function(collection) {
-					collection.each(function(item) { map[item.id] = item.get('name') });
-				}});
-				return map;
+				collection.fetch();
+				return collection;
 			}(),
 			
 			initialize: function(options) {
@@ -115,6 +112,7 @@ define(
 				editors.Base.prototype.initialize.call(this, options);
 				this.template = this.getTemplate();
 				this.cache = {};
+				this.departmentCollection.on("reset", this.render);
 			},
 			
 			events: {
@@ -224,7 +222,7 @@ define(
 			
 			render: function() {
 				this.$el.html(this.template({
-					departments: this.departmentMap,
+					departments: this.departmentCollection,
 					item: this.value
 				}));
 				this.$('select').keydown(this.departmentKeyDown);

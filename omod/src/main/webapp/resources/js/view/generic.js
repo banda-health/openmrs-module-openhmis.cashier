@@ -172,8 +172,12 @@ define(
 			
 			addOne: function(model, schema, lineNumber) {
 				if (this.showRetired === false && model.isRetired()) return null;
-				if (this.$el.html() === "" && this.options.hideIfEmpty === true)
+				if (this.$el.html() === "" && this.options.hideIfEmpty === true) {
 					this.render();
+					// Re-rendering the entire list means we don't have to
+					// continue adding this item
+					return null;
+				}
 				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var className = "evenRow";
 				if (lineNumber)

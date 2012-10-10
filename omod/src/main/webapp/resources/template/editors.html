@@ -3,9 +3,9 @@
 	<? var id = item ? item.cid + '-' : "" ?>
 	<select id="<?= id ?>department" class="department">
 		<option value=""><em>--department--</em></option>
-	<? for (var key in departments) { ?>
-		<option value="<?= key ?>"<?= (key === department_uuid) ? ' selected="selected"' : '' ?>><?= departments[key] ?></option>
-	<? } ?>
+	<? departments.each(function(department) { ?>
+		<option value="<?= department.id ?>"<?= (department.id === department_uuid) ? ' selected="selected"' : '' ?>><?= department.get("name") ?></option>
+	<? }); ?>
 	</select>
 	<input type="hidden" class="department-uuid" />
 	<span class="label-hint"><label for="<?= id ?>item-name">search for item</label><input type="text" class="item-name" id="<?= id ?>item-name" value="<?= (item && item.get('name')) ? item.get('name') : "" ?>" /></span>
