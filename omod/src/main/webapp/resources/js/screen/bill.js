@@ -42,6 +42,9 @@ curl(
 					paymentCollection: billView.bill.get("payments"),
 					processCallback: billView.processPayment
 				});
+				// Disable add event when the bill is saving to prevent
+				// unsettling page drawing
+				billView.on("save", function() { paymentView.model.off("add"); });
 				paymentView.setElement($('#payment'));
 				paymentView.render();
 				
@@ -55,7 +58,7 @@ curl(
 			var bill = new openhmis.Bill({ uuid: billUuid });
 			bill.fetch({ success: function(bill, resp) {
 				billView.bill = bill;
-				billView.model.add(bill.get("lineItems"), { silent: true });
+				billView.model.add(bill.get("lineItems").models, { silent: true });
 				patientView.model = new openhmis.Patient(bill.get("patient"));
 				displayBillView(billView, patientView);
 			}});

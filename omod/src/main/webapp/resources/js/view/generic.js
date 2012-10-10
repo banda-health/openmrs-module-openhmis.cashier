@@ -333,9 +333,14 @@ define(
 				this.$el.addClass("row_selected");
 			},
 			
-			blur: function(event, other) {
+			blur: function(event) {
 				this.$el.removeClass("row_selected");
-				this.form.commit();
+				this.commitForm(event);
+			},
+			
+			commitForm: function(event) {
+				var errors = this.form.commit();
+				if (errors && this.displayErrors) this.displayErrors(errors, event);
 			},
 			
 			removeItem: function(event) {

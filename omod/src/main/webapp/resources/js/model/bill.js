@@ -19,10 +19,25 @@ define(
 			},
 			
 			addPayment: function(payment) {
-				if (!this.get("payments"))
-					this.set("payments", []);
 				payment.meta.parentRestUrl = this.url() + '/';
-				this.get("payments").push(payment);
+				var payments = this.get("payments");
+				if (!payments)
+					this.set("payments", new openhmis.GenericCollection(payment, { model: openhmis.Payment }));
+				else
+					payments.add(payment);
+			},
+			
+			validate: function(final) {
+				// By default, backbone validates every time we try try to alter
+				// the model.  We don't want to be bothered with this until we
+				// care.
+				if (final !== true) return null;
+				
+				if (this.get("patient") === undefined)
+					return { patient: "A bill needs to be associated with a patient." }
+				if (this.get("lineItems") === undefined || this.get("lineItems").length === 0)
+					return { lineItems: "A bill should contain at least one item." }
+				return null;
 			},
 			
 			toJSON: function() {
@@ -37,6 +52,12 @@ define(
 			
 			parse: function(resp) {
 				if (resp === null) return resp;
+				if (resp.lineItems) {
+					resp.lineItems = new openhmis.GenericCollection(resp.lineItems, {
+						model: openhmis.LineItem,
+						parse: true
+					});
+				}
 				if (resp.payments) {
 					var urlRoot = this.url() + '/payment/';
 					var paymentCollection = new openhmis.GenericCollection([], { model: openhmis.Payment });

@@ -85,3 +85,13 @@ table.totals td.label, table.totals td.total { padding: 3px 7px 3px 10px; font-w
 div.box { margin-bottom: 1em; }
 #paymentList b.boxHeader, #paymentList div.box { width: auto; }
 #paymentList .field-amountFmt, #paymentList .field-paymentMode { width: 13%; }
+
+/** Validation **/
+div.validation {
+	position: absolute;
+	top: -1.3em;
+	background-color: #b00;
+	color: #fff;
+	padding: 2px 4px;
+	z-index: 10;
+}

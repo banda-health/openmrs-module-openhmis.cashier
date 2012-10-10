@@ -41,6 +41,21 @@ define(
 				}
 			},
             
+            validate: function(final) {
+   				// By default, backbone validates every time we try try to alter
+				// the model.  We don't want to be bothered with this until we
+				// care.
+                if (final !== true) return null;
+                
+                if (this.get("amount") === null || this.get("amount") === undefined)
+                    return { amount: __("Amount is required.") }
+                if (isNaN(this.get("amount")))
+                    return { amount: __("Amount needs to be a number") }
+                if (!this.get("paymentMode"))
+                    return { paymentMode: __("Payment mode is required.") }
+                return null;
+            },
+            
             parse: function(resp) {
                 if (resp.paymentMode)
                     resp.paymentMode = new openhmis.PaymentMode(resp.paymentMode);

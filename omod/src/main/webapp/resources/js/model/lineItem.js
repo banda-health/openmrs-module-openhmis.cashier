@@ -33,8 +33,7 @@ define(
 			
 			_validate: function(attrs, options) {
 				var valid = openhmis.GenericModel.prototype._validate.call(this, attrs, options);
-				if (valid)
-					this.clean = true;
+				if (valid) this.clean = true;
 				return valid;
 			},
 			
@@ -64,7 +63,7 @@ define(
 			
 			parse: function(resp) {
 				if (resp.item)
-					resp.item = new openhmis.Item(resp.item);
+					resp.item = new openhmis.Item(resp.item, { parse: true });
 				return resp;
 			},
 			

@@ -74,7 +74,7 @@ define(
 							type: 'Select',
 							options: new openhmis.GenericCollection([], { model: openhmis.PaymentMode })
 						},
-						paymentAmount: {
+						amount: {
 							type: 'BasicNumber'
 						}
 					}
@@ -99,26 +99,61 @@ define(
 				)
 			},
 			
-			processPayment: function(event, something) {
-				var form = this.$attributes.serializeArray();
+			commitForm: function() {
+				var attributeForm = this.$attributes.serializeArray();
 				var attributes = [];
-				for (var i in form) {
-					attributes[i] = { paymentModeAttributeType: form[i].name, value: form[i].value }
+				var errors = {};
+				for (var i in attributeForm) {
+					try {
+						var meta = $.parseJSON(this.$attributes.find('#'+attributeForm[i].name+'-meta').text());
+					} catch (e) {}
+					if (meta && meta.required === true && !attributeForm[i].value) {
+						errors[attributeForm[i].name] = "This is a required field.";
+						break;
+					}
+					attributes[i] = {
+						paymentModeAttributeType: attributeForm[i].name,
+						value: attributeForm[i].value
+					}
+				}
+				for (var e in errors) {
+					this.displayErrors(errors);
+					return false;
 				}
 				this.model.set("attributes", attributes);
-				this.model.set("amount", this.form.getValue("paymentAmount"));
+				this.model.set("amount", this.form.getValue("amount"));
 				this.model.set("paymentMode", new openhmis.PaymentMode({
 					uuid: this.form.getValue("paymentMode"),
 					name: this.form.fields["paymentMode"].editor.$('option:selected').text()
 				}));
 				this.model.set("dateCreated", new Date().getTime());
+				var errors = this.model.validate(true);
+				if (errors) {
+					this.displayErrors(errors);
+					return false;
+				}
+				return true;
+			},
+			
+			displayErrors: function(errorMap) {
+				for(var item in errorMap) {
+					var $errorEl = this.$('#'+item).parent();
+					if ($errorEl.length > 0) {
+						openhmis.validationMessage($errorEl, errorMap[item]);
+					}
+				}
+			},
+			
+			processPayment: function(event, something) {
+				if (!this.commitForm()) return;
 				var self = this;
 				this.processCallback(this.model, { success: function(model, resp) {
 					if (model instanceof openhmis.Bill) {
-						// Entire bill was saved, so let's reset collection
-						var payments = model.get("payments");
-						if (payments)
-							self.paymentListView.model.reset(payments.models);
+						// Entire bill was saved, so we expect the page to be
+						// refreshed soon
+						//var payments = model.get("payments");
+						//if (payments)
+						//	self.paymentListView.model.reset(payments.models);
 					} else {
 						// Payment has been saved; add it to the collection,
 						// triggering rendering
@@ -137,6 +172,11 @@ define(
 				} else
 					this.paymentListView.render();
 				this.$attributes = this.$('#paymentAttributes');
+				var self = this;
+				this.form.$el.add(this.$attributes).submit(function(event) {
+					event.preventDefault();
+					self.processPayment();
+				});
 				return this;
 			}
 		});

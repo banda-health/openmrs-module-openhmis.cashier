@@ -44,18 +44,22 @@ define(
 			
 			onKeyPress: function(event) {
 				if (event.charCode === 13) {
-					this.validate();
+					this.commitForm(event);
 				}
 			},
 			
-			validate: function() {
-				var errors = this.form.commit();
-				if (!errors) {
-					this.model.trigger("validated", this.model);
-				} else {
-					//alert(JSON.stringify(errors));
+			displayErrors: function(errorMap, event) {
+				// If there is already another item in the collection and
+				// this is not triggered by enter key, skip the error message
+				if (event && event.type !== "keypress" && this.model.collection.length > 1)
+					return;
+				
+				for(var item in errorMap) {
+					var $errorEl = this.$('.field-' + item);
+					if ($errorEl.length > 0) {
+						openhmis.validationMessage($errorEl, errorMap[item]);
+					}
 				}
-				return errors;
 			},
 			
 			focus: function(form) {
@@ -82,18 +86,18 @@ define(
 				this.bill = new openhmis.Bill();
 				this.itemView = openhmis.BillLineItemView;
 				this.totalsTemplate = this.getTemplate("bill.html", '#bill-totals');
-				this.model.on('all', this.updateTotals);
+				this.model.on("all", this.updateTotals);
 			},
 			
 			options: {
-				itemActions: ['remove', 'inlineEdit'],
+				itemActions: ["remove", "inlineEdit"],
 				showRetiredOption: false
 			},
 			
 			schema: {
-				item: { type: 'Item' },
-				quantity: { type: 'CustomNumber', nonNegative: true },
-				price: { type: 'BasicNumber', readOnly: true }
+				item: { type: "Item" },
+				quantity: { type: "CustomNumber", nonNegative: true },
+				price: { type: "BasicNumber", readOnly: true }
 			},
 			
 			addOne: function(model, schema) {
@@ -124,12 +128,12 @@ define(
 			setupNewItem: function(lineItem) {
 				var dept_uuid;
 				if (lineItem !== undefined) {
-					lineItem.off('validated', this.setupNewItem);
+					lineItem.off("change", this.setupNewItem);
 					this.deselectAll();
-					dept_uuid = lineItem.get('item').get('department').id;
+					dept_uuid = lineItem.get("item").get("department").id;
 				}
 				this.newItem = new openhmis.LineItem();
-				this.newItem.on('validated', this.setupNewItem);
+				this.newItem.on("change", this.setupNewItem);
 				this.model.add(this.newItem, { silent: true });
 				if (this.$('p.empty').length > 0)
 					this.render();
@@ -178,8 +182,24 @@ define(
 					payment.save([], options);
 			},
 			
+			validate: function(final) {
+				var errors = this.bill.validate(true);
+				var elMap = {
+					'lineItems': [ $('#bill'), this ],
+					'patient': [ $('#patient-view'),  $('#inputNode') ]
+				}
+				if (errors) {
+					for (var e in errors)
+						openhmis.validationMessage(elMap[e][0], errors[e], elMap[e][1]);
+					return false;
+				}
+				return true;
+			},
+			
 			saveBill: function(options) {
 				options = options ? options : {};
+				this.bill.set("lineItems", this.model.filter(function(item) { return item.isClean(); }));
+				if (!this.validate()) return;
 				var success = options.success;
 				var error = options.error;
 				var self = this;
@@ -191,7 +211,6 @@ define(
 					openhmis.error(resp);
 					if (error) error(model, resp);
 				}
-				this.bill.set("lineItems", this.model.filter(function(item) { return item.isClean(); }));
 				this.bill.save([], options);
 			},
 			

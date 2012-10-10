@@ -19,8 +19,9 @@
 					formFieldName="${attrType.uuid}"
 					val=""
 					parameters="optionHeader=[blank]|showAnswers=${attrType.foreignKey}|isNullable=false" />
-				</c:otherwise>
+			</c:otherwise>
 		</c:choose>
+		<span id="${attrType.uuid}-meta" style="display: none;">{"required":${attrType.required}}</span>
 	</div>
 	</li>
 	</c:forEach>

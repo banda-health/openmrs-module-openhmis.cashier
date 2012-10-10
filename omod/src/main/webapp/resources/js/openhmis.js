@@ -48,6 +48,20 @@ define(
 			return day + '-' + month + '-' + year;
 		},
 		
+		openhmis.validationMessage = function(parentEl, message, inputEl) {
+			if ($(parentEl).find('.validation').length > 0) return;
+			var prevPosition = $(parentEl).css("position");
+			$(parentEl).css("position", "relative");
+			var el = $('<div class="validation"></div>');
+			el.text(message);
+			$(parentEl).append(el);
+			if (inputEl !== undefined) $(inputEl).focus();
+			setTimeout(function() {
+				$(el).remove();
+				$(parentEl).css("position", prevPosition);
+			}, 5000);
+		},
+		
 		// Use uuid for id
 		Backbone.Model.prototype.idAttribute = 'uuid';
 		
