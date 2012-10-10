@@ -96,7 +96,7 @@ define(
 			
 			schema: {
 				item: { type: "Item" },
-				quantity: { type: "CustomNumber", nonNegative: true },
+				quantity: { type: "CustomNumber", minimum: 1 },
 				price: { type: "BasicNumber", readOnly: true }
 			},
 			

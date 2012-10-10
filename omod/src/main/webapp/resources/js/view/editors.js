@@ -29,13 +29,13 @@ define(
 					}
 					
 				//Allow backspace && enter
-				if (event.charCode == 0 || event.charCode == 13) {
+				if (event.keyCode == 8 || event.keyCode == 13) {
 				  delayedDetermineChange();
 				  return;
 				}
 				
 				//Get the whole new value so that we can prevent things like double decimals points etc.
-				var newVal = this.$el.val() + String.fromCharCode(event.charCode);
+				var newVal = this.$el.val() + String.fromCharCode(event.keyCode);
 		  
 				var numeric = /^[0-9]*\.?[0-9]*?$/.test(newVal);
 		  
@@ -55,7 +55,7 @@ define(
 					'click': 'determineChange'
 				});
 				editors.Number.prototype.initialize.call(this, options);
-				if (options && options.schema) this.nonNegative = options.schema.nonNegative;
+				if (options && options.schema) this.minimum = options.schema.minimum;
 			},
 			
 			setValue: function(value) {
@@ -64,8 +64,8 @@ define(
 			},
 			
 			determineChange: function(event) {
-				if (this.nonNegative && parseInt(this.$el.val()) < 0) {
-					this.$el.val(0);
+				if (this.minimum && parseInt(this.$el.val()) < this.minimum) {
+					this.$el.val(this.minimum);
 					return;
 				}
 				editors.Number.prototype.determineChange.call(this, event);
