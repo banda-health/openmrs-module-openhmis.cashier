@@ -123,7 +123,8 @@ define(
 				'focus select': 'handleFocus',
 				'focus .item-name': 'handleFocus',
 				'blur select': 'handleBlur',
-				'blur .item-name': 'handleBlur'
+				'blur .item-name': 'handleBlur',
+				'keypress .item-name': 'onItemNameKeyPress'
 			},
 			
 			getUuid: function() {
@@ -153,6 +154,13 @@ define(
 					}
 					self.trigger("blur", self);
 				}, 0);
+			},
+			
+			onItemNameKeyPress: function(event) {
+				if (event.keyCode === 13) {	
+					if (this.itemUpdating !== undefined)
+						event.stopPropagation();
+				}
 			},
 			
 			modified: function(event) {
@@ -193,14 +201,18 @@ define(
 			},
 			
 			selectItem: function(event, ui) {
-				this.$('.item-name').val(ui.item.label);
-				this.$('.item-uuid').val(ui.item.val);
-				this.$('.department').val(ui.item.department_uuid);
+				this.itemUpdating = true;
 				var uuid = ui.item.val;
+				var name = ui.item.label;
+				var departmentUuid = ui.item.department_uuid;
+				this.$('.item-name').val(name);
+				this.$('.item-uuid').val(uuid);
+				this.$('.department').val(departmentUuid);
 				this.value = new openhmis.Item({ uuid: uuid });
 				var view = this;
 				this.value.fetch({ success: function(model, resp) {
 					view.trigger('change', view);
+					delete view.itemUpdating;
 				}});
 			},
 			

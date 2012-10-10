@@ -43,7 +43,7 @@ define(
 			},
 			
 			onKeyPress: function(event) {
-				if (event.charCode === 13) {
+				if (event.keyCode === 13) {
 					this.commitForm(event);
 				}
 			},
@@ -55,7 +55,7 @@ define(
 					return;
 				
 				for(var item in errorMap) {
-					var $errorEl = this.$('.field-' + item);
+					var $errorEl = this.$('.field-' + item + ' .editor');
 					if ($errorEl.length > 0) {
 						openhmis.validationMessage($errorEl, errorMap[item]);
 					}
