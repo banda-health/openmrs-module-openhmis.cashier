@@ -17,7 +17,10 @@ define(
 				total: { type: 'BasicNumber', readOnly: true }
 			},
 			
-			initialize: function() {
+			initialize: function(attributes, options) {
+				if (attributes && attributes.item && !(attributes.item instanceof Backbone.Model)) {
+					this.set("item", new openhmis.Item(attributes.item));
+				}
 				this.schema.total.value = this.getTotal;
 				this.clean = false;
 			},
@@ -30,8 +33,7 @@ define(
 			
 			_validate: function(attrs, options) {
 				var valid = openhmis.GenericModel.prototype._validate.call(this, attrs, options);
-				if (valid)
-					this.clean = true;
+				if (valid) this.clean = true;
 				return valid;
 			},
 			
@@ -57,6 +59,20 @@ define(
 					|| this.get('price') === undefined)
 					return undefined;
 				return this.get('price') * this.get('quantity');
+			},
+			
+			parse: function(resp) {
+				if (resp.item)
+					resp.item = new openhmis.Item(resp.item, { parse: true });
+				return resp;
+			},
+			
+			toJSON: function() {
+				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
+				if (attrs.item) {
+					attrs.item = attrs.item.id;
+				}
+				return attrs;
 			}
 		});
 		

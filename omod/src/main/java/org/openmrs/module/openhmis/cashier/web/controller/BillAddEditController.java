@@ -19,6 +19,8 @@ import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.IBillService;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,17 +32,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BillAddEditController {
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public void bill(ModelMap model, @RequestParam(value = "patientId", required = false) Integer patientId) {
+	public void bill(ModelMap model,
+			@RequestParam(value = "billUuid", required = false) String billUuid,
+			@RequestParam(value = "patientUuid", required = false) String patientUuid) {
 		Patient patient = null;
-		String patientIdentifier = null;
-		if (patientId != null) {
+		if (patientUuid != null) {
+			String patientIdentifier = null;
 			PatientService service = Context.getPatientService();
-			patient = service.getPatient(patientId);
+			patient = service.getPatientByUuid(patientUuid);
 			Set<PatientIdentifier> identifiers = patient.getIdentifiers();
 			for (PatientIdentifier id : identifiers)
 				if (id.getPreferred()) patientIdentifier = id.getIdentifier();
+			model.addAttribute("patient", patient);
+			model.addAttribute("patientIdentifier", patientIdentifier);
 		}
-		model.addAttribute("patient", patient);
-		model.addAttribute("patientIdentifier", patientIdentifier);
+		else if (billUuid != null) {
+			Bill bill = null;
+			IBillService service = Context.getService(IBillService.class);
+			bill = service.getByUuid(billUuid);
+			patient = bill.getPatient();
+			model.addAttribute("bill", bill);
+			model.addAttribute("patient", patient);
+		}
 	}
 }

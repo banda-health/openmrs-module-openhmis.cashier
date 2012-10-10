@@ -6,7 +6,7 @@ table.form tbody th { font-weight: normal; }
 
 /* List styles */
 form.bbf-form fieldset { border: none; }
-form.bbf-form ul { padding: 0; }
+form.bbf-form ul { padding: 0; margin: 0; }
 li.bbf-field, .bbf-list li { list-style: none; }
 li.bbf-field label { }
 li.bbf-field div.bbf-editor { position: relative; top: -1.3em; margin-left: 150px; }
@@ -61,17 +61,17 @@ table.bill td input, table.bill td select {
 	border: 1px solid transparent;
 }
 
-table.bill td input:focus, table.bill td select:focus {
+/*input:focus, select:focus {
 	border: 1px solid #1AAC9B;
 }
-
+*/
 table.bill td, table.bill th {
 	padding: 0px 5px;
 	border-right: 1px solid #aaa;
 }
 table.bill td.end, table.bill th.end { border-right: none; }
 
-table.bill .field-quantity input, table.bill .field-price input, table.bill .field-total input {
+td.numeric, td.numeric input {
 	text-align: right;
 }
 table.bill .field-item .editor .department-name { width: 31%; }
@@ -81,3 +81,17 @@ table.totals { width: 100%; }
 table.totals td.total { width: 13%; text-align: right; }
 table.totals td.label { width: 13%; }
 table.totals td.label, table.totals td.total { padding: 3px 7px 3px 10px; font-weight: bold; }
+
+div.box { margin-bottom: 1em; }
+#paymentList b.boxHeader, #paymentList div.box { width: auto; }
+#paymentList .field-amountFmt, #paymentList .field-paymentMode { width: 13%; }
+
+/** Validation **/
+div.validation {
+	position: absolute;
+	top: -1.3em;
+	background-color: #b00;
+	color: #fff;
+	padding: 2px 4px;
+	z-index: 10;
+}

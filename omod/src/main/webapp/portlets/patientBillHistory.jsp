@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
 <openmrs:hasPrivilege privilege="Manage Cashier Bills">
-    &nbsp;<a href="<openmrs:contextPath />/openhmis/cashier/bill.form?patientId=${model.patient.patientId}"><openmrs:message code="openhmis.cashier.addBill" /></a>
+    &nbsp;<a href="<openmrs:contextPath />/module/openhmis/cashier/bill.form?patientUuid=${patient.uuid}"><openmrs:message code="openhmis.cashier.addBill" /></a>
     <br />
     <br />
 </openmrs:hasPrivilege>
@@ -18,17 +18,17 @@
             <th>Total Amount</th>
         </tr></thead>
         <tbody>
-            <c:forEach var="bill" items="${model.bills}">
+            <c:forEach var="bill" items="${bills}">
                 <tr>
                     <td style="display: none">${bill.id}</td>
-                    <td>${bill.createdOn}</td>
-                    <td>${bill.receiptNumber}</td>
+                    <td>${bill.dateCreated}</td>
+                    <td><a href="<openmrs:contextPath />/module/openhmis/cashier/bill.form?billUuid=${bill.uuid}">${bill.receiptNumber}</a></td>
                     <td>${bill.status}</td>
-                    <td>TO DO</td>
-                    <td>TO DO</td>
+                    <td>${bill.totalPaid}</td>
+                    <td>${bill.total}</td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
-    <c:if test="${empty model.bills}">No bills have been created.</c:if>
+    <c:if test="${empty bills}">No bills have been created.</c:if>
 </div>

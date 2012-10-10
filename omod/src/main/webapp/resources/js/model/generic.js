@@ -59,7 +59,9 @@ define(
 			baseUrl: openhmis.config.restUrlRoot,
 			
 			initialize: function(models, options) {
-				if (this.model) {
+				if (options && options.baseUrl)
+					this.baseUrl = options.baseUrl
+				else if (this.model) {
 					if (this.model.prototype.urlRoot !== undefined)
 						this.url = this.model.prototype.urlRoot;
 					else if (this.model.prototype.meta && this.model.prototype.meta.restUrl)

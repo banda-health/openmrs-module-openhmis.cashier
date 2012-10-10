@@ -29,12 +29,16 @@ public class ItemPriceResource extends BaseRestMetadataResource<ItemPrice> imple
 
 	@PropertySetter(value = "price")
 	public void setPrice(ItemPrice instance, Object price) throws ConversionException {
-		if (Double.class.isAssignableFrom(price.getClass()))
-			instance.setPrice(BigDecimal.valueOf((Double) price));
-		else if (Integer.class.isAssignableFrom(price.getClass()))
-			instance.setPrice(BigDecimal.valueOf((Integer) price));
+		instance.setPrice(objectToBigDecimal(price));
+	}
+	
+	public static BigDecimal objectToBigDecimal(Object number) throws ConversionException {
+		if (Double.class.isAssignableFrom(number.getClass()))
+			return BigDecimal.valueOf((Double) number);
+		else if (Integer.class.isAssignableFrom(number.getClass()))
+			return BigDecimal.valueOf((Integer) number);
 		else
-			throw new ConversionException("Can't convert given price to " + BigDecimal.class.getSimpleName());
+			throw new ConversionException("Can't convert given number to " + BigDecimal.class.getSimpleName());		
 	}
 	
 	@Override

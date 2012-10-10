@@ -2,9 +2,9 @@ curl(
     { baseUrl: openhmis.config.wwwUrlRoot + 'js/' },
     [
         'lib/jquery',
-        'model/paymentMode',
+        'model/payment',
         'view/generic',
-        'view/paymentMode'
+        'view/payment'
         
     ],
     function($, openhmis) {

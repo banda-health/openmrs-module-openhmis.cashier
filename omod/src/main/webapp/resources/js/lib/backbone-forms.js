@@ -2243,7 +2243,7 @@ Form.editors = (function() {
 
     listItem: '\
       <li>\
-        <button type="button" data-action="remove" class="bbf-remove">&times;</button>\
+        <button type="button" data-action="remove" class="bbf-remove" title="Remove">&times;</button>\
         <div class="bbf-editor-container">{{editor}}</div>\
       </li>\
     ',

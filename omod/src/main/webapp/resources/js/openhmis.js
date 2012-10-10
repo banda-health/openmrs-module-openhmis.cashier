@@ -19,11 +19,48 @@ define(
 				
 		openhmis.error = function(data) {
 			var o = $.parseJSON(data.responseText).error;
-			if (o.detail.indexOf("ContextAuthenticationException") !== -1)
+			if (o.detail.indexOf("ContextAuthenticationException") !== -1) {
+				alert(__("Your session has timed out.  You will be redirected to the login page."));
 				window.location.reload();
+			}
 			else
 				alert("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
 		}
+		
+		openhmis.getQueryStringParameter = function(name)
+		{
+			name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+			var regexS = "[\\?&]" + name + "=([^&#]*)";
+			var regex = new RegExp(regexS);
+			var results = regex.exec(window.location.search);
+			if(results == null)
+				  return "";
+			else
+				return decodeURIComponent(results[1].replace(/\+/g, " "));
+		},
+		
+		openhmis.dateFormat = function(date) {
+			var day = date.getDate();
+			var month = date.getMonth();
+			var year = date.getFullYear();
+			day = day < 10 ? "0" + day : day.toString();
+			month = month < 10 ? "0" + month: month.toString();
+			return day + '-' + month + '-' + year;
+		},
+		
+		openhmis.validationMessage = function(parentEl, message, inputEl) {
+			if ($(parentEl).find('.validation').length > 0) return;
+			var prevPosition = $(parentEl).css("position");
+			$(parentEl).css("position", "relative");
+			var el = $('<div class="validation"></div>');
+			el.text(message);
+			$(parentEl).append(el);
+			if (inputEl !== undefined) $(inputEl).focus();
+			setTimeout(function() {
+				$(el).remove();
+				$(parentEl).css("position", prevPosition);
+			}, 5000);
+		},
 		
 		// Use uuid for id
 		Backbone.Model.prototype.idAttribute = 'uuid';

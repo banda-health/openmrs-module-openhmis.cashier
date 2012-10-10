@@ -141,22 +141,27 @@ define(
 			tmplFile: 'generic.html',
 			tmplSelector: '#generic-list',
 			itemView: openhmis.GenericListItemView,
-			itemActions: [],
 			
 			initialize: function(options) {
 				_.bindAll(this);
+				this.options = {};
 				if (options !== undefined) {
 					this.addEditView = options.addEditView;
 					this.itemView = options.itemView ? options.itemView : openhmis.GenericListItemView
-					if (options.itemActions) this.itemActions = options.itemActions;
 					if (options.schema) this.schema = options.schema;
 					this.template = this.getTemplate();
-					this.includeFields = options.listFields;
-					this.excludeFields = options.listExcludeFields;
+
+					this.options.listTite = options.listTitle;
+					this.options.itemActions = options.itemActions || [];
+					this.options.includeFields = options.listFields;
+					this.options.excludeFields = options.listExcludeFields;
+					this.options.showRetiredOption = options.showRetiredOption !== undefined ? options.showRetiredOption : true;
+					this.options.hideIfEmpty = options.hideIfEmpty !== undefined ? options.hideIfEmpty : false;
 				}
 				if (this.addEditView !== undefined)
 					this.addEditView.on('cancel', this.deselectAll);
 				this.model.on('reset remove', this.render);
+				this.model.on('add', this.addOne);
 				this.showRetired = false;
 				this._determineFields();
 			},
@@ -166,8 +171,10 @@ define(
 			},
 			
 			addOne: function(model, schema, lineNumber) {
-				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				if (this.showRetired === false && model.isRetired()) return null;
+				if (this.$el.html() === "" && this.options.hideIfEmpty === true)
+					this.render();
+				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var className = "evenRow";
 				if (lineNumber)
 					className = lineNumber % 2 === 0 ? "evenRow" : "oddRow";
@@ -184,7 +191,7 @@ define(
 					fields: this.fields,
 					schema: schema,
 					className: className,
-					actions: this.itemActions
+					actions: this.options.itemActions
 				});
 				model.view = itemView;
 				this.$('tbody.list').append(itemView.render().el);
@@ -236,18 +243,22 @@ define(
 			},
 			
 			_determineFields: function() {
-				if (this.includeFields !== undefined)
-					this.fields = this.includeFields;
+				if (this.options.includeFields !== undefined)
+					this.fields = this.options.includeFields;
 				else
 					this.fields = _.keys(this.model.model.prototype.schema);
-				if (this.excludeFields !== undefined) {
-					var argv = _.clone(this.excludeFields);
+				if (this.options.excludeFields !== undefined) {
+					var argv = _.clone(this.options.excludeFields);
 					argv.unshift(this.fields);
 					this.fields = _.without.apply(this, argv);
 				}
 			},
 			
 			render: function(extraContext) {
+				if (this.model.length === 0 && this.options.hideIfEmpty) {
+					this.$el.html("");
+					return this;
+				}
 				var schema = _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var context = {
 					list: this.model,
@@ -255,8 +266,7 @@ define(
 					modelMeta: this.model.model.prototype.meta,
 					modelSchema: this.model.model.prototype.schema,
 					showRetired: this.showRetired,
-					listTitle: undefined, // custom title for list
-					itemActions: this.itemActions
+					options: this.options
 				}
 				if (extraContext !== undefined) context = _.extend(context, extraContext);
 				this.$el.html(this.template(context));
@@ -323,9 +333,14 @@ define(
 				this.$el.addClass("row_selected");
 			},
 			
-			blur: function(event, other) {
+			blur: function(event) {
 				this.$el.removeClass("row_selected");
-				this.form.commit();
+				this.commitForm(event);
+			},
+			
+			commitForm: function(event) {
+				var errors = this.form.commit();
+				if (errors && this.displayErrors) this.displayErrors(errors, event);
 			},
 			
 			removeItem: function(event) {

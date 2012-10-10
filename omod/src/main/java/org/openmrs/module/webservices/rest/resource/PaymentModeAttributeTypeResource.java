@@ -15,6 +15,7 @@ package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+import org.openmrs.module.openhmis.cashier.api.IPaymentModeAttributeTypeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
@@ -28,6 +29,9 @@ public class PaymentModeAttributeTypeResource extends BaseRestMetadataResource<P
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
+			description.addProperty("format");
+			description.addProperty("foreignKey");
+			description.addProperty("regExp");
 			description.addProperty("required");
 		}
 		return description;
@@ -38,6 +42,9 @@ public class PaymentModeAttributeTypeResource extends BaseRestMetadataResource<P
 		return new PaymentModeAttributeType();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataService<PaymentModeAttributeType>> getServiceClass() { return null; }
+	public Class<IMetadataService<PaymentModeAttributeType>> getServiceClass() {
+		return (Class<IMetadataService<PaymentModeAttributeType>>)(Object)IPaymentModeAttributeTypeService.class;
+	}
 }

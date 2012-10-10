@@ -80,7 +80,7 @@ define(
 			
 			setPriceOptions: function(prices) {
 				prices = prices ? prices : this.get('prices');
-				this.schema.defaultPrice.options = _.map(prices, function(price) { return { val: price.uuid, label: openhmis.ItemPrice.prototype.format(price.price) } });
+				this.schema.defaultPrice.options = _.map(prices, function(price) { return { val: price.uuid || price.price, label: openhmis.ItemPrice.prototype.format(price.price) } });
 			},
 			
 			parse: function(resp) {

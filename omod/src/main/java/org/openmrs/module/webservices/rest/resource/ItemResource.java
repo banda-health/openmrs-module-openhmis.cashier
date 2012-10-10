@@ -134,10 +134,23 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		}
 	}
 	
+	/**
+	 * Set the default price.
+	 * 
+	 * Typically will use a uuid, but in the case of creating a new price (not
+	 * yet having a uuid), we compare price strings.  Dubious? 
+	 * 
+	 * @param instance
+	 * @param uuidOrPrice
+	 */
 	@PropertySetter(value="defaultPrice")
-	public void setDefaultPrice(Item instance, String price_uuid) {
+	public void setDefaultPrice(Item instance, String uuidOrPrice) {
 		for (ItemPrice price : instance.getPrices()) {
-			if (price.getUuid().equals(price_uuid)) {
+			if (price.getUuid().equals(uuidOrPrice)) {
+				instance.setDefaultPrice(price);
+				break;
+			}
+			else if (price.getPrice().toPlainString().equals(uuidOrPrice)) {
 				instance.setDefaultPrice(price);
 				break;
 			}

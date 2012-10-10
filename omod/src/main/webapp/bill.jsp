@@ -5,7 +5,14 @@
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
 
 <h2>
-	<spring:message code="openhmis.cashier.newBill" />
+	<c:choose>
+		<c:when test="${empty bill}">
+			<spring:message code="openhmis.cashier.newBill" />
+		</c:when>
+		<c:otherwise>
+			<spring:message code="openhmis.cashier.editBill" /> ${bill.receiptNumber}	
+		</c:otherwise>
+	</c:choose>
 </h2>
 
 <div id="patient-view">
@@ -21,6 +28,9 @@
 </div>
 
 <div id="bill"></div>
+<div id="payment" class="box"></div>
+
+<input type="submit" id="saveBill" value="Save Bill" />
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
 

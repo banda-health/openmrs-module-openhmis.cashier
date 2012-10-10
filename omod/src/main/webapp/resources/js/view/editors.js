@@ -146,6 +146,11 @@ define(
 					// Check if another input from this editor has come into focus
 					if (self.$('select:focus')[0] || self.$('.item-name:focus')[0] || self.$('label:focus')[0])
 						return;
+					if (self.value) {
+						self.$('.item-name').val(self.value.get("name"));
+						self.$('.department').val(self.value.get("department").id);
+						self.$('label.over-apply').hide();
+					}
 					self.trigger("blur", self);
 				}, 0);
 			},
