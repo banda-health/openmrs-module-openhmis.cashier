@@ -25,10 +25,11 @@
 			</type>
 		</property>
 
-		<bag name="lineItems" lazy="true" inverse="true" cascade="all-delete-orphan" order-by="bill_line_item_id">
+		<list name="lineItems" lazy="true" inverse="true" cascade="all-delete-orphan">
 			<key column="bill_id" />
+			<list-index column="line_item_order" />
 			<one-to-many class="BillLineItem" />
-		</bag>
+		</list>
 		<set name="payments" lazy="true" inverse="true" cascade="all-delete-orphan">
 			<key column="bill_id" />
 			<one-to-many class="Payment" />
@@ -69,6 +70,7 @@
 		<property name="price" type="java.math.BigDecimal" column="price" not-null="true" />
 		<property name="priceName" type="java.lang.String" column="price_name" length="255" />
 		<property name="quantity" type="int" column="quantity" not-null="true" />
+		<property name="lineItemOrder" type="int" column="line_item_order" />
 
 		<!-- bi-directional many-to-one association to User -->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
