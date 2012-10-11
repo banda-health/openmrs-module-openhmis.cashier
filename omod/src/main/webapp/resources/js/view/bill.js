@@ -111,8 +111,10 @@ define(
 			addOne: function(model, schema) {
 				var view = openhmis.GenericListView.prototype.addOne.call(this, model, schema);
 				view.$('td.field-quantity').add('td.field-price').add('td.field-total').addClass("numeric");
-				if (this.newItem && view.model.cid === this.newItem.cid)
+				if (this.newItem && view.model.cid === this.newItem.cid) {
 					this.selectedItem = view;
+					view.on("change", this.setupNewItem);
+				}
 				else
 					view.on("change remove", this.bill.setUnsaved);
 				return view;
@@ -149,7 +151,6 @@ define(
 					this.render();
 				else {
 					var view = this.addOne(this.newItem);
-					view.on("change", this.setupNewItem);
 					view.focus();
 				}
 			},
@@ -191,12 +192,13 @@ define(
 			
 			saveBill: function(options) {
 				options = options ? options : {};
+				if (!this.validate()) return;
 				// Filter out any invalid lineItems (especially the bottom)
 				// entry cursor
 				this.bill.get("lineItems").reset(
-					this.model.filter(function(item) { return item.isClean(); })
+					this.model.filter(function(item) { return item.isClean(); }),
+					{ silent: true }
 				);
-				if (!this.validate()) return;
 				var success = options.success;
 				var error = options.error;
 				var self = this;
