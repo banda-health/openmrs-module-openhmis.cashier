@@ -2,9 +2,10 @@ define(
 	[
 		'lib/backbone',
 		'model/generic',
+		'lib/i18n',
 		'model/item'
 	],
-	function(Backbone, openhmis) {
+	function(Backbone, openhmis, __) {
 		openhmis.LineItem = openhmis.GenericModel.extend({
 			meta: {
 				name: 'Line Item',
@@ -26,8 +27,9 @@ define(
 			},
 			
 			validate: function(attrs, options) {
-				if (!attrs.item || !attrs.item.id) return { item: "Please choose an item" };
-				if (!attrs.item.get('department')) return { item: "Item must belong to a department" };
+				if (!attrs.item || !attrs.item.id) return { item: __("Please choose an item") };
+				if (!attrs.item.get('department')) return { item: __("Item must belong to a department") };
+				if (!attrs.quantity || isNaN(attrs.quantity)) return { quantity: __("Please enter a quantity") }
 				return null;
 			},
 			

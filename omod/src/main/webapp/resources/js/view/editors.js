@@ -29,13 +29,13 @@ define(
 					}
 					
 				//Allow backspace && enter
-				if (event.charCode == 0 || event.charCode == 13) {
+				if (event.keyCode == 8 || event.keyCode == 13) {
 				  delayedDetermineChange();
 				  return;
 				}
 				
 				//Get the whole new value so that we can prevent things like double decimals points etc.
-				var newVal = this.$el.val() + String.fromCharCode(event.charCode);
+				var newVal = this.$el.val() + String.fromCharCode(event.keyCode);
 		  
 				var numeric = /^[0-9]*\.?[0-9]*?$/.test(newVal);
 		  
@@ -55,7 +55,7 @@ define(
 					'click': 'determineChange'
 				});
 				editors.Number.prototype.initialize.call(this, options);
-				if (options && options.schema) this.nonNegative = options.schema.nonNegative;
+				if (options && options.schema) this.minimum = options.schema.minimum;
 			},
 			
 			setValue: function(value) {
@@ -64,8 +64,8 @@ define(
 			},
 			
 			determineChange: function(event) {
-				if (this.nonNegative && parseInt(this.$el.val()) < 0) {
-					this.$el.val(0);
+				if (this.minimum && parseInt(this.$el.val()) < this.minimum) {
+					this.$el.val(this.minimum);
 					return;
 				}
 				editors.Number.prototype.determineChange.call(this, event);
@@ -101,13 +101,10 @@ define(
 			className: "editor",
 			tmplFile: 'editors.html',
 			tmplSelector: '#item-editor',
-			departmentMap: function() {
+			departmentCollection: function() {
 				var collection = new openhmis.GenericCollection([], { model: openhmis.Department });
-				var map = {};
-				collection.fetch({ success: function(collection) {
-					collection.each(function(item) { map[item.id] = item.get('name') });
-				}});
-				return map;
+				collection.fetch();
+				return collection;
 			}(),
 			
 			initialize: function(options) {
@@ -115,6 +112,7 @@ define(
 				editors.Base.prototype.initialize.call(this, options);
 				this.template = this.getTemplate();
 				this.cache = {};
+				this.departmentCollection.on("reset", this.render);
 			},
 			
 			events: {
@@ -123,7 +121,8 @@ define(
 				'focus select': 'handleFocus',
 				'focus .item-name': 'handleFocus',
 				'blur select': 'handleBlur',
-				'blur .item-name': 'handleBlur'
+				'blur .item-name': 'handleBlur',
+				'keypress .item-name': 'onItemNameKeyPress'
 			},
 			
 			getUuid: function() {
@@ -153,6 +152,13 @@ define(
 					}
 					self.trigger("blur", self);
 				}, 0);
+			},
+			
+			onItemNameKeyPress: function(event) {
+				if (event.keyCode === 13) {	
+					if (this.itemUpdating !== undefined)
+						event.stopPropagation();
+				}
 			},
 			
 			modified: function(event) {
@@ -193,14 +199,18 @@ define(
 			},
 			
 			selectItem: function(event, ui) {
-				this.$('.item-name').val(ui.item.label);
-				this.$('.item-uuid').val(ui.item.val);
-				this.$('.department').val(ui.item.department_uuid);
+				this.itemUpdating = true;
 				var uuid = ui.item.val;
+				var name = ui.item.label;
+				var departmentUuid = ui.item.department_uuid;
+				this.$('.item-name').val(name);
+				this.$('.item-uuid').val(uuid);
+				this.$('.department').val(departmentUuid);
 				this.value = new openhmis.Item({ uuid: uuid });
 				var view = this;
 				this.value.fetch({ success: function(model, resp) {
 					view.trigger('change', view);
+					delete view.itemUpdating;
 				}});
 			},
 			
@@ -212,7 +222,7 @@ define(
 			
 			render: function() {
 				this.$el.html(this.template({
-					departments: this.departmentMap,
+					departments: this.departmentCollection,
 					item: this.value
 				}));
 				this.$('select').keydown(this.departmentKeyDown);

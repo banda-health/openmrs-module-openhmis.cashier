@@ -49,6 +49,7 @@ define(
 		},
 		
 		openhmis.validationMessage = function(parentEl, message, inputEl) {
+			if ($(parentEl).length > 1) parentEl = $(parentEl)[0];
 			if ($(parentEl).find('.validation').length > 0) return;
 			var prevPosition = $(parentEl).css("position");
 			$(parentEl).css("position", "relative");

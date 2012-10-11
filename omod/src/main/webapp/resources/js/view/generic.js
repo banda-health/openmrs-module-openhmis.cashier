@@ -172,8 +172,12 @@ define(
 			
 			addOne: function(model, schema, lineNumber) {
 				if (this.showRetired === false && model.isRetired()) return null;
-				if (this.$el.html() === "" && this.options.hideIfEmpty === true)
+				if (this.$el.html() === "" && this.options.hideIfEmpty === true) {
 					this.render();
+					// Re-rendering the entire list means we don't have to
+					// continue adding this item
+					return null;
+				}
 				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var className = "evenRow";
 				if (lineNumber)
@@ -195,7 +199,7 @@ define(
 				});
 				model.view = itemView;
 				this.$('tbody.list').append(itemView.render().el);
-				itemView.on('select', this.itemSelected);
+				itemView.on('select focus', this.itemSelected);
 				itemView.on('remove', this.itemRemoved);
 				var view = this;
 				model.on('retired', function() { if (!view.showRetired) itemView.remove(); });
@@ -324,16 +328,20 @@ define(
 			},
 			
 			select: function() {
+				// If this list item has a form, we'll use that for focus
+				if (this.form !== undefined) return;
 				if (this.$el.hasClass("row_selected")) return;
 				this.trigger('select', this);
 				this.$el.addClass("row_selected");
 			},
 			
 			focus: function() {
+				this.trigger("focus", this);
 				this.$el.addClass("row_selected");
 			},
 			
 			blur: function(event) {
+				this.trigger("blur", this);
 				this.$el.removeClass("row_selected");
 				this.commitForm(event);
 			},
@@ -398,7 +406,7 @@ define(
 		Backbone.Form.setTemplates({
 			trForm: '<b>{{fieldsets}}</b>',
 			blankFieldset: '<b class="fieldset">{{fields}}</b>',
-			tableField: '<td class="bbf-field field-{{key}}">{{editor}}</td>'
+			tableField: '<td class="bbf-field field-{{key}}"><span class="editor">{{editor}}</span></td>'
 		})
 		
 		return openhmis;
