@@ -23,6 +23,7 @@ define(
 					this.set("item", new openhmis.Item(attributes.item));
 				}
 				this.schema.total.value = this.getTotal;
+				this.set("total", this.getTotal(), { silent: true });
 				this.clean = false;
 			},
 			
@@ -66,6 +67,7 @@ define(
 			parse: function(resp) {
 				if (resp.item)
 					resp.item = new openhmis.Item(resp.item, { parse: true });
+				if (resp.quantity && resp.price) resp.total = resp.price * resp.quantity;
 				return resp;
 			},
 			

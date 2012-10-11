@@ -3,7 +3,6 @@ package org.openmrs.module.webservices.rest.resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -66,7 +65,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		if (instance.getLineItems() == null)
 			instance.setLineItems(new ArrayList<BillLineItem>(lineItems.size()));
 		BaseRestDataResource.updateCollection(instance.getLineItems(), lineItems);
-		for (BillLineItem item: lineItems)
+		for (BillLineItem item: instance.getLineItems())
 			item.setBill(instance);
 	}
 
@@ -75,8 +74,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		if (instance.getPayments() == null)
 			instance.setPayments(new HashSet<Payment>(payments.size()));
 		BaseRestDataResource.updateCollection(instance.getPayments(), payments);
-		for (Payment payment: payments)
-			payment.setBill(instance);
+		for (Payment payment: instance.getPayments())
+			instance.addPayment(payment);
 	}
 
 	@Override
@@ -99,13 +98,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 					throw new RestClientException("No cash points exist!");
 				delegate.setCashPoint(cashPointList.get(0));
 			}
-			if (delegate.getStatus() == null) {
-				// If the total amount paid is greater than or equal to the bill total
-				if (delegate.getTotalPaid().compareTo(delegate.getTotal()) >= 0)
-					delegate.setStatus(BillStatus.PAID);
-				else
-					delegate.setStatus(BillStatus.PENDING);
-			}
+			if (delegate.getStatus() == null)
+				delegate.setStatus(BillStatus.PENDING);
 		}
 		return super.save(delegate);
 	}

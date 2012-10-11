@@ -22,7 +22,7 @@ define(
 					string += ((id == 0) ? "" : ", ") + list[id].code
 				}
 				return string;
-			}
+			}			
 		});
 		
 		openhmis.ItemPrice = openhmis.GenericModel.extend({
@@ -101,6 +101,12 @@ define(
 				// Send department as UUID string
 				cloned_attributes.department = cloned_attributes.department.id;
 				return cloned_attributes;
+			},
+			
+			toString: function() {
+				if (this.get("codes").length > 0)
+					return this.get("codes")[0].code + ' - ' + this.get("name");
+				return this.get("name");
 			}
 		});
 		return openhmis;

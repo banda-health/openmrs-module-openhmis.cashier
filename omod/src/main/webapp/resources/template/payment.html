@@ -2,5 +2,7 @@
 	<div id="paymentList"></div>
 	<form id="paymentAttributes" class="bbf-form">
 	</form>
-	<input type="button" id="processPayment" value="<?= __('Process Payment') ?>" />
+	<? if (!readOnly) { ?>
+		<input type="button" id="processPayment" value="<?= __('Process Payment') ?>" />
+	<? } ?>
 </script>

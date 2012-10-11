@@ -15,10 +15,11 @@ define(
 				});
 				openhmis.GenericListItemView.prototype.initialize.call(this, options);
 				_.bindAll(this);
-				this.form.on('price:change', this.update);
-				this.form.on('quantity:change', this.update);
-				this.form.on('item:change', this.updateItem);
-				this.form.validate = function() { return null; }
+				if (this.form) {
+					this.form.on('price:change', this.update);
+					this.form.on('quantity:change', this.update);
+					this.form.on('item:change', this.updateItem);
+				}
 			},
 			
 			updateItem: function(form, itemEditor) {
@@ -37,7 +38,6 @@ define(
 					var price = view.form.getValue("price");
 					var quantity = view.form.getValue("quantity");
 					view.form.setValue({ total: price * quantity });
-					view.trigger("change", view);
 				}
 				this.updateTimeout = setTimeout(update, 200);
 			},
@@ -81,17 +81,18 @@ define(
 
 		openhmis.BillView = openhmis.GenericListView.extend({
 			initialize: function(options) {
-				options = _.extend(this.options, options);
+				_.bindAll(this);
+				var bill = (options && options.bill) ? options.bill : new openhmis.Bill();
+				this.setBill(bill);
+				
+				var billOptions = { showRetiredOption: false }
+				if (bill.get("status") === bill.BillStatus.PENDING)
+					billOptions["itemActions"] = ["remove", "inlineEdit"];
+				options = _.extend(billOptions, options);
+				
 				openhmis.GenericListView.prototype.initialize.call(this, options);
-				this.bill = new openhmis.Bill();
 				this.itemView = openhmis.BillLineItemView;
 				this.totalsTemplate = this.getTemplate("bill.html", '#bill-totals');
-				this.model.on("all", this.updateTotals);
-			},
-			
-			options: {
-				itemActions: ["remove", "inlineEdit"],
-				showRetiredOption: false
 			},
 			
 			schema: {
@@ -100,11 +101,19 @@ define(
 				price: { type: "BasicNumber", readOnly: true }
 			},
 			
+			setBill: function(bill) {
+				this.bill = bill;
+				this.model = bill.get("lineItems");
+				this.model.on("all", this.updateTotals);
+			},
+			
 			addOne: function(model, schema) {
 				var view = openhmis.GenericListView.prototype.addOne.call(this, model, schema);
 				view.$('td.field-quantity').add('td.field-price').add('td.field-total').addClass("numeric");
 				if (this.newItem && view.model.cid === this.newItem.cid)
 					this.selectedItem = view;
+				else
+					view.on("change", this.bill.setUnsaved);
 				return view;
 			},
 			
@@ -129,6 +138,7 @@ define(
 				var dept_uuid;
 				if (lineItem !== undefined) {
 					lineItem.off("change", this.setupNewItem);
+					lineItem.on("change", this.bill.setUnsaved);
 					this.deselectAll();
 					dept_uuid = lineItem.get("item").get("department").id;
 				}
@@ -143,28 +153,8 @@ define(
 				}
 			},
 			
-			getTotal: function() {
-				var total = 0;
-				this.model.each(function(item) {
-					if (item.isClean()) total += item.getTotal();
-				});
-				return total;
-			},
-			
-			getTotalPaid: function() {
-				var total = 0;
-				var payments = this.bill.get("payments");
-				if (payments && payments.length > 0) {
-					payments.each(function(payment) {
-						if (payment.get("voided") !== true)
-							total += payment.get("amount");
-					});
-				}
-				return total;
-			},
-			
 			updateTotals: function() {
-				this.$totals.html(this.totalsTemplate({ bill: this, __: i18n }))
+				this.$totals.html(this.totalsTemplate({ bill: this.bill, __: i18n }))
 			},
 			
 			processPayment: function(payment, options) {
@@ -172,11 +162,13 @@ define(
 				var success = options.success;
 				var self = this;
 				options.success = function(model, resp) {
+					if (self.bill.getTotalPaid() >= self.bill.getTotal())
+						self.trigger("paid", self.bill);
 					self.updateTotals();
 					if (success) success(model, resp);
 				}
 				this.bill.addPayment(payment);
-				if (this.bill.isNew())
+				if (this.bill.isNew() || this.bill.isUnsaved())
 					this.saveBill(options);
 				else
 					payment.save([], options);
@@ -198,7 +190,10 @@ define(
 			
 			saveBill: function(options) {
 				options = options ? options : {};
-				this.bill.set("lineItems", this.model.filter(function(item) { return item.isClean(); }));
+				this.bill.get("lineItems").reset(
+					this.model.filter(function(item) { return item.isClean(); }),
+					{ silent: true}
+				);
 				if (!this.validate()) return;
 				var success = options.success;
 				var error = options.error;

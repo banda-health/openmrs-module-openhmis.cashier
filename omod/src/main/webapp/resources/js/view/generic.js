@@ -299,6 +299,7 @@ define(
 				this.template = this.getTemplate();
 				this.model.on('sync', this.render);
 				this.model.on('destroy', this.remove);
+				this.model.on("change", this.onModelChange);
 				this.enableActions();
 			},
 			
@@ -344,6 +345,11 @@ define(
 				this.trigger("blur", this);
 				this.$el.removeClass("row_selected");
 				this.commitForm(event);
+			},
+			
+			onModelChange: function(model) {
+				if (model.hasChanged())
+					this.trigger("change", this);
 			},
 			
 			commitForm: function(event) {

@@ -6,7 +6,9 @@
 				<tr>
 					<th><?= __("Name") ?>: </th><td><?= patient.get('person').display ?></td>
 					<th><?= __("ID") ?>: </th><td><?= patient.get('identifiers')[0].display ?></td>
-					<td><a class="editBillPatient" href="#"><?= __("Edit Patient") ?></a></td>
+					<? if (!readOnly) { ?>
+						<td><a class="editBillPatient" href="#"><?= __("Edit Patient") ?></a></td>
+					<? } ?>
 				</tr>
 			</tbody>
 		</table>

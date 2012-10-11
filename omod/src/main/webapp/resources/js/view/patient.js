@@ -9,9 +9,10 @@ define(
 			tmplFile: 'patient.html',
 			tmplSelector: '#patient-details-template',
 			
-			initialize: function() {
+			initialize: function(options) {
 				_.bindAll(this);
 				this.template = this.getTemplate();
+				this.readOnly = (options && options.readOnly) ? options.readOnly : false;
 			},
 			
 			setElement: function(el) {
@@ -60,7 +61,7 @@ define(
 				}
 				else {
 					this.findEl.hide();
-					this.detailsEl.html(this.template({ patient: this.model }));
+					this.detailsEl.html(this.template({ patient: this.model, readOnly: this.readOnly }));
 					this.detailsEl.show();
 				}
 				return this;

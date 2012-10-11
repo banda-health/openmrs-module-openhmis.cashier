@@ -51,6 +51,7 @@ define(
 					this.processCallback = options.processCallback;
 					if (options.paymentCollection)
 						this.paymentCollection = options.paymentCollection;
+					this.readOnly = options.readOnly;
 				}
 				this.paymentCollection = this.paymentCollection ? this.paymentCollection
 					: new openhmis.GenericCollection([], { model: openhmis.Payment });
@@ -62,23 +63,25 @@ define(
 					model: this.paymentCollection,
 					id: "paymentList",
 					listFields: ['dateCreatedFmt', 'amountFmt', 'paymentMode'],
-					itemActions: ["remove"],
+					itemActions: this.allowRemove ? ["remove"] : [],
 					showRetiredOption: false,
 					hideIfEmpty: true
 				});
 				this.template = this.getTemplate();
-				if (this.model === undefined) this.model = new openhmis.Payment();
-				this.form = new Backbone.Form({
-					schema: {
-						paymentMode: {
-							type: 'Select',
-							options: new openhmis.GenericCollection([], { model: openhmis.PaymentMode })
-						},
-						amount: {
-							type: 'BasicNumber'
+				if (!this.readOnly) {
+					if (this.model === undefined) this.model = new openhmis.Payment();
+					this.form = new Backbone.Form({
+						schema: {
+							paymentMode: {
+								type: 'Select',
+								options: new openhmis.GenericCollection([], { model: openhmis.PaymentMode })
+							},
+							amount: {
+								type: 'BasicNumber'
+							}
 						}
-					}
-				});
+					});
+				}
 			},
 			
             events: {
@@ -162,20 +165,23 @@ define(
 			},
 			
 			render: function() {
-				this.$el.html(this.template({ __: i18n }));
-				this.$el.prepend(this.form.render().el);
+				this.$el.html(this.template({ __: i18n, readOnly: this.readOnly }));
+				if (!this.readOnly)
+					this.$el.prepend(this.form.render().el);
 				this.$el.prepend(this.paymentListView.el);
 				if (this.paymentCollection.filter(function(payment) { return !payment.get("voided"); }).length === 0
 						&& this.paymentListView.options.hideIfEmpty) {
 					// Skip payment list
 				} else
 					this.paymentListView.render();
-				this.$attributes = this.$('#paymentAttributes');
-				var self = this;
-				this.form.$el.add(this.$attributes).submit(function(event) {
-					event.preventDefault();
-					self.processPayment();
-				});
+				if (!this.readOnly) {
+					this.$attributes = this.$('#paymentAttributes');
+					var self = this;
+					this.form.$el.add(this.$attributes).submit(function(event) {
+						event.preventDefault();
+						self.processPayment();
+					});
+				}
 				return this;
 			}
 		});

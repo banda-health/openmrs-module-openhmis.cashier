@@ -185,7 +185,6 @@ public class Bill extends BaseOpenmrsData {
 		}
 
 		Payment payment = new Payment();
-		payment.setBill(this);
 		payment.setPaymentMode(mode);
 		payment.setAmount(amount);
 
@@ -212,6 +211,10 @@ public class Bill extends BaseOpenmrsData {
 		}
 
 		this.payments.add(payment);
+		payment.setBill(this);
+		
+		if (getTotalPaid().compareTo(getTotal()) >= 0)
+			this.setStatus(BillStatus.PAID);
 	}
 
 	public void removePayment(Payment payment) {

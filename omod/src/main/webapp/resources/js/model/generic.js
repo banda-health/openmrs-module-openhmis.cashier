@@ -7,10 +7,34 @@ define(
 	function(_, Backbone, openhmis) {
 		openhmis.GenericModel = Backbone.Model.extend({
 			initialize: function(attributes, options) {
+				_.bindAll(this, 'setUnsaved');
 				if (options !== undefined) {
 					this.urlRoot = options.urlRoot;
 				}
-				//_.bindAll(this, 'saveSubResource');
+				this.unsaved = this.isNew();
+				var self = this;
+				this.on("change", this.setUnsaved);
+			},
+			
+			setUnsaved: function() {
+				this.unsaved = true;
+			},
+			
+			isUnsaved: function() {
+				return this.unsaved;
+			},
+			
+			save: function(key, value, options) {
+				if (value && value.success) {
+					var self = this;
+					var success = value.success;
+					value.success = function(model, resp) {
+						self.unsaved = false;
+						if (success) success(model, resp);
+					}
+					return Backbone.Model.prototype.save.call(this, key, value);
+				}
+				return Backbone.Model.prototype.save.call(this, key, value, options);
 			},
 			
 		    url: function() {
