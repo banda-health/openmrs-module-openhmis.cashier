@@ -63,4 +63,8 @@ public interface IBillService extends IDataService<Bill> {
 	 * @should return an empty list if the specified patient has no bills
 	 */
 	List<Bill> findPatientBills(int patientId, PagingInfo paging);
+	
+	@Override
+	@Authorized(CashierPrivilegeConstants.VIEW_BILLS)
+	Bill getByUuid(String uuid) throws APIException;
 }
