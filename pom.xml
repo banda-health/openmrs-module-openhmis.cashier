@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>openhmis.cashier</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>OpenHMIS Cashier Module</name>
 	<description>Module to provide basic cashier functionality</description>
@@ -161,6 +161,11 @@
 						<propertyFile>${basedir}/omod/target/classes/liquibase.properties</propertyFile>
 						<changeLogFile>${basedir}/omod/target/classes/liquibase.xml</changeLogFile>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.3.2</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
