@@ -44,7 +44,8 @@ define(
 			
 			onKeyPress: function(event) {
 				if (event.keyCode === 13) {
-					this.commitForm(event);
+					var errors = this.commitForm(event);
+					if (!errors) this.trigger("change", this);
 				}
 			},
 			
@@ -113,7 +114,7 @@ define(
 				if (this.newItem && view.model.cid === this.newItem.cid)
 					this.selectedItem = view;
 				else
-					view.on("change", this.bill.setUnsaved);
+					view.on("change remove", this.bill.setUnsaved);
 				return view;
 			},
 			
@@ -134,21 +135,21 @@ define(
 				this.focus();
 			},
 			
-			setupNewItem: function(lineItem) {
+			setupNewItem: function(lineItemView) {
 				var dept_uuid;
-				if (lineItem !== undefined) {
-					lineItem.off("change", this.setupNewItem);
-					lineItem.on("change", this.bill.setUnsaved);
+				if (lineItemView !== undefined) {
+					lineItemView.off("change", this.setupNewItem);
+					lineItemView.on("change remove", this.bill.setUnsaved);
 					this.deselectAll();
-					dept_uuid = lineItem.get("item").get("department").id;
+					dept_uuid = lineItemView.model.get("item").get("department").id;
 				}
 				this.newItem = new openhmis.LineItem();
-				this.newItem.on("change", this.setupNewItem);
 				this.model.add(this.newItem, { silent: true });
 				if (this.$('p.empty').length > 0)
 					this.render();
 				else {
 					var view = this.addOne(this.newItem);
+					view.on("change", this.setupNewItem);
 					view.focus();
 				}
 			},
@@ -190,9 +191,10 @@ define(
 			
 			saveBill: function(options) {
 				options = options ? options : {};
+				// Filter out any invalid lineItems (especially the bottom)
+				// entry cursor
 				this.bill.get("lineItems").reset(
-					this.model.filter(function(item) { return item.isClean(); }),
-					{ silent: true}
+					this.model.filter(function(item) { return item.isClean(); })
 				);
 				if (!this.validate()) return;
 				var success = options.success;

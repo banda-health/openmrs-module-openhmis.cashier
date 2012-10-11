@@ -6,6 +6,7 @@ define(
 	],
 	function(openhmis) {
 		openhmis.Bill = openhmis.GenericModel.extend({
+			trackUnsaved: true,
 			meta: {
 				name: "Bill",
 				namePlural: "Bills",

@@ -13,7 +13,8 @@ define(
 				}
 				this.unsaved = this.isNew();
 				var self = this;
-				this.on("change", this.setUnsaved);
+				if (this.trackUnsaved === true)
+					this.on("change", this.setUnsaved);
 			},
 			
 			setUnsaved: function() {

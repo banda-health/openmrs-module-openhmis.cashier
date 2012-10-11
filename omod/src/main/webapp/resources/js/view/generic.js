@@ -355,6 +355,7 @@ define(
 			commitForm: function(event) {
 				var errors = this.form.commit();
 				if (errors && this.displayErrors) this.displayErrors(errors, event);
+				return errors;
 			},
 			
 			removeItem: function(event) {
