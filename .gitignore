@@ -17,7 +17,7 @@
 
 # idea conf files
 # .idea
-# *.iml
+*.iml
 *.ipr
 *.iws
 .idea/workspace.xml
@@ -37,6 +37,8 @@ dist
 test-output
 build.log
 .externalToolBuilders
+release.properties
+pom.xml.releaseBackup
 
 ## generic files to ignore
 *~
