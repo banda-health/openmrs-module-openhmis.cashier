@@ -52,7 +52,7 @@ define(
 			displayErrors: function(errorMap, event) {
 				// If there is already another item in the collection and
 				// this is not triggered by enter key, skip the error message
-				if (event && event.type !== "keypress" && this.model.collection.length > 1)
+				if (event && event.type !== "keypress" && this.model.collection && this.model.collection.length > 1)
 					return;
 				
 				for(var item in errorMap) {
@@ -141,14 +141,17 @@ define(
 				var dept_uuid;
 				if (lineItemView !== undefined) {
 					lineItemView.off("change", this.setupNewItem);
+					this.model.add(lineItemView.model, { silent: true });
 					lineItemView.on("change remove", this.bill.setUnsaved);
 					this.deselectAll();
 					dept_uuid = lineItemView.model.get("item").get("department").id;
 				}
 				this.newItem = new openhmis.LineItem();
-				this.model.add(this.newItem, { silent: true });
-				if (this.$('p.empty').length > 0)
+				if (this.$('p.empty').length > 0) {
+					this.model.add(this.newItem, { silent: true });
 					this.render();
+					this.model.remove(this.newItem, { silent: true });					
+				}
 				else {
 					var view = this.addOne(this.newItem);
 					view.focus();

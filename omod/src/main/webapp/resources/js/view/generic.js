@@ -39,7 +39,11 @@ define(
 					//if (model.schema[key].readOnly === true) continue;
 					formFields.push(key);
 				}
-				var formOptions = { model: model, fields: formFields };
+				var formOptions = {
+					model: model,
+					fields: formFields,
+					classNames: { errClass: "error" }
+				};
 				formOptions = _.extend(options, formOptions);
 				var modelForm = new Backbone.Form(options)
 				modelForm.render();
@@ -81,7 +85,8 @@ define(
 			},
 			
 			save: function() {
-				this.modelForm.commit();
+				var errors = this.modelForm.commit();
+				if (errors) return;
 				var view = this;
 				this.model.save(null, { success: function(model, resp) {
 					model.trigger('sync', model, resp);
@@ -414,7 +419,9 @@ define(
 			trForm: '<b>{{fieldsets}}</b>',
 			blankFieldset: '<b class="fieldset">{{fields}}</b>',
 			tableField: '<td class="bbf-field field-{{key}}"><span class="editor">{{editor}}</span></td>'
-		})
+		}, {
+			errClass: "error"
+		});
 		
 		return openhmis;
 	}

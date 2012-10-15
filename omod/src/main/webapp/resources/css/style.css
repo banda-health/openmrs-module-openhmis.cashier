@@ -7,9 +7,20 @@ table.form tbody th { font-weight: normal; }
 /* List styles */
 form.bbf-form fieldset { border: none; }
 form.bbf-form ul { padding: 0; margin: 0; }
-li.bbf-field, .bbf-list li { list-style: none; }
+li.bbf-field, .bbf-list li { list-style: none; position: relative }
 li.bbf-field label { }
 li.bbf-field div.bbf-editor { position: relative; top: -1.3em; margin-left: 150px; }
+div.bbf-help {
+	position: absolute;
+	display: none;
+	top: 0;
+	left: 350px;
+	background-color: #c00;
+	color: #fff;
+	border-radius: 2px;
+	padding: 2px 4px;
+}
+.bbf-error div.bbf-help { display: block; }
 
 /* Generic Add/Edit */
 input.reason { width: 25em; }
