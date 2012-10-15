@@ -88,6 +88,12 @@ define(
                 regExp: { type: 'Text' },
                 required: { type: 'Checkbox' }
             },
+            
+            validate: function(attrs, options) {
+   				if (!attrs.name) return { name: __("A name is required") }
+                return null;
+            },
+            
             toString: function() { return this.get('name'); }
         });
 
@@ -103,6 +109,11 @@ define(
                 name: { type: 'Text' },
                 description: { type: 'Text' },
                 attributeTypes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentModeAttributeType }
+            },
+            
+            validate: function(attrs, options) {
+   				if (!attrs.name) return { name: __("A name is required") }
+                return null;
             },
 
             toJSON: function() {

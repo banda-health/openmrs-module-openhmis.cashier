@@ -17,6 +17,11 @@ define(
                 name: 'Text',
                 description: 'Text'
             },
+            
+            validate: function(attrs, options) {
+    			if (!attrs.name) return { name: __("A name is required") }
+                return null;
+            },
 
             toString: function() {
                 return this.get('name');

@@ -4,7 +4,7 @@
 		? __("Add New %s", model.meta.name)
 		: __("Edit %s", model.meta.name) ?></b>
 	<div class="box form" style="display: none">
-		<button class="submit"><?= model.isNew() ? __("Create %s", model.meta.name) : __("Update %s", model.meta.name) ?></button>
+		<input type="submit" class="submit" value="<?= model.isNew() ? __("Create %s", model.meta.name) : __("Update %s", model.meta.name) ?>" />
 		<button class="cancel"><?= __("Cancel") ?></button>
 	</div>
 	<br />
