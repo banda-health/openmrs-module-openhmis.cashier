@@ -44,7 +44,7 @@
             <li class="bbf-field field-description">
                 <label for="clockOut">Clock Out</label>
                 <div class="bbf-editor">
-                    <spring:bind path="clockIn">
+                    <spring:bind path="clockOut">
                         <input id="clockOut" name="${status.expression}" type="text" value="${status.value}" readonly="true" />
                         <input type="button" value="Clock Out" onclick="" />
                     </spring:bind>

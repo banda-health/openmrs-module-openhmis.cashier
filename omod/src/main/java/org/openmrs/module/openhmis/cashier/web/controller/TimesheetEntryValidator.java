@@ -36,7 +36,7 @@ public class TimesheetEntryValidator implements Validator {
 			errors.rejectValue("clockIn", "openhmis.cashier.timesheet.entry.error.clockIn.future");
 		}
 
-		if (timesheet.getClockOut().after(new Date())) {
+		if (timesheet.getClockOut() != null && timesheet.getClockOut().after(new Date())) {
 			errors.rejectValue("clockOut", "openhmis.cashier.timesheet.entry.error.clockOut.future");
 		}
 	}
