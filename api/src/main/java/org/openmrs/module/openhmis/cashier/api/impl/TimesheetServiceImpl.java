@@ -13,10 +13,14 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.openmrs.Provider;
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.cashier.api.security.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.api.security.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,5 +56,17 @@ public class TimesheetServiceImpl
 	@Override
 	public String getGetPrivilege() {
 		return CashierPrivilegeConstants.VIEW_TIMESHEETS;
+	}
+
+	@Override
+	public Timesheet getCurrentTimesheet(Provider cashier) {
+		Criteria criteria = dao.createCriteria(Timesheet.class);
+		criteria.add(Restrictions.and(
+				Restrictions.eq("cashier", cashier),
+				Restrictions.isNull("clockOut"))
+		);
+		criteria.addOrder(Order.desc("clockIn"));
+
+		return dao.selectSingle(Timesheet.class, criteria);
 	}
 }

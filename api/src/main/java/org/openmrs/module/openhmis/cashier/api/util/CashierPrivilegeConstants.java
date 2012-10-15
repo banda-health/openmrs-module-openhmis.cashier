@@ -15,9 +15,8 @@
 package org.openmrs.module.openhmis.cashier.api.util;
 
 import org.openmrs.annotation.AddOnStartup;
-import org.openmrs.util.PrivilegeConstants;
 
-public class CashierPrivilegeConstants extends PrivilegeConstants {
+public class CashierPrivilegeConstants {
 	@AddOnStartup(description = "Able to add/edit/delete billing items")
 	public static final String MANAGE_ITEMS = "Manage Cashier Items";
 
