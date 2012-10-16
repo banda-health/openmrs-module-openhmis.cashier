@@ -19,20 +19,22 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.ProviderService;
 import org.openmrs.module.openhmis.cashier.api.ICashPointService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
+import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.ProviderHelper;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.cashier.web.propertyeditor.EntityPropertyEditor;
+import org.openmrs.module.openhmis.cashier.web.propertyeditor.ProviderPropertyEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = CashierWebConstants.TIMESHEET_ENTRY_PAGE)
@@ -48,6 +50,13 @@ public class TimesheetEntryController {
 		this.timesheetService = timesheetService;
 		this.cashPointService = cashPointService;
 		this.providerService = providerService;
+	}
+
+	@InitBinder
+	@SuppressWarnings("unchecked")
+	public void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(CashPoint.class, new EntityPropertyEditor<CashPoint>(ICashPointService.class));
+		binder.registerCustomEditor(Provider.class, new ProviderPropertyEditor());
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -72,27 +81,50 @@ public class TimesheetEntryController {
 			timesheet.setClockIn(new Date());
 		}
 
-		modelMap.addAttribute("cashPoints", cashPointService.getAll());
-		modelMap.addAttribute("returnUrl", returnUrl);
-		modelMap.addAttribute("timesheet", timesheet);
+		addRenderAttributes(modelMap, timesheet, provider, returnUrl);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String post(Timesheet timesheet, Errors errors, WebRequest request) {
+	public String post(Timesheet timesheet, Errors errors, WebRequest request, ModelMap modelMap) {
+		String returnUrl = request.getParameter("returnUrl");
+
 		new TimesheetEntryValidator().validate(timesheet, errors);
 		if (errors.hasErrors()) {
+			addRenderAttributes(modelMap, timesheet, timesheet.getCashier(), returnUrl);
+
 			return null;
 		}
 
 		timesheetService.save(timesheet);
 
-		String returnUrl = request.getParameter("returnUrl");
 		if (StringUtils.isEmpty(returnUrl)) {
 			returnUrl = request.getContextPath() + "/";
 		} else {
 			returnUrl = CashierWebConstants.redirectUrl(returnUrl);
 		}
 		return returnUrl;
+	}
+
+	@ModelAttribute("cashPoints")
+	public List<CashPoint> getCashPoints() {
+		return cashPointService.getAll();
+	}
+
+	/*@ModelAttribute("cashPoint")
+	public CashPoint getCashPointInteger(Integer cashPoint) {
+		return cashPointService.getById(cashPoint);
+	}
+
+	@ModelAttribute("cashier")
+	public Provider getCashier(Integer cashierId) {
+		return providerService.getProvider(cashierId);
+	}*/
+
+	private void addRenderAttributes(ModelMap modelMap, Timesheet timesheet, Provider cashier, String returnUrl) {
+		//modelMap.addAttribute("cashPoints", cashPointService.getAll());
+		modelMap.addAttribute("returnUrl", returnUrl);
+		modelMap.addAttribute("cashier", cashier);
+		modelMap.addAttribute("timesheet", timesheet);
 	}
 }
 
