@@ -220,24 +220,29 @@
 		        <version>1.2.0.0</version>
 		        <extensions>true</extensions>
 <!-- Execution disabled because tests don't run properly outside of a browser -->
-<!-- 		        <executions> -->
-<!-- 		          <execution> -->
-<!-- 		            <goals> -->
-<!-- 		              <goal>test</goal> -->
-<!-- 		            </goals> -->
-<!-- 		          </execution> -->
-<!-- 		        </executions> -->
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>test</goal>
+		            </goals>
+		          </execution>
+		        </executions>
 		        <configuration>
-		        	<browserVersion>FIREFOX_3_6</browserVersion>
-		        	<customRunnerTemplate>${project.basedir}/src/test/webapp/resources/js/BlankSpecRunner.htmltemplate</customRunnerTemplate>
 		        	<jsSrcDir>${project.basedir}/src/main/webapp/resources/js</jsSrcDir>
 		       		<jsTestSrcDir>${project.basedir}/src/test/webapp/resources/js</jsTestSrcDir>
 		       		<preloadSources>
-		         		<include>curl.js</include>
-		         		<include>${project.basedir}/src/test/webapp/resources/js/start-tests.js</include>
+		       			<source>${project.basedir}/src/test/webapp/resources/js/test-bootstrap.js</source>
 		       		</preloadSources>
-		      		<sourceIncludes></sourceIncludes>
-		     		<specIncludes></specIncludes>
+		      		<sourceIncludes>
+		      			<include>lib/jquery-1.6.4.min.js</include>
+		      			<include>lib/underscore-src.js</include>
+		      			<include>lib/backbone.js</include>
+		      			<include>lib/backbone-forms.js</include>
+		      			<include>lib/i18n.js</include>
+		      			<include>openhmis.js</include>
+		      			<include>model/generic.js</include>
+		      			<include>model/item.js</include>
+		      		</sourceIncludes>
 		        </configuration>
 	      </plugin>
 		</plugins>

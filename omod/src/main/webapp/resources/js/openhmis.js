@@ -1,4 +1,4 @@
-define(
+define("openhmis",
 	[
 		'lib/jquery',
 		'lib/underscore',

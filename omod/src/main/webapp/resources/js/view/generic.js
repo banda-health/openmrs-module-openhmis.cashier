@@ -88,16 +88,17 @@ define(
 				var errors = this.modelForm.commit();
 				if (errors) return;
 				var view = this;
-				this.model.save(null, { success: function(model, resp) {
-					model.trigger('sync', model, resp);
-					if (model.collection === undefined) {
-						view.collection.add(model);
-						view.collection.trigger('reset');
-					}
-					view.cancel();
-				}, error: function(model, resp) {
-					openhmis.error(resp);
-				}});
+				this.model.save(null, {
+					success: function(model, resp) {
+						model.trigger('sync', model, resp);
+						if (model.collection === undefined) {
+							view.collection.add(model);
+							view.collection.trigger('reset');
+						}
+						view.cancel();
+					},
+					error: function(model, resp) { openhmis.error(resp); }
+				});
 			},
 			
 			retireOrVoid: function() {
@@ -108,7 +109,8 @@ define(
 					success: function(model, resp) {
 						model.trigger('sync', model, resp);
 						view.cancel();
-					}
+					},
+					error: function(model, resp) { openhmis.error(resp); }
 				});
 			},
 			
@@ -116,19 +118,23 @@ define(
 				if (confirm("Are you sure you want to unretire this object? It will then be restored to the system")) {
 					this.model.set('retired', false);
 					var view = this;
-					this.model.save([], { success: function(model, resp) {
-						model.trigger('sync', model, resp);
-						view.cancel();
-					}});
+					this.model.save([], {
+						success: function(model, resp) {
+							model.trigger('sync', model, resp);
+							view.cancel();
+						},
+						error: function(model, resp) { openhmis.error(resp); }
+					});
 				}
 			},
 			
 			purge: function() {
 				if (confirm(__("Are you sure you want to purge this object? It will be permanently removed from the system."))) {
 					var view = this;
-					this.model.purge({ success: function(model) {
-						view.cancel();
-					}});
+					this.model.purge({
+						success: function(model) { view.cancel(); },
+						error: function(model, resp) { openhmis.error(resp); }
+					});
 				}
 			},
 		
