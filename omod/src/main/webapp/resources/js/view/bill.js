@@ -52,7 +52,7 @@ define(
 			displayErrors: function(errorMap, event) {
 				// If there is already another item in the collection and
 				// this is not triggered by enter key, skip the error message
-				if (event && event.type !== "keypress" && this.model.collection && this.model.collection.length > 1)
+				if (event && event.type !== "keypress" && this.model.collection && this.model.collection.length > 0)
 					return;
 				
 				for(var item in errorMap) {
@@ -98,7 +98,7 @@ define(
 			
 			schema: {
 				item: { type: "Item" },
-				quantity: { type: "CustomNumber", minimum: 1 },
+				quantity: { type: "CustomNumber" },
 				price: { type: "BasicNumber", readOnly: true }
 			},
 			
@@ -147,6 +147,8 @@ define(
 					dept_uuid = lineItemView.model.get("item").get("department").id;
 				}
 				this.newItem = new openhmis.LineItem();
+				// Don't add the item to the collection, but give it a reference
+				this.newItem.collection = this.model;
 				if (this.$('p.empty').length > 0) {
 					this.model.add(this.newItem, { silent: true });
 					this.render();
@@ -214,6 +216,21 @@ define(
 					if (error) error(model, resp);
 				}
 				this.bill.save([], options);
+			},
+			
+			adjustBill: function() {
+				var __ = i18n;
+				if (confirm(__("Are you sure you want to adjust this bill?"))) {
+					var adjustedUuid = this.bill.id;
+					this.bill.unset("uuid");
+					delete this.bill.id;
+					var view = this;
+					this.bill.set("status", this.bill.BillStatus.PENDING);
+					this.bill.set("billAdjusted", new openhmis.Bill({ uuid: adjustedUuid }));
+					this.bill.save([], { success: function(model, resp) {
+						view.trigger("adjusted", model);
+					}});
+				}
 			},
 			
 			render: function() {

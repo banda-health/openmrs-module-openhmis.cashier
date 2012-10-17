@@ -77,6 +77,11 @@ define(
 					str += str === "" ? model.toString() : ", " + model.toString();
 				});
 				return str;
+			},
+			
+			toString: function() {
+				var str = this.get("display");
+					return str ? str : Backbone.Model.prototype.toString.call(this);
 			}
 		});
 		

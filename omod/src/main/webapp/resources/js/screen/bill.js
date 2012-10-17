@@ -30,7 +30,7 @@ curl(
 				patientView.setElement($('#patient-view'));
 				patientView.render();
 				
-				billView.on("save paid", function(bill) {
+				billView.on("save paid adjusted", function(bill) {
 					window.location = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
 				});
 				billView.setElement($('#bill'));
@@ -44,6 +44,10 @@ curl(
 						break;
 					case BillStatus.PAID:
 						$saveButton.val(__("Adjust Bill"));
+						$saveButton.click(function() { billView.adjustBill() });
+						break;
+					case BillStatus.ADJUSTED:
+						$saveButton.remove();
 						break;
 				}
 				

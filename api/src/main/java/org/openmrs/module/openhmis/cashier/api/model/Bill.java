@@ -213,7 +213,7 @@ public class Bill extends BaseOpenmrsData {
 		this.payments.add(payment);
 		payment.setBill(this);
 		
-		if (getTotalPaid().compareTo(getTotal()) >= 0)
+		if (getTotalPaid().compareTo(getTotal()) >= 0 && this.status == BillStatus.PENDING)
 			this.setStatus(BillStatus.PAID);
 	}
 

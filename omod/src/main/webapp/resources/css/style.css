@@ -1,3 +1,16 @@
+/* General styles */
+h2 span.heading_annotation {
+	font-size: 10pt;
+	font-weight: normal;
+}
+div.clear { clear: both;}
+
+ul.floating { list-style: none; margin: 0; padding: 0; }
+ul.floating li {
+	display: block;
+	float: left;
+}
+
 /* General form styles */
 /* Table styles */
 table.form td { padding-right: 10px; }
@@ -59,7 +72,10 @@ td.item-actions input { visibility: hidden; }
 tr.row_selected td.item-actions input, tr:hover td.item-actions input
 { visibility: visible; }
 
-/* Bill table styles */
+/* Bill styles */
+ul#bill-info { font-size: 10pt; }
+ul#bill-info li { margin: 0 3em 10px 0; }
+
 table.bill th.field-quantity, table.bill th.field-price, table.bill th.field-total {
 	width: 13%;
 }
@@ -72,10 +88,6 @@ table.bill td input, table.bill td select {
 	border: 1px solid transparent;
 }
 
-/*input:focus, select:focus {
-	border: 1px solid #1AAC9B;
-}
-*/
 table.bill td, table.bill th {
 	padding: 0px 5px;
 	border-right: 1px solid #aaa;

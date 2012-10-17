@@ -52,6 +52,8 @@ public class BillAddEditController {
 			bill = service.getByUuid(billUuid);
 			patient = bill.getPatient();
 			model.addAttribute("bill", bill);
+			model.addAttribute("billAdjusted", bill.getBillAdjusted());
+			model.addAttribute("adjustedBy", bill.getAdjustedBy());
 			model.addAttribute("patient", patient);
 		}
 	}
