@@ -241,5 +241,6 @@ define(
 				return this;
 			}
 		});
+		return editors;
 	}
 )

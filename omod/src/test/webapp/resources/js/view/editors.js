@@ -3,17 +3,22 @@ describe("Item Editor", function() {
 	 * @requires server response
 	 */
 	it("should return the proper data after a search", function() {
-		var callback = jasmine.createSpy();
-		var editor = new Backbone.Form.editors.Item();
+		require({'view/editors': null});
 
-		spyOn(jQuery, "ajax").andCallFake(function(options) {
-			var resp = jQuery.parseJSON(openhmis.testData.JSON.singleItem);
-			options.success(resp);
-		});
-		
-		var request = { term: "Test term" }
 		var response = jasmine.createSpy();
-		editor.doSearch(request, response, openhmis.Item);
+
+		runs(function() {
+			var editor = new Backbone.Form.editors.Item();
+	
+			spyOn(jQuery, "ajax").andCallFake(function(options) {
+				var resp = jQuery.parseJSON(openhmis.testData.JSON.singleItem);
+				options.success(resp);
+			});
+			
+			var request = { term: "Test term" }
+			editor.doSearch(request, response, openhmis.Item);
+		});
+
 		waitsFor(function() {
 			return response.wasCalled;
 		}, "search to complete", 1000);
