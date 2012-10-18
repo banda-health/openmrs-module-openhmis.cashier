@@ -232,16 +232,20 @@
 		       		<jsTestSrcDir>${project.basedir}/src/test/webapp/resources/js</jsTestSrcDir>
 		       		<preloadSources>
 		       			<source>${project.basedir}/src/test/webapp/resources/js/test-bootstrap.js</source>
+		       			<source>${project.basedir}/src/test/webapp/resources/js/test-data.js</source>
 		       		</preloadSources>
 		      		<sourceIncludes>
 		      			<include>lib/jquery-1.6.4.min.js</include>
 		      			<include>lib/underscore-src.js</include>
 		      			<include>lib/backbone.js</include>
 		      			<include>lib/backbone-forms.js</include>
+		      			<include>lib/sprintf-0.7-beta1.js</include>
 		      			<include>lib/i18n.js</include>
 		      			<include>openhmis.js</include>
 		      			<include>model/generic.js</include>
+		      			<include>model/department.js</include>
 		      			<include>model/item.js</include>
+		      			<include>view/editors.js</include>
 		      		</sourceIncludes>
 		        </configuration>
 	      </plugin>

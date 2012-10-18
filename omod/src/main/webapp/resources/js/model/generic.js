@@ -5,6 +5,12 @@ define(
 		'openhmis'
 	],
 	function(_, Backbone, openhmis) {
+		/**
+		 * GenericModel
+		 *
+		 * Generic JS model class for interacting with OpenMRS REST resources.
+		 * 
+		 */
 		openhmis.GenericModel = Backbone.Model.extend({
 			initialize: function(attributes, options) {
 				_.bindAll(this, 'setUnsaved');
