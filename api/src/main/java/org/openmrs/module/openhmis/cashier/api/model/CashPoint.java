@@ -30,4 +30,8 @@ public class CashPoint extends BaseOpenmrsMetadata {
 	public void setId(Integer id) {
 		this.cashPointId = id;
 	}
+	
+	public String toString() {
+		return getName();
+	}
 }

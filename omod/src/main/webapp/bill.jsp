@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require allPrivileges="Manage Cashier Bills, View Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
+<c:if test="${empty cashPoint}"><c:redirect url="/module/openhmis/cashier/timesheetEntry.form?returnUrl=${url}"/></c:if>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
@@ -25,13 +26,21 @@
 			</span>
 	</c:if>
 </h2>
-<c:if test="${!empty bill}">
-	<ul id="bill-info" class="floating">
-		<li class="cashier"><span class="label">Cashier:</span> ${bill.cashier}</li>
-		<li class="date"><span class="label">Date: </span> ${bill.dateCreated}</li>
-	</ul>
-	<div class="clear"></div>
-</c:if>
+<ul id="bill-info" class="floating">
+<c:choose>
+	<c:when test="${!empty bill}">
+		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${bill.cashier}</li>
+		<li class="date"><span class="label"><openmrs:message code="openhmis.cashier.date"/>: </span> ${bill.dateCreated}</li>		
+	</c:when>
+	<c:otherwise>
+		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${user.person.personName}</li>
+	</c:otherwise>
+</c:choose>
+	<c:if test="${!empty cashPoint}">
+		<li class="cashPoint"><span class="label"><openmrs:message code="openhmis.cashier.cashPoint.name"/>:</span> ${cashPoint}</li>
+	</c:if>
+</ul>
+<div class="clear"></div>
 
 <div id="patient-view">
 	<div id="patient-details" style="display: none;">

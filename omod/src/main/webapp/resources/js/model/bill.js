@@ -96,7 +96,10 @@ define(
 				if (resp === null) return resp;
 				if (resp.patient) resp.patient = new openhmis.Patient(resp.patient);
 				if (resp.adjustedBy) resp.adjustedBy = new openhmis.GenericCollection(resp.adjustedBy, { model: openhmis.Bill });
+				
 				if (resp.billAdjusted) resp.billAdjusted = new openhmis.Bill(resp.billAdjusted);
+				else delete resp.billAdjusted;
+				
 				if (resp.lineItems) {
 					resp.lineItems = new openhmis.GenericCollection(resp.lineItems, {
 						model: openhmis.LineItem,

@@ -22,6 +22,8 @@ public class CashierWebConstants {
 	public static final String TIMESHEET_PAGE = MODULE_ROOT + "timesheet";
 	public static final String TIMESHEET_ENTRY_PAGE = TIMESHEET_PAGE + "Entry";
 
+	public static final String BILL_PAGE = MODULE_ROOT + "bill";
+
 	public static String formUrl(String page) {
 		return page.endsWith(".form") ? page : page + ".form";
 	}

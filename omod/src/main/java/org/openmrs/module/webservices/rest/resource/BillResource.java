@@ -12,13 +12,14 @@ import org.openmrs.annotation.Handler;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
-import org.openmrs.module.openhmis.cashier.api.ICashPointService;
 import org.openmrs.module.openhmis.cashier.api.IDataService;
+import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
+import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
@@ -97,12 +98,14 @@ public class BillResource extends BaseRestDataResource<Bill> {
 					throw new RestClientException("Couldn't find Provider for the current user (" + currentUser.getName() + ")");
 			}
 			if (delegate.getCashPoint() == null) {
-				// Temporary test code; eventually we may get cash point from user properties
-				ICashPointService cashPointService = Context.getService(ICashPointService.class);
-				List<CashPoint> cashPointList = cashPointService.getAll();
-				if (cashPointList.isEmpty())
-					throw new RestClientException("No cash points exist!");
-				delegate.setCashPoint(cashPointList.get(0));
+				ITimesheetService service = Context.getService(ITimesheetService.class);
+				Timesheet timesheet = service.getCurrentTimesheet(delegate.getCashier());
+				if (timesheet == null)
+					throw new RestClientException("A current timesheet does not exist for cashier " + delegate.getCashier());
+				CashPoint cashPoint = timesheet.getCashPoint();
+				if (cashPoint == null)
+					throw new RestClientException("No cash points defined for the current timesheet!");
+				delegate.setCashPoint(cashPoint);
 			}
 			if (delegate.getStatus() == null)
 				delegate.setStatus(BillStatus.PENDING);
