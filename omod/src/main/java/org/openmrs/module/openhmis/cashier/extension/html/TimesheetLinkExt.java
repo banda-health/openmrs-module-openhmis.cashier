@@ -22,7 +22,10 @@ import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.ProviderHelper;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.web.extension.LinkExt;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class TimesheetLinkExt extends LinkExt {
@@ -69,7 +72,14 @@ public class TimesheetLinkExt extends LinkExt {
 
 	@Override
 	public String getUrl() {
-		return CashierWebConstants.formUrl(CashierWebConstants.TIMESHEET_ENTRY_PAGE);
+		String url = CashierWebConstants.formUrl(CashierWebConstants.TIMESHEET_ENTRY_PAGE);
+
+		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		if (req != null) {
+			url += "?returnUrl=" + req.getAttribute("javax.servlet.forward.servlet_path");
+		}
+
+		return url;
 	}
 
 	@Override

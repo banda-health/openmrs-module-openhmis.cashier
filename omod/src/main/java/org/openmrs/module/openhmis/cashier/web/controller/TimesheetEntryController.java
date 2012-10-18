@@ -53,7 +53,6 @@ public class TimesheetEntryController {
 	}
 
 	@InitBinder
-	@SuppressWarnings("unchecked")
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(CashPoint.class, new EntityPropertyEditor<CashPoint>(ICashPointService.class));
 		binder.registerCustomEditor(Provider.class, new ProviderPropertyEditor());
@@ -98,9 +97,9 @@ public class TimesheetEntryController {
 		timesheetService.save(timesheet);
 
 		if (StringUtils.isEmpty(returnUrl)) {
-			returnUrl = request.getContextPath() + "/";
+			returnUrl = "redirect:/";
 		} else {
-			returnUrl = CashierWebConstants.redirectUrl(returnUrl);
+			returnUrl = "redirect:/" + returnUrl;
 		}
 		return returnUrl;
 	}
@@ -110,18 +109,7 @@ public class TimesheetEntryController {
 		return cashPointService.getAll();
 	}
 
-	/*@ModelAttribute("cashPoint")
-	public CashPoint getCashPointInteger(Integer cashPoint) {
-		return cashPointService.getById(cashPoint);
-	}
-
-	@ModelAttribute("cashier")
-	public Provider getCashier(Integer cashierId) {
-		return providerService.getProvider(cashierId);
-	}*/
-
 	private void addRenderAttributes(ModelMap modelMap, Timesheet timesheet, Provider cashier, String returnUrl) {
-		//modelMap.addAttribute("cashPoints", cashPointService.getAll());
 		modelMap.addAttribute("returnUrl", returnUrl);
 		modelMap.addAttribute("cashier", cashier);
 		modelMap.addAttribute("timesheet", timesheet);
