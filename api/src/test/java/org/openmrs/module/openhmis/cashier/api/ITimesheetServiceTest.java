@@ -14,6 +14,8 @@
 package org.openmrs.module.openhmis.cashier.api;
 
 import org.junit.Assert;
+import org.junit.Test;
+import org.openmrs.Provider;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
@@ -58,7 +60,7 @@ public class ITimesheetServiceTest extends IDataServiceTest<ITimesheetService, T
 		timesheet.setClockIn(cal.getTime());
 
 		cal.add(Calendar.HOUR, 8);
-		timesheet.setClockIn(cal.getTime());
+		timesheet.setClockOut(cal.getTime());
 
 		return timesheet;
 	}
@@ -87,7 +89,7 @@ public class ITimesheetServiceTest extends IDataServiceTest<ITimesheetService, T
 		}
 
 		cal.add(Calendar.DAY_OF_MONTH, -10);
-		entity.setClockIn(cal.getTime());
+		entity.setClockOut(cal.getTime());
 	}
 
 	@Override
@@ -103,5 +105,72 @@ public class ITimesheetServiceTest extends IDataServiceTest<ITimesheetService, T
 
 		Assert.assertEquals(expected.getClockIn(), actual.getClockIn());
 		Assert.assertEquals(expected.getClockOut(), actual.getClockOut());
+	}
+
+	/**
+	 * @verifies return the current timesheet for the cashier
+	 * @see ITimesheetService#getCurrentTimesheet(org.openmrs.Provider)
+	 */
+	@Test
+	public void getCurrentTimesheet_shouldReturnTheCurrentTimesheetForTheCashier() throws Exception {
+		Timesheet timesheet = createEntity(true);
+		timesheet.setClockOut(null);
+
+		timesheet = service.save(timesheet);
+		Context.flushSession();
+
+		Timesheet current = service.getCurrentTimesheet(timesheet.getCashier());
+
+		Assert.assertNotNull(current);
+		assertEntity(timesheet, current);
+	}
+
+	/**
+	 * @verifies return null if the cashier has no timesheets
+	 * @see ITimesheetService#getCurrentTimesheet(org.openmrs.Provider)
+	 */
+	@Test
+	public void getCurrentTimesheet_shouldReturnNullIfTheCashierHasNoTimesheets() throws Exception {
+		Provider cashier = providerService.getProvider(2);
+		Assert.assertNotNull(cashier);
+
+		Timesheet timesheet = service.getCurrentTimesheet(cashier);
+		Assert.assertNull(timesheet);
+	}
+
+	/**
+	 * @verifies return the most recent timesheet if the cashier is clocked into multiple timesheets
+	 * @see ITimesheetService#getCurrentTimesheet(org.openmrs.Provider)
+	 */
+	@Test
+	public void getCurrentTimesheet_shouldReturnTheMostRecentTimesheetIfTheCashierIsClockedIntoMultipleTimesheets() throws Exception {
+		Provider cashier = providerService.getProvider(0);
+		Timesheet original = service.getCurrentTimesheet(cashier);
+
+		Assert.assertNotNull(original);
+
+		Timesheet timesheet = createEntity(true);
+		timesheet.setCashier(cashier);
+		timesheet.setClockOut(null);
+
+		service.save(timesheet);
+		Context.flushSession();
+
+		Timesheet current = service.getCurrentTimesheet(cashier);
+		Assert.assertNotNull(current);
+		Assert.assertFalse(original.getId().equals(current.getId()));
+	}
+
+	/**
+	 * @verifies return null if the timesheet is clocked out
+	 * @see ITimesheetService#getCurrentTimesheet(org.openmrs.Provider)
+	 */
+	@Test
+	public void getCurrentTimesheet_shouldReturnNullIfTheTimesheetIsClockedOut() throws Exception {
+		Provider cashier = providerService.getProvider(1);
+		Assert.assertNotNull(cashier);
+
+		Timesheet timesheet = service.getCurrentTimesheet(cashier);
+		Assert.assertNull(timesheet);
 	}
 }

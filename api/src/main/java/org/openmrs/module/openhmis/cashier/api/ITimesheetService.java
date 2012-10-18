@@ -13,7 +13,18 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import org.openmrs.Provider;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 
 public interface ITimesheetService extends IDataService<Timesheet> {
+	/**
+	 * Gets the current {@link Timesheet} that the specified {@link Provider}.
+	 * @param cashier The cashier.
+	 * @return The {@link Timesheet} or {@code null} is the cashier is not clocked in.
+	 * @should return the current timesheet for the cashier
+	 * @should return null if the cashier has no timesheets
+	 * @should return the most recent timesheet if the cashier is clocked into multiple timesheets
+	 * @should return null if the timesheet is clocked out
+	 */
+	Timesheet getCurrentTimesheet(Provider cashier);
 }
