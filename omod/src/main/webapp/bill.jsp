@@ -13,7 +13,25 @@
 			<spring:message code="openhmis.cashier.editBill" /> ${bill.receiptNumber}	
 		</c:otherwise>
 	</c:choose>
+	<c:if test="${!empty billAdjusted }">
+		<span class="heading_annotation"><openmrs:message code="openhmis.cashier.adjustmentOf" /> <a href="bill.form?billUuid=${billAdjusted.uuid}">${billAdjusted.receiptNumber}</a></span>
+	</c:if>
+	<c:if test="${!empty adjustedBy}">
+			<span class="heading_annotation"><openmrs:message code="openhmis.cashier.adjustedBy" />
+			<c:forEach var="bill" items="${adjustedBy}" varStatus="row">
+				<c:if test="${row.index > 0}">, </c:if>
+				<a href="bill.form?billUuid=${bill.uuid}">${bill.receiptNumber}</a> 
+			</c:forEach>
+			</span>
+	</c:if>
 </h2>
+<c:if test="${!empty bill}">
+	<ul id="bill-info" class="floating">
+		<li class="cashier"><span class="label">Cashier:</span> ${bill.cashier}</li>
+		<li class="date"><span class="label">Date: </span> ${bill.dateCreated}</li>
+	</ul>
+	<div class="clear"></div>
+</c:if>
 
 <div id="patient-view">
 	<div id="patient-details" style="display: none;">

@@ -1,6 +1,7 @@
 define(
 	[
 		'model/generic',
+		'model/patient',
 		'model/payment',
 		'model/lineItem'
 	],
@@ -15,6 +16,7 @@ define(
 			},
 			
 			schema: {
+				billAdjusted: { type: 'Object'},
 				lineItems: { type: 'Object'},
 				patient: { type: 'Object' },
 				payments: { type: 'Object'}
@@ -22,7 +24,8 @@ define(
 						
 			BillStatus: {
 				PENDING:	"PENDING",
-				PAID:		"PAID"
+				PAID:		"PAID",
+				ADJUSTED:	"ADJUSTED"
 			},
 			
 			initialize: function(attrs, options) {
@@ -78,13 +81,22 @@ define(
 			
 			toJSON: function() {
 				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
-				if (attrs.lineItems) attrs.lineItems = attrs.lineItems.toJSON();
+				if (attrs.lineItems) {
+					attrs.lineItems = attrs.lineItems.toJSON();
+					for (var i in attrs.lineItems)
+						attrs.lineItems[i].lineItemOrder = i;
+				}
 				if (attrs.patient) attrs.patient = attrs.patient.id;
+				if (attrs.billAdjusted) attrs.billAdjusted = attrs.billAdjusted.id;
+				if (attrs.payments) attrs.payments = attrs.payments.toJSON();
 				return attrs;
 			},
 			
 			parse: function(resp) {
 				if (resp === null) return resp;
+				if (resp.patient) resp.patient = new openhmis.Patient(resp.patient);
+				if (resp.adjustedBy) resp.adjustedBy = new openhmis.GenericCollection(resp.adjustedBy, { model: openhmis.Bill });
+				if (resp.billAdjusted) resp.billAdjusted = new openhmis.Bill(resp.billAdjusted);
 				if (resp.lineItems) {
 					resp.lineItems = new openhmis.GenericCollection(resp.lineItems, {
 						model: openhmis.LineItem,
@@ -99,6 +111,11 @@ define(
 					resp.payments = paymentCollection;
 				}
 				return resp;
+			},
+			
+			toString: function() {
+				var str = this.get("receiptNumber");
+				return str ? str : openhmis.GenericModel.prototype.toString.call(this);
 			}
 		});
 	}

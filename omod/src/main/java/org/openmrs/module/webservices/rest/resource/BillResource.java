@@ -35,8 +35,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
-			description.addProperty("adjustedBy");
-			description.addProperty("billAdjusted");
+			description.addProperty("adjustedBy", Representation.REF);
+			description.addProperty("billAdjusted", Representation.REF);
 			description.addProperty("cashPoint");
 			description.addProperty("cashier", Representation.REF);
 			description.addProperty("lineItems");
@@ -77,6 +77,12 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		for (Payment payment: instance.getPayments())
 			instance.addPayment(payment);
 	}
+	
+	@PropertySetter("billAdjusted")
+	public void setBillAdjusted(Bill instance, Bill billAdjusted) {
+		billAdjusted.addAdjustedBy(instance);
+		instance.setBillAdjusted(billAdjusted);
+	}
 
 	@Override
 	public Bill save (Bill delegate) {
@@ -111,6 +117,10 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		return (Class<IDataService<Bill>>)(Object)IBillService.class;
 	}
 
+	public String getDisplayString(Bill instance) {
+		return instance.getReceiptNumber();
+	}
+	
 	@Override
 	public Bill newDelegate() {
 		return new Bill();
