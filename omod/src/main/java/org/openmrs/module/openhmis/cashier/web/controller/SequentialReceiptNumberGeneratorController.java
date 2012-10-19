@@ -55,9 +55,12 @@ public class SequentialReceiptNumberGeneratorController {
 			generator.setIncludeCheckDigit(false);
 		}
 
+		// Save the generator settings
 		service.save(generator);
+
+		// Set the system generator
 		ReceiptNumberGeneratorFactory.setGenerator(new SequentialReceiptNumberGenerator());
 
-		return "redirect:" + CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE + ".form";
+		return CashierWebConstants.redirectUrl(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE);
 	}
 }

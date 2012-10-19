@@ -11,27 +11,21 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.api.model;
+package org.openmrs.module.openhmis.cashier.api.util;
 
-import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.Provider;
+import org.openmrs.api.ProviderService;
+import org.openmrs.api.context.Context;
 
-/**
- * Model class that represents a location where {@link Bill}'s can be created and paid for.
- */
-public class CashPoint extends BaseOpenmrsMetadata {
-	private Integer cashPointId;
+import java.util.Collection;
 
-	@Override
-	public Integer getId() {
-		return this.cashPointId;
-	}
+public class ProviderHelper {
+	public static Provider getCurrentProvider(ProviderService providerService) {
+		Collection<Provider> providers = providerService.getProvidersByPerson(Context.getAuthenticatedUser().getPerson());
+			if (providers.size() > 0) {
+				return providers.iterator().next();
+			}
 
-	@Override
-	public void setId(Integer id) {
-		this.cashPointId = id;
-	}
-	
-	public String toString() {
-		return getName();
-	}
+			return null;
+		}
 }
