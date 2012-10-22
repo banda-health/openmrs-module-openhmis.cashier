@@ -1,4 +1,4 @@
-define(
+define("lib/i18n",
 	['lib/sprintf'],
 	function() {
 		var __ = function(	format, argv) {

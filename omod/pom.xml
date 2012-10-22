@@ -228,13 +228,14 @@
 <!-- 		          </execution> -->
 <!-- 		        </executions> -->
 		        <configuration>
-		        	<browserVersion>FIREFOX_3_6</browserVersion>
 		        	<customRunnerTemplate>${project.basedir}/src/test/webapp/resources/js/BlankSpecRunner.htmltemplate</customRunnerTemplate>
 		        	<jsSrcDir>${project.basedir}/src/main/webapp/resources/js</jsSrcDir>
 		       		<jsTestSrcDir>${project.basedir}/src/test/webapp/resources/js</jsTestSrcDir>
 		       		<preloadSources>
 		         		<include>curl.js</include>
-		         		<include>${project.basedir}/src/test/webapp/resources/js/start-tests.js</include>
+		         		<include>/src/test/webapp/resources/js/test-bootstrap.js</include>
+		         		<include>/src/test/webapp/resources/js/test-data.js</include>
+		         		<include>/src/test/webapp/resources/js/start-tests.js</include>
 		       		</preloadSources>
 		      		<sourceIncludes></sourceIncludes>
 		     		<specIncludes></specIncludes>

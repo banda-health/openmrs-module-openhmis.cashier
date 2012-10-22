@@ -17,7 +17,8 @@ define(
     'lib/jquery',
     'lib/underscore',
     'lib/backbone',
-    'js!/openmrs/scripts/jquery-ui/js/jquery-ui.custom.min.js!order'
+    //'js!/openmrs/scripts/jquery-ui/js/jquery-ui.custom.min.js!order'
+    'js!lib/jquery-ui.custom.min.js!order'
   ],
   function($, _, Backbone) {
 

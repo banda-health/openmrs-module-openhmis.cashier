@@ -58,6 +58,7 @@
 <div id="payment" class="box"></div>
 
 <input type="submit" id="saveBill" value="Save Bill" />
+<br />
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
 

@@ -1,0 +1,63 @@
+openhmis.testData = {};
+openhmis.testData.JSON = {
+	itemCollection: '\
+		{"results":[{\
+			"uuid":"20aa2858-6642-4b7a-b456-b07621c26538",\
+			"name":"Ciprofloxacin",\
+			"codes":[\
+				{\
+					"uuid":"f546f45d-b000-4f9f-be93-1ec29aea0a8b",\
+					"description":null,\
+					"retired":false,\
+					"retireReason":null,\
+					"code":"P3",\
+					"resourceVersion":"1.8"\
+				},\
+				{\
+					"uuid":"4a37da9f-7e9d-4200-b518-8e1336ebaa96",\
+					"description":null,\
+					"retired":false,\
+					"retireReason":null,\
+					"code":"P1",\
+					"resourceVersion":"1.8"\
+				}\
+			],\
+			"department":{\
+				"uuid":"faf2f364-189c-4959-9428-4f917f52b8de",\
+				"name":"Pharmacy"\
+			}\
+		}]}',
+	
+	item: '{\
+		"uuid":"20aa2858-6642-4b7a-b456-b07621c26538",\
+		"name":"Ciprofloxacin",\
+		"description":null,\
+		"retired":false,\
+		"retireReason":null,\
+		"codes":[\
+			{\
+				"uuid":"f546f45d-b000-4f9f-be93-1ec29aea0a8b",\
+				"code":"P3"\
+			},\
+			{\
+				"uuid":"4a37da9f-7e9d-4200-b518-8e1336ebaa96",\
+				"code":"P1"\
+			}\
+		],\
+		"prices":[\
+			{\
+				"uuid":"1b81faeb-8380-4400-92d8-176f9282f06c",\
+				"price":1000.00\
+			}\
+		],\
+		"department":{\
+			"uuid":"faf2f364-189c-4959-9428-4f917f52b8de",\
+			"name":"Pharmacy"\
+		},\
+		"defaultPrice":{\
+			"uuid":"1b81faeb-8380-4400-92d8-176f9282f06c",\
+			"price":1000.00\
+		},\
+		"resourceVersion":"1.8"\
+	}'
+}

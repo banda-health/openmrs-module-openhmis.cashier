@@ -14,8 +14,8 @@ define(
 			schema: {
 				item: { type: 'NestedModel', model: openhmis.Item },
 				quantity: { type: 'BasicNumber' },
-				price: { type: 'BasicNumber' },
-				total: { type: 'BasicNumber', readOnly: true }
+				price: { type: 'BasicNumber', format: openhmis.ItemPrice.prototype.format },
+				total: { type: 'BasicNumber', readOnly: true, format: openhmis.ItemPrice.prototype.format }
 			},
 			
 			initialize: function(attributes, options) {

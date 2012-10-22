@@ -78,7 +78,12 @@
 				cssClass += " numeric"; ?>
 		<td class="<?= cssClass ?>">
 			<? if (model.schema[fields[field]].type === 'List' && model.schema[fields[field]].model !== undefined) {
-				print(model.listToString(fields[field]));
+				print(GenericCollection.prototype.toString.call(
+					model.get([fields[field]]),
+					model.schema[fields[field]])
+				);
+			} else if (model.schema[fields[field]].format !== undefined) {
+				print(model.schema[fields[field]].format(model.get(fields[field])));
 			} else {
 				print(model.get(fields[field]));
 			} ?>

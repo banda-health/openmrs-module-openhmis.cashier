@@ -58,16 +58,24 @@ curl(
 				patientView.on('editing', billView.blur);
 				
 				// Payment View
+				var readOnly = billView.bill.get("status") !== BillStatus.PENDING
+					|| billView.bill.get("billAdjusted");
 				var paymentView = new openhmis.PaymentView({
 					paymentCollection: billView.bill.get("payments"),
 					processCallback: billView.processPayment,
-					readOnly: billView.bill.get("status") !== BillStatus.PENDING
+					readOnly: readOnly
 				});
 				// Disable add event when the bill is saving to prevent
 				// unsettling page drawing
 				billView.on("save", function() { paymentView.model.off("add"); });
 				paymentView.setElement($('#payment'));
 				paymentView.render();
+				
+				window.onbeforeunload = function() {
+					if (billView.bill.isUnsaved())
+						return __("There are unsaved changes.");
+					return null;
+				}
 				
 				$('#inputNode').focus();
 			});			
@@ -91,7 +99,5 @@ curl(
 			billView = new openhmis.BillView();
 			displayBillView(billView, patientView);
 		}
-		
-		
 	}
 );

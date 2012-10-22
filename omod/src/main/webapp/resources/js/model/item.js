@@ -56,11 +56,12 @@ define(
 					options: new openhmis.GenericCollection(null, {
 						model: openhmis.Department,
 						url: '/department'
-					})
+					}),
+					objRef: true
 				},
 				codes: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemCode },
 				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice },
-				defaultPrice: { type: 'Select', options: [] }
+				defaultPrice: { type: 'Select', options: [], objRef: true }
 			},
 			
 			initialize: function(attributes, options) {
@@ -79,6 +80,18 @@ define(
 				return openhmis.GenericModel.prototype.fetch.call(this, options);
 			},
 			
+			getCodesList: function(list) {
+				var codes, schema;
+				if (list !== undefined) {
+					codes = list;
+					schema = { model: openhmis.ItemCode }
+				} else {
+					codes = this.get("codes");
+					schema = this.schema.codes
+				}
+				return openhmis.GenericCollection.prototype.toString.call(codes, schema);
+			},
+			
 			setPriceOptions: function(prices) {
 				prices = prices ? prices : this.get('prices');
 				this.schema.defaultPrice.options = _.map(prices, function(price) { return { val: price.uuid || price.price, label: openhmis.ItemPrice.prototype.format(price.price) } });
@@ -93,8 +106,10 @@ define(
 			},
 			
 			parse: function(resp) {
-				if (resp && resp.department && _.isObject(resp.department))
-					resp.department = new openhmis.Department(resp.department);
+				if (resp) {
+					if (resp.department && _.isObject(resp.department))
+						resp.department = new openhmis.Department(resp.department);
+				}
 				return resp;
 			},
 			
