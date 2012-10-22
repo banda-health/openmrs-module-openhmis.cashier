@@ -11,7 +11,7 @@ describe("Item Editor", function() {
 			var editor = new Backbone.Form.editors.Item();
 	
 			spyOn(jQuery, "ajax").andCallFake(function(options) {
-				var resp = jQuery.parseJSON(openhmis.testData.JSON.singleItem);
+				var resp = jQuery.parseJSON(openhmis.testData.JSON.itemCollection);
 				options.success(resp);
 			});
 			
@@ -25,7 +25,7 @@ describe("Item Editor", function() {
 		
 		runs(function() {
 			var data = response.mostRecentCall.args[0][0];
-			expect(data.codes.length).toEqual(1);
+			expect(data.codes.length).toEqual(2);
 			expect(data.department_uuid).toEqual("faf2f364-189c-4959-9428-4f917f52b8de");
 			expect(data.label).toEqual("Ciprofloxacin");
 			expect(data.val).toEqual("20aa2858-6642-4b7a-b456-b07621c26538");

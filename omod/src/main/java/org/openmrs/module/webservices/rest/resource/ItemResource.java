@@ -162,7 +162,6 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		return new Item();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public Class<? extends IMetadataService<Item>> getServiceClass() {
 		return IItemService.class;

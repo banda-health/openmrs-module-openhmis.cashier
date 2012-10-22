@@ -63,7 +63,7 @@ define(
 					model: this.paymentCollection,
 					id: "paymentList",
 					listFields: ['dateCreatedFmt', 'amountFmt', 'paymentMode'],
-					itemActions: this.allowRemove ? ["remove"] : [],
+					itemActions: this.readOnly ? [] : ["remove"],
 					showRetiredOption: false,
 					hideIfEmpty: true
 				});

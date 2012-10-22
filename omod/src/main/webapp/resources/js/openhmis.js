@@ -71,54 +71,6 @@ define("openhmis",
 		// Use uuid for id
 		Backbone.Model.prototype.idAttribute = 'uuid';
 		
-		// OpenMRS-specific delete functions
-		//
-		// Add retire function for models
-		Backbone.Model.prototype.retire = function(options) {
-			options = options ? _.clone(options) : {};
-			if (options.reason !== undefined)
-				options.url = this.url() + "?reason=" + encodeURIComponent(options.reason);
-		
-			if (this.isNew()) {
-				return false;
-			}
-		
-			var model = this;
-			var success = options.success;
-			options.success = function(resp) {
-				model.set('retired', true);
-				model.trigger('retired', model);
-				if (success) {
-					success(model, resp);
-				} else {
-					model.trigger('sync', model, resp, options);
-				}
-			};
-		
-			options.error = Backbone.wrapError(options.error, model, options);
-			var xhr = (this.sync || Backbone.sync).call(this, 'delete', this, options);
-			return xhr;
-		}
-		
-		// Add purge function for models
-		Backbone.Model.prototype.purge = function(options) {
-			options = options ? options : {};
-			options.url = this.url() + "?purge=true";
-			Backbone.Model.prototype.destroy.call(this, options);
-		}
-		
-		Backbone.Model.prototype.isRetired = function() {
-			return this.get('retired') || this.get('voided');
-		}
-		
-		Backbone.Model.prototype.getDataType = function () {
-			if (this.get('retired') !== undefined)
-				return 'metadata';
-			if (this.get('voided') !== undefined)
-				return 'data';
-			return 'unknown';
-		}
-		
 		/**
 		 * Template helper function
 		 *

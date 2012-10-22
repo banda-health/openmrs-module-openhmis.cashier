@@ -189,7 +189,7 @@ define(
 					// continue adding this item
 					return null;
 				}
-				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
+				schema = schema ? _.extend({}, model.schema, schema) : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var className = "evenRow";
 				if (lineNumber)
 					className = lineNumber % 2 === 0 ? "evenRow" : "oddRow";
@@ -388,7 +388,8 @@ define(
 				this.$el.html(this.template({
 					model: this.model,
 					actions: this.actions,
-					fields: this.fields
+					fields: this.fields,
+					GenericCollection: openhmis.GenericCollection
 				})).addClass("selectable");
 				if (_.indexOf(this.actions, 'inlineEdit') !== -1) {
 					//this.form.render();

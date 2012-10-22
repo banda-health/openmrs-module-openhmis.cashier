@@ -99,7 +99,7 @@ define(
 			schema: {
 				item: { type: "Item" },
 				quantity: { type: "CustomNumber" },
-				price: { type: "BasicNumber", readOnly: true }
+				price: { type: "BasicNumber", readOnly: true, format: openhmis.ItemPrice.prototype.format }
 			},
 			
 			setBill: function(bill) {
@@ -149,11 +149,8 @@ define(
 				this.newItem = new openhmis.LineItem();
 				// Don't add the item to the collection, but give it a reference
 				this.newItem.collection = this.model;
-				if (this.$('p.empty').length > 0) {
-					this.model.add(this.newItem, { silent: true });
+				if (this.$('p.empty').length > 0)
 					this.render();
-					this.model.remove(this.newItem, { silent: true });					
-				}
 				else {
 					var view = this.addOne(this.newItem);
 					view.focus();
@@ -161,7 +158,10 @@ define(
 			},
 			
 			updateTotals: function() {
-				this.$totals.html(this.totalsTemplate({ bill: this.bill, __: i18n }))
+				this.$totals.html(this.totalsTemplate({
+					bill: this.bill,
+					formatPrice: openhmis.ItemPrice.prototype.format,
+					__: i18n }))
 			},
 			
 			processPayment: function(payment, options) {
@@ -234,9 +234,11 @@ define(
 			},
 			
 			render: function() {
+				if (this.newItem) this.model.add(this.newItem, { silent: true });
 				openhmis.GenericListView.prototype.render.call(this, {
 					listTitle: ""
 				});
+				if (this.newItem) this.model.remove(this.newItem, { silent: true });
 				this.$('table').addClass("bill");
 				this.$totals = $('<table class="totals"></table>');
 				this.$('div.box').append(this.$totals);

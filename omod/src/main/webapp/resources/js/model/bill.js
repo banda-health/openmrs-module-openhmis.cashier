@@ -16,9 +16,9 @@ define(
 			},
 			
 			schema: {
-				billAdjusted: { type: 'Object'},
+				billAdjusted: { type: 'Object', objRef: true },
 				lineItems: { type: 'Object'},
-				patient: { type: 'Object' },
+				patient: { type: 'Object', objRef: true },
 				payments: { type: 'Object'}
 			},
 						
@@ -86,8 +86,6 @@ define(
 					for (var i in attrs.lineItems)
 						attrs.lineItems[i].lineItemOrder = i;
 				}
-				if (attrs.patient) attrs.patient = attrs.patient.id;
-				if (attrs.billAdjusted) attrs.billAdjusted = attrs.billAdjusted.id;
 				if (attrs.payments) attrs.payments = attrs.payments.toJSON();
 				return attrs;
 			},

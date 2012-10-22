@@ -46,7 +46,13 @@ define(
 				  event.preventDefault();
 				}
 		   },
-			
+		   
+		   setValue: function(value) {
+				if (value !== undefined && value !== null && this.schema.format)
+					this.$el.val(this.schema.format(value));
+				else
+					this.$el.val(value);
+		   }
 		});
 		
 		editors.CustomNumber = editors.Number.extend({
@@ -236,7 +242,7 @@ define(
 				// Tricky stuff here to get the autocomplete list to render with our custom data
 				.data("autocomplete")._renderItem = function(ul, item) {
 					return $("<li></li>").data("item.autocomplete", item)
-						.append("<a>" + openhmis.ItemCode.prototype.listToString(item.codes) + ": " + item.label + "</a>").appendTo(ul);
+						.append("<a>" + openhmis.Item.prototype.getCodesList(item.codes) + ": " + item.label + "</a>").appendTo(ul);
 				};
 				return this;
 			}

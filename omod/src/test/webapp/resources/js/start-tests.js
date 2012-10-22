@@ -13,6 +13,7 @@ curl(
 			[
 				'js!' + testBaseUrl + '/model/generic.js',
 				'js!' + testBaseUrl + '/model/item.js',
+				'js!' + testBaseUrl + '/view/generic.js',
 				'js!' + testBaseUrl + '/view/editors.js'
 			],
 			function() {
