@@ -17,8 +17,10 @@ curl(
 				'js!' + testBaseUrl + '/view/editors.js'
 			],
 			function() {
-				window.reporter = new jasmine.HtmlReporter(); jasmine.getEnv().addReporter(reporter);
-				jasmine.getEnv().execute();
+				$(function() {
+					window.reporter = new jasmine.HtmlReporter(); jasmine.getEnv().addReporter(reporter);
+					jasmine.getEnv().execute();
+				});
 			}
 		);
 	}
