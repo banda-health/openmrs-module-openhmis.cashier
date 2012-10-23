@@ -121,8 +121,7 @@ define(
 					for (var price in this.attributes.prices)
 						delete this.attributes.prices[price].resourceVersion;
 				}
-				var cloned_attributes = openhmis.GenericModel.prototype.toJSON.call(this);
-				return cloned_attributes;
+				return openhmis.GenericModel.prototype.toJSON.call(this);
 			},
 			
 			toString: function() {

@@ -1,3 +1,15 @@
+var GenericSubclass = openhmis.GenericModel.extend({
+	schema: {
+		name: { type: "Text" },
+		age: { type: "Number" },
+		parent: { type: "Object", objRef: true },
+		sibling: { type: "Object", objRef: true },
+		metadata: { type: "Object", readOnly: true }
+	},
+	toString: function() {
+		return this.get("name");
+	}
+});
 describe('GenericModel', function() {
 	it("should provide a string representation of itself, using 'display' attribute if it exists", function() {
 		var display = "Generic Model";
@@ -53,26 +65,26 @@ describe('GenericModel', function() {
 		expect(obj.foo).toEqual("bar");
 	});
 	
-	it("should")
-	
 	it("should serialize itself according to the schema if one is specified", function() {
-		var subClass = openhmis.GenericModel.extend({
-			schema: {
-				name: { type: "Text" },
-				age: { type: "Number" },
-				parent: { type: "Object", objRef: true }
-			}
-		});
-		var model = new subClass({
+		var model = new GenericSubclass({
 			name: "Brian",
 			age: 20,
 			parent: new openhmis.GenericModel({ uuid: "e2756470-1c28-11e2-892e-0800200c9a66"}),
+			sibling: "uuid",
+			metadata: { some: "thing", you: "wanted", to: "know"},
 			foo: "bar"
 		});
 		var obj = model.toJSON();
+		// These should be included
 		expect(obj.name).toEqual("Brian");
 		expect(obj.age).toEqual(20);
-		expect(typeof obj.parent).toEqual("string");
+		// This should be represented as a string as per objRef
+		expect(obj.parent).toEqual("e2756470-1c28-11e2-892e-0800200c9a66");
+		// This was set as a string, so it should remain a string
+		expect(obj.sibling).toEqual("uuid");
+		// This has readOnly=true, so we don't want to try to set it
+		expect(obj.metadata).toBeUndefined();
+		// This isn't part of the schema
 		expect(obj.foo).toBeUndefined();
 	});
 });
@@ -85,6 +97,19 @@ describe("GenericCollection", function() {
 		}
 		var list = openhmis.GenericCollection.prototype.toString.call(itemObj.codes, schema);
 		expect(list).toEqual("P3, P1");
+	});
+	
+	it("should convert a GenericCollection instance to a string list", function() {
+		var collection = new openhmis.GenericCollection(
+			[
+				{ name: "Buster" },
+				{ name: "Rufus" }
+			],
+			{
+				model: GenericSubclass
+			}
+		);
+		expect(collection.toString()).toEqual("Buster, Rufus");
 	});
 	
 	it("should allow setting a base url", function() {
