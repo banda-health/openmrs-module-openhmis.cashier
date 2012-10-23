@@ -17,18 +17,28 @@ define("openhmis",
 		var openhmis = window.openhmis || {};
 		openhmis.templates = {};
 				
-		openhmis.error = function(data) {
-			var o = $.parseJSON(data.responseText).error;
-			if (o.detail.indexOf("ContextAuthenticationException") !== -1) {
-				alert(__("Your session has timed out.  You will be redirected to the login page."));
-				window.location.reload();
+		openhmis.error = function(model, resp) {
+			if (!(model instanceof Backbone.Model)) {
+				var o = $.parseJSON(data.responseText).error;
+				if (o.detail.indexOf("ContextAuthenticationException") !== -1) {
+					alert(__("Your session has timed out.  You will be redirected to the login page."));
+					window.location.reload();
+				}
+				else {
+					console.log("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
+					var firstLfPos = o.detail.indexOf('\n');
+					if (firstLfPos !== -1)
+						o.detail = o.detail.substring(0, firstLfPos);
+					alert('An error occurred during the request.\n\n' + o.message + '\n\nCode: ' + o.code + '\n\n' + o.detail);
+				}
 			}
-			else {
-				console.log("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
-				var firstLfPos = o.detail.indexOf('\n');
-				if (firstLfPos !== -1)
-					o.detail = o.detail.substring(0, firstLfPos);
-				alert('An error occurred during the request.\n\n' + o.message + '\n\nCode: ' + o.code + '\n\n' + o.detail);
+			else if (resp !== undefined) {
+				var str = "";
+				for (var i in resp) {
+					if (str.length > 0) str += ",\n";
+					str += i + ": " + resp[i];
+				}
+				alert(str);
 			}
 		}
 		

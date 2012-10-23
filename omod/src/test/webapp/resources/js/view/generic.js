@@ -1,15 +1,47 @@
-//describe("GenericListView", function() {
-//	it("requires GenericListView", function() {
-//		require({"view/generic": null});
-//	});
-//	
-//	it("should should show a message when it is not displaying items", function() {
-//		var collection = new openhmis.GenericCollection();
-//		var listView = new openhmis.GenericListView({ model: collection });
-//		listView.render();
-//		expect(listView.$("p.empty").length).toEqual(1);
-//	});
-//});
+describe("GenericListView", function() {
+	var $ = jQuery;
+	var CoolPersonClass = openhmis.GenericModel.extend({
+		meta: {
+			name: "Cool Person",
+			namePlural: "Cool People"
+		},
+		schema: {
+			name: { type: "Text" },
+			age: { type: "Number"},
+			friends: { type: "List" }
+		},
+		toString: function (){
+			return this.get("name");
+		}
+	});
+	CoolPersonClass.prototype.schema.friends.model = CoolPersonClass;
+
+	it("requires GenericListView", function() {
+		require({"view/generic": null});
+	});
+	
+	it("should show a message when it is not displaying items", function() {
+		var collection = new openhmis.GenericCollection([], { model: CoolPersonClass });
+		var listView = new openhmis.GenericListView({ model: collection });
+		listView.render();
+		$("body").append(listView.el);
+		expect(listView.$("p.empty").length).toEqual(1);
+		
+		var jennie = new CoolPersonClass({
+			name: "Jennie Reeb",
+			age: 20,
+			friends: [
+				new CoolPersonClass ({name: "Daniel"}),
+				new CoolPersonClass ({name: "stevie"})
+			]
+		});
+		collection.add(jennie);
+		expect(listView.$("p.empty").length).toEqual(0);
+		
+		collection.remove(jennie);
+		expect(listView.$("p.empty").length).toEqual(1);		
+	});	
+});
 
 describe("GenericListItemView", function() {
 	var $ = jQuery;

@@ -122,8 +122,6 @@ define(
 						delete this.attributes.prices[price].resourceVersion;
 				}
 				var cloned_attributes = openhmis.GenericModel.prototype.toJSON.call(this);
-				// Send department as UUID string
-				cloned_attributes.department = cloned_attributes.department.id;
 				return cloned_attributes;
 			},
 			

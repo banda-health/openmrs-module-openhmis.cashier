@@ -79,12 +79,9 @@ define(
 				var success = options.success;
 				options.success = function(resp) {
 					model._setRetired();
-					model.trigger('retired', model);
-					if (success) {
+					model.trigger("retire sync", model, resp, options);
+					if (success)
 						success(model, resp);
-					} else {
-						model.trigger('sync', model, resp, options);
-					}
 				};
 				
 				options.error = Backbone.wrapError(options.error, model, options);
@@ -139,7 +136,7 @@ define(
 						if (this.schema[attr].readOnly === undefined
 							|| this.schema[attr].readOnly === false)
 								attributes[attr] = this.attributes[attr];
-						if (this.schema[attr].objRef === true && !(attributes[attr] instanceof String))
+						if (this.schema[attr].objRef === true && typeof attributes[attr] !== "string")
 							attributes[attr] = attributes[attr].id;
 					}
 					else if (attr === "retired" || attr === "voided" && this.attributes[attr]) {

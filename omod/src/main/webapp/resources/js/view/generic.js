@@ -11,6 +11,10 @@ define(
 		'view/editors'
 	],
 	function($, _, Backbone, __, openhmis) {
+		/**
+		 * GenericAddEditView
+		 * 
+		 */
 		openhmis.GenericAddEditView = Backbone.View.extend({
 			tmplFile: 'generic.html',
 			tmplSelector: '#add-edit-template',
@@ -36,7 +40,6 @@ define(
 				for (var key in model.schema) {
 					if (key === 'retired') continue;
 					if (model.schema[key].hidden === true) continue;
-					//if (model.schema[key].readOnly === true) continue;
 					formFields.push(key);
 				}
 				var formOptions = {
@@ -73,15 +76,18 @@ define(
 			edit: function(model) {
 				this.model = model;
 				var self = this;
-				this.model.fetch({ success: function(model, resp) {
-					self.render();
-					$(self.titleEl).show();
-					self.modelForm = self.prepareModelForm(self.model);
-					$(self.formEl).prepend(self.modelForm.el);
-					$(self.formEl).show();
-					$(self.retireVoidPurgeEl).show();
-					$(self.formEl).find('input')[0].focus();
-				}});
+				this.model.fetch({
+					success: function(model, resp) {
+						self.render();
+						$(self.titleEl).show();
+						self.modelForm = self.prepareModelForm(self.model);
+						$(self.formEl).prepend(self.modelForm.el);
+						$(self.formEl).show();
+						$(self.retireVoidPurgeEl).show();
+						$(self.formEl).find('input')[0].focus();
+					},
+					error: openhmis.error
+				});
 			},
 			
 			save: function() {
@@ -90,10 +96,8 @@ define(
 				var view = this;
 				this.model.save(null, {
 					success: function(model, resp) {
-						model.trigger('sync', model, resp);
 						if (model.collection === undefined) {
 							view.collection.add(model);
-							view.collection.trigger('reset');
 						}
 						view.cancel();
 					},
@@ -107,7 +111,6 @@ define(
 				this.model.retire({
 					reason: reason,
 					success: function(model, resp) {
-						model.trigger('sync', model, resp);
 						view.cancel();
 					},
 					error: function(model, resp) { openhmis.error(resp); }
@@ -148,6 +151,10 @@ define(
 			}
 		});
 		
+		/**
+		 * GenericListView
+		 * 
+		 */
 		openhmis.GenericListView = Backbone.View.extend({
 			tmplFile: 'generic.html',
 			tmplSelector: '#generic-list',
@@ -171,8 +178,9 @@ define(
 				}
 				if (this.addEditView !== undefined)
 					this.addEditView.on('cancel', this.deselectAll);
-				this.model.on('reset remove', this.render);
-				this.model.on('add', this.addOne);
+				this.model.on("reset", this.render);
+				this.model.on("add", this.addOne);
+				this.model.on("remove", this.itemRemoved);
 				this.showRetired = false;
 				this._determineFields();
 			},
@@ -183,7 +191,8 @@ define(
 			
 			addOne: function(model, schema, lineNumber) {
 				if (this.showRetired === false && model.isRetired()) return null;
-				if (this.$el.html() === "" && this.options.hideIfEmpty === true) {
+				if ((this.$el.html() === "" && this.options.hideIfEmpty === true)
+					|| this.$("p.empty").length === 1) {
 					this.render();
 					// Re-rendering the entire list means we don't have to
 					// continue adding this item
@@ -191,7 +200,7 @@ define(
 				}
 				schema = schema ? _.extend({}, model.schema, schema) : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var className = "evenRow";
-				if (lineNumber)
+				if (lineNumber && !isNaN(lineNumber))
 					className = lineNumber % 2 === 0 ? "evenRow" : "oddRow";
 				else {
 					var $rows = this.$('tbody.list tr');
@@ -213,13 +222,16 @@ define(
 				itemView.on('select focus', this.itemSelected);
 				itemView.on('remove', this.itemRemoved);
 				var view = this;
-				model.on('retired', function() { if (!view.showRetired) itemView.remove(); });
+				model.on("retire", function() { if (!view.showRetired) itemView.remove(); });
 				return itemView;
 			},
 			
 			// Called when a list item is removed
 			itemRemoved: function(item) {
-				this.colorRows();
+				if (this.model.length === 0)
+					this.render();
+				else
+					this.colorRows();
 			},
 			
 			itemSelected: function(view) {
@@ -295,6 +307,10 @@ define(
 			}
 		});
 		
+		/**
+		 * GenericListItemView
+		 *
+		 */
 		openhmis.GenericListItemView = Backbone.View.extend({
 			tagName: "tr",
 			tmplFile: "generic.html",
@@ -308,7 +324,7 @@ define(
 				}
 				_.bindAll(this);
 				this.template = this.getTemplate();
-				this.model.on('sync', this.render);
+				this.model.on("sync", this.render);
 				this.model.on('destroy', this.remove);
 				this.model.on("change", this.onModelChange);
 				this.enableActions();
@@ -417,7 +433,6 @@ define(
 				addEditView: addEditView
 			}, options);
 			var listView = new openhmis.GenericListView(viewOptions);
-			collection.on('reset', listView.render);
 			listView.setElement($('#existing-form'));
 			collection.fetch();
 		}
