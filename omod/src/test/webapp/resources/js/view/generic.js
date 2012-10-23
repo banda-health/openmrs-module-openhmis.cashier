@@ -1,5 +1,4 @@
 describe("GenericListView", function() {
-	var $ = jQuery;
 	var CoolPersonClass = openhmis.GenericModel.extend({
 		meta: {
 			name: "Cool Person",
@@ -24,7 +23,6 @@ describe("GenericListView", function() {
 		var collection = new openhmis.GenericCollection([], { model: CoolPersonClass });
 		var listView = new openhmis.GenericListView({ model: collection });
 		listView.render();
-		$("body").append(listView.el);
 		expect(listView.$("p.empty").length).toEqual(1);
 		
 		var jennie = new CoolPersonClass({
@@ -39,7 +37,16 @@ describe("GenericListView", function() {
 		expect(listView.$("p.empty").length).toEqual(0);
 		
 		collection.remove(jennie);
-		expect(listView.$("p.empty").length).toEqual(1);		
+		expect(listView.$("p.empty").length).toEqual(1);
+		
+		spyOn(jQuery, "ajax").andCallFake(function(options) {
+			options.success();
+		});
+		
+		collection.add(jennie);
+		jennie.id = "fakeID";
+		jennie.retire();
+		expect(listView.$("p.empty").length).toEqual(1);
 	});	
 });
 

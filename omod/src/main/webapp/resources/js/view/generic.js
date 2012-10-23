@@ -222,13 +222,23 @@ define(
 				itemView.on('select focus', this.itemSelected);
 				itemView.on('remove', this.itemRemoved);
 				var view = this;
-				model.on("retire", function() { if (!view.showRetired) itemView.remove(); });
+				model.on("retire", function(item) {
+					if (!view.showRetired)
+						itemView.remove();
+						view.itemRemoved(item);
+				});
 				return itemView;
+			},
+			
+			visibleItemCount: function() {
+				if (this.showRetired)
+					return this.model.length;
+				return this.model.filter(function(item) { return !item.isRetired() }).length;
 			},
 			
 			// Called when a list item is removed
 			itemRemoved: function(item) {
-				if (this.model.length === 0)
+				if (this.visibleItemCount() === 0)
 					this.render();
 				else
 					this.colorRows();
@@ -282,13 +292,15 @@ define(
 			},
 			
 			render: function(extraContext) {
-				if (this.model.length === 0 && this.options.hideIfEmpty) {
+				var length = this.visibleItemCount();
+				if (length === 0 && this.options.hideIfEmpty) {
 					this.$el.html("");
 					return this;
 				}
 				var schema = _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var context = {
 					list: this.model,
+					listLength: length,
 					fields: this.fields,
 					modelMeta: this.model.model.prototype.meta,
 					modelSchema: this.model.model.prototype.schema,

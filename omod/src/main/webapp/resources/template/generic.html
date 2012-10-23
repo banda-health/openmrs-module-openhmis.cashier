@@ -32,7 +32,7 @@
 <script id="generic-list" type="text/template">
 <b class="boxHeader"><?= options.listTitle !== undefined ? options.listTitle : __("Current %s", modelMeta.namePlural) ?></b>
 <div class="box">
-	<? if (list.length === 0) { ?>
+	<? if (listLength === 0) { ?>
 		<p class="empty"><?= __("There are currently no %s", modelMeta.namePlural.toLowerCase()) ?></p>
 	<? } else { ?>
 	<table class="display" width="100%">

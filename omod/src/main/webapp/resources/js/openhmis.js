@@ -19,7 +19,7 @@ define("openhmis",
 				
 		openhmis.error = function(model, resp) {
 			if (!(model instanceof Backbone.Model)) {
-				var o = $.parseJSON(data.responseText).error;
+				var o = $.parseJSON(model.responseText).error;
 				if (o.detail.indexOf("ContextAuthenticationException") !== -1) {
 					alert(__("Your session has timed out.  You will be redirected to the login page."));
 					window.location.reload();
