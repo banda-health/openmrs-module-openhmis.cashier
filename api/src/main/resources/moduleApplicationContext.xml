@@ -53,6 +53,14 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list merge="true">
+				<value>org.openmrs.module.openhmis.cashier.api.IPaymentModeAttributeTypeService</value>
+				<ref bean="cashierPaymentModeAttributeTypeService" />
+			</list>
+		</property>
+	</bean>
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list merge="true">
 				<value>org.openmrs.module.openhmis.cashier.api.ICashPointService</value>
 				<ref bean="cashierCashPointService" />
 			</list>
@@ -63,6 +71,14 @@
 			<list merge="true">
 				<value>org.openmrs.module.openhmis.cashier.api.ITimesheetService</value>
 				<ref bean="cashierTimesheetService" />
+			</list>
+		</property>
+	</bean>
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list merge="true">
+				<value>org.openmrs.module.openhmis.cashier.api.ISequentialReceiptNumberGeneratorService</value>
+				<ref bean="seqReceiptNumberGeneratorService" />
 			</list>
 		</property>
 	</bean>
@@ -113,6 +129,16 @@
 		<property name="preInterceptors" ref="serviceInterceptors" />
 		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
 	</bean>
+	<bean id="cashierPaymentModeAttributeTypeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target">
+			<bean class="org.openmrs.module.openhmis.cashier.api.impl.PaymentModeAttributeTypeServiceImpl">
+				<property name="dao" ref="genericDAO" />
+			</bean>
+		</property>
+		<property name="preInterceptors" ref="serviceInterceptors" />
+		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
+	</bean>
 	<bean id="cashierCashPointService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
@@ -127,6 +153,16 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.TimesheetServiceImpl">
+				<property name="dao" ref="genericDAO" />
+			</bean>
+		</property>
+		<property name="preInterceptors" ref="serviceInterceptors" />
+		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
+	</bean>
+	<bean id="seqReceiptNumberGeneratorService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target">
+			<bean class="org.openmrs.module.openhmis.cashier.api.impl.SequentialReceiptNumberGeneratorServiceImpl">
 				<property name="dao" ref="genericDAO" />
 			</bean>
 		</property>

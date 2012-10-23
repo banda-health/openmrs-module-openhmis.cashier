@@ -2,11 +2,11 @@
 <dataset>
 	<cashier_bill bill_id="0" receipt_number="test 1 receipt number" provider_id="0" patient_id="0" cash_point_id="0" status="1"
 	              creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B95D74360004" />
-	<cashier_bill_line_item bill_line_item_id="0" bill_id="0" item_id="0" price="101.01" price_name="default" quantity="1"
+	<cashier_bill_line_item bill_line_item_id="0" bill_id="0" item_id="0" price="101.01" price_name="default" quantity="1" line_item_order="0"
 							creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B95FB3440005" />
-	<cashier_bill_line_item bill_line_item_id="1" bill_id="0" item_id="1" price="202.01" price_name="test 2 price" quantity="3"
+	<cashier_bill_line_item bill_line_item_id="1" bill_id="0" item_id="1" price="202.01" price_name="test 2 price" quantity="3" line_item_order="1"
 	                        creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B963B13B0006" />
-	<cashier_bill_line_item bill_line_item_id="2" bill_id="0" item_id="2" price="103.01" price_name="default" quantity="2"
+	<cashier_bill_line_item bill_line_item_id="2" bill_id="0" item_id="2" price="103.01" price_name="default" quantity="2" line_item_order="2"
 	                        creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B9645D7B0007" />
 	<cashier_bill_payment bill_payment_id="0" bill_id="0" payment_mode_id="0" amount="913.06"
 	                      creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B9674C510008" />

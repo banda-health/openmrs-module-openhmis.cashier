@@ -1,12 +1,46 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require allPrivileges="Manage Cashier Bills, View Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
+<c:if test="${empty cashPoint}"><c:redirect url="/module/openhmis/cashier/timesheetEntry.form?returnUrl=${url}"/></c:if>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
 
 <h2>
-	<spring:message code="openhmis.cashier.newBill" />
+	<c:choose>
+		<c:when test="${empty bill}">
+			<spring:message code="openhmis.cashier.newBill" />
+		</c:when>
+		<c:otherwise>
+			<spring:message code="openhmis.cashier.editBill" /> ${bill.receiptNumber}	
+		</c:otherwise>
+	</c:choose>
+	<c:if test="${!empty billAdjusted }">
+		<span class="heading_annotation"><openmrs:message code="openhmis.cashier.adjustmentOf" /> <a href="bill.form?billUuid=${billAdjusted.uuid}">${billAdjusted.receiptNumber}</a></span>
+	</c:if>
+	<c:if test="${!empty adjustedBy}">
+			<span class="heading_annotation"><openmrs:message code="openhmis.cashier.adjustedBy" />
+			<c:forEach var="bill" items="${adjustedBy}" varStatus="row">
+				<c:if test="${row.index > 0}">, </c:if>
+				<a href="bill.form?billUuid=${bill.uuid}">${bill.receiptNumber}</a> 
+			</c:forEach>
+			</span>
+	</c:if>
 </h2>
+<ul id="bill-info" class="floating">
+<c:choose>
+	<c:when test="${!empty bill}">
+		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${bill.cashier}</li>
+		<li class="date"><span class="label"><openmrs:message code="openhmis.cashier.date"/>: </span> ${bill.dateCreated}</li>		
+	</c:when>
+	<c:otherwise>
+		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${user.person.personName}</li>
+	</c:otherwise>
+</c:choose>
+	<c:if test="${!empty cashPoint}">
+		<li class="cashPoint"><span class="label"><openmrs:message code="openhmis.cashier.cashPoint.name"/>:</span> ${cashPoint}</li>
+	</c:if>
+</ul>
+<div class="clear"></div>
 
 <div id="patient-view">
 	<div id="patient-details" style="display: none;">
@@ -21,22 +55,10 @@
 </div>
 
 <div id="bill"></div>
+<div id="payment" class="box"></div>
 
-<!-- <div class="box"> -->
-<!-- 	<table class="bill display"> -->
-<!-- 		<thead> -->
-<!-- 			<tr> -->
-<!-- 				<td class="item-actions end"></td> -->
-<!-- 				<th class="item-description"><spring:message code="openhmis.cashier.item.description" /></th> -->
-<!-- 				<th class="item-quantity"><spring:message code="openhmis.cashier.item.quantity" /></th> -->
-<!-- 				<th class="item-price"><spring:message code="openhmis.cashier.item.price" /></th> -->
-<!-- 				<th class="item-total end"><spring:message code="openhmis.cashier.item.total" /></th> -->
-<!-- 			</tr> -->
-<!-- 		</thead> -->
-<!-- 		<tbody id="bill"> -->
-<!-- 		</tbody> -->
-<!-- 	</table> -->
-<!-- </div> -->
+<input type="submit" id="saveBill" value="Save Bill" />
+<br />
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
 

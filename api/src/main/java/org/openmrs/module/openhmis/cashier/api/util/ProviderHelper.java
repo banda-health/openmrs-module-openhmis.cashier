@@ -13,27 +13,19 @@
  */
 package org.openmrs.module.openhmis.cashier.api.util;
 
-import org.openmrs.module.openhmis.cashier.api.IMetadataAuthorizationPrivileges;
+import org.openmrs.Provider;
+import org.openmrs.api.ProviderService;
+import org.openmrs.api.context.Context;
 
-public class BasicMetadataAuthorizationPrivileges implements IMetadataAuthorizationPrivileges {
-	@Override
-	public String getRetirePrivilege() {
-		return CashierPrivilegeConstants.MANAGE_METADATA;
-	}
+import java.util.Collection;
 
-	@Override
-	public String getSavePrivilege() {
-		return CashierPrivilegeConstants.MANAGE_METADATA;
-	}
+public class ProviderHelper {
+	public static Provider getCurrentProvider(ProviderService providerService) {
+		Collection<Provider> providers = providerService.getProvidersByPerson(Context.getAuthenticatedUser().getPerson());
+			if (providers.size() > 0) {
+				return providers.iterator().next();
+			}
 
-	@Override
-	public String getPurgePrivilege() {
-		return CashierPrivilegeConstants.PURGE_METADATA;
-	}
-
-	@Override
-	public String getGetPrivilege() {
-		return CashierPrivilegeConstants.VIEW_METADATA;
-	}
+			return null;
+		}
 }
-

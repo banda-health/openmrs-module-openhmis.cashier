@@ -4,9 +4,11 @@
 		<table class="form">
 			<tbody>
 				<tr>
-					<th><?= __("Name") ?>: </th><td><?= patient.get('personName') ?></td>
-					<th><?= __("ID") ?>: </th><td><?= patient.get('identifier') ?></td>
-					<td><a class="editBillPatient" href="#"><?= __("Edit Patient") ?></a></td>
+					<th><?= __("Name") ?>: </th><td><?= patient.get('person').display ?></td>
+					<th><?= __("ID") ?>: </th><td><?= patient.get('identifiers')[0].display ?></td>
+					<? if (!readOnly) { ?>
+						<td><a class="editBillPatient" href="#"><?= __("Edit Patient") ?></a></td>
+					<? } ?>
 				</tr>
 			</tbody>
 		</table>

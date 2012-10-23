@@ -16,6 +16,7 @@ package org.openmrs.module.openhmis.cashier.api;
 import liquibase.util.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
@@ -26,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
+public abstract class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 	public static final String BILL_DATASET = BASE_DATASET_DIR + "BillTest.xml";
 
 	private ProviderService providerService;
@@ -247,5 +248,60 @@ public class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
 		}
 
 		Assert.assertTrue("Could not find the adjusting bill.", foundAdjustor);
+	}
+
+	/**
+	 * @verifies throw NullPointerException if patient is null
+	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test(expected = NullPointerException.class)
+	public void findPatientBills_shouldThrowNullPointerExceptionIfPatientIsNull() throws Exception {
+		service.findPatientBills(null, null);
+	}
+
+	/**
+	 * @verifies return all bills for the specified patient
+	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void findPatientBills_shouldReturnAllBillsForTheSpecifiedPatient() throws Exception {
+		Patient patient = patientService.getPatient(0);
+
+		List<Bill> bills = service.findPatientBills(patient, null);
+
+		Assert.assertNotNull(bills);
+		Assert.assertEquals(1, bills.size());
+		assertEntity(service.getById(0), bills.get(0));
+
+		bills = service.findPatientBills(patient.getId(), null);
+		Assert.assertNotNull(bills);
+		Assert.assertEquals(1, bills.size());
+		assertEntity(service.getById(0), bills.get(0));
+	}
+
+	/**
+	 * @verifies return an empty list if the specified patient has no bills
+	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test
+	public void findPatientBills_shouldReturnAnEmptyListIfTheSpecifiedPatientHasNoBills() throws Exception {
+		Patient patient = patientService.getPatient(1);
+
+		List<Bill> bills = service.findPatientBills(patient, null);
+		Assert.assertNotNull(bills);
+		Assert.assertEquals(0, bills.size());
+
+		bills = service.findPatientBills(1, null);
+		Assert.assertNotNull(bills);
+		Assert.assertEquals(0, bills.size());
+	}
+
+	/**
+	 * @verifies throw IllegalArgumentException if the patientId is less than zero
+	 * @see IBillService#findPatientBills(int, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void findPatientBills_shouldThrowIllegalArgumentExceptionIfThePatientIdIsLessThanZero() throws Exception {
+		service.findPatientBills(-1, null);
 	}
 }

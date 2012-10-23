@@ -54,11 +54,11 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 	}
 
 	/**
-	 * @verifies throw IllegalArgumentException if the entity is null
+	 * @verifies throw NullPointerException if the entity is null
 	 * @see IEntityService#save(org.openmrs.OpenmrsObject)
 	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void save_shouldThrowIllegalArgumentExceptionIfTheEntityIsNull() throws Exception {
+	@Test(expected = NullPointerException.class)
+	public void save_shouldThrowNullPointerExceptionIfTheEntityIsNull() throws Exception {
 		service.save(null);
 	}
 
@@ -122,11 +122,11 @@ public abstract class IEntityServiceTest<S extends IEntityService<E>, E extends 
 	}
 
 	/**
-	 * @verifies throw IllegalArgumentException if the entity is null
+	 * @verifies throw NullPointerException if the entity is null
 	 * @see IEntityService#purge(org.openmrs.OpenmrsObject)
 	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void purge_shouldThrowIllegalArgumentExceptionIfTheEntityIsNull() throws Exception {
+	@Test(expected = NullPointerException.class)
+	public void purge_shouldThrowNullPointerExceptionIfTheEntityIsNull() throws Exception {
 		service.purge(null);
 	}
 

@@ -1,4 +1,4 @@
-define(
+define("lib/backbone",
     [
         'lib/jquery',
         'lib/underscore'

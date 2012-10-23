@@ -20,49 +20,103 @@
 	</require_modules>
 	
 	<!-- Module Activator -->
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.CashierModuleActivator</activator>
+	<activator>org.openmrs.module.openhmis.cashier.CashierModuleActivator</activator>
 	
 	
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
-		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
+		<class>org.openmrs.module.openhmis.cashier.extension.html.AdminList</class>
 	</extension>
 	<extension>
 		<point>org.openmrs.gutter.tools</point>
-		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.CashierMenuItem</class>
+		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierMenuItem</class>
 	</extension>
 	<extension>
 		<point>org.openmrs.headerFullIncludeExt</point>
-		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.CashierHeadIncludes</class>
+		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierHeadIncludes</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.patientDashboardTab</point>
+		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierPatientBilHistoryExt</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.headerFull.userBar</point>
+		<class>org.openmrs.module.openhmis.cashier.extension.html.TimesheetLinkExt</class>
 	</extension>
 	
 	<!-- Privileges -->
+	<!--  Bills  -->
 	<privilege>
-		<name>Add Bills</name>
-		<description>Able to add a bill</description>
-	</privilege>
-	
-	<privilege>
-		<name>Edit Bills</name>
-		<description>Able to edit bills</description>
-	</privilege>
-	
-	<privilege>
-		<name>Delete Bills</name>
-		<description>Able to delete bills</description>
-	</privilege>
-	
-	<privilege>
-		<name>View Bills</name>
+		<name>View Cashier Bills</name>
 		<description>Able to view bills</description>
+	</privilege>
+
+	<privilege>
+		<name>Manage Cashier Bills</name>
+		<description>Able to add/edit/delete bills</description>
+	</privilege>
+		
+	<privilege>
+		<name>Purge Cashier Bills</name>
+		<description>Able to purge bills</description>
+	</privilege>
+	
+	<!--  Items  -->
+	<privilege>
+		<name>View Cashier Items</name>
+		<description>Able to view billing items</description>
+	</privilege>
+	
+	<privilege>
+		<name>Manage Cashier Items</name>
+		<description>Able to add/edit/delete billing items</description>
+	</privilege>
+
+	<privilege>
+		<name>Purge Cashier Items</name>
+		<description>Able to purge billing items</description>
+	</privilege>
+
+	<!--  Metadata  -->
+	<privilege>
+		<name>View Cashier Metadata</name>
+		<description>Able to view cashier module metadata</description>
+	</privilege>
+
+	<privilege>
+		<name>Manage Cashier Metadata</name>
+		<description>Able to add/edit/delete cashier module metadata</description>
+	</privilege>
+
+	<privilege>
+		<name>Purge Cashier Metadata</name>
+		<description>Able to purge cashier module metadata</description>
+	</privilege>
+
+	<!--  Timesheets  -->
+	<privilege>
+		<name>View Cashier Timesheets</name>
+		<description>Able to view timesheets</description>
+	</privilege>
+
+	<privilege>
+		<name>Manage Cashier Timesheets</name>
+		<description>Able to add/edit/delete timesheets</description>
+	</privilege>
+
+	<privilege>
+		<name>Purge Cashier Timesheets</name>
+		<description>Able to purge timesheets</description>
 	</privilege>
 	
 	<!-- Maps hibernate files, if present -->
 	<mappingFiles>
 		Department.hbm.xml
 		Item.hbm.xml
+		Bill.hbm.xml
 		Cashier.hbm.xml
+		SequentialReceiptNumberGenerator.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

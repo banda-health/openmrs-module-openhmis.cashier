@@ -15,6 +15,9 @@ package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsMetadata;
 
+/**
+ * Model class that represents a location where {@link Bill}'s can be created and paid for.
+ */
 public class CashPoint extends BaseOpenmrsMetadata {
 	private Integer cashPointId;
 
@@ -26,5 +29,9 @@ public class CashPoint extends BaseOpenmrsMetadata {
 	@Override
 	public void setId(Integer id) {
 		this.cashPointId = id;
+	}
+	
+	public String toString() {
+		return getName();
 	}
 }

@@ -11,15 +11,13 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.webservices.rest.web.controller;
 
-/**
- * Represents types that define the required privileges for the core data service operations.
- */
-public interface IDataAuthorizationPrivileges extends IEntityAuthorizationPrivileges{
-	/**
-	 * The privilege required to void or unvoid an entity or {@code null} for no authorization.
-	 * @return The privilege name.
-	 */
-	String getVoidPrivilege();
-}
+import org.openmrs.module.webservices.rest.resource.PaymentModeResource;
+import org.openmrs.module.webservices.rest.web.v1_0.controller.BaseCrudController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping(value = "/rest/paymentMode")
+public class PaymentModeController extends BaseCrudController<PaymentModeResource> { }

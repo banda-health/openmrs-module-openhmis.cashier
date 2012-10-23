@@ -13,10 +13,6 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
@@ -39,20 +35,54 @@ import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Resource("item")
 @Handler(supports = { Item.class }, order = 0)
 public class ItemResource extends BaseRestMetadataResource<Item> {
 
+	@Override
+	public SimpleObject search(String query, RequestContext context) throws ResponseException {
+		IItemService service = (IItemService) Context.getService(getServiceClass());
+		// Try searching by code
+		SimpleObject resultByCode = searchByCode(query, context, service);
+		if (resultByCode != null) return resultByCode;
+
+		// Do a name search
+		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
+		List<Item> items = service.findByName(query, context.getIncludeAll(), pagingInfo);
+		AlreadyPaged<Item> results = new AlreadyPaged<Item>(context, items, pagingInfo.hasMoreResults());
+		return results.toSimpleObject();
+	}
+ 
 	public SimpleObject search(String query, String department_uuid, RequestContext context) throws ResponseException {
 		IItemService service = (IItemService) Context.getService(getServiceClass());
 		IDepartmentService deptService = (IDepartmentService) Context.getService(IDepartmentService.class);
 		Department department = deptService.getByUuid(department_uuid);
 		
+		// Try searching by code
+		SimpleObject resultByCode = searchByCode(query, context, service);
+		if (resultByCode != null) return resultByCode;
+		
+		// Do a name + department search
 		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
 		List<Item> items = service.findItems(department, query, context.getIncludeAll(), pagingInfo);
-		Boolean hasMoreResults = (pagingInfo.getPage() * pagingInfo.getPageSize()) < pagingInfo.getTotalRecordCount();
-		AlreadyPaged<Item> results = new AlreadyPaged<Item>(context, items, hasMoreResults);
+		AlreadyPaged<Item> results = new AlreadyPaged<Item>(context, items, pagingInfo.hasMoreResults());
 		return results.toSimpleObject();
+	}
+	
+	protected SimpleObject searchByCode(String query, RequestContext context, IItemService service) throws ResponseException {
+		if (service == null) service = (IItemService) Context.getService(getServiceClass());
+		Item itemByCode = service.getItemByCode(query);
+		if (itemByCode != null) {
+			List<Item> list = new ArrayList<Item>(1);
+			list.add(itemByCode);
+			return new AlreadyPaged<Item>(context, list, false).toSimpleObject();
+		}
+		return null;
 	}
 	
 	@Override
@@ -104,10 +134,23 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		}
 	}
 	
+	/**
+	 * Set the default price.
+	 * 
+	 * Typically will use a uuid, but in the case of creating a new price (not
+	 * yet having a uuid), we compare price strings.  Dubious? 
+	 * 
+	 * @param instance
+	 * @param uuidOrPrice
+	 */
 	@PropertySetter(value="defaultPrice")
-	public void setDefaultPrice(Item instance, String price_uuid) {
+	public void setDefaultPrice(Item instance, String uuidOrPrice) {
 		for (ItemPrice price : instance.getPrices()) {
-			if (price.getUuid().equals(price_uuid)) {
+			if (price.getUuid().equals(uuidOrPrice)) {
+				instance.setDefaultPrice(price);
+				break;
+			}
+			else if (price.getPrice().toPlainString().equals(uuidOrPrice)) {
 				instance.setDefaultPrice(price);
 				break;
 			}
@@ -119,9 +162,8 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		return new Item();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataService<Item>> getServiceClass() {
-		return (Class<IMetadataService<Item>>)(Object)IItemService.class;
+	public Class<? extends IMetadataService<Item>> getServiceClass() {
+		return IItemService.class;
 	}
 }

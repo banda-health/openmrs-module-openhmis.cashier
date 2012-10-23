@@ -10,6 +10,7 @@ define(
 	],
 	function($, Backbone, _, openhmis) {
 		var editors = Backbone.Form.editors;
+		
 		editors.BasicNumber = editors.Number.extend({
 			initialize: function(options) {
 				this.defaultValue = null;
@@ -28,13 +29,13 @@ define(
 					}
 					
 				//Allow backspace && enter
-				if (event.charCode == 0 || event.charCode == 13) {
+				if (event.which == 8 || event.which == 13) {
 				  delayedDetermineChange();
 				  return;
 				}
 				
 				//Get the whole new value so that we can prevent things like double decimals points etc.
-				var newVal = this.$el.val() + String.fromCharCode(event.charCode);
+				var newVal = this.$el.val() + String.fromCharCode(event.which);
 		  
 				var numeric = /^[0-9]*\.?[0-9]*?$/.test(newVal);
 		  
@@ -45,7 +46,13 @@ define(
 				  event.preventDefault();
 				}
 		   },
-			
+		   
+		   setValue: function(value) {
+				if (value !== undefined && value !== null && this.schema.format)
+					this.$el.val(this.schema.format(value));
+				else
+					this.$el.val(value);
+		   }
 		});
 		
 		editors.CustomNumber = editors.Number.extend({
@@ -54,7 +61,7 @@ define(
 					'click': 'determineChange'
 				});
 				editors.Number.prototype.initialize.call(this, options);
-				if (options && options.schema) this.nonNegative = options.schema.nonNegative;
+				if (options && options.schema) this.minimum = options.schema.minimum;
 			},
 			
 			setValue: function(value) {
@@ -63,8 +70,8 @@ define(
 			},
 			
 			determineChange: function(event) {
-				if (this.nonNegative && parseInt(this.$el.val()) < 0) {
-					this.$el.val(0);
+				if (this.minimum && parseInt(this.$el.val()) < this.minimum) {
+					this.$el.val(this.minimum);
 					return;
 				}
 				editors.Number.prototype.determineChange.call(this, event);
@@ -77,18 +84,33 @@ define(
 			//}
 		});
 		
+		editors.DepartmentSelect = editors.Select.extend({
+		    getValue: function() {
+				$selected = this.$('option:selected');
+				return new openhmis.Department({ uuid: $selected.val(), name: $selected.text() });
+			},
+			
+			setValue: function(value) {
+				if (value === null)
+					return;
+				else if (_.isString(value))
+					this.$el.val(value);
+				else {
+					if (value.attributes) this.$el.val(value.id); // Backbone model
+					else this.$el.val(value.uuid); // bare object
+				}
+			},
+		});
+		
 		editors.Item = editors.Base.extend({
 			tagName: "span",
 			className: "editor",
 			tmplFile: 'editors.html',
 			tmplSelector: '#item-editor',
-			departmentMap: function() {
+			departmentCollection: function() {
 				var collection = new openhmis.GenericCollection([], { model: openhmis.Department });
-				var map = {};
-				collection.fetch({ success: function(collection) {
-					collection.each(function(item) { map[item.id] = item.get('name') });
-				}});
-				return map;
+				collection.fetch();
+				return collection;
 			}(),
 			
 			initialize: function(options) {
@@ -96,11 +118,17 @@ define(
 				editors.Base.prototype.initialize.call(this, options);
 				this.template = this.getTemplate();
 				this.cache = {};
+				this.departmentCollection.on("reset", this.render);
 			},
 			
 			events: {
 				'change select.department': 'modified',
-				'change input.item-name' : 'modified'
+				'change input.item-name' : 'modified',
+				'focus select': 'handleFocus',
+				'focus .item-name': 'handleFocus',
+				'blur select': 'handleBlur',
+				'blur .item-name': 'handleBlur',
+				'keypress .item-name': 'onItemNameKeyPress'
 			},
 			
 			getUuid: function() {
@@ -109,6 +137,34 @@ define(
 			
 			getValue: function() {
 				return this.value;
+			},
+			
+			handleFocus: function(event) {
+				if (this.hasFocus) return;
+				this.trigger("focus", this);
+			},
+			
+			handleBlur: function(event) {
+				if (!this.hasFocus) return;
+				var self = this;
+				setTimeout(function() {
+					// Check if another input from this editor has come into focus
+					if (self.$('select:focus')[0] || self.$('.item-name:focus')[0] || self.$('label:focus')[0])
+						return;
+					if (self.value) {
+						self.$('.item-name').val(self.value.get("name"));
+						self.$('.department').val(self.value.get("department").id);
+						self.$('label.over-apply').hide();
+					}
+					self.trigger("blur", self);
+				}, 0);
+			},
+			
+			onItemNameKeyPress: function(event) {
+				if (event.keyCode === 13) {	
+					if (this.itemUpdating !== undefined)
+						event.stopPropagation();
+				}
 			},
 			
 			modified: function(event) {
@@ -137,9 +193,10 @@ define(
 					url: resultCollection.url + fetchQuery,
 					success: function(collection, resp) {
 						var data = collection.map(function(model) { return {
-							id: model.id,
-							name: model.get('name'),
-							department_uuid: model.get('department')
+							val: model.id,
+							label: model.get('name'),
+							codes: model.get('codes'),
+							department_uuid: model.get('department').id
 						}});
 						view.cache[query] = data;
 						response(data);
@@ -148,14 +205,18 @@ define(
 			},
 			
 			selectItem: function(event, ui) {
-				this.$('.item-name').val(ui.item.name);
-				this.$('.item-uuid').val(ui.item.id);
-				this.$('.department').val(ui.item.department_uuid);
-				var uuid = ui.item.id;
+				this.itemUpdating = true;
+				var uuid = ui.item.val;
+				var name = ui.item.label;
+				var departmentUuid = ui.item.department_uuid;
+				this.$('.item-name').val(name);
+				this.$('.item-uuid').val(uuid);
+				this.$('.department').val(departmentUuid);
 				this.value = new openhmis.Item({ uuid: uuid });
 				var view = this;
 				this.value.fetch({ success: function(model, resp) {
 					view.trigger('change', view);
+					delete view.itemUpdating;
 				}});
 			},
 			
@@ -167,12 +228,12 @@ define(
 			
 			render: function() {
 				this.$el.html(this.template({
-					departments: this.departmentMap,
+					departments: this.departmentCollection,
 					item: this.value
 				}));
 				this.$('select').keydown(this.departmentKeyDown);
 				this.$('label').labelOver('over-apply');
-				
+				var self = this;
 				this.$('.item-name').autocomplete({
 					minLength: 2,
 					source: this.doItemSearch,
@@ -180,10 +241,12 @@ define(
 				})
 				// Tricky stuff here to get the autocomplete list to render with our custom data
 				.data("autocomplete")._renderItem = function(ul, item) {
-					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.name + "</a>").appendTo(ul);
+					return $("<li></li>").data("item.autocomplete", item)
+						.append("<a>" + openhmis.Item.prototype.getCodesList(item.codes) + ": " + item.label + "</a>").appendTo(ul);
 				};
 				return this;
 			}
 		});
+		return editors;
 	}
 )

@@ -5,12 +5,24 @@ define(
 		'openhmis'
 	],
 	function(_, Backbone, openhmis) {
+		/**
+		 * GenericModel
+		 *
+		 * Generic JS model class for interacting with OpenMRS REST resources.
+		 * 
+		 */
 		openhmis.GenericModel = Backbone.Model.extend({
 			initialize: function(attributes, options) {
+				_.bindAll(this, 'setUnsaved');
 				if (options !== undefined) {
 					this.urlRoot = options.urlRoot;
+					this.trackUnsaved = options.trackUnsaved;
 				}
-				//_.bindAll(this, 'saveSubResource');
+				var self = this;
+				if (this.trackUnsaved === true) {
+					this.unsaved = false;
+					this.on("change", this.setUnsaved);
+				}
 			},
 			
 		    url: function() {
@@ -28,6 +40,91 @@ define(
 				return url;
 			},
 			
+			setUnsaved: function() {
+				if (this.trackUnsaved === undefined)
+					throw("trackUnsaved option should be enabed to use this funtion.");
+				this.unsaved = true;
+			},
+			
+			isUnsaved: function() {
+				return this.unsaved;
+			},
+			
+			save: function(key, value, options) {
+				// Handle a "normal" save where options are specified as the
+				// second parameter
+				if (value && value.success) {
+					var self = this;
+					var success = value.success;
+					value.success = function(model, resp) {
+						self.unsaved = false;
+						if (success) success(model, resp);
+					}
+					return Backbone.Model.prototype.save.call(this, key, value);
+				}
+				return Backbone.Model.prototype.save.call(this, key, value, options);
+			},
+			
+			// OpenMRS-specific delete functions
+			retire: function(options) {
+				options = options ? _.clone(options) : {};
+				if (options.reason !== undefined)
+					options.url = this.url() + "?reason=" + encodeURIComponent(options.reason);
+				
+				if (this.isNew()) {
+					return false;
+				}
+				
+				var model = this;
+				var success = options.success;
+				options.success = function(resp) {
+					model._setRetired();
+					model.trigger("retire sync", model, resp, options);
+					if (success)
+						success(model, resp);
+				};
+				
+				options.error = Backbone.wrapError(options.error, model, options);
+				var xhr = (this.sync || Backbone.sync).call(this, 'delete', this, options);
+				return xhr;
+			},
+			
+			unretire: function(options) {
+				this._setRetired(false);
+				this.save();
+			},
+			
+			purge: function(options) {
+				options = options ? options : {};
+				options.url = this.url() + "?purge=true";
+				Backbone.Model.prototype.destroy.call(this, options);
+			},
+		
+			isRetired: function() {
+				return this.get('retired') || this.get('voided');
+			},
+			
+			_setRetired: function(retired) {
+				retired = retired ? retired : true;
+				switch (this.getDataType()) {
+					case "data":
+						this.set("voided", retired);
+						break;
+					default:
+						this.set("retired", retired);
+				}
+			},
+		
+			getDataType: function () {
+				if (this.meta && this.meta.openmrsType)
+					return this.meta.openmrsType;
+				if (this.get("retired") !== undefined)
+					return "metadata";
+				if (this.get("voided") !== undefined)
+					return "data";
+				return "unknown";
+			},
+			
 			toJSON: function(options) {
 				if (this.schema === undefined) return Backbone.Model.prototype.toJSON.call(this, options);
 				var attributes = {};
@@ -35,23 +132,23 @@ define(
 					// This gets added to representations but cannot be set
 					if (attr === 'resourceVersion') continue;
 					
-					if (this.schema[attr] !== undefined
-						&& (this.schema[attr].readOnly === undefined
-							|| this.schema[attr].readOnly === false))
+					if (this.schema[attr] !== undefined) {
+						if (this.schema[attr].readOnly === undefined
+							|| this.schema[attr].readOnly === false)
+								attributes[attr] = this.attributes[attr];
+						if (this.schema[attr].objRef === true && typeof attributes[attr] !== "string")
+							attributes[attr] = attributes[attr].id;
+					}
+					else if (attr === "retired" || attr === "voided" && this.attributes[attr]) {
 						attributes[attr] = this.attributes[attr];
+					}
 				}
 				return _.clone(attributes);
 			},
 			
-			listToString: function(field) {
-				var collection = new openhmis.GenericCollection(this.get(field), {
-					model: this.schema[field].model
-				});
-				var str = "";
-				collection.each(function(model) {
-					str += str === "" ? model.toString() : ", " + model.toString();
-				});
-				return str;
+			toString: function() {
+				var str = this.get("display");
+					return str ? str : Backbone.Model.prototype.toString.call(this);
 			}
 		});
 		
@@ -59,10 +156,14 @@ define(
 			baseUrl: openhmis.config.restUrlRoot,
 			
 			initialize: function(models, options) {
-				if (this.model && this.model.prototype.meta && this.model.prototype.meta.restUrl)
-					this.url = this.baseUrl + this.model.prototype.meta.restUrl;
-				else
-					this.url = this.baseUrl + options.url;
+				if (options && options.baseUrl) this.baseUrl = options.baseUrl;
+				this.url = options && options.url ? this.baseUrl + options.url : this.baseUrl;
+				if (this.model) {
+					if (this.model.prototype.urlRoot !== undefined)
+						this.url = this.model.prototype.urlRoot;
+					else if (this.model.prototype.meta && this.model.prototype.meta.restUrl)
+						this.url = this.baseUrl + this.model.prototype.meta.restUrl;
+				}
 			},
 			
 			fetch: function(options) {
@@ -77,12 +178,19 @@ define(
 			},
 			
 			parse: function(response) {
-				var results = response.results;
-				for (var result in results) {
-					if (this.model.prototype.parse !== undefined)
-						results[result] = this.model.prototype.parse.call(this, results[result]);
+				return response.results;
+			},
+			
+			toString: function(schema) {
+				var collection = this;
+				if (schema !== undefined) {
+					collection = new openhmis.GenericCollection(this, { model: schema.model });
 				}
-				return results;
+				var str = "";
+				collection.each(function(model) {
+					str += str === "" ? model.toString() : ", " + model.toString();
+				});
+				return str;
 			}
 		});
 		

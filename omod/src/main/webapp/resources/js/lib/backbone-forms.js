@@ -1205,13 +1205,13 @@ Form.editors = (function() {
           }
           
       //Allow backspace
-      if (event.charCode == 0) {
+      if (event.which == 8) {
         delayedDetermineChange();
         return;
       }
       
       //Get the whole new value so that we can prevent things like double decimals points etc.
-      var newVal = this.$el.val() + String.fromCharCode(event.charCode);
+      var newVal = this.$el.val() + String.fromCharCode(event.which);
 
       var numeric = /^[0-9]*\.?[0-9]*?$/.test(newVal);
 
@@ -2243,7 +2243,7 @@ Form.editors = (function() {
 
     listItem: '\
       <li>\
-        <button type="button" data-action="remove" class="bbf-remove">&times;</button>\
+        <button type="button" data-action="remove" class="bbf-remove" title="Remove">&times;</button>\
         <div class="bbf-editor-container">{{editor}}</div>\
       </li>\
     ',

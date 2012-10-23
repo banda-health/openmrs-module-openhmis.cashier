@@ -11,6 +11,10 @@ define(
 		'view/editors'
 	],
 	function($, _, Backbone, __, openhmis) {
+		/**
+		 * GenericAddEditView
+		 * 
+		 */
 		openhmis.GenericAddEditView = Backbone.View.extend({
 			tmplFile: 'generic.html',
 			tmplSelector: '#add-edit-template',
@@ -25,6 +29,7 @@ define(
 				'click a.addLink': 'beginAdd',
 				'click .cancel': 'cancel',
 				'click .submit': 'save',
+				'submit form': 'save',
 				'click button.retireOrVoid': 'retireOrVoid',
 				'click button.unretireOrUnvoid': 'unretireOrUnvoid',
 				'click button.purge': 'purge'
@@ -35,12 +40,17 @@ define(
 				var formFields = [];
 				for (var key in model.schema) {
 					if (key === 'retired') continue;
-					//if (model.schema[key].readOnly === true) continue;
+					if (model.schema[key].hidden === true) continue;
 					formFields.push(key);
 				}
-				var formOptions = { model: model, fields: formFields };
+				var formOptions = {
+					model: model,
+					fields: formFields,
+					classNames: { errClass: "error" }
+				};
 				formOptions = _.extend(options, formOptions);
 				var modelForm = new Backbone.Form(options)
+				modelForm.render();
 				return modelForm;
 			},
 		
@@ -50,7 +60,7 @@ define(
 				$(this.addLinkEl).hide();
 				$(this.retireVoidPurgeEl).hide();
 				$(this.titleEl).show();
-				this.modelForm = this.prepareModelForm(this.model).render();
+				this.modelForm = this.prepareModelForm(this.model);
 				$(this.formEl).prepend(this.modelForm.el);
 				$(this.formEl).show();
 				$(this.formEl).find('input')[0].focus();
@@ -64,33 +74,37 @@ define(
 				$(this.retireVoidPurgeEl).hide();
 			},
 			
-			edit: function(view) {
-				this.model = view.model;
+			edit: function(model) {
+				this.model = model;
 				var self = this;
-				this.model.fetch({ success: function(model, resp) {
-					self.render();
-					$(self.titleEl).show();
-					self.modelForm = self.prepareModelForm(self.model).render();
-					$(self.formEl).prepend(self.modelForm.el);
-					$(self.formEl).show();
-					$(self.retireVoidPurgeEl).show();
-					$(self.formEl).find('input')[0].focus();
-				}});
+				this.model.fetch({
+					success: function(model, resp) {
+						self.render();
+						$(self.titleEl).show();
+						self.modelForm = self.prepareModelForm(self.model);
+						$(self.formEl).prepend(self.modelForm.el);
+						$(self.formEl).show();
+						$(self.retireVoidPurgeEl).show();
+						$(self.formEl).find('input')[0].focus();
+					},
+					error: openhmis.error
+				});
 			},
 			
-			save: function() {
-				this.modelForm.commit();
+			save: function(event) {
+				if (event) event.preventDefault();
+				var errors = this.modelForm.commit();
+				if (errors) return;
 				var view = this;
-				this.model.save(null, { success: function(model, resp) {
-					model.trigger('sync', model, resp);
-					if (model.collection === undefined) {
-						view.collection.add(model);
-						view.collection.trigger('reset');
-					}
-					view.cancel();
-				}, error: function(model, resp) {
-					openhmis.error(resp);
-				}});
+				this.model.save(null, {
+					success: function(model, resp) {
+						if (model.collection === undefined) {
+							view.collection.add(model);
+						}
+						view.cancel();
+					},
+					error: function(model, resp) { openhmis.error(resp); }
+				});
 			},
 			
 			retireOrVoid: function() {
@@ -99,9 +113,9 @@ define(
 				this.model.retire({
 					reason: reason,
 					success: function(model, resp) {
-						model.trigger('sync', model, resp);
 						view.cancel();
-					}
+					},
+					error: function(model, resp) { openhmis.error(resp); }
 				});
 			},
 			
@@ -109,19 +123,23 @@ define(
 				if (confirm("Are you sure you want to unretire this object? It will then be restored to the system")) {
 					this.model.set('retired', false);
 					var view = this;
-					this.model.save([], { success: function(model, resp) {
-						model.trigger('sync', model, resp);
-						view.cancel();
-					}});
+					this.model.save([], {
+						success: function(model, resp) {
+							model.trigger('sync', model, resp);
+							view.cancel();
+						},
+						error: function(model, resp) { openhmis.error(resp); }
+					});
 				}
 			},
 			
 			purge: function() {
 				if (confirm(__("Are you sure you want to purge this object? It will be permanently removed from the system."))) {
 					var view = this;
-					this.model.purge({ success: function(model) {
-						view.cancel();
-					}});
+					this.model.purge({
+						success: function(model) { view.cancel(); },
+						error: function(model, resp) { openhmis.error(resp); }
+					});
 				}
 			},
 		
@@ -135,26 +153,36 @@ define(
 			}
 		});
 		
+		/**
+		 * GenericListView
+		 * 
+		 */
 		openhmis.GenericListView = Backbone.View.extend({
 			tmplFile: 'generic.html',
 			tmplSelector: '#generic-list',
 			itemView: openhmis.GenericListItemView,
-			itemActions: [],
 			
 			initialize: function(options) {
 				_.bindAll(this);
+				this.options = {};
 				if (options !== undefined) {
 					this.addEditView = options.addEditView;
 					this.itemView = options.itemView ? options.itemView : openhmis.GenericListItemView
-					if (options.itemActions) this.itemActions = options.itemActions;
 					if (options.schema) this.schema = options.schema;
 					this.template = this.getTemplate();
-					this.includeFields = options.listFields;
-					this.excludeFields = options.listExcludeFields;
+
+					this.options.listTite = options.listTitle;
+					this.options.itemActions = options.itemActions || [];
+					this.options.includeFields = options.listFields;
+					this.options.excludeFields = options.listExcludeFields;
+					this.options.showRetiredOption = options.showRetiredOption !== undefined ? options.showRetiredOption : true;
+					this.options.hideIfEmpty = options.hideIfEmpty !== undefined ? options.hideIfEmpty : false;
 				}
 				if (this.addEditView !== undefined)
 					this.addEditView.on('cancel', this.deselectAll);
-				this.model.on('reset remove', this.render);
+				this.model.on("reset", this.render);
+				this.model.on("add", this.addOne);
+				this.model.on("remove", this.itemRemoved);
 				this.showRetired = false;
 				this._determineFields();
 			},
@@ -164,13 +192,20 @@ define(
 			},
 			
 			addOne: function(model, schema, lineNumber) {
-				schema = schema ? schema : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				if (this.showRetired === false && model.isRetired()) return null;
+				if ((this.$el.html() === "" && this.options.hideIfEmpty === true)
+					|| this.$("p.empty").length === 1) {
+					this.render();
+					// Re-rendering the entire list means we don't have to
+					// continue adding this item
+					return null;
+				}
+				schema = schema ? _.extend({}, model.schema, schema) : _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var className = "evenRow";
-				if (lineNumber)
+				if (lineNumber && !isNaN(lineNumber))
 					className = lineNumber % 2 === 0 ? "evenRow" : "oddRow";
 				else {
-					var $rows = this.$('tbody tr');
+					var $rows = this.$('tbody.list tr');
 					if ($rows.length > 0) {
 						var lastRow = $rows[$rows.length - 1];
 						if ($(lastRow).hasClass("evenRow"))
@@ -182,26 +217,39 @@ define(
 					fields: this.fields,
 					schema: schema,
 					className: className,
-					actions: this.itemActions
+					actions: this.options.itemActions
 				});
 				model.view = itemView;
-				this.$('tbody').append(itemView.render().el);
-				itemView.on('select', this.itemSelected);
+				this.$('tbody.list').append(itemView.render().el);
+				itemView.on('select focus', this.itemSelected);
 				itemView.on('remove', this.itemRemoved);
-				if (this.addEditView) itemView.on('select', this.addEditView.edit);
 				var view = this;
-				model.on('retired', function() { if (!view.showRetired) itemView.remove(); });
+				model.on("retire", function(item) {
+					if (!view.showRetired)
+						itemView.remove();
+						view.itemRemoved(item);
+				});
 				return itemView;
+			},
+			
+			visibleItemCount: function() {
+				if (this.showRetired)
+					return this.model.length;
+				return this.model.filter(function(item) { return !item.isRetired() }).length;
 			},
 			
 			// Called when a list item is removed
 			itemRemoved: function(item) {
-				this.colorRows();
+				if (this.visibleItemCount() === 0)
+					this.render();
+				else
+					this.colorRows();
 			},
 			
 			itemSelected: function(view) {
 				this.deselectAll();
 				this.selectedItem = view;
+				if (this.addEditView) this.addEditView.edit(view.model);
 			},
 			
 			deselectAll: function() {
@@ -234,27 +282,32 @@ define(
 			},
 			
 			_determineFields: function() {
-				if (this.includeFields !== undefined)
-					this.fields = this.includeFields;
+				if (this.options.includeFields !== undefined)
+					this.fields = this.options.includeFields;
 				else
 					this.fields = _.keys(this.model.model.prototype.schema);
-				if (this.excludeFields !== undefined) {
-					var argv = _.clone(this.excludeFields);
+				if (this.options.excludeFields !== undefined) {
+					var argv = _.clone(this.options.excludeFields);
 					argv.unshift(this.fields);
 					this.fields = _.without.apply(this, argv);
 				}
 			},
 			
 			render: function(extraContext) {
+				var length = this.visibleItemCount();
+				if (length === 0 && this.options.hideIfEmpty) {
+					this.$el.html("");
+					return this;
+				}
 				var schema = _.extend({}, this.model.model.prototype.schema, this.schema || {});
 				var context = {
 					list: this.model,
+					listLength: length,
 					fields: this.fields,
 					modelMeta: this.model.model.prototype.meta,
 					modelSchema: this.model.model.prototype.schema,
 					showRetired: this.showRetired,
-					listTitle: undefined, // custom title for list
-					itemActions: this.itemActions
+					options: this.options
 				}
 				if (extraContext !== undefined) context = _.extend(context, extraContext);
 				this.$el.html(this.template(context));
@@ -268,6 +321,10 @@ define(
 			}
 		});
 		
+		/**
+		 * GenericListItemView
+		 *
+		 */
 		openhmis.GenericListItemView = Backbone.View.extend({
 			tagName: "tr",
 			tmplFile: "generic.html",
@@ -281,8 +338,9 @@ define(
 				}
 				_.bindAll(this);
 				this.template = this.getTemplate();
-				this.model.on('sync', this.render);
+				this.model.on("sync", this.render);
 				this.model.on('destroy', this.remove);
+				this.model.on("change", this.onModelChange);
 				this.enableActions();
 			},
 			
@@ -312,13 +370,33 @@ define(
 			},
 			
 			select: function() {
+				// If this list item has a form, we'll use that for focus
+				if (this.form !== undefined) return;
 				if (this.$el.hasClass("row_selected")) return;
 				this.trigger('select', this);
 				this.$el.addClass("row_selected");
 			},
 			
 			focus: function() {
+				this.trigger("focus", this);
 				this.$el.addClass("row_selected");
+			},
+			
+			blur: function(event) {
+				this.trigger("blur", this);
+				this.$el.removeClass("row_selected");
+				this.commitForm(event);
+			},
+			
+			onModelChange: function(model) {
+				if (model.hasChanged())
+					this.trigger("change", this);
+			},
+			
+			commitForm: function(event) {
+				var errors = this.form.commit();
+				if (errors && this.displayErrors) this.displayErrors(errors, event);
+				return errors;
 			},
 			
 			removeItem: function(event) {
@@ -340,11 +418,14 @@ define(
 				this.$el.html(this.template({
 					model: this.model,
 					actions: this.actions,
-					fields: this.fields
+					fields: this.fields,
+					GenericCollection: openhmis.GenericCollection
 				})).addClass("selectable");
 				if (_.indexOf(this.actions, 'inlineEdit') !== -1) {
-					this.form.render();
+					//this.form.render();
 					this.$el.append(this.form.$('td'));
+					this.form.on('blur', this.blur);
+					this.form.on('focus', this.focus);
 				}
 				return this;
 			}
@@ -369,7 +450,9 @@ define(
 				url: model.prototype.meta.restUrl,
 				model: model
 			});
-			var addEditView = new openhmis.GenericAddEditView({ collection: collection });
+			var addEditView = options.addEditViewType
+				? new options.addEditViewType({ collection: collection })
+				: new openhmis.GenericAddEditView({ collection: collection });
 			addEditView.setElement($('#add-edit-form'));
 			addEditView.render();
 			var viewOptions = _.extend({
@@ -378,7 +461,6 @@ define(
 			}, options);
 			var listViewType = options.listView ? options.listView : openhmis.GenericListView;
 			var listView = new listViewType(viewOptions);
-			collection.on('reset', listView.render);
 			listView.setElement($('#existing-form'));
 			collection.fetch();
 		}
@@ -386,8 +468,10 @@ define(
 		Backbone.Form.setTemplates({
 			trForm: '<b>{{fieldsets}}</b>',
 			blankFieldset: '<b class="fieldset">{{fields}}</b>',
-			tableField: '<td class="bbf-field field-{{key}}">{{editor}}</td>'
-		})
+			tableField: '<td class="bbf-field field-{{key}}"><span class="editor">{{editor}}</span></td>'
+		}, {
+			errClass: "error"
+		});
 		
 		return openhmis;
 	}

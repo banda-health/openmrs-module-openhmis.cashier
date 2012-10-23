@@ -18,6 +18,9 @@ import org.openmrs.Provider;
 
 import java.util.Date;
 
+/**
+ * Model class to represent a cashier timesheet entry.
+ */
 public class Timesheet extends BaseOpenmrsData {
 	private Integer timesheetId;
 	private Provider cashier;

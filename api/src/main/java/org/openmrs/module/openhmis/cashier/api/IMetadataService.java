@@ -18,10 +18,12 @@ import org.openmrs.OpenmrsMetadata;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.support.RequestContext;
-
 import java.util.List;
 
+/**
+ * Represents classes that provide data access services to model types that inherit from {@link OpenmrsMetadata}.
+ * @param <E> The entity model class.
+ */
 @Transactional
 public interface IMetadataService<E extends OpenmrsMetadata> extends IEntityService<E> {
 	/**

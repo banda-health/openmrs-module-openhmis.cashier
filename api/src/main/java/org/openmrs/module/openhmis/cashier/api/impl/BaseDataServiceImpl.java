@@ -20,21 +20,24 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.IDataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.cashier.api.security.IDataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IDataService;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 /**
- * The base type for data entity services.
- * @param <E> The entity type.
+ * The base type for {@link IDataService}s.
+ * @param <E> The entity model type.
  */
+@Transactional
 public abstract class BaseDataServiceImpl<E extends BaseOpenmrsData>
 		extends BaseEntityServiceImpl<E, IDataAuthorizationPrivileges> implements IDataService<E> {
 
 	@Override
+	@Transactional
 	public E voidEntity(E entity, String reason) {
 		IDataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getVoidPrivilege())) {
@@ -57,6 +60,7 @@ public abstract class BaseDataServiceImpl<E extends BaseOpenmrsData>
 	}
 
 	@Override
+	@Transactional
 	public E unvoidEntity(E entity) throws APIException {
 		IDataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getVoidPrivilege())) {
@@ -75,11 +79,13 @@ public abstract class BaseDataServiceImpl<E extends BaseOpenmrsData>
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> getAll(boolean voided) throws APIException {
 		return getAll(voided, null);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> getAll(boolean voided, PagingInfo pagingInfo) throws APIException {
 		IDataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
@@ -94,11 +100,13 @@ public abstract class BaseDataServiceImpl<E extends BaseOpenmrsData>
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> findByName(String nameFragment, boolean includeVoided) throws APIException {
 		return findByName(nameFragment, includeVoided, null);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> findByName(String nameFragment, boolean includeVoided, PagingInfo pagingInfo) throws APIException {
 		IDataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {

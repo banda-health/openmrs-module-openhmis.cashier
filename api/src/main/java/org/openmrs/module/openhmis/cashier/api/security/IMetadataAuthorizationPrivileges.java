@@ -11,21 +11,15 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.api.model;
+package org.openmrs.module.openhmis.cashier.api.security;
 
-public interface IScheme {
-
+/**
+ * Represents types that define the privileges for the core {@link org.openmrs.module.openhmis.cashier.api.IMetadataService} operations.
+ */
+public interface IMetadataAuthorizationPrivileges extends IEntityAuthorizationPrivileges {
 	/**
-	 * A Scheme should use a reference to a bill to determine how much of the
-	 * bill it will cover
-	 *  
-	 * @param bill
+	 * The privilege required to retire or unretire metadata or {@code null} for no authorization.
+	 * @return The privilege name.
 	 */
-	public void setBill(Bill bill);
-	
-	/**
-	 * Determine how much of the bill will be covered by the scheme
-	 * @return Double the portion of the bill covered by the scheme 
-	 */
-	public Double getCoveredAmount();
+	String getRetirePrivilege();
 }

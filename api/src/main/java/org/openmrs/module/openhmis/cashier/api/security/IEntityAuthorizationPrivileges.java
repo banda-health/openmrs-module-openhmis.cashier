@@ -12,10 +12,10 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.security;
 
 /**
- * Represents types that define the required privileges for the core entity service operations.
+ * Represents types that define the privileges for core {@link org.openmrs.module.openhmis.cashier.api.IEntityService} operations.
  */
 public interface IEntityAuthorizationPrivileges {
 	/**

@@ -55,6 +55,7 @@ public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extend
 			DelegatingResourceDescription description = new DelegatingResourceDescription();
 			description.addProperty("uuid");
 			description.addProperty("name");
+			description.addProperty("retired");			
 			return description;
 		}
 		DelegatingResourceDescription description = getDefaultRepresentationDescription();		

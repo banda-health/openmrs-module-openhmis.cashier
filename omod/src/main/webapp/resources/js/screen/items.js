@@ -9,14 +9,16 @@ curl(
 		'view/generic',
 		'view/list',
 		'view/editors',
-		'view/search'
+		'view/search',
+		'view/item'
 	],
 	function($, openhmis) {
 		$(function() {
 			openhmis.startAddEditScreen(openhmis.Item, {
 				listView: openhmis.GenericSearchableListView,
 				searchView: openhmis.NameSearchView,
-				listFields: ['name', 'codes']
+				addEditViewType: openhmis.ItemAddEditView,
+				listFields: ['name', 'department', 'codes']
 			});
 		});
 	}

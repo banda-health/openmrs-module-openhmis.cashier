@@ -20,9 +20,6 @@ import java.math.BigDecimal;
 /**
  * A LineItem represents a line on a {@link Bill} which will bill some quantity
  * of a particular {@link Item}.
- * 
- * @author daniel
- *
  */
 public class BillLineItem extends BaseOpenmrsData {
 	private int billLineItemId;
@@ -31,6 +28,7 @@ public class BillLineItem extends BaseOpenmrsData {
 	private BigDecimal price;
 	private String priceName;
 	private Integer quantity;
+	private Integer lineItemOrder;
 
 	@Override
 	public Integer getId() {
@@ -88,5 +86,13 @@ public class BillLineItem extends BaseOpenmrsData {
 
 	public void setPriceName(String priceName) {
 		this.priceName = priceName;
+	}
+
+	public Integer getLineItemOrder() {
+		return lineItemOrder;
+	}
+
+	public void setLineItemOrder(Integer lineItemOrder) {
+		this.lineItemOrder = lineItemOrder;
 	}
 }

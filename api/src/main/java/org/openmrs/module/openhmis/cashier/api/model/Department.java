@@ -15,6 +15,9 @@ package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsMetadata;
 
+/**
+ * Model class that represents an institutional department.
+ */
 public class Department extends BaseOpenmrsMetadata {
 	private Integer departmentId;
 

@@ -2,9 +2,10 @@ define(
 	[
 		'lib/backbone',
 		'model/generic',
+		'lib/i18n',
 		'model/item'
 	],
-	function(Backbone, openhmis) {
+	function(Backbone, openhmis, __) {
 		openhmis.LineItem = openhmis.GenericModel.extend({
 			meta: {
 				name: 'Line Item',
@@ -13,25 +14,29 @@ define(
 			schema: {
 				item: { type: 'NestedModel', model: openhmis.Item },
 				quantity: { type: 'BasicNumber' },
-				price: { type: 'BasicNumber' },
-				total: { type: 'BasicNumber', readOnly: true }
+				price: { type: 'BasicNumber', format: openhmis.ItemPrice.prototype.format },
+				total: { type: 'BasicNumber', readOnly: true, format: openhmis.ItemPrice.prototype.format }
 			},
 			
-			initialize: function() {
+			initialize: function(attributes, options) {
+				if (attributes && attributes.item && !(attributes.item instanceof Backbone.Model)) {
+					this.set("item", new openhmis.Item(attributes.item));
+				}
 				this.schema.total.value = this.getTotal;
-				this.clean = true;
+				this.set("total", this.getTotal(), { silent: true });
+				this.clean = false;
 			},
 			
 			validate: function(attrs, options) {
-				if (!attrs.item || !attrs.item.id) return { item: "Please choose an item" };
-				if (!attrs.item.get('department')) return { item: "Item must belong to a department" };
+				if (!attrs.item || !attrs.item.id) return { item: __("Please choose an item") };
+				if (!attrs.item.get('department')) return { item: __("Item must belong to a department") };
+				if (!attrs.quantity || isNaN(attrs.quantity)) return { quantity: __("Please enter a quantity") }
 				return null;
 			},
 			
 			_validate: function(attrs, options) {
 				var valid = openhmis.GenericModel.prototype._validate.call(this, attrs, options);
-				if (valid)
-					this.clean = true;
+				if (valid) this.clean = true;
 				return valid;
 			},
 			
@@ -57,6 +62,21 @@ define(
 					|| this.get('price') === undefined)
 					return undefined;
 				return this.get('price') * this.get('quantity');
+			},
+			
+			parse: function(resp) {
+				if (resp.item)
+					resp.item = new openhmis.Item(resp.item, { parse: true });
+				if (resp.quantity && resp.price) resp.total = resp.price * resp.quantity;
+				return resp;
+			},
+			
+			toJSON: function() {
+				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
+				if (attrs.item) {
+					attrs.item = attrs.item.id;
+				}
+				return attrs;
 			}
 		});
 		

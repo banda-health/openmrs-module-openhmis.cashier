@@ -17,6 +17,9 @@ import org.openmrs.BaseOpenmrsMetadata;
 
 import java.math.BigDecimal;
 
+/**
+ * Model class to represent the price of an {@link Item}.
+ */
 public class ItemPrice extends BaseOpenmrsMetadata {
 	private Integer itemPriceId;
 	private BigDecimal price;

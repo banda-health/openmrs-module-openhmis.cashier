@@ -11,15 +11,15 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.openhmis.cashier.api;
+package org.openmrs.module.openhmis.cashier.api.security;
 
 /**
- * Represents types that define the required privileges for the core metadata service operations.
+ * Represents types that define the privileges for the core {@link org.openmrs.module.openhmis.cashier.api.IDataService} operations.
  */
-public interface IMetadataAuthorizationPrivileges extends IEntityAuthorizationPrivileges {
+public interface IDataAuthorizationPrivileges extends IEntityAuthorizationPrivileges{
 	/**
-	 * The privilege required to retire or unretire metadata or {@code null} for no authorization.
+	 * The privilege required to void or unvoid an entity or {@code null} for no authorization.
 	 * @return The privilege name.
 	 */
-	String getRetirePrivilege();
+	String getVoidPrivilege();
 }

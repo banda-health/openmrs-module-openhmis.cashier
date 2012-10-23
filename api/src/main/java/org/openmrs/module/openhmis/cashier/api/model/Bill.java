@@ -24,9 +24,7 @@ import java.util.Set;
 import java.util.Vector;
 
 /**
- * A Bill is a list of {@link BillLineItem}s created by a cashier for a patient.  It can have multiple payments
- * associated with it.
- *
+ * Model class that represents a list of {@link BillLineItem}s and {@link Payment}s created by a cashier for a patient.
  */
 public class Bill extends BaseOpenmrsData {
 	private Integer billId;
@@ -39,6 +37,26 @@ public class Bill extends BaseOpenmrsData {
 	private List<BillLineItem> lineItems;
 	private Set<Payment> payments;
 	private Set<Bill> adjustedBy;
+	
+	public BigDecimal getTotal() {
+		if (lineItems == null) return new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
+		for (BillLineItem line : lineItems) {
+			if (line.getVoided() != true)
+				total = total.add(line.getTotal());
+		}
+		return total;
+	}
+	
+	public BigDecimal getTotalPaid() {
+		if (payments == null) return new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
+		for (Payment payment : payments) {
+			if (payment.getVoided() != true)
+				total = total.add(payment.getAmount());
+		}
+		return total;
+	}
 	
 	@Override
 	public Integer getId() {
@@ -167,7 +185,6 @@ public class Bill extends BaseOpenmrsData {
 		}
 
 		Payment payment = new Payment();
-		payment.setBill(this);
 		payment.setPaymentMode(mode);
 		payment.setAmount(amount);
 
@@ -194,6 +211,10 @@ public class Bill extends BaseOpenmrsData {
 		}
 
 		this.payments.add(payment);
+		payment.setBill(this);
+		
+		if (getTotalPaid().compareTo(getTotal()) >= 0 && this.status == BillStatus.PENDING)
+			this.setStatus(BillStatus.PAID);
 	}
 
 	public void removePayment(Payment payment) {

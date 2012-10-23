@@ -29,7 +29,7 @@ public class CashierMenuItem extends LinkExt {
 
 	@Override
 	public String getRequiredPrivilege() {
-		return "Add Bills";
+		return "Manage Cashier Bills";
 	}
 
 	@Override
