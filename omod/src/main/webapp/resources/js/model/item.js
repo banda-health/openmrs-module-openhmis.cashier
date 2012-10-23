@@ -15,15 +15,7 @@ define(
 			schema: {
 				code: { type: 'Text' }
 			},
-			toString: function() { return this.get('code'); },
-			
-			listToString: function(list) {
-				var string = "";
-				for (var id in list) {
-					string += ((id == 0) ? "" : ", ") + list[id].code
-				}
-				return string;
-			}			
+			toString: function() { return this.get('code'); }
 		});
 		
 		openhmis.ItemPrice = openhmis.GenericModel.extend({
