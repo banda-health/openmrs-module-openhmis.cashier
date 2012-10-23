@@ -47,7 +47,11 @@ public class TimesheetLinkExt extends LinkExt {
 			Provider provider = ProviderHelper.getCurrentProvider(providerService);
 			if (provider != null) {
 				isProviderUser = true;
-				currentTimesheet = timesheetService.getCurrentTimesheet(provider);
+				try {
+					currentTimesheet = timesheetService.getCurrentTimesheet(provider);
+				} catch (Exception e) {
+					currentTimesheet = null;
+				}
 			}
 		}
 
