@@ -29,6 +29,7 @@ define(
 				'click a.addLink': 'beginAdd',
 				'click .cancel': 'cancel',
 				'click .submit': 'save',
+				'submit form': 'save',
 				'click button.retireOrVoid': 'retireOrVoid',
 				'click button.unretireOrUnvoid': 'unretireOrUnvoid',
 				'click button.purge': 'purge'
@@ -90,7 +91,8 @@ define(
 				});
 			},
 			
-			save: function() {
+			save: function(event) {
+				if (event) event.preventDefault();
 				var errors = this.modelForm.commit();
 				if (errors) return;
 				var view = this;

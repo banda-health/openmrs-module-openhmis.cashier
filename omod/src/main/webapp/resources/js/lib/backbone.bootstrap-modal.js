@@ -74,6 +74,12 @@ define(
           this.trigger('ok');
           this.close();
         },
+        'submit form': function(event) {
+          event.preventDefault();
+          
+          this.trigger('ok');
+          this.close();
+        },
         'keypress': function(event) {
           if (event.charCode === 13) {
             event.preventDefault();
