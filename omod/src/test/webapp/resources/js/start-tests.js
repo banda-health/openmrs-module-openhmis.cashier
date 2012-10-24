@@ -14,7 +14,8 @@ curl(
 				'js!' + testBaseUrl + '/model/generic.js',
 				'js!' + testBaseUrl + '/model/item.js',
 				'js!' + testBaseUrl + '/view/generic.js',
-				'js!' + testBaseUrl + '/view/editors.js'
+				'js!' + testBaseUrl + '/view/editors.js',
+				'js!' + testBaseUrl + '/lib/i18n.js'
 			],
 			function() {
 				$(function() {

@@ -434,11 +434,12 @@ define(
 		openhmis.GenericSearchableListView = openhmis.GenericListView.extend({
 			initialize: function(options) {
 				_.bindAll(this);
+				openhmis.GenericListView.prototype.initialize.call(this, options);
 				this.searchViewType = options.searchView;
 			},
 			
 			render: function() {
-				this.searchView = new this.searchViewType({ model: this.model.model });
+				this.searchView = new this.searchViewType({ modelType: this.model.model });
 				this.$el.prepend(this.searchView.render().el);
 				return this;
 			}

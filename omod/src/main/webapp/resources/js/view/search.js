@@ -12,7 +12,24 @@ define(
 			
 			initialize: function(options) {
 				this.template = this.getTemplate();
-				this.model = new this.model();
+				if (options) {
+					this.modelType = options.modelType;
+				}
+				this.model = new this.modelType();
+			},
+			
+			events: {
+				"keypress #nameSearchName": "onKeyPress",
+				"submit form": "doSearch"
+			},
+			
+			onKeyPress: function(event) {
+				if (event.which === 13)
+					this.doSearch();
+			},
+			
+			doSearch: function() {
+				var a = 1;
 			},
 			
 			render: function() {
