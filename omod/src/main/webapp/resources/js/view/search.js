@@ -26,7 +26,7 @@ define(
 			onKeyPress: function(event) {
 				if (event.which === 13) {
 					event.stopPropagation();
-					this.submitForm();
+					//this.submitForm();
 				}
 			},
 

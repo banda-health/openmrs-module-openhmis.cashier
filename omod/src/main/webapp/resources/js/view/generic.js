@@ -165,6 +165,7 @@ define(
 			initialize: function(options) {
 				_.bindAll(this);
 				this.options = {};
+				this.options.pageSize = 5;
 				if (options !== undefined) {
 					this.addEditView = options.addEditView;
 					this.itemView = options.itemView ? options.itemView : openhmis.GenericListItemView
@@ -175,11 +176,14 @@ define(
 					this.options.itemActions = options.itemActions || [];
 					this.options.includeFields = options.listFields;
 					this.options.excludeFields = options.listExcludeFields;
+					this.options.showPaging = options.showPaging !== undefined ? options.showPaging : true;
+					this.options.pageSize = options.pageSize || this.options.pageSize;
 					this.options.showRetiredOption = options.showRetiredOption !== undefined ? options.showRetiredOption : true;
 					this.options.hideIfEmpty = options.hideIfEmpty !== undefined ? options.hideIfEmpty : false;
 				}
 				if (this.addEditView !== undefined)
 					this.addEditView.on('cancel', this.deselectAll);
+				this.model.setPageSize(this.options.pageSize);
 				this.model.on("reset", this.render);
 				this.model.on("add", this.addOne);
 				this.model.on("remove", this.itemRemoved);
@@ -431,6 +435,11 @@ define(
 			}
 		});
 		
+		
+		/**
+		 * GenericSearchableListView
+		 *
+		 */
 		openhmis.GenericSearchableListView = openhmis.GenericListView.extend({
 			initialize: function(options) {
 				_.bindAll(this);
@@ -441,11 +450,16 @@ define(
 			},
 			
 			onNewResults: function(results) {
-				this.model = results;
+				this.model.reset(results.models);
+				this.model.setSearchFilter(results.getSearchFilter());
 				this.render();
 			},
 			
 			render: function() {
+				if (this.searchView.lastSearch)
+					this.options.listTitle = __('Results for "%s"', this.searchView.lastSearch);
+				else
+					this.options.listTitle = undefined;
 				openhmis.GenericListView.prototype.render.call(this);
 				this.$el.prepend(this.searchView.render().el);
 				this.searchView.delegateEvents();

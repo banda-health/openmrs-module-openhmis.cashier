@@ -160,7 +160,10 @@ define(
 			baseUrl: openhmis.config.restUrlRoot,
 			
 			initialize: function(models, options) {
-				if (options && options.baseUrl) this.baseUrl = options.baseUrl;
+				if (options) {
+					if (options.baseUrl) this.baseUrl = options.baseUrl;
+					if (options.pageSize) this.pageSize = options.pageSize;
+				}
 				this.url = options && options.url ? this.baseUrl + options.url : this.baseUrl;
 				if (this.model) {
 					if (this.model.prototype.urlRoot !== undefined)
@@ -170,6 +173,14 @@ define(
 				}
 			},
 			
+			getPageSize: function() { return this.pageSize; },
+			
+			setPageSize: function(size) { this.pageSize = size; },
+			
+			getSearchFilter: function() { return this.searchFilter; },
+			
+			setSearchFilter: function(query) { this.searchFilter = query; },
+			
 			fetch: function(options) {
 				options = options ? options : {};
 				var error = options.error;
@@ -178,15 +189,18 @@ define(
 					if (error !== undefined)
 						error(model, data);
 				}
+				if (this.searchFilter) options.queryString = openhmis.addQueryStringParameter(options.queryString, this.searchFilter);
+				if (this.pageSize) options.queryString = openhmis.addQueryStringParameter(options.queryString, "limit=" + this.pageSize);
+				if (options.queryString) options.url = this.url + "?" + options.queryString;
 				Backbone.Collection.prototype.fetch.call(this, options)
 			},
 			
 			search: function(query, options) {
+				options = options ? options : {};
 				if (query) {
-					if (options && options.remember === true)
-						this.url = this.url + "?" + query;
-					else
-						options.url = this.url + "?" + query;
+					if (options.remember === true)
+						this.searchFilter = query;
+					options.queryString = openhmis.addQueryStringParameter(options.queryString, query);
 				}
 				return this.fetch(options);
 			},

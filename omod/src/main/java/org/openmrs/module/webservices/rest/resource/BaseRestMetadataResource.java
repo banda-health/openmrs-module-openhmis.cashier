@@ -16,14 +16,14 @@ package org.openmrs.module.webservices.rest.resource;
 import org.openmrs.OpenmrsMetadata;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
-import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
+import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.MetadataDelegatingCrudResource;
-import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extends MetadataDelegatingCrudResource<E> implements IMetadataServiceResource<E> {
@@ -88,13 +88,14 @@ public abstract class BaseRestMetadataResource<E extends OpenmrsMetadata> extend
 	}
 	
 	@Override
-	protected NeedsPaging<E> doGetAll(RequestContext context) throws ResponseException {
+	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
 		IMetadataService<E> service = Context.getService(getServiceClass());
-		return new NeedsPaging<E>(service.getAll(), context);
+		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
+		return new AlreadyPagedWithLength<E>(context, service.getAll(pagingInfo), pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
 	}
 
 	@Override
-	protected AlreadyPaged<E> doSearch(String query, RequestContext context) {
+	protected PageableResult doSearch(String query, RequestContext context) {
 		context.setRepresentation(Representation.REF);
 		return new MetadataSearcher<E>(getServiceClass()).searchByName(query, context);
 	}
