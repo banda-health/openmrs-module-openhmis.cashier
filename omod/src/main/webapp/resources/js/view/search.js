@@ -20,20 +20,45 @@ define(
 			
 			events: {
 				"keypress #nameSearchName": "onKeyPress",
-				"submit form": "doSearch"
+				"submit form": "onFormSubmit"
 			},
 			
 			onKeyPress: function(event) {
-				if (event.which === 13)
-					this.doSearch();
+				if (event.which === 13) {
+					event.stopPropagation();
+					this.submitForm();
+				}
+			},
+
+			onFormSubmit: function(event) {
+				event.preventDefault();
+				this.submitForm();
 			},
 			
-			doSearch: function() {
-				var a = 1;
+			submitForm: function() {
+				var name = this.$("#nameSearchName").val();
+				this.lastSearch = name;
+				var query = (name !== "") ? "q=" + encodeURIComponent(name) : null;
+				this.doSearch(query);
+			},
+			
+			doSearch: function(query) {
+				var collection = new openhmis.GenericCollection([], {
+					model: this.modelType });
+				var self = this;
+				collection.search(query, {
+					remember: true,
+					success: function(model, resp) {
+						self.trigger("search", model);
+					}
+				});
 			},
 			
 			render: function() {
-				this.$el.html(this.template({ model: this.model }));
+				this.$el.html(this.template({
+					model: this.model,
+					lastSearch: this.lastSearch || undefined
+				}));
 				return this;
 			}
 		});

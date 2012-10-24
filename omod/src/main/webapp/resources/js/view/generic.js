@@ -436,11 +436,19 @@ define(
 				_.bindAll(this);
 				openhmis.GenericListView.prototype.initialize.call(this, options);
 				this.searchViewType = options.searchView;
+				this.searchView = new this.searchViewType({ modelType: this.model.model });
+				this.searchView.on("search", this.onNewResults);
+			},
+			
+			onNewResults: function(results) {
+				this.model = results;
+				this.render();
 			},
 			
 			render: function() {
-				this.searchView = new this.searchViewType({ modelType: this.model.model });
+				openhmis.GenericListView.prototype.render.call(this);
 				this.$el.prepend(this.searchView.render().el);
+				this.searchView.delegateEvents();
 				return this;
 			}
 		});

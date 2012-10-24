@@ -152,6 +152,10 @@ define(
 			}
 		});
 		
+		/**
+		 * GenericCollection
+		 *
+		 */
 		openhmis.GenericCollection = Backbone.Collection.extend({
 			baseUrl: openhmis.config.restUrlRoot,
 			
@@ -175,6 +179,16 @@ define(
 						error(model, data);
 				}
 				Backbone.Collection.prototype.fetch.call(this, options)
+			},
+			
+			search: function(query, options) {
+				if (query) {
+					if (options && options.remember === true)
+						this.url = this.url + "?" + query;
+					else
+						options.url = this.url + "?" + query;
+				}
+				return this.fetch(options);
 			},
 			
 			parse: function(response) {
