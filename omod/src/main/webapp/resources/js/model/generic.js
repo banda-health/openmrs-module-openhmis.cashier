@@ -183,7 +183,12 @@ define(
 			
 			fetch: function(options) {
 				options = options ? options : {};
+				var success = options.success;
 				var error = options.error;
+				options.success = function(collection, resp) {
+					if (resp.length) collection.totalLength = resp.length;
+					if (success) success(collection, resp);
+				}
 				options.error = function(model, data) {
 					openhmis.error(data);
 					if (error !== undefined)
