@@ -49,24 +49,24 @@ public interface IDataService<E extends OpenmrsData> extends IEntityService<E> {
 
 	/**
 	 * Returns all entity records that have the specified voided status.
-	 * @param voided {@code true} to return only voided entities, {@code false} to return only voided entities.
+	 * @param includeVoided {@code true} to include voided entities.
 	 * @return All the entity records that have the specified voided status.
 	 * @throws APIException
 	 * @should return all voided entities when voided is set to true
 	 * @should return all unvoided entities when voided is set to false
 	 */
-	List<E> getAll(boolean voided) throws APIException;
+	List<E> getAll(boolean includeVoided) throws APIException;
 
 	/**
 	 * Returns all entity records that have the specified voided status and paging.
-	 * @param voided {@code true} to return only voided entities, {@code false} to return only voided entities.
+	 * @param includeVoided {@code true} to include voided entities.
 	 * @param paging The paging information.
 	 * @return All the entity records that have the specified voided status.
 	 * @throws APIException
 	 * @should return all voided entities when voided is set to true
 	 * @should return all unvoided entities when voided is set to false
 	 */
-	List<E> getAll(boolean voided, PagingInfo paging) throws APIException;
+	List<E> getAll(boolean includeVoided, PagingInfo paging) throws APIException;
 
 	/**
 	 * Finds all the entities that start with the specified name.

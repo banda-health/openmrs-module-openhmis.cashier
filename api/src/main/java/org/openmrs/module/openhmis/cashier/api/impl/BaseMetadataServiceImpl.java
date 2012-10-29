@@ -81,20 +81,22 @@ public abstract class BaseMetadataServiceImpl<E extends BaseOpenmrsMetadata>
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<E> getAll(boolean retired) throws APIException {
-		return getAll(retired, null);
+	public List<E> getAll(boolean includeRetired) throws APIException {
+		return getAll(includeRetired, null);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<E> getAll(boolean retired, PagingInfo pagingInfo) throws APIException {
+	public List<E> getAll(boolean includeRetired, PagingInfo pagingInfo) throws APIException {
 		IMetadataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
 			Context.requirePrivilege(privileges.getGetPrivilege());
 		}
 
 		Criteria criteria = dao.createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("retired", retired));
+		if (!includeRetired) {
+			criteria.add(Restrictions.eq("retired", false));
+		}
 
 		loadPagingTotal(pagingInfo, criteria);
 		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));

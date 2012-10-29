@@ -51,21 +51,21 @@ public interface IMetadataService<E extends OpenmrsMetadata> extends IEntityServ
 
 	/**
 	 * Returns all entity records that have the specified retirement status.
-	 * @param retired {@code true} to return only retired entities, {@code false} to return only unretired entities.
+	 * @param includeRetired {@code true} to include retired entities.
 	 * @return All the entity records that have the specified retirement status.
 	 * @throws APIException
-	 * @should return all retired entities when retired is set to true
+	 * @should return all entities when includeRetired is set to true
 	 * @should return all unretired entities when retired is set to false
 	 */
-	List<E> getAll(boolean retired) throws APIException;
+	List<E> getAll(boolean includeRetired) throws APIException;
 
 	/**
 	 * Returns all entity records that have the specified retirement status and paging.
-	 * @param retired {@code true} to return only retired entities, {@code false} to return only unretired entities.
+	 * @param includeRetired {@code true} to include retired entities.
 	 * @param paging The paging information.
 	 * @return All the entity records that have the specified retirement status.
 	 * @throws APIException
-	 * @should return all retired entities when retired is set to true
+	 * @should return all entities when include retired is set to true
 	 * @should return all unretired entities when retired is set to false
 	 * @should return all specified entity records if paging is null
 	 * @should return all specified entity records if paging page or size is less than one
@@ -73,7 +73,7 @@ public interface IMetadataService<E extends OpenmrsMetadata> extends IEntityServ
 	 * @should not get the total paging record count if it is more than zero
 	 * @should return paged entity records if paging is specified
 	 */
-	List<E> getAll(boolean retired, PagingInfo paging) throws APIException;
+	List<E> getAll(boolean includeRetired, PagingInfo paging) throws APIException;
 
 	/**
 	 * Finds all the entities that start with the specified name.

@@ -80,20 +80,22 @@ public abstract class BaseDataServiceImpl<E extends BaseOpenmrsData>
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<E> getAll(boolean voided) throws APIException {
-		return getAll(voided, null);
+	public List<E> getAll(boolean includeVoided) throws APIException {
+		return getAll(includeVoided, null);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<E> getAll(boolean voided, PagingInfo pagingInfo) throws APIException {
+	public List<E> getAll(boolean includeVoided, PagingInfo pagingInfo) throws APIException {
 		IDataAuthorizationPrivileges privileges = getPrivileges();
 		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
 			Context.requirePrivilege(privileges.getGetPrivilege());
 		}
 
 		Criteria criteria = dao.createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("voided", voided));
+		if (!includeVoided) {
+			criteria.add(Restrictions.eq("voided", false));
+		}
 
 		loadPagingTotal(pagingInfo, criteria);
 		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
