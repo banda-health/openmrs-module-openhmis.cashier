@@ -162,7 +162,6 @@ define(
 			initialize: function(models, options) {
 				if (options) {
 					if (options.baseUrl) this.baseUrl = options.baseUrl;
-					if (options.pageSize) this.pageSize = options.pageSize;
 				}
 				this.url = options && options.url ? this.baseUrl + options.url : this.baseUrl;
 				if (this.model) {
@@ -172,11 +171,7 @@ define(
 						this.url = this.baseUrl + this.model.prototype.meta.restUrl;
 				}
 			},
-			
-			getPageSize: function() { return this.pageSize; },
-			
-			setPageSize: function(size) { this.pageSize = size; },
-			
+						
 			getSearchFilter: function() { return this.searchFilter; },
 			
 			setSearchFilter: function(query) { this.searchFilter = query; },
@@ -185,8 +180,11 @@ define(
 				options = options ? options : {};
 				var success = options.success;
 				var error = options.error;
+				var silent = options.silent;
 				options.success = function(collection, resp) {
 					if (resp.length) collection.totalLength = resp.length;
+					if (resp.links && collection.page === undefined) collection.page = 1;
+					if (silent === undefined) collection.trigger("reset", collection, options);
 					if (success) success(collection, resp);
 				}
 				options.error = function(model, data) {
@@ -195,8 +193,8 @@ define(
 						error(model, data);
 				}
 				if (this.searchFilter) options.queryString = openhmis.addQueryStringParameter(options.queryString, this.searchFilter);
-				if (this.pageSize) options.queryString = openhmis.addQueryStringParameter(options.queryString, "limit=" + this.pageSize);
 				if (options.queryString) options.url = this.url + "?" + options.queryString;
+				options.silent = true; // So that events aren't triggered too soon
 				Backbone.Collection.prototype.fetch.call(this, options)
 			},
 			

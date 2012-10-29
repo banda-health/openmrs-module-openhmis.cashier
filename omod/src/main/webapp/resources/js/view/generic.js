@@ -8,6 +8,7 @@ define(
 		'lib/backbone-forms',
 		'model/generic',
 		'view/list',
+		'view/paginate',
 		'view/editors',
 		'link!/openmrs/scripts/jquery/dataTables/css/dataTables_jui.css'
 	],
@@ -166,7 +167,7 @@ define(
 			initialize: function(options) {
 				_.bindAll(this);
 				this.options = {};
-				this.model.setPageSize(5);
+				this.paginateView = new openhmis.PaginateView({ model: this.model, pageSize: 5 });
 				if (options !== undefined) {
 					this.addEditView = options.addEditView;
 					this.itemView = options.itemView ? options.itemView : openhmis.GenericListItemView
@@ -178,7 +179,7 @@ define(
 					this.options.includeFields = options.listFields;
 					this.options.excludeFields = options.listExcludeFields;
 					this.options.showPaging = options.showPaging !== undefined ? options.showPaging : true;
-					if (options.pageSize) this.model.setPageSize(options.pageSize);
+					if (options.pageSize) this.paginateView.setPageSize(options.pageSize);
 					this.options.showRetiredOption = options.showRetiredOption !== undefined ? options.showRetiredOption : true;
 					this.options.hideIfEmpty = options.hideIfEmpty !== undefined ? options.hideIfEmpty : false;
 				}
@@ -192,8 +193,7 @@ define(
 			},
 			
 			events: {
-				'change #showRetired': 'toggleShowRetired',
-				'change #pageSize': 'changePageSize'
+				'change #showRetired': 'toggleShowRetired'
 			},
 			
 			addOne: function(model, schema, lineNumber) {
@@ -273,12 +273,7 @@ define(
 			
 			toggleShowRetired: function(event) {
 				this.showRetired = event.target.checked;
-				this.model.fetch();
-			},
-			
-			changePageSize: function(event) {
-				this.model.setPageSize($(event.target).val());
-				this.model.fetch();
+				this.fetch();
 			},
 			
 			colorRows: function() {
@@ -303,13 +298,24 @@ define(
 				}
 			},
 			
+			fetch: function(options, sender) {
+				options = options ? options : {};
+				if (this.options.showPaging && !sender) options = this.paginateView.fetch({ getOptions: true });
+				if(this.showRetired) options.queryString = openhmis.addQueryStringParameter(options.queryString, "includeAll=true");
+				this.model.fetch(options);
+			},
+			
 			render: function(extraContext) {
+				var self = this;
 				var length = this.visibleItemCount();
 				if (length === 0 && this.options.hideIfEmpty) {
 					this.$el.html("");
 					return this;
 				}
 				var schema = _.extend({}, this.model.model.prototype.schema, this.schema || {});
+				var pagingEnabled = this.options.showPaging
+					&& this.model.totalLength !== undefined
+					&& this.paginateView.getPageSize() < this.model.totalLength;
 				var context = {
 					list: this.model,
 					listLength: length,
@@ -317,11 +323,17 @@ define(
 					modelMeta: this.model.model.prototype.meta,
 					modelSchema: this.model.model.prototype.schema,
 					showRetired: this.showRetired,
+					pagingEnabled: pagingEnabled,
 					options: this.options
 				}
 				if (extraContext !== undefined) context = _.extend(context, extraContext);
 				this.$el.html(this.template(context));
-				this.$("#pageSize").val(this.model.getPageSize());
+				if (pagingEnabled) {
+					this.paginateView.setElement(this.$(".paging-container"));
+					this.paginateView.render();
+					this.paginateView.on("fetch", this.fetch);
+					this.paginateView.getRenderedPageSizeEl(this.$("span.pageSize"));
+				}
 				var view = this;
 				var lineNumber = 0;
 				this.model.each(function(model) {
@@ -492,7 +504,7 @@ define(
 			var listViewType = options.listView ? options.listView : openhmis.GenericListView;
 			var listView = new listViewType(viewOptions);
 			listView.setElement($('#existing-form'));
-			collection.fetch();
+			listView.fetch();
 		}
 		
 		Backbone.Form.setTemplates({

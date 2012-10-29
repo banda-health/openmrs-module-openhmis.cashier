@@ -49,19 +49,11 @@
 		<tfoot></tfoot>
 	</table>
 	<? } ?>
-	
-	<div class="paging-container ui-helper-clearfix">
-		<div class="dataTables_info">Showing 1 to  10 of  13 entries</div>
-		<div class="dataTables_paginate fg-buttonset fg-buttonset-multi paging_full_numbers" id="openmrsSearchTable_paginate" style=""><span class="first ui-corner-tl ui-corner-bl fg-button ui-state-default ui-state-disabled" id="openmrsSearchTable_first">First</span><span class="previous fg-button ui-state-default ui-state-disabled" id="openmrsSearchTable_previous">Previous</span><span><span class="fg-button ui-state-default ui-state-disabled">1</span><span class="fg-button ui-state-default">2</span></span><span class="next fg-button ui-state-default" id="openmrsSearchTable_next">Next</span><span class="last ui-corner-tr ui-corner-br fg-button ui-state-default" id="openmrsSearchTable_last">Last</span></div></div>
-	
-	<? var strRetiredOrVoided = (modelMeta.openmrsType === 'data') ? "voided" : "retired" ?>
-	<? if (options.showPaging) { ?><span class="pageSize"><?= __("Show") ?> <select id="pageSize">
-			<option value="10">10</option>
-			<option value="25">25</option>
-			<option value="50">50</option>
-			<option value="100">100</option>
-		</select> <?= __("entries") ?></span>
+	<? if (pagingEnabled) { ?>
+		<div class="paging-container ui-helper-clearfix"></div>
 	<? } ?>
+	<? var strRetiredOrVoided = (modelMeta.openmrsType === 'data') ? "voided" : "retired" ?>
+	<? if (pagingEnabled) { ?><span class="pageSize"></span><? } ?>
 	<? if (options.showRetiredOption) { ?><span class="showRetired"><input id="showRetired" type="checkbox"<?= showRetired ? ' checked="checked"' : '' ?>/><label for="showRetired"><?= __("Show " + strRetiredOrVoided) ?></label></span><? } ?>
 </div>
 </script>
