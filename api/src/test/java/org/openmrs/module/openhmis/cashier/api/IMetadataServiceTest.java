@@ -125,7 +125,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 	 * @see IMetadataService#getAll(boolean)
 	 */
 	@Test
-	public void getAll_shouldReturnAllRetiredEntitiesWhenRetiredIsSetToTrue() throws Exception {
+	public void getAll_shouldReturnAllEntitiesWhenIncludeRetiredIsSetToTrue() throws Exception {
 		String reason = "test retire";
 		E entity = service.getById(0);
 		service.retire(entity, reason);
@@ -134,8 +134,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 
 		List<E> entities = service.getAll(true);
 		Assert.assertNotNull(entities);
-		Assert.assertEquals(1, entities.size());
-		assertEntity(entity, entities.get(0));
+		Assert.assertEquals(getTestEntityCount(), entities.size());
 	}
 
 	/**
@@ -360,8 +359,7 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 		List<E> entities = service.getAll(true, null);
 
 		Assert.assertNotNull(entities);
-		Assert.assertEquals(1, entities.size());
-		assertEntity(entity, entities.get(0));
+		Assert.assertEquals(getTestEntityCount(), entities.size());
 	}
 
 	/**
@@ -380,15 +378,13 @@ public abstract class IMetadataServiceTest<S extends IMetadataService<E>, E exte
 		List<E> entities = service.getAll(true, paging);
 
 		Assert.assertNotNull(entities);
-		Assert.assertEquals(1, entities.size());
-		assertEntity(entity, entities.get(0));
+		Assert.assertEquals(getTestEntityCount(), entities.size());
 
 		paging = new PagingInfo(1, 0);
 		entities = service.getAll(true, paging);
 
 		Assert.assertNotNull(entities);
-		Assert.assertEquals(1, entities.size());
-		assertEntity(entity, entities.get(0));
+		Assert.assertEquals(getTestEntityCount(), entities.size());
 	}
 
 	/**
