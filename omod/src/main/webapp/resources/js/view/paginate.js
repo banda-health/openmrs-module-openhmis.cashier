@@ -119,7 +119,10 @@ define(
 			
 			checkPage: function() {
 				var max = this.getMaxPageNum();
-				if (max < this.page) this.page = max;
+				if (max < this.page) {
+					this.page = max;
+					this.fetch();
+				}
 			},
 			
 			getFetchOptions: function(options) {

@@ -14,7 +14,6 @@
 package org.openmrs.module.openhmis.cashier.web.controller;
 
 import org.directwebremoting.util.Logger;
-import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
@@ -33,12 +32,9 @@ public class PatientBillHistoryController {
 	protected final Logger log = Logger.getLogger(getClass());
 
 	private IBillService billService;
-	private PatientService patientService;
-
 	@Autowired
 	public PatientBillHistoryController(IBillService billServce, PatientService patientService) {
 		this.billService = billServce;
-		this.patientService = patientService;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

@@ -5,30 +5,37 @@
     <br />
     <br />
 </openmrs:hasPrivilege>
+<openmrs:htmlInclude file="/scripts/jquery/dataTables/css/dataTables_jui.css"/>
+<openmrs:htmlInclude file="/scripts/jquery/dataTables/js/jquery.dataTables.min.js"/>
 
 <div class="boxHeader">Bills</div>
 <div class="box">
-    <table>
-        <thead><tr>
-            <th style="display: none">Bill Id</th>
-            <th>Created On</th>
-            <th>Receipt Number</th>
-            <th>Status</th>
-            <th>Total Paid</th>
-            <th>Total Amount</th>
-        </tr></thead>
-        <tbody>
-            <c:forEach var="bill" items="${bills}">
-                <tr>
-                    <td style="display: none">${bill.id}</td>
-                    <td>${bill.dateCreated}</td>
-                    <td><a href="<openmrs:contextPath />/module/openhmis/cashier/bill.form?billUuid=${bill.uuid}">${bill.receiptNumber}</a></td>
-                    <td>${bill.status}</td>
-                    <td>${bill.totalPaid}</td>
-                    <td>${bill.total}</td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-    <c:if test="${empty bills}">No bills have been created.</c:if>
+    <table id="billTable" class="display" cellspacing="0"></table>
 </div>
+
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		var $ = jQuery;
+		$("#billTable").dataTable({
+			aaData: [
+				<c:forEach var="bill" items="${bills}" varStatus="varStatus">
+				<c:if test="${varStatus.index > 0}">,
+				</c:if>[
+					"${bill.dateCreated}",
+					'<a href="<openmrs:contextPath />/module/openhmis/cashier/bill.form?billUuid=${bill.uuid}">${bill.receiptNumber}</a>',
+							"${bill.status}",
+							"${bill.totalPaid}",
+							"${bill.total}"
+				]
+				</c:forEach>
+			],
+			aoColumns: [
+				{ sTitle: "<openmrs:message code="openhmis.cashier.bill.createdOn" />" },
+				{ sTitle: "<openmrs:message code="openhmis.cashier.bill.receiptNumber" />" },
+				{ sTitle: "<openmrs:message code="openhmis.cashier.bill.status" />" },
+				{ sTitle: "<openmrs:message code="openhmis.cashier.bill.totalPaid" />" },
+				{ sTitle: "<openmrs:message code="openhmis.cashier.bill.totalAmount" />" }
+			]
+		});
+	});
+</script>
