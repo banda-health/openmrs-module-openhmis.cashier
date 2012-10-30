@@ -63,7 +63,7 @@ span.label-hint { position: relative; }
 .label-hint label { position: absolute; bottom: 0px; left: 3px; font-style: italic; color: #999; cursor: text; z-index: 0; }
 
 /* Generic data table styles */
-table.display { width: 100%; border-spacing: 0; }
+table.display { width: 100%; border-spacing: 0; margin-bottom: 100px; }
 table.display tr.even.row_selected td, table.display tr.odd.row_selected td,
 table.display tr.row_selected
 { background-color: #f0e68c !important; }
@@ -71,6 +71,8 @@ table.display tr.row_selected
 td.item-actions input { visibility: hidden; }
 tr.row_selected td.item-actions input, tr:hover td.item-actions input
 { visibility: visible; }
+
+div.paging-container { margin-top: .5em; }
 
 /* Bill styles */
 ul#bill-info { font-size: 10pt; }

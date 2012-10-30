@@ -86,7 +86,7 @@ define(
 				var bill = (options && options.bill) ? options.bill : new openhmis.Bill();
 				this.setBill(bill);
 				
-				var billOptions = { showRetiredOption: false }
+				var billOptions = { showRetiredOption: false, showPaging: false }
 				if (bill.get("status") === bill.BillStatus.PENDING)
 					billOptions["itemActions"] = ["remove", "inlineEdit"];
 				options = _.extend(billOptions, options);

@@ -1,10 +1,8 @@
 define("lib/i18n",
 	['lib/sprintf'],
 	function() {
-		var __ = function(	format, argv) {
-			argv = argv === undefined ? [] : Array(argv);
-			argv.unshift(format);
-			return sprintf.apply(null, argv);
+		var __ = function() {
+			return sprintf.apply(null, arguments);
 		}
 		return __;
 	}

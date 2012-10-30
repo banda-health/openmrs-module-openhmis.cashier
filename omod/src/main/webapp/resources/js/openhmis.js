@@ -52,8 +52,11 @@ define("openhmis",
 				  return "";
 			else
 				return decodeURIComponent(results[1].replace(/\+/g, " "));
-		},
+		}
 		
+		openhmis.addQueryStringParameter = function(queryString, parameter) {
+			return queryString ? queryString + "&" + parameter : parameter;
+		}
 		openhmis.dateFormat = function(date) {
 			var day = date.getDate();
 			var month = date.getMonth();

@@ -31,6 +31,7 @@ import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentat
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
@@ -54,7 +55,7 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		// Do a name search
 		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
 		List<Item> items = service.findByName(query, context.getIncludeAll(), pagingInfo);
-		AlreadyPaged<Item> results = new AlreadyPaged<Item>(context, items, pagingInfo.hasMoreResults());
+		AlreadyPagedWithLength<Item> results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
 		return results.toSimpleObject();
 	}
  
@@ -70,7 +71,7 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		// Do a name + department search
 		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
 		List<Item> items = service.findItems(department, query, context.getIncludeAll(), pagingInfo);
-		AlreadyPaged<Item> results = new AlreadyPaged<Item>(context, items, pagingInfo.hasMoreResults());
+		PageableResult results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
 		return results.toSimpleObject();
 	}
 	
