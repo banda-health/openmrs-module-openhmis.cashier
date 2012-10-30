@@ -178,7 +178,10 @@ define(
 				var error = options.error;
 				var silent = options.silent;
 				options.success = function(collection, resp) {
-					if (resp.length) collection.totalLength = resp.length;
+					if (resp.length)
+						collection.totalLength = resp.length;
+					else
+						collection.totalLength = collection.length;
 					if (resp.links && collection.page === undefined) collection.page = 1;
 					if (silent === undefined) collection.trigger("reset", collection, options);
 					if (success) success(collection, resp);
@@ -198,6 +201,16 @@ define(
 				if (query)
 					options.queryString = openhmis.addQueryStringParameter(options.queryString, query);
 				return this.fetch(options);
+			},
+			
+			add: function(models, options) {
+				this.totalLength++;
+				return Backbone.Collection.prototype.add.call(this, models, options);
+			},
+			
+			remove: function(models, options) {
+				if (this.totalLength > 0) this.totalLength--;
+				return Backbone.Collection.prototype.remove.call(this, models, options);
 			},
 			
 			parse: function(response) {

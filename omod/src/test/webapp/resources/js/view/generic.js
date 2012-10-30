@@ -47,7 +47,19 @@ describe("GenericListView", function() {
 		jennie.id = "fakeID";
 		jennie.retire();
 		expect(listView.$("p.empty").length).toEqual(1);
-	});	
+	});
+	
+	it("should hide pagination when there are no items to display", function() {
+		var collection = new openhmis.GenericCollection([], { model: CoolPersonClass });
+		var listView = new openhmis.GenericListView({ model: collection });
+		listView.render();
+		expect(listView.$("div.paging-container").html()).toBeNull();
+		var micha = new CoolPersonClass({ name: "Micha" });
+		collection.add(micha);
+		expect(listView.$("div.paging-container").html()).not.toBeNull();
+		collection.remove(micha);
+		expect(listView.$("div.paging-container").html()).toBeNull();
+	});
 });
 
 describe("GenericListItemView", function() {

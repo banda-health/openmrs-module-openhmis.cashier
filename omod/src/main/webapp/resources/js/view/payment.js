@@ -65,6 +65,7 @@ define(
 					listFields: ['dateCreatedFmt', 'amountFmt', 'paymentMode'],
 					itemActions: this.readOnly ? [] : ["remove"],
 					showRetiredOption: false,
+					showPaging: false,
 					hideIfEmpty: true
 				});
 				this.template = this.getTemplate();

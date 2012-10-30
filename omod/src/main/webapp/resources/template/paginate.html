@@ -1,8 +1,15 @@
 <script id="pagination" type="text/template">
-	<div class="dataTables_info"><?= __("Showing %d to %d of %d entries", itemRange.first, itemRange.last, list.totalLength) ?></div>
+	<div class="dataTables_info"><?
+	if (list.totalLength === 1)
+		print (__("Showing 1 of 1 entry"));
+	else
+		print (__("Showing %d to %d of %d entries", itemRange.first, itemRange.last, list.totalLength)) ?>
+	</div>
+	<? if (pageRange.last > 1) { ?>
 	<div class="dataTables_paginate fg-buttonset fg-buttonset-multi paging_full_numbers">
 		<span class="first ui-corner-tl ui-corner-bl fg-button ui-state-default<?= page > 1 ? '' : ' ui-state-disabled' ?>"><?= __("First") ?></span><span class="previous fg-button ui-state-default<?= page > 1 ? '' : ' ui-state-disabled' ?>"><?= __("Previous") ?></span><span class="pages"><? for (var i = pageRange.first; i <= pageRange.last; i++) { ?><span class="fg-button ui-state-default<?= i === page ? ' ui-state-disabled' : '' ?>"><?= i ?></span><? } ?></span><span class="next fg-button ui-state-default<?= page < pageRange.last ? '' : ' ui-state-disabled' ?>"><?= __("Next") ?></span><span class="last ui-corner-tr ui-corner-br fg-button ui-state-default<?= page < pageRange.last ? '' : ' ui-state-disabled' ?>"><?= __("Last") ?></span>
 	</div>
+	<? } ?>
 </script>
 
 <script id="pageSize" type="text/template">

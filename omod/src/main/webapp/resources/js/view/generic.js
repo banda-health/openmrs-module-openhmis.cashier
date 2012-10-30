@@ -319,7 +319,7 @@ define(
 					return this;
 				}
 				var schema = _.extend({}, this.model.model.prototype.schema, this.schema || {});
-				var pagingEnabled = this.options.showPaging;
+				var pagingEnabled = this.options.showPaging && length > 0;
 				var context = {
 					list: this.model,
 					listLength: length,
