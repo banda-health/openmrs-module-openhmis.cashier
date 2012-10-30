@@ -8,7 +8,9 @@ define(
 		'lib/backbone-forms',
 		'model/generic',
 		'view/list',
-		'view/editors'
+		'view/paginate',
+		'view/editors',
+		'link!/openmrs/scripts/jquery/dataTables/css/dataTables_jui.css'
 	],
 	function($, _, Backbone, __, openhmis) {
 		/**
@@ -161,10 +163,14 @@ define(
 			tmplFile: 'generic.html',
 			tmplSelector: '#generic-list',
 			itemView: openhmis.GenericListItemView,
+			fetchable: [], // list of view that can modify the fetch options
 			
 			initialize: function(options) {
 				_.bindAll(this);
 				this.options = {};
+				this.paginateView = new openhmis.PaginateView({ model: this.model, pageSize: 5 });
+				this.paginateView.on("fetch", this.fetch);
+				this.fetchable.push(this.paginateView);
 				if (options !== undefined) {
 					this.addEditView = options.addEditView;
 					this.itemView = options.itemView ? options.itemView : openhmis.GenericListItemView
@@ -175,6 +181,8 @@ define(
 					this.options.itemActions = options.itemActions || [];
 					this.options.includeFields = options.listFields;
 					this.options.excludeFields = options.listExcludeFields;
+					this.options.showPaging = options.showPaging !== undefined ? options.showPaging : true;
+					if (options.pageSize) this.paginateView.setPageSize(options.pageSize);
 					this.options.showRetiredOption = options.showRetiredOption !== undefined ? options.showRetiredOption : true;
 					this.options.hideIfEmpty = options.hideIfEmpty !== undefined ? options.hideIfEmpty : false;
 				}
@@ -268,7 +276,7 @@ define(
 			
 			toggleShowRetired: function(event) {
 				this.showRetired = event.target.checked;
-				this.model.fetch();
+				this.fetch();
 			},
 			
 			colorRows: function() {
@@ -293,13 +301,25 @@ define(
 				}
 			},
 			
+			fetch: function(options, sender) {
+				options = options ? options : {};
+				for (var f in this.fetchable) {
+					if (this.fetchable[f] !== sender)
+						options = this.fetchable[f].getFetchOptions(options);
+				}
+				if(this.showRetired) options.queryString = openhmis.addQueryStringParameter(options.queryString, "includeAll=true");
+				this.model.fetch(options);
+			},
+			
 			render: function(extraContext) {
+				var self = this;
 				var length = this.visibleItemCount();
 				if (length === 0 && this.options.hideIfEmpty) {
 					this.$el.html("");
 					return this;
 				}
 				var schema = _.extend({}, this.model.model.prototype.schema, this.schema || {});
+				var pagingEnabled = this.options.showPaging && length > 0;
 				var context = {
 					list: this.model,
 					listLength: length,
@@ -307,10 +327,16 @@ define(
 					modelMeta: this.model.model.prototype.meta,
 					modelSchema: this.model.model.prototype.schema,
 					showRetired: this.showRetired,
+					pagingEnabled: pagingEnabled,
 					options: this.options
 				}
 				if (extraContext !== undefined) context = _.extend(context, extraContext);
 				this.$el.html(this.template(context));
+				if (pagingEnabled) {
+					this.paginateView.setElement(this.$(".paging-container"));
+					this.paginateView.render();
+					this.paginateView.getRenderedPageSizeEl(this.$("span.pageSize"));
+				}
 				var view = this;
 				var lineNumber = 0;
 				this.model.each(function(model) {
@@ -431,6 +457,40 @@ define(
 			}
 		});
 		
+		
+		/**
+		 * GenericSearchableListView
+		 *
+		 */
+		openhmis.GenericSearchableListView = openhmis.GenericListView.extend({
+			initialize: function(options) {
+				_.bindAll(this);
+				openhmis.GenericListView.prototype.initialize.call(this, options);
+				this.searchViewType = options.searchView;
+				this.searchView = new this.searchViewType({
+					modelType: this.model.model
+				});
+				this.searchView.on("fetch", this.onSearch);
+				this.fetchable.push(this.searchView);
+			},
+			
+			onSearch: function(options, sender) {
+				if (this.paginateView) this.paginateView.setPage(1);
+				this.fetch(options, sender);
+			},
+			
+			render: function() {
+				if (this.searchView.lastSearch)
+					this.options.listTitle = __('Results for "%s"', this.searchView.lastSearch);
+				else
+					this.options.listTitle = undefined;
+				openhmis.GenericListView.prototype.render.call(this);
+				this.$el.prepend(this.searchView.render().el);
+				this.searchView.delegateEvents();
+				return this;
+			}
+		});
+		
 		// Create new generic add/edit screen
 		openhmis.startAddEditScreen = function(model, options) {
 			var collection = new openhmis.GenericCollection([], {
@@ -446,9 +506,10 @@ define(
 				model: collection,
 				addEditView: addEditView
 			}, options);
-			var listView = new openhmis.GenericListView(viewOptions);
+			var listViewType = options.listView ? options.listView : openhmis.GenericListView;
+			var listView = new listViewType(viewOptions);
 			listView.setElement($('#existing-form'));
-			collection.fetch();
+			listView.fetch();
 		}
 		
 		Backbone.Form.setTemplates({

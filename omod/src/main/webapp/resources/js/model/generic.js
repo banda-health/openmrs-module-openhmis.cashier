@@ -152,11 +152,17 @@ define(
 			}
 		});
 		
+		/**
+		 * GenericCollection
+		 *
+		 */
 		openhmis.GenericCollection = Backbone.Collection.extend({
 			baseUrl: openhmis.config.restUrlRoot,
 			
 			initialize: function(models, options) {
-				if (options && options.baseUrl) this.baseUrl = options.baseUrl;
+				if (options) {
+					if (options.baseUrl) this.baseUrl = options.baseUrl;
+				}
 				this.url = options && options.url ? this.baseUrl + options.url : this.baseUrl;
 				if (this.model) {
 					if (this.model.prototype.urlRoot !== undefined)
@@ -168,13 +174,43 @@ define(
 			
 			fetch: function(options) {
 				options = options ? options : {};
+				var success = options.success;
 				var error = options.error;
+				var silent = options.silent;
+				options.success = function(collection, resp) {
+					if (resp.length)
+						collection.totalLength = resp.length;
+					else
+						collection.totalLength = collection.length;
+					if (resp.links && collection.page === undefined) collection.page = 1;
+					if (silent === undefined) collection.trigger("reset", collection, options);
+					if (success) success(collection, resp);
+				}
 				options.error = function(model, data) {
 					openhmis.error(data);
 					if (error !== undefined)
 						error(model, data);
 				}
+				if (options.queryString) options.url = this.url + "?" + options.queryString;
+				options.silent = true; // So that events aren't triggered too soon
 				Backbone.Collection.prototype.fetch.call(this, options)
+			},
+			
+			search: function(query, options) {
+				options = options ? options : {};
+				if (query)
+					options.queryString = openhmis.addQueryStringParameter(options.queryString, query);
+				return this.fetch(options);
+			},
+			
+			add: function(models, options) {
+				this.totalLength++;
+				return Backbone.Collection.prototype.add.call(this, models, options);
+			},
+			
+			remove: function(models, options) {
+				if (this.totalLength > 0) this.totalLength--;
+				return Backbone.Collection.prototype.remove.call(this, models, options);
 			},
 			
 			parse: function(response) {
