@@ -163,11 +163,14 @@ define(
 			tmplFile: 'generic.html',
 			tmplSelector: '#generic-list',
 			itemView: openhmis.GenericListItemView,
+			fetchable: [], // list of view that can modify the fetch options
 			
 			initialize: function(options) {
 				_.bindAll(this);
 				this.options = {};
 				this.paginateView = new openhmis.PaginateView({ model: this.model, pageSize: 5 });
+				this.paginateView.on("fetch", this.fetch);
+				this.fetchable.push(this.paginateView);
 				if (options !== undefined) {
 					this.addEditView = options.addEditView;
 					this.itemView = options.itemView ? options.itemView : openhmis.GenericListItemView
@@ -300,7 +303,10 @@ define(
 			
 			fetch: function(options, sender) {
 				options = options ? options : {};
-				if (this.options.showPaging && !sender) options = this.paginateView.fetch({ getOptions: true });
+				for (var f in this.fetchable) {
+					if (this.fetchable[f] !== sender)
+						options = this.fetchable[f].getFetchOptions(options);
+				}
 				if(this.showRetired) options.queryString = openhmis.addQueryStringParameter(options.queryString, "includeAll=true");
 				this.model.fetch(options);
 			},
@@ -313,9 +319,7 @@ define(
 					return this;
 				}
 				var schema = _.extend({}, this.model.model.prototype.schema, this.schema || {});
-				var pagingEnabled = this.options.showPaging
-					&& this.model.totalLength !== undefined
-					&& this.paginateView.getPageSize() < this.model.totalLength;
+				var pagingEnabled = this.options.showPaging;
 				var context = {
 					list: this.model,
 					listLength: length,
@@ -331,7 +335,6 @@ define(
 				if (pagingEnabled) {
 					this.paginateView.setElement(this.$(".paging-container"));
 					this.paginateView.render();
-					this.paginateView.on("fetch", this.fetch);
 					this.paginateView.getRenderedPageSizeEl(this.$("span.pageSize"));
 				}
 				var view = this;
@@ -464,14 +467,16 @@ define(
 				_.bindAll(this);
 				openhmis.GenericListView.prototype.initialize.call(this, options);
 				this.searchViewType = options.searchView;
-				this.searchView = new this.searchViewType({ modelType: this.model.model });
-				this.searchView.on("search", this.onNewResults);
+				this.searchView = new this.searchViewType({
+					modelType: this.model.model
+				});
+				this.searchView.on("fetch", this.onSearch);
+				this.fetchable.push(this.searchView);
 			},
 			
-			onNewResults: function(results) {
-				this.model.reset(results.models);
-				this.model.setSearchFilter(results.getSearchFilter());
-				this.render();
+			onSearch: function(options, sender) {
+				if (this.paginateView) this.paginateView.setPage(1);
+				this.fetch(options, sender);
 			},
 			
 			render: function() {

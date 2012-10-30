@@ -171,10 +171,6 @@ define(
 						this.url = this.baseUrl + this.model.prototype.meta.restUrl;
 				}
 			},
-						
-			getSearchFilter: function() { return this.searchFilter; },
-			
-			setSearchFilter: function(query) { this.searchFilter = query; },
 			
 			fetch: function(options) {
 				options = options ? options : {};
@@ -192,7 +188,6 @@ define(
 					if (error !== undefined)
 						error(model, data);
 				}
-				if (this.searchFilter) options.queryString = openhmis.addQueryStringParameter(options.queryString, this.searchFilter);
 				if (options.queryString) options.url = this.url + "?" + options.queryString;
 				options.silent = true; // So that events aren't triggered too soon
 				Backbone.Collection.prototype.fetch.call(this, options)
@@ -200,11 +195,8 @@ define(
 			
 			search: function(query, options) {
 				options = options ? options : {};
-				if (query) {
-					if (options.remember === true)
-						this.searchFilter = query;
+				if (query)
 					options.queryString = openhmis.addQueryStringParameter(options.queryString, query);
-				}
 				return this.fetch(options);
 			},
 			

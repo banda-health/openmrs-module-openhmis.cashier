@@ -2,7 +2,7 @@
 	<b class="boxHeader"></b>
 	<div class="box">
 		<form>
-			<p><label for="nameSearchName"><?= __("%s Identifier or %s Name", model.meta.name, model.meta.name) ?>:</label> <input type="text" id="nameSearchName"<?= lastSearch ? ' value="'+lastSearch+'"' : '' ?> /></p>
+			<p><label for="nameSearchName"><?= __("%s Identifier or %s Name", model.meta.name, model.meta.name) ?>:</label> <input type="text" id="nameSearchName"<?= searchFilter ? ' value="'+searchFilter+'"' : '' ?> /></p>
 		</form>
 	</div>
 </script>

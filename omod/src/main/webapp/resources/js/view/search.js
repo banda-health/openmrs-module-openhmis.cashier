@@ -1,10 +1,11 @@
 define(
 	[
 		'lib/jquery',
+		'lib/underscore',
 		'lib/backbone',
 		'openhmis'
 	],
-	function($, Backbone, openhmis) {
+	function($, _, Backbone, openhmis) {
 		openhmis.NameSearchView = Backbone.View.extend({
 			tagName: "div",
 			tmplFile: "search.html",
@@ -23,10 +24,13 @@ define(
 				"submit form": "onFormSubmit"
 			},
 			
+			getSearchFilter: function() { return this.searchFilter; },
+			
+			setSearchFilter: function(query) { this.searchFilter = query; },
+
 			onKeyPress: function(event) {
 				if (event.which === 13) {
 					event.stopPropagation();
-					//this.submitForm();
 				}
 			},
 
@@ -37,27 +41,26 @@ define(
 			
 			submitForm: function() {
 				var name = this.$("#nameSearchName").val();
-				this.lastSearch = name;
-				var query = (name !== "") ? "q=" + encodeURIComponent(name) : null;
-				this.doSearch(query);
+				this.searchFilter = name;
+				this.fetch();
 			},
 			
-			doSearch: function(query) {
-				var collection = new openhmis.GenericCollection([], {
-					model: this.modelType });
-				var self = this;
-				collection.search(query, {
-					remember: true,
-					success: function(model, resp) {
-						self.trigger("search", model);
-					}
-				});
+			getFetchOptions: function(options) {
+				options = options ? options : {}
+				if (this.searchFilter)
+					options.queryString = openhmis.addQueryStringParameter(options.queryString, "q=" + encodeURIComponent(this.searchFilter));
+				return options;
+			},
+			
+			fetch: function(options) {
+				options = _.extend({}, this.getFetchOptions(), options);
+				this.trigger("fetch", options, this);
 			},
 			
 			render: function() {
 				this.$el.html(this.template({
 					model: this.model,
-					lastSearch: this.lastSearch || undefined
+					searchFilter: this.searchFilter || undefined
 				}));
 				return this;
 			}

@@ -18,7 +18,7 @@ define(
 			tmplSelector: "#pagination",
 			pageSizes: [ 5, 10, 25, 50, 100 ],
 			initialize: function(options) {
-				_.bindAll(this, "changePageSize");
+				_.bindAll(this, "changePageSize", "checkPage");
 				this.options = {
 					numberOfPages: 5,
 					pageSize: 10
@@ -32,10 +32,49 @@ define(
 				this.template = this.getTemplate();
 				this.pageSizeTemplate = this.getTemplate(null, "#pageSize");
 				this.page = 1;
+				this.model.on("reset", this.checkPage);
+			},
+			
+			getPage: function() { return this.page; },
+			
+			setPage: function(page) {
+				var pageNum = parseInt(page);
+				if (isNaN(pageNum)) {
+					switch (page) {
+						case "first":
+							this.page = 1;
+							break;
+						case "previous":
+							if (this.page - 1 >= 1)
+								this.page--;
+							else
+								throw "Already at the first page.";
+							break;
+						case "next":
+							if (this.page + 1 <= Math.floor(this.model.totalLength / this.options.pageSize) + 1)
+								this.page++;
+							else
+								throw "Already at the last page.";
+							break;
+						case "last":
+							this.page = this.getMaxPageNum();
+							break;
+						default:
+							throw "Invalid page.";
+					}
+				}
+				else {
+					if (pageNum < 1)
+						throw "Can't go before first page.";
+					else if (pageNum > this.getMaxPageNum())
+						throw "Can't go beyond the last page.";
+					else
+						this.page = pageNum;
+				}
 			},
 			
 			getPageSize: function() { return this.options.pageSize; },
-			setPageSize: function(size) { this.options.pageSize = size; },
+			setPageSize: function(size) { this.options.pageSize = parseInt(size); },
 			
 			getStartIndex: function() {
 				return ((this.page - 1) * this.options.pageSize) + 1;
@@ -78,32 +117,23 @@ define(
 				this.fetch();
 			},
 			
-			fetch: function(options) {
+			checkPage: function() {
+				var max = this.getMaxPageNum();
+				if (max < this.page) this.page = max;
+			},
+			
+			getFetchOptions: function(options) {
 				options = options ? options : {}
-				if (options.page) {
-					switch (options.page) {
-						case "first":
-							this.page = 1;
-							break;
-						case "previous":
-							if (this.page - 1 >= 1)
-								this.page--;
-							break;
-						case "next":
-							if (this.page + 1 <= (this.model.totalLength / this.pageSize) + 1)
-								this.page++;
-							break;
-						case "last":
-							this.page = this.getMaxPageNum();
-							break;
-						default:
-							this.page = options.page;
-					}
-				}
+				if (options.page)
+					this.setPage(options.page);
 				options.queryString = openhmis.addQueryStringParameter(options.queryString, "startIndex=" + this.getStartIndex());
 				options.queryString = openhmis.addQueryStringParameter(options.queryString, "limit=" + this.options.pageSize);
-				if (!options.getOptions) this.trigger("fetch", options, this);
 				return options;
+			},
+			
+			fetch: function(options) {
+				options = this.getFetchOptions(options);
+				this.trigger("fetch", options, this);
 			},
 			
 			render: function() {
