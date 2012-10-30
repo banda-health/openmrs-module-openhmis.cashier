@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cashier Receipt" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a91a13d8-3137-4712-8b7e-4d8f0f0523e9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="billId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\akmad\\Documents\\Jasper Reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     cashier_bill.bill_id,
+     cashier_bill.receipt_number,
+     CASE cashier_bill.status
+        WHEN 0 THEN 'PENDING'
+        WHEN 1 THEN 'PAID'
+        WHEN 2 THEN 'ADJUSTED'
+     END AS `Status`,
+     bill_date.bill_date,
+
+     cashier_person_name.given_name cashier_given_name,
+     cashier_person_name.family_name cashier_family_name,
+
+     patient_person_name.given_name patient_given_name,
+     patient_person_name.family_name patient_family_name,
+     person_address.address1,
+     person_address.address2,
+     person_address.city_village city,
+     pa.value phone,
+     patient_identifier.identifier
+FROM
+	provider INNER JOIN cashier_bill ON
+		provider.provider_id = cashier_bill.provider_id
+	INNER JOIN person cashier_person ON
+		provider.person_id = cashier_person .person_id
+LEFT OUTER JOIN person_name cashier_person_name ON
+		cashier_person.person_id = cashier_person_name.person_id AND
+        cashier_person_name.preferred = 1
+	INNER JOIN patient ON
+		cashier_bill.patient_id = patient.patient_id
+	INNER JOIN person patient_person ON
+		patient.patient_id = patient_person.person_id
+    LEFT OUTER JOIN person_name patient_person_name ON
+        patient_person.person_id = patient_person_name.person_id AND
+        patient_person_name.preferred = 1
+    LEFT OUTER JOIN person_address ON
+        person_address.person_id = patient_person.person_id AND
+        person_address.preferred = 1
+    LEFT OUTER JOIN patient_identifier ON
+        patient.patient_id = patient_identifier.patient_id AND
+        patient_identifier.preferred = 1
+    LEFT OUTER JOIN (
+        person_attribute pa INNER JOIN person_attribute_type pat ON
+            pa.person_attribute_type_id = pat.person_attribute_type_id
+    ) ON
+        patient_person.person_id = pa.person_id AND
+        pat.name = "phone number"
+    LEFT OUTER JOIN (
+        SELECT $P{billId} bill_id, MAX(bp.date_created) bill_date FROM cashier_bill_payment bp WHERE bp.bill_id = $P{billId}
+    ) bill_date ON
+        cashier_bill.bill_id = bill_date.bill_id
+WHERE
+    cashier_bill.bill_id = $P{billId}]]>
+	</queryString>
+	<field name="bill_id" class="java.lang.Integer"/>
+	<field name="receipt_number" class="java.lang.String"/>
+	<field name="Status" class="java.lang.String"/>
+	<field name="bill_date" class="java.sql.Timestamp"/>
+	<field name="cashier_given_name" class="java.lang.String"/>
+	<field name="cashier_family_name" class="java.lang.String"/>
+	<field name="patient_given_name" class="java.lang.String"/>
+	<field name="patient_family_name" class="java.lang.String"/>
+	<field name="address1" class="java.lang.String"/>
+	<field name="address2" class="java.lang.String"/>
+	<field name="city" class="java.lang.String"/>
+	<field name="phone" class="java.lang.String"/>
+	<field name="identifier" class="java.lang.String"/>
+	<variable name="totalInvoiced" class="java.math.BigDecimal"/>
+	<variable name="totalPaid" class="java.math.BigDecimal">
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="178" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="61b9bfa4-ffad-4f61-bd33-285e26c27ef3" x="0" y="32" width="555" height="65"/>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Address: <The Address>
+Tel: <The phone number>
+Fax: <The Fax Number>]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="659a0528-d1be-4efe-9099-e0d9026f29c2" x="0" y="117" width="319" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Id: " + $F{identifier}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a334a322-2426-4915-ac87-2fc6a0d5d573" x="0" y="0" width="555" height="32"/>
+				<textElement textAlignment="Center">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[AIC Marira Clinic]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="7b2e440f-7554-4c7d-9026-24e120ed9d6b" x="0" y="157" width="555" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Address: " + $F{address1} + " " + $F{address2} + " " + $F{city}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="bb99c657-1e64-4c83-a6bb-a3608b19352c" x="0" y="137" width="319" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Phone: " + $F{phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e689e17d-8fb0-4124-9e48-8d668c208db4" x="319" y="137" width="236" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Status: " + $F{Status}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b8d5cd5e-cd83-4167-972e-bf52582e010a" x="319" y="117" width="236" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Receipt Number: " + $F{receipt_number}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="c2d98d50-1bdf-49af-93ca-f1045b8183bf" x="0" y="97" width="555" height="1"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="b4faf1c5-3341-4170-8a83-1880c3d48af2" x="0" y="98" width="319" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Patient Name: " + $F{patient_family_name} + ", " + $F{patient_given_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="fb01426c-2aec-4bff-b5d1-d2419de61693" x="391" y="98" width="164" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("yyyy-dd-MM").format($F{bill_date})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2a45100b-ebb4-4c6b-88e0-98e7a3be23f6" x="319" y="98" width="72" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Invoice Date:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="25" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="833f8d94-32f0-4b30-9c56-995682b3e0bf" x="0" y="0" width="319" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Patient Invoice for " + $F{patient_given_name} + " " + $F{patient_family_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="b8d5cd5e-cd83-4167-972e-bf52582e010a" x="319" y="0" width="236" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Receipt Number: " + $F{receipt_number}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="64" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="02cdd829-966d-401d-a66f-bdda0adcd5e2" x="0" y="20" width="555" height="39"/>
+				<subreportParameter name="billId">
+					<subreportParameterExpression><![CDATA[$P{billId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="totalInvoiced" toVariable="totalInvoiced"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Cashier Invoice Items.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement uuid="6b0ba532-9b3b-45fc-9bc3-2fa28cd96060" x="0" y="0" width="115" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Invoiced Items]]></text>
+			</staticText>
+		</band>
+		<band height="66">
+			<subreport>
+				<reportElement uuid="af9d36fc-bc2d-49d1-8f95-88dce069cb9d" x="0" y="21" width="555" height="41"/>
+				<subreportParameter name="billId">
+					<subreportParameterExpression><![CDATA[$P{billId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="totalPaid" toVariable="totalPaid"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Cashier Invoice Payments.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement uuid="6b0ba532-9b3b-45fc-9bc3-2fa28cd96060" x="0" y="1" width="100" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Payments]]></text>
+			</staticText>
+		</band>
+		<band height="23">
+			<textField>
+				<reportElement uuid="f2d8cf65-1a64-4998-a25b-8b4502e4b3ed" x="276" y="3" width="279" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Remaining Balance: " + new java.text.DecimalFormat("#,##0.00").format($V{totalInvoiced}.subtract($V{totalPaid} == null ? 0 : $V{totalPaid}))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6f2f1b9b-4cb3-40fd-96dc-1b3ecbb4ec68" x="379" y="0" width="176" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER} + " of " + $V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6c430987-cd11-40be-bd9d-2077e233745f" x="0" y="0" width="379" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Invoice Generated at " + new SimpleDateFormat("yyyy-dd-MM HH:mm").format(new Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
