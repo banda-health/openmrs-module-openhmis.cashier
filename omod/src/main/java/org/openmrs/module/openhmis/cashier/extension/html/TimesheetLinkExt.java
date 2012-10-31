@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.openhmis.cashier.extension.html;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Provider;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
@@ -29,6 +31,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class TimesheetLinkExt extends LinkExt {
+	protected Log log = LogFactory.getLog(getClass());
+
 	private ITimesheetService timesheetService;
 	private ProviderService providerService;
 
@@ -39,6 +43,7 @@ public class TimesheetLinkExt extends LinkExt {
 	public void initialize(Map<String, String> parameterMap) {
 		super.initialize(parameterMap);
 
+		try {
 		this.timesheetService = Context.getService(ITimesheetService.class);
 		this.providerService = Context.getProviderService();
 
@@ -54,7 +59,12 @@ public class TimesheetLinkExt extends LinkExt {
 				}
 			}
 		}
+		} catch (Exception ex) {
+			log.error("An error occurred while attempting to load the cashier timesheet extension point", ex);
 
+			isProviderUser = false;
+			currentTimesheet = null;
+		}
 	}
 
 	@Override
