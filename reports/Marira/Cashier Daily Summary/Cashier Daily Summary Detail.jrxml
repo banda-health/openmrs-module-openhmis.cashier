@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cashier Daily Summary Detail" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8a1aeb45-d84a-42a8-a299-ab729f0fc435">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cashier Daily Summary Detail" language="groovy" pageWidth="555" pageHeight="802" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8a1aeb45-d84a-42a8-a299-ab729f0fc435">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -11,8 +11,7 @@
 		<![CDATA[SELECT
     b.bill_id,
     b.provider_id,
-    users.username,
-(SELECT COUNT(*) FROM cashier_bill WHERE status = 1 AND ((date_changed IS NULL AND date_created >= '2012-10-30' AND b.date_created < DATE_ADD('2012-10-30', INTERVAL 1 DAY)) OR (date_changed >= '2012-10-30' AND date_changed < DATE_ADD('2012-10-30', INTERVAL 1 DAY)))) AS bill_count,
+    provider.identifier,
 
     t.timesheet_id,
     t.clock_in,
@@ -33,11 +32,7 @@ FROM
         b.date_created >= t.clock_in AND
         (t.clock_out IS NULL OR b.date_created < t.clock_out)
     INNER JOIN provider ON
-            provider.provider_id = t.provider_id
-    INNER JOIN person ON
-            provider.person_id = person.person_id
-    INNER JOIN users ON
-            person.person_id = users.user_id
+            provider.provider_id = b.provider_id
 WHERE
     b.status = 1
 AND
@@ -47,8 +42,7 @@ AND
 	</queryString>
 	<field name="bill_id" class="java.lang.Integer"/>
 	<field name="provider_id" class="java.lang.Integer"/>
-	<field name="username" class="java.lang.String"/>
-	<field name="bill_count" class="java.lang.Long"/>
+	<field name="identifier" class="java.lang.String"/>
 	<field name="timesheet_id" class="java.lang.Integer"/>
 	<field name="clock_in" class="java.sql.Timestamp"/>
 	<field name="clock_out" class="java.sql.Timestamp"/>
@@ -59,8 +53,8 @@ AND
 	</background>
 	<summary>
 		<band height="309" splitType="Stretch">
-			<crosstab>
-				<reportElement uuid="5d87ca40-ceb1-409b-bee5-c397df164f5f" x="0" y="0" width="555" height="309"/>
+			<crosstab isRepeatRowHeaders="false">
+				<reportElement uuid="5d87ca40-ceb1-409b-bee5-c397df164f5f" x="0" y="0" width="555" height="309" isRemoveLineWhenBlank="true"/>
 				<crosstabHeaderCell>
 					<cellContents>
 						<box>
@@ -88,7 +82,7 @@ AND
 							<text><![CDATA[Clock Out]]></text>
 						</staticText>
 						<staticText>
-							<reportElement uuid="c808adbd-8337-418e-852d-305cc64e2427" style="Crosstab Data Text" x="210" y="0" width="47" height="19"/>
+							<reportElement uuid="17dc1aa5-e9e2-4e50-a1a7-bad369e98469" style="Crosstab Data Text" x="210" y="0" width="25" height="19"/>
 							<textElement textAlignment="Right">
 								<font isBold="true"/>
 							</textElement>
@@ -98,7 +92,7 @@ AND
 				</crosstabHeaderCell>
 				<rowGroup name="username" width="70" totalPosition="End">
 					<bucket class="java.lang.String">
-						<bucketExpression><![CDATA[$F{username}]]></bucketExpression>
+						<bucketExpression><![CDATA[$F{identifier}]]></bucketExpression>
 					</bucket>
 					<crosstabRowHeader>
 						<cellContents backcolor="#F0F8FF" mode="Transparent">
@@ -115,12 +109,19 @@ AND
 								<topPen lineWidth="1.0"/>
 							</box>
 							<staticText>
-								<reportElement uuid="8190e9fe-9c04-4d76-a5f7-336a7ae7e6bc" x="108" y="0" width="95" height="15" forecolor="#000000"/>
+								<reportElement uuid="8190e9fe-9c04-4d76-a5f7-336a7ae7e6bc" x="0" y="0" width="199" height="14" forecolor="#000000"/>
 								<textElement textAlignment="Right" verticalAlignment="Top">
-									<font isBold="true"/>
+									<font size="10" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Total:]]></text>
 							</staticText>
+							<textField>
+								<reportElement uuid="3cd977f8-a405-44a5-b515-4a6ab4bc0b1d" style="Crosstab Data Text" x="210" y="0" width="25" height="14"/>
+								<textElement textAlignment="Right">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{billMeasure_name_ALL}]]></textFieldExpression>
+							</textField>
 						</cellContents>
 					</crosstabTotalRowHeader>
 				</rowGroup>
@@ -167,16 +168,16 @@ AND
 						<cellContents/>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<rowGroup name="bill_count" width="47">
+				<rowGroup name="billCount" width="25">
 					<bucket class="java.lang.Integer">
-						<bucketExpression><![CDATA[$F{bill_count}]]></bucketExpression>
+						<bucketExpression><![CDATA[$F{provider_id}]]></bucketExpression>
 					</bucket>
 					<crosstabRowHeader>
 						<cellContents>
 							<textField>
-								<reportElement uuid="65e16f96-1b14-47e5-9ba2-98414f0ee265" style="Crosstab Data Text" x="0" y="0" width="47" height="24"/>
+								<reportElement uuid="3cd977f8-a405-44a5-b515-4a6ab4bc0b1d" style="Crosstab Data Text" x="0" y="0" width="25" height="24"/>
 								<textElement textAlignment="Right"/>
-								<textFieldExpression><![CDATA[$V{bill_count}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$V{billMeasure_name_ALL}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabRowHeader>
@@ -196,7 +197,7 @@ AND
 							<textField>
 								<reportElement uuid="e14e06a8-2a2c-4499-b897-ee8ddd1c7bd6" style="Crosstab Data Text" x="0" y="0" width="50" height="19"/>
 								<textElement textAlignment="Right">
-									<font size="12" isBold="true"/>
+									<font isBold="true"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$V{name}]]></textFieldExpression>
 							</textField>
@@ -220,7 +221,7 @@ AND
 				<measure name="amountMeasure" class="java.math.BigDecimal" calculation="Sum">
 					<measureExpression><![CDATA[$F{amount}]]></measureExpression>
 				</measure>
-				<measure name="billMeasure" class="java.lang.Integer" calculation="Count">
+				<measure name="billMeasure" class="java.lang.Integer" calculation="DistinctCount">
 					<measureExpression><![CDATA[$F{bill_id}]]></measureExpression>
 				</measure>
 				<crosstabCell width="50" height="24">
@@ -293,13 +294,22 @@ AND
 				<crosstabCell rowTotalGroup="clock_out" columnTotalGroup="name">
 					<cellContents/>
 				</crosstabCell>
-				<crosstabCell rowTotalGroup="bill_count">
+				<crosstabCell rowTotalGroup="billCount">
 					<cellContents/>
 				</crosstabCell>
-				<crosstabCell rowTotalGroup="bill_count" columnTotalGroup="name">
+				<crosstabCell rowTotalGroup="billCount" columnTotalGroup="name">
 					<cellContents/>
 				</crosstabCell>
 			</crosstab>
 		</band>
 	</summary>
+	<noData>
+		<band height="37">
+			<staticText>
+				<reportElement uuid="8928f70d-a0b0-481f-bc42-b801f1d2493c" x="0" y="0" width="422" height="20"/>
+				<textElement/>
+				<text><![CDATA[No shift data found for the specified date.]]></text>
+			</staticText>
+		</band>
+	</noData>
 </jasperReport>

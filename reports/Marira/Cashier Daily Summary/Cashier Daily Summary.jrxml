@@ -36,9 +36,6 @@
 			</textField>
 		</band>
 	</pageHeader>
-	<columnHeader>
-		<band height="39" splitType="Stretch"/>
-	</columnHeader>
 	<detail>
 		<band height="125" splitType="Stretch">
 			<subreport>
@@ -51,9 +48,6 @@
 			</subreport>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="22" splitType="Stretch">
 			<textField>
@@ -70,7 +64,4 @@
 			</textField>
 		</band>
 	</pageFooter>
-	<noData>
-		<band height="50"/>
-	</noData>
 </jasperReport>
