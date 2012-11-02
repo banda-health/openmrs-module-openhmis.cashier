@@ -52,7 +52,7 @@ public class ReceiptController {
 				HashMap<String, Object> params = new HashMap<String, Object>();
 				params.put("billId", bill.getId());
 				try {
-					ReportGenerator.generate(report, params, false);
+					ReportGenerator.generate(report, params, false, true);
 				} catch (IOException e) {
 					response.sendError(500, "Error generating report for receipt \""+receiptNumber+"\"");
 				}
