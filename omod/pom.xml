@@ -16,6 +16,15 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>jasperreport</artifactId>
+			<type>jar</type>
+			<scope>system</scope>
+			<version>1.4.11</version>
+			<systemPath>${project.basedir}/../lib/jasperreport-1.4.11.jar</systemPath>
+		</dependency>
+
+		<dependency>
 			<groupId>org.openhmis.commons</groupId>
 			<artifactId>openhmis-commons</artifactId>
 			<type>jar</type>

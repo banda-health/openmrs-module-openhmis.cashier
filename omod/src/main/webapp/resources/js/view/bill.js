@@ -80,6 +80,10 @@ define(
 			},
 		});
 
+		/**
+		 * BillView
+		 * 
+		 */
 		openhmis.BillView = openhmis.GenericListView.extend({
 			initialize: function(options) {
 				_.bindAll(this);
@@ -230,6 +234,14 @@ define(
 					this.bill.save([], { success: function(model, resp) {
 						view.trigger("adjusted", model);
 					}});
+				}
+			},
+			
+			printReceipt: function() {
+				if (this.bill.get("receiptNumber")) {
+					var self = this;
+					var url = openhmis.config.pageUrlRoot + "receipt.form?receiptNumber=" + encodeURIComponent(self.bill.get("receiptNumber"));
+					window.open(url, "pdfDownload");
 				}
 			},
 			

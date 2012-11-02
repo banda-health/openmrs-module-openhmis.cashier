@@ -37,6 +37,7 @@ curl(
 				billView.render();
 				
 				$saveButton = $('#saveBill');
+				$printButton = $("#printReceipt");
 				switch (billView.bill.get("status")) {
 					case BillStatus.PENDING:
 						$saveButton.val(__("Save Bill"));
@@ -45,6 +46,8 @@ curl(
 					case BillStatus.PAID:
 						$saveButton.val(__("Adjust Bill"));
 						$saveButton.click(function() { billView.adjustBill() });
+						$printButton.show();
+						$printButton.click(billView.printReceipt);
 						break;
 					case BillStatus.ADJUSTED:
 						$saveButton.remove();

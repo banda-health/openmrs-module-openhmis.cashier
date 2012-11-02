@@ -24,6 +24,12 @@ public class CashierWebConstants {
 
 	public static final String BILL_PAGE = MODULE_ROOT + "bill";
 
+	public static final String RECEIPT = MODULE_ROOT + "receipt";
+	public static final String RECEIPT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultReceiptReportId";
+	public static final String RECEIPT_REPORT_NAME_PROPERTY = "openhmis.cashier.defaultReceiptReportName";
+
+	public static final String REPORT_DOWNLOAD_URL = "/moduleServlet/jasperreport/jreportDownload";
+
 	public static String formUrl(String page) {
 		return page.endsWith(".form") ? page : page + ".form";
 	}
