@@ -45,8 +45,12 @@ define(
 			onKeyPress: function(event) {
 				if (event.keyCode === 13) {
 					var errors = this.commitForm(event);
-					if (!errors) this.trigger("change", this);
 				}
+			},
+			
+			onModelChange: function(model) {
+				if (model.hasChanged() && model.isValid())
+					this.trigger("change", this);
 			},
 			
 			displayErrors: function(errorMap, event) {
@@ -70,7 +74,8 @@ define(
 			},
 						
 			removeModel: function() {
-				this.model.collection.remove(this.model);
+				if (this.model.collection)
+					this.model.collection.remove(this.model, { silent: true });
 			},
 			
 			render: function() {
@@ -143,9 +148,13 @@ define(
 			
 			setupNewItem: function(lineItemView) {
 				var dept_uuid;
+				// Handle adding an item from the input line
 				if (lineItemView !== undefined) {
+					// Prevent multiple change events causing duplicate views
+					if (this.model.getByCid(lineItemView.model.cid)) return;
 					lineItemView.off("change", this.setupNewItem);
 					this.model.add(lineItemView.model, { silent: true });
+					this.bill.setUnsaved();
 					lineItemView.on("change remove", this.bill.setUnsaved);
 					this.deselectAll();
 					dept_uuid = lineItemView.model.get("item").get("department").id;

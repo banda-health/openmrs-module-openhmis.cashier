@@ -389,6 +389,8 @@ define(
 								fieldsetTemplate: 'blankFieldset',
 								fieldTemplate: 'tableField'
 							});
+							this.form.on('blur', this.blur);
+							this.form.on('focus', this.focus);
 							break;
 					}
 				}
@@ -409,7 +411,7 @@ define(
 			},
 			
 			blur: function(event) {
-				this.trigger("blur", this);
+				//this.trigger("blur", this);
 				this.$el.removeClass("row_selected");
 				this.commitForm(event);
 			},
@@ -427,9 +429,10 @@ define(
 			
 			removeItem: function(event) {
 				if (confirm(__("Are you sure you want to remove the selected item?"))) {
-					this.trigger('remove', this.model);
-					Backbone.View.prototype.remove.call(this);
 					this.removeModel();
+					Backbone.View.prototype.remove.call(this);
+					this.trigger('remove', this.model);
+					this.off();
 					return true;
 				}
 				// Prevent this event from propagating
@@ -450,8 +453,6 @@ define(
 				if (_.indexOf(this.actions, 'inlineEdit') !== -1) {
 					//this.form.render();
 					this.$el.append(this.form.$('td'));
-					this.form.on('blur', this.blur);
-					this.form.on('focus', this.focus);
 				}
 				return this;
 			}
