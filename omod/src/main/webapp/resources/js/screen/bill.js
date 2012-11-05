@@ -80,7 +80,10 @@ curl(
 					return null;
 				}
 				
-				$('#inputNode').focus();
+				if (billView.bill.get("patient"))
+					billView.focus();
+				else
+					$('#inputNode').focus();
 			});			
 		}
 		
@@ -96,7 +99,13 @@ curl(
 		}
 		// If a patient is specified
 		else if (patientUuid) {
-			
+			var patient = new openhmis.Patient({ uuid: patientUuid });
+			patient.fetch({ silent: true, success: function(patient, resp) {
+				billView = new openhmis.BillView();
+				billView.bill.set("patient", patient);
+				patientView.model = patient;
+				displayBillView(billView, patientView);				
+			}});
 		}
 		else {
 			billView = new openhmis.BillView();
