@@ -177,6 +177,12 @@ define(
 					__: i18n }))
 			},
 			
+			/**
+			 *
+			 *
+			 * @should save bill if it is new
+			 * @should add payment if the bill has already been saved
+			 */
 			processPayment: function(payment, options) {
 				options = options ? options : {};
 				var success = options.success;
@@ -238,7 +244,9 @@ define(
 					this.bill.unset("uuid");
 					delete this.bill.id;
 					var view = this;
-					this.bill.set("status", this.bill.BillStatus.PENDING);
+					// Unset status to avoid the adjusted bill from being
+					// immediately set to PAID
+					this.bill.unset("status");
 					this.bill.set("billAdjusted", new openhmis.Bill({ uuid: adjustedUuid }));
 					this.bill.save([], { success: function(model, resp) {
 						view.trigger("adjusted", model);

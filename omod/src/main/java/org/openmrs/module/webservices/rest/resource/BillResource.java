@@ -59,6 +59,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		description.addProperty("patient");
 		description.addProperty("payments");
 		description.addProperty("receiptNumber");
+		description.addProperty("status");		
 		return description;
 	}
 
@@ -85,6 +86,12 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		billAdjusted.addAdjustedBy(instance);
 		instance.setBillAdjusted(billAdjusted);
 	}
+	
+	@PropertySetter("status")
+	public void setBillStatus(Bill instance, BillStatus status) {
+		if (instance.getStatus() == null)
+			instance.setStatus(status);
+	}
 
 	@Override
 	public Bill save (Bill delegate) {
@@ -108,12 +115,14 @@ public class BillResource extends BaseRestDataResource<Bill> {
 					throw new RestClientException("No cash points defined for the current timesheet!");
 				delegate.setCashPoint(cashPoint);
 			}
+			// Now that all all attributes have been set (i.e., payments and
+			// bill status) we can check to see if the bill is fully paid.
+			delegate.checkPaidAndUpdateStatus();
 			if (delegate.getStatus() == null)
 				delegate.setStatus(BillStatus.PENDING);
 		}
 		return super.save(delegate);
 	}
-
 	
 	@SuppressWarnings("unchecked")
 	@Override

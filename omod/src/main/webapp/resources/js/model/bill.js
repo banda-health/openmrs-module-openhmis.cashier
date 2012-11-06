@@ -19,7 +19,8 @@ define(
 				billAdjusted: { type: 'Object', objRef: true },
 				lineItems: { type: 'Object'},
 				patient: { type: 'Object', objRef: true },
-				payments: { type: 'Object'}
+				payments: { type: 'Object'},
+				status: { type: 'Text' }
 			},
 						
 			BillStatus: {

@@ -213,8 +213,15 @@ public class Bill extends BaseOpenmrsData {
 		this.payments.add(payment);
 		payment.setBill(this);
 		
-		if (getTotalPaid().compareTo(getTotal()) >= 0 && this.status == BillStatus.PENDING)
+		this.checkPaidAndUpdateStatus();
+	}
+	
+	public boolean checkPaidAndUpdateStatus() {
+		if (this.status == BillStatus.PENDING && getTotalPaid().compareTo(getTotal()) >= 0) {
 			this.setStatus(BillStatus.PAID);
+			return true;
+		}
+		return false;
 	}
 
 	public void removePayment(Payment payment) {
