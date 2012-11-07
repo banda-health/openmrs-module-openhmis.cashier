@@ -35,8 +35,9 @@ public class ReceiptController {
 			else {
 				IBillService service = Context.getService(IBillService.class);
 				Bill bill = service.getBillByReceiptNumber(receiptNumber);
-				if (bill == null)
-					response.sendError(404, "Could not find bill with receipt number \""+receiptNumber+"\"");
+				if (bill == null) {
+					response.sendError(404, "Could not find bill with receipt number \""+receiptNumber+"\""); return null;
+				}
 				AdministrationService adminService = Context.getAdministrationService();
 				Integer reportId;
 				String reportName;
@@ -54,7 +55,7 @@ public class ReceiptController {
 				try {
 					ReportGenerator.generate(report, params, false, true);
 				} catch (IOException e) {
-					response.sendError(500, "Error generating report for receipt \""+receiptNumber+"\"");
+					response.sendError(500, "Error generating report for receipt \""+receiptNumber+"\""); return null;
 				}
 				return "redirect:" + CashierWebConstants.REPORT_DOWNLOAD_URL + "?reportName=" + fileName;
 			}
