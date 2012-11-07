@@ -103,6 +103,7 @@ define(
 						if (model.collection === undefined) {
 							view.collection.add(model);
 						}
+						model.trigger("sync");
 						view.cancel();
 					},
 					error: function(model, resp) { openhmis.error(resp); }
