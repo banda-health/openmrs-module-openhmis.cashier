@@ -23,7 +23,11 @@ curl(
 			$(document).ready(function() {
 				// Easy access to status enumeration
 				var BillStatus = billView.bill.BillStatus;
-
+				
+				// Automatic receipt printing
+				if (openhmis.getQueryStringParameter("print") === "true")
+					billView.printReceipt();
+				
 				// Patient View
 				if (billView.bill.get("status") !== BillStatus.PENDING)
 					patientView.readOnly = true;
@@ -32,6 +36,11 @@ curl(
 				
 				billView.on("save paid adjusted", function(bill) {
 					window.location = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
+				});
+				billView.on("saveAndPrint", function(bill) {
+					var url = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
+					url = openhmis.addQueryStringParameter(url, "print=true");
+					window.location = url;
 				});
 				billView.setElement($('#bill'));
 				billView.render();
@@ -42,6 +51,9 @@ curl(
 					case BillStatus.PENDING:
 						$saveButton.val(__("Save Bill"));
 						$saveButton.click(function() { billView.saveBill() });
+						$printButton.val(__("Save & Print"));
+						$printButton.click(function() { billView.saveBill({ print: true }) });
+						$printButton.show();
 						break;
 					case BillStatus.PAID:
 						$saveButton.val(__("Adjust Bill"));

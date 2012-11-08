@@ -36,7 +36,7 @@ GROUP BY cashier_department.name]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{departmentName}+":"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement uuid="d8da9fc7-c3c9-401a-b335-10bddd3a9544" x="186" y="0" width="65" height="13"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9" isBold="false"/>

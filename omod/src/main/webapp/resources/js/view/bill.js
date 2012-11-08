@@ -223,11 +223,12 @@ define(
 					this.model.filter(function(item) { return item.isClean(); }),
 					{ silent: true }
 				);
+				var print = options.print;
 				var success = options.success;
 				var error = options.error;
 				var self = this;
 				options.success = function(model, resp) {
-					self.trigger("save", model);
+					self.trigger(print ? "saveAndPrint" : "save", model);
 					if (success) success(model, resp);
 				}
 				options.error = function(model, resp) {
@@ -254,11 +255,17 @@ define(
 				}
 			},
 			
-			printReceipt: function() {
-				if (this.bill.get("receiptNumber")) {
-					var self = this;
-					var url = openhmis.config.pageUrlRoot + "receipt.form?receiptNumber=" + encodeURIComponent(self.bill.get("receiptNumber"));
-					window.open(url, "pdfDownload");
+			printReceipt: function(event) {
+				var url = openhmis.config.pageUrlRoot
+					+ "receipt.form?receiptNumber=" + encodeURIComponent(this.bill.get("receiptNumber"));
+				if (event) {
+					if (this.bill.get("receiptNumber")) {
+						window.open(url, "pdfDownload");
+					}
+				}
+				else {
+					$iframe = $('<iframe id="receiptDownload" src="'+url+'" width="1" height="1"></iframe>');
+					$("body").append($iframe);
 				}
 			},
 			
