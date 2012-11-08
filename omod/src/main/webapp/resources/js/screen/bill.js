@@ -83,6 +83,7 @@ curl(
 				// Disable add event when the bill is saving to prevent
 				// unsettling page drawing
 				billView.on("save", function() { paymentView.model.off("add"); });
+				paymentView.paymentCollection.on("remove", billView.updateTotals);
 				paymentView.setElement($('#payment'));
 				paymentView.render();
 				
