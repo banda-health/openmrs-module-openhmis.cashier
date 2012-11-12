@@ -73,8 +73,7 @@ curl(
 				patientView.on('editing', billView.blur);
 				
 				// Payment View
-				var readOnly = billView.bill.get("status") !== BillStatus.PENDING
-					|| billView.bill.get("billAdjusted");
+				var readOnly = billView.bill.get("status") !== BillStatus.PENDING;
 				var paymentView = new openhmis.PaymentView({
 					paymentCollection: billView.bill.get("payments"),
 					processCallback: billView.processPayment,
