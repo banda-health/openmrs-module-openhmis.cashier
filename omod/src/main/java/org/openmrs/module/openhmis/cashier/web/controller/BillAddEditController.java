@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.Provider;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
@@ -36,11 +37,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value = "/module/openhmis/cashier/bill.form")
+@RequestMapping(value = CashierWebConstants.BILL_PAGE)
 public class BillAddEditController {
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public void bill(ModelMap model,
+	public String bill(ModelMap model,
 			@RequestParam(value = "billUuid", required = false) String billUuid,
 			@RequestParam(value = "patientUuid", required = false) String patientUuid,
 			HttpServletRequest request) {
@@ -58,6 +59,7 @@ public class BillAddEditController {
 			model.addAttribute("adjustedBy", bill.getAdjustedBy());
 			model.addAttribute("patient", patient);
 			model.addAttribute("cashPoint", bill.getCashPoint());
+			return CashierWebConstants.BILL_PAGE;
 		}
 		else {
 			if (patientUuid != null) {
@@ -84,11 +86,20 @@ public class BillAddEditController {
 			try {
 				cashPoint = tsService.getCurrentTimesheet(provider).getCashPoint();
 			} catch (Exception e) {
-				// Maybe in the future we'll have an option for what to do if
-				// there is no current timesheet.  For now the view will
-				// redirect.
+				AdministrationService adminService = Context.getAdministrationService();
+				boolean timesheetRequired;
+				try {
+					timesheetRequired = Boolean.parseBoolean(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY));
+				} catch (Exception e2) {
+					timesheetRequired = true;
+				}
+				if (timesheetRequired)
+					return "redirect:" + CashierWebConstants.formUrl(CashierWebConstants.TIMESHEET_ENTRY_PAGE);
+				else
+					return CashierWebConstants.BILL_PAGE;
 			}
 			model.addAttribute("cashPoint", cashPoint);
+			return CashierWebConstants.BILL_PAGE;
 		}
 	}
 }

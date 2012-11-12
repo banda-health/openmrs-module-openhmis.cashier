@@ -23,6 +23,7 @@ public class CashierWebConstants {
 	public static final String TIMESHEET_ENTRY_PAGE = TIMESHEET_PAGE + "Entry";
 
 	public static final String BILL_PAGE = MODULE_ROOT + "bill";
+	public static final String TIMESHEET_REQUIRED_PROPERTY = "openhmis.cashier.timesheetRequired";
 
 	public static final String RECEIPT = MODULE_ROOT + "receipt";
 	public static final String RECEIPT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultReceiptReportId";

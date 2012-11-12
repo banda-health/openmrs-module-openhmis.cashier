@@ -1,6 +1,5 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require allPrivileges="Manage Cashier Bills, View Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
-<c:if test="${empty cashPoint}"><c:redirect url="/module/openhmis/cashier/timesheetEntry.form?returnUrl=${url}"/></c:if>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
