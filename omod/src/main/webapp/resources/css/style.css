@@ -108,6 +108,10 @@ table.totals td.total { width: 13%; text-align: right; }
 table.totals td.label { width: 13%; }
 table.totals td.label, table.totals td.total { padding: 3px 7px 3px 10px; font-weight: bold; }
 
+/* Exception for form style */
+li.bbf-field.field-cashPoint div.bbf-editor { margin-left: 7em; }
+
+
 div.box { margin-bottom: 1em; }
 #paymentList b.boxHeader, #paymentList div.box { width: auto; }
 #paymentList .field-amountFmt, #paymentList .field-paymentMode { width: 13%; }

@@ -14,7 +14,7 @@
 package org.openmrs.module.openhmis.cashier.web;
 
 public class CashierWebConstants {
-	public static final String MODULE_ROOT = "/module/openhmis/cashier/";
+	public static final String MODULE_ROOT = "module/openhmis/cashier/";
 
 	public static final String RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = MODULE_ROOT + "admin/receiptNumberGenerator";
 	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = MODULE_ROOT + "admin/seqReceiptNumberGenerator";

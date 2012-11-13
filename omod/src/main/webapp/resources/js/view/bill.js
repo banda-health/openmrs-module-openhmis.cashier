@@ -4,8 +4,10 @@ define(
 		'lib/underscore',
 		'view/generic',
 		'lib/i18n',
+		'lib/backbone-forms',
 		'view/editors',
-		'model/bill'
+		'model/bill',
+		'model/cashPoint'
 	],
 	function($, _, openhmis, i18n) {
 		openhmis.BillLineItemView = openhmis.GenericListItemView.extend({
@@ -170,6 +172,28 @@ define(
 				}
 			},
 			
+			setupCashPointForm: function(el) {
+				var cashPoint = this.bill.get("cashPoint");
+				var cashPointId = cashPoint ? cashPoint.id : undefined;
+				this.cashPointForm = new Backbone.Form({
+					schema: {
+						cashPoint: {
+							type: 'Select',
+							title: i18n("Cash Point") + ":",
+							options: new openhmis.GenericCollection([], { model: openhmis.CashPoint })
+						}
+					},
+					data: {
+						cashPoint: cashPointId
+					},
+					template: "trForm",
+					fieldsetTemplate: "blankFieldset"
+				});
+				this.cashPointForm.render();
+				$(el).empty().append(this.cashPointForm.el);
+				return this.cashPointForm;
+			},
+			
 			updateTotals: function() {
 				this.$totals.html(this.totalsTemplate({
 					bill: this.bill,
@@ -217,6 +241,8 @@ define(
 			saveBill: function(options) {
 				options = options ? options : {};
 				if (!this.validate()) return;
+				if (this.cashPointForm !== undefined)
+					this.bill.set("cashPoint", this.cashPointForm.getValue("cashPoint"));
 				// Filter out any invalid lineItems (especially the bottom)
 				// entry cursor
 				this.bill.get("lineItems").reset(

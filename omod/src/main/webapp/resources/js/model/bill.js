@@ -1,6 +1,7 @@
 define(
 	[
 		'model/generic',
+		'model/cashPoint',
 		'model/patient',
 		'model/payment',
 		'model/lineItem'
@@ -17,6 +18,7 @@ define(
 			
 			schema: {
 				billAdjusted: { type: 'Object', objRef: true },
+				cashPoint: { type: 'Object', objRef: true },
 				lineItems: { type: 'Object'},
 				patient: { type: 'Object', objRef: true },
 				payments: { type: 'Object'},
@@ -112,6 +114,7 @@ define(
 					//paymentCollection.reset(paymentCollection.reject(function(payment) { return payment.get("voided"); }));
 					resp.payments = paymentCollection;
 				}
+				if (resp.cashPoint) resp.cashPoint = new openhmis.CashPoint(resp.cashPoint);
 				return resp;
 			},
 			

@@ -54,6 +54,9 @@ curl(
 						$printButton.val(__("Save & Print"));
 						$printButton.click(function() { billView.saveBill({ print: true }) });
 						$printButton.show();
+						var $cashPointLi = $("li.cashPoint");
+						if (!$cashPointLi.hasClass("timesheet") && !billView.bill.get("billAdjusted"))
+							billView.setupCashPointForm($("li.cashPoint"));
 						break;
 					case BillStatus.PAID:
 						$saveButton.val(__("Adjust Bill"));

@@ -37,10 +37,13 @@
 	<c:otherwise>
 		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${user.person.personName}</li>
 	</c:otherwise>
-</c:choose>
-	<c:if test="${!empty cashPoint}">
-		<li class="cashPoint"><span class="label"><openmrs:message code="openhmis.cashier.cashPoint.name"/>:</span> ${cashPoint}</li>
-	</c:if>
+</c:choose>	
+	<li class="cashPoint${timesheet != null ? " timesheet" : "" }">
+		<c:if test="${!empty cashPoint}">
+		<span class="label"><openmrs:message code="openhmis.cashier.cashPoint.name"/>:</span>
+			${cashPoint}
+		</c:if>
+	</li>
 </ul>
 <div class="clear"></div>
 
