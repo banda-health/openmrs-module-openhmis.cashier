@@ -102,6 +102,7 @@
 		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
 
 		<property name="amount" type="java.math.BigDecimal" column="amount" not-null="true" />
+		<property name="amountTendered" type="java.math.BigDecimal" column="amount_tendered" not-null="true" />
 
 		<set name="attributes" lazy="true" inverse="true" cascade="all-delete-orphan">
 			<key column="bill_payment_id" />

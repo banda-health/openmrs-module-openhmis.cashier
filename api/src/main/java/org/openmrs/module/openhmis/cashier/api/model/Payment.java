@@ -27,6 +27,7 @@ public class Payment extends BaseOpenmrsData {
 	private PaymentMode paymentMode;
 	private Set<PaymentAttribute> attributes;
 	private BigDecimal amount;
+	private BigDecimal amountTendered;
 
 	public Integer getId() {
 		return paymentId;
@@ -58,6 +59,14 @@ public class Payment extends BaseOpenmrsData {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+	}
+
+	public BigDecimal getAmountTendered() {
+		return amountTendered;
+	}
+
+	public void setAmountTendered(BigDecimal amountTendered) {
+		this.amountTendered = amountTendered;
 	}
 
 	public Bill getBill() {
