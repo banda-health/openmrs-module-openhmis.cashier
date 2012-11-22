@@ -43,22 +43,29 @@ public class Bill extends BaseOpenmrsData {
 		if (lineItems == null) return new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
 		for (BillLineItem line : lineItems) {
-			if (line.getVoided() != true)
+			if (!line.getVoided())
 				total = total.add(line.getTotal());
 		}
 		return total;
 	}
 	
-	public BigDecimal getTotalPaid() {
+	public BigDecimal getTotalPayments() {
 		if (payments == null) return new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
 		for (Payment payment : payments) {
-			if (payment.getVoided() != true)
+			if (!payment.getVoided())
 				total = total.add(payment.getAmount());
 		}
 		return total;
 	}
-	
+
+	public BigDecimal getAmountPaid() {
+		BigDecimal total = getTotal();
+		BigDecimal payments = getTotalPayments();
+
+		return total.min(payments);
+	}
+
 	@Override
 	public Integer getId() {
 		return billId;
@@ -218,7 +225,7 @@ public class Bill extends BaseOpenmrsData {
 	}
 	
 	public boolean checkPaidAndUpdateStatus() {
-		if (this.status == BillStatus.PENDING && getTotalPaid().compareTo(getTotal()) >= 0) {
+		if (this.status == BillStatus.PENDING && getTotalPayments().compareTo(getTotal()) >= 0) {
 			this.setStatus(BillStatus.PAID);
 			return true;
 		}
