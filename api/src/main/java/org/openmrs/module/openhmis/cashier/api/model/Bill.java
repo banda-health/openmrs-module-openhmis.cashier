@@ -257,13 +257,5 @@ public class Bill extends BaseOpenmrsData {
 			this.adjustedBy.remove(adjustedBill);
 		}
 	}
-
-	public BigDecimal getAmountPaid() {
-		return amountPaid;
-	}
-
-	public void setAmountPaid(BigDecimal amountPaid) {
-		this.amountPaid = amountPaid;
-	}
 }
 
