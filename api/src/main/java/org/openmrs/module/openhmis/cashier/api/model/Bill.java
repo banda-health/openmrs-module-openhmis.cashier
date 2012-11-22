@@ -34,7 +34,6 @@ public class Bill extends BaseOpenmrsData {
 	private CashPoint cashPoint;
 	private Bill billAdjusted;
 	private BillStatus status;
-	private BigDecimal amountPaid;
 	private List<BillLineItem> lineItems;
 	private Set<Payment> payments;
 	private Set<Bill> adjustedBy;
