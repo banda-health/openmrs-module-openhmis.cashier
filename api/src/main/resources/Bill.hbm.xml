@@ -14,6 +14,7 @@
 		<discriminator column="bill_id" insert="false" />
 
 		<property name="receiptNumber" type="java.lang.String" column="receipt_number" not-null="true" length="255" />
+		<property name="amountPaid" type="java.math.BigDecimal" column="amount_paid" />
 		<many-to-one name="cashier" class="org.openmrs.Provider" not-null="true" column="provider_id" />
 		<many-to-one name="patient" class="org.openmrs.Patient" not-null="true" column="patient_id" />
 		<many-to-one name="cashPoint" class="CashPoint" not-null="true" column="cash_point_id" />
