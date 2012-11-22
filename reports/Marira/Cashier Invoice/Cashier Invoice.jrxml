@@ -7,7 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\akmad\\Documents\\Jasper Reports\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[".\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -85,18 +85,17 @@ WHERE
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="178" splitType="Stretch">
+		<band height="155" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="61b9bfa4-ffad-4f61-bd33-285e26c27ef3" x="0" y="32" width="555" height="65"/>
+				<reportElement uuid="61b9bfa4-ffad-4f61-bd33-285e26c27ef3" x="0" y="32" width="555" height="42"/>
 				<textElement textAlignment="Center">
 					<font size="16"/>
 				</textElement>
-				<text><![CDATA[Address: <The Address>
-Tel: <The phone number>
-Fax: <The Fax Number>]]></text>
+				<text><![CDATA[Address: P.O. Box 20, Kijabe 002200 KENYA
+Tel: 020-324 6500]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="659a0528-d1be-4efe-9099-e0d9026f29c2" x="0" y="117" width="319" height="20"/>
+				<reportElement uuid="659a0528-d1be-4efe-9099-e0d9026f29c2" x="0" y="95" width="319" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -110,52 +109,52 @@ Fax: <The Fax Number>]]></text>
 				<text><![CDATA[AIC Marira Clinic]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="7b2e440f-7554-4c7d-9026-24e120ed9d6b" x="0" y="157" width="555" height="20"/>
+				<reportElement uuid="7b2e440f-7554-4c7d-9026-24e120ed9d6b" x="0" y="135" width="555" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Address: " + $F{address1} + " " + $F{address2} + " " + $F{city}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="bb99c657-1e64-4c83-a6bb-a3608b19352c" x="0" y="137" width="319" height="20"/>
+				<reportElement uuid="bb99c657-1e64-4c83-a6bb-a3608b19352c" x="0" y="115" width="319" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Phone: " + $F{phone}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e689e17d-8fb0-4124-9e48-8d668c208db4" x="319" y="137" width="236" height="20"/>
+				<reportElement uuid="e689e17d-8fb0-4124-9e48-8d668c208db4" x="319" y="115" width="236" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Status: " + $F{Status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="b8d5cd5e-cd83-4167-972e-bf52582e010a" x="319" y="117" width="236" height="20"/>
+				<reportElement uuid="b8d5cd5e-cd83-4167-972e-bf52582e010a" x="319" y="95" width="236" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Receipt Number: " + $F{receipt_number}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="c2d98d50-1bdf-49af-93ca-f1045b8183bf" x="0" y="97" width="555" height="1"/>
+				<reportElement uuid="c2d98d50-1bdf-49af-93ca-f1045b8183bf" x="0" y="75" width="555" height="1"/>
 			</line>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="b4faf1c5-3341-4170-8a83-1880c3d48af2" x="0" y="98" width="319" height="20"/>
+				<reportElement uuid="b4faf1c5-3341-4170-8a83-1880c3d48af2" x="0" y="76" width="319" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Patient Name: " + $F{patient_family_name} + ", " + $F{patient_given_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="fb01426c-2aec-4bff-b5d1-d2419de61693" x="391" y="98" width="164" height="20"/>
+				<reportElement uuid="fb01426c-2aec-4bff-b5d1-d2419de61693" x="391" y="76" width="164" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new SimpleDateFormat("yyyy-dd-MM").format($F{bill_date})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="2a45100b-ebb4-4c6b-88e0-98e7a3be23f6" x="319" y="98" width="72" height="20"/>
+				<reportElement uuid="2a45100b-ebb4-4c6b-88e0-98e7a3be23f6" x="319" y="76" width="72" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
