@@ -59,7 +59,7 @@ define("openhmis",
 		}
 		openhmis.dateFormat = function(date) {
 			var day = date.getDate();
-			var month = date.getMonth();
+			var month = date.getMonth() + 1;
 			var year = date.getFullYear();
 			day = day < 10 ? "0" + day : day.toString();
 			month = month < 10 ? "0" + month: month.toString();

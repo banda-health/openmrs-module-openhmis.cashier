@@ -224,9 +224,15 @@ public class Bill extends BaseOpenmrsData {
 	}
 	
 	public boolean checkPaidAndUpdateStatus() {
-		if (this.status == BillStatus.PENDING && getTotalPayments().compareTo(getTotal()) >= 0) {
-			this.setStatus(BillStatus.PAID);
-			return true;
+		if (this.getPayments().size() > 0) {
+			if (this.status == BillStatus.PENDING || this.status == BillStatus.POSTED) {
+				if (getTotalPayments().compareTo(getTotal()) >= 0) {
+					this.setStatus(BillStatus.PAID);
+					return true;					
+				}
+				else if (this.status == BillStatus.PENDING)
+					this.status = BillStatus.POSTED;
+			}
 		}
 		return false;
 	}

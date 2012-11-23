@@ -62,7 +62,9 @@
 <div id="bill"></div>
 <div id="payment" class="box"></div>
 
-<input type="submit" id="saveBill" value="Save Bill" /><input type="button" id="printReceipt" value="Print Receipt" style="display: none;" />
+<input type="submit" id="saveBill" value="Save Bill" />
+<input type="button" id="postBill" value="Post Bill" style="display: none;" />
+<input type="button" id="printReceipt" value="Print Receipt" style="display: none;" />
 <br />
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

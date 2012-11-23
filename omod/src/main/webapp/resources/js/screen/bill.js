@@ -43,31 +43,50 @@ curl(
 					window.location = url;
 				});
 				billView.setElement($('#bill'));
-				billView.render();
 				
 				$saveButton = $('#saveBill');
+				$postButton = $('#postBill');
 				$printButton = $("#printReceipt");
 				switch (billView.bill.get("status")) {
 					case BillStatus.PENDING:
 						$saveButton.val(__("Save Bill"));
 						$saveButton.click(function() { billView.saveBill() });
-						$printButton.val(__("Save & Print"));
-						$printButton.click(function() { billView.saveBill({ print: true }) });
+						var confirmMsg = __("Are you sure you want to post this bill?");
+						$postButton.click(function() { if (confirm(confirmMsg)) { billView.postBill() }});
+						$postButton.show();
+						$printButton.val(__("Post & Print"));
+						$printButton.click(function() { if (confirm(confirmMsg)) { billView.postBill({ print: true }) }});
 						$printButton.show();
+						
+						if (billView.bill.get("billAdjusted")) {
+							adjustedBillView = new openhmis.BillAndPaymentsView({
+								model: billView.bill.get("billAdjusted")
+							});
+							$("#patient-view").after(adjustedBillView.el).addClass("combineBoxes");
+							adjustedBillView.render();
+							$("#bill").appendTo(adjustedBillView.$el);
+							billView.options.listTitle = __("Adjustments");
+						}
+						
+						// Provide cash point select, if this option is enabled
 						var $cashPointLi = $("li.cashPoint");
 						if (!$cashPointLi.hasClass("timesheet") && !billView.bill.get("billAdjusted"))
 							billView.setupCashPointForm($("li.cashPoint"));
 						break;
+					case BillStatus.POSTED:
 					case BillStatus.PAID:
 						$saveButton.val(__("Adjust Bill"));
 						$saveButton.click(function() { billView.adjustBill() });
-						$printButton.show();
+						$printButton.val(__("Print Receipt"));
 						$printButton.click(billView.printReceipt);
+						$printButton.show();
 						break;
 					case BillStatus.ADJUSTED:
 						$saveButton.remove();
 						break;
 				}
+
+				billView.render();
 				
 				if (billView.bill.get("status") === BillStatus.PENDING)
 					billView.setupNewItem();
@@ -76,7 +95,8 @@ curl(
 				patientView.on('editing', billView.blur);
 				
 				// Payment View
-				var readOnly = billView.bill.get("status") !== BillStatus.PENDING;
+				var readOnly = !(billView.bill.get("status") == BillStatus.PENDING
+								 || billView.bill.get("status") == BillStatus.POSTED);
 				var paymentView = new openhmis.PaymentView({
 					paymentCollection: billView.bill.get("payments"),
 					processCallback: billView.processPayment,
@@ -109,7 +129,13 @@ curl(
 			bill.fetch({ silent: true, success: function(bill, resp) {
 				billView = new openhmis.BillView({ bill: bill });
 				patientView.model = new openhmis.Patient(bill.get("patient"));
-				displayBillView(billView, patientView);
+				if (bill.get("billAdjusted")) {
+					bill.get("billAdjusted").fetch({ success: function(billAdjusted, resp) {
+						displayBillView(billView, patientView);						
+					}});
+				}
+				else
+					displayBillView(billView, patientView);
 			}});
 		}
 		// If a patient is specified
