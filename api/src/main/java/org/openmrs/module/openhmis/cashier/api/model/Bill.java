@@ -183,7 +183,7 @@ public class Bill extends BaseOpenmrsData {
 		this.payments = payments;
 	}
 
-	public Payment addPayment(PaymentMode mode, Set<PaymentAttribute> attributes, BigDecimal amount) {
+	public Payment addPayment(PaymentMode mode, Set<PaymentAttribute> attributes, BigDecimal amount, BigDecimal amountTendered) {
 		if (mode == null) {
 			throw new NullPointerException("The payment mode must be defined.");
 		}
@@ -194,6 +194,7 @@ public class Bill extends BaseOpenmrsData {
 		Payment payment = new Payment();
 		payment.setPaymentMode(mode);
 		payment.setAmount(amount);
+		payment.setAmountTendered(amountTendered);
 
 		if (attributes != null && attributes.size() > 0) {
 			payment.setAttributes(attributes);

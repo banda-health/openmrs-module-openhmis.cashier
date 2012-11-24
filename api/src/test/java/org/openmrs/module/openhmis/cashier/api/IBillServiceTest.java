@@ -71,10 +71,10 @@ public abstract class IBillServiceTest extends IDataServiceTest<IBillService, Bi
 		bill.addLineItem(item, item.getPrices().iterator().next(), 1);
 
 		PaymentMode mode = paymentModeService.getById(0);
-		bill.addPayment(mode, null, BigDecimal.valueOf(100));
+		bill.addPayment(mode, null, BigDecimal.valueOf(100), BigDecimal.valueOf(100));
 
 		mode = paymentModeService.getById(1);
-		bill.addPayment(mode, null, BigDecimal.valueOf(200));
+		bill.addPayment(mode, null, BigDecimal.valueOf(200), BigDecimal.valueOf(200));
 
 		return bill;
 	}
@@ -123,7 +123,7 @@ public abstract class IBillServiceTest extends IDataServiceTest<IBillService, Bi
 			}
 		}
 
-		bill.addPayment(paymentModeService.getById(2), null, BigDecimal.valueOf(303.11));
+		bill.addPayment(paymentModeService.getById(2), null, BigDecimal.valueOf(303.11), BigDecimal.valueOf(350.00));
 	}
 
 	@Override
