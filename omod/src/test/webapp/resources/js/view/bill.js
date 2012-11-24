@@ -10,6 +10,24 @@ describe("BillView", function() {
 	});
 	
 	it("should return to the same state after adding and deleting an item", function() {
-		//TODO: Implement this
+		var billView = new openhmis.BillView();
+		$("body").append(billView.el);
+		billView.render();
+		billView.setupNewItem();
+		var item = new openhmis.Item($.parseJSON(openhmis.testData.JSON.item));
+		// Setting attributes will trigger change, which will trigger adding
+		// the new item
+		billView.newItem.set({
+			item: item,
+			quantity: 1,
+			price: item.get("defaultPrice").price
+		});
+		expect(billView.bill.get("lineItems").length).toEqual(1);
+		var newItem = billView.bill.get("lineItems").models[0];
+		newItem.view.removeItem();
+		// Removing the item should remove its row; there should be one row
+		// left
+		$trs = billView.$("table.bill tbody tr");
+		expect($trs.length).toEqual(1);
 	});
 });

@@ -27,6 +27,7 @@ define(
 						
 			BillStatus: {
 				PENDING:	"PENDING",
+				POSTED:		"POSTED",
 				PAID:		"PAID",
 				ADJUSTED:	"ADJUSTED"
 			},
@@ -57,16 +58,36 @@ define(
 				return total;
 			},
 			
-			getTotalPaid: function() {
+			/**
+			 * This method takes the adjustment process into account when
+			 * calculating the bill total
+			 */
+			getAdjustedTotal: function() {
+				var billAdjusted = this.get("billAdjusted");
+				if (billAdjusted !== undefined && this.get("status") == this.BillStatus.PENDING) {
+					return this.getTotal() + billAdjusted.getTotal() - billAdjusted.getAmountPaid();
+				}
+				else
+					return this.getTotal();
+			},
+			
+			getTotalPayments: function() {
 				var total = 0;
 				var payments = this.get("payments");
 				if (payments && payments.length > 0) {
 					payments.each(function(payment) {
 						if (payment.get("voided") !== true)
-							total += payment.get("amount");
+							total += payment.get("amountTendered");
 					});
 				}
 				return total;
+			},
+			
+			getAmountPaid: function() {
+				var total = this.getTotal();
+				var totalPayments = this.getTotalPayments();
+				
+				return Math.min(total, totalPayments);
 			},
 			
 			validate: function(final) {

@@ -94,6 +94,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	public void setBillStatus(Bill instance, BillStatus status) {
 		if (instance.getStatus() == null)
 			instance.setStatus(status);
+		else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED)
+			instance.setStatus(status);
 	}
 
 	@Override

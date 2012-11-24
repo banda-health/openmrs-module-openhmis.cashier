@@ -16,6 +16,8 @@ package org.openmrs.module.openhmis.cashier.web.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
+import javassist.bytecode.stackmap.BasicBlock.Catch;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.Patient;
@@ -51,6 +53,8 @@ public class BillAddEditController {
 			return "redirect:/" + CashierWebConstants.formUrl(CashierWebConstants.TIMESHEET_ENTRY_PAGE)
 				+ "?returnUrl=" + CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE)
 				+ (request.getQueryString() != null ? UriUtils.encodeQuery("?" + request.getQueryString(), "UTF-8") : "");
+		} catch (Exception e) {
+			// Catch other exceptions, like session timeout
 		}
 		model.addAttribute("timesheet", timesheet);
 

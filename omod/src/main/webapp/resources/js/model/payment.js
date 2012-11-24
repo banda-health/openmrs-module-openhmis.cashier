@@ -20,6 +20,8 @@ define(
                 dateCreatedFmt: { type: 'Text', title: __("Date"), readOnly: true },
                 amount: { type: 'BasicNumber' },
                 amountFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
+                amountTendered: { type: 'BasicNumber' },
+                amountTenderedFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
                 paymentMode: { type: 'Text' }
             },
             
@@ -36,6 +38,8 @@ define(
 						return openhmis.dateFormat(date);
 					case 'amountFmt':
                         return openhmis.ItemPrice.prototype.format.call(this, this.get("amount"));
+					case 'amountTenderedFmt':
+                        return openhmis.ItemPrice.prototype.format.call(this, this.get("amountTendered"));
 					default:
 						return openhmis.GenericModel.prototype.get.call(this, attr);
 				}
