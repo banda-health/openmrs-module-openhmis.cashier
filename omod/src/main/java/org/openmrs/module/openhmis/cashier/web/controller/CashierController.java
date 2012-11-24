@@ -16,7 +16,11 @@ package org.openmrs.module.openhmis.cashier.web.controller;
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.Provider;
 import org.openmrs.api.APIException;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.jasperreport.JasperReport;
+import org.openmrs.module.jasperreport.JasperReportService;
 import org.openmrs.module.openhmis.cashier.api.ICashPointService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
@@ -37,19 +41,21 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = CashierWebConstants.TIMESHEET_ENTRY_PAGE)
-public class TimesheetEntryController {
+@RequestMapping(value = CashierWebConstants.CASHIER_PAGE)
+public class CashierController {
 	private ITimesheetService timesheetService;
 	private ICashPointService cashPointService;
 	private ProviderService providerService;
+	private JasperReportService jasperService;
+	private AdministrationService adminService;
 
 	@Autowired
-	public TimesheetEntryController(ITimesheetService timesheetService,
-	                                ICashPointService cashPointService,
-	                                ProviderService providerService) {
+	public CashierController(ITimesheetService timesheetService, ICashPointService cashPointService,
+	                         ProviderService providerService, AdministrationService adminService) {
 		this.timesheetService = timesheetService;
 		this.cashPointService = cashPointService;
 		this.providerService = providerService;
+		this.adminService = adminService;
 	}
 
 	@InitBinder
@@ -73,11 +79,28 @@ public class TimesheetEntryController {
 			throw new APIException("Could not locate the provider.");
 		}
 
+		// Load the current timesheet information
 		Timesheet timesheet = timesheetService.getCurrentTimesheet(provider);
 		if (timesheet == null) {
 			timesheet = new Timesheet();
 			timesheet.setCashier(provider);
 			timesheet.setClockIn(new Date());
+		}
+
+		// load shift report (this must be refactored for the next version)
+		if (jasperService == null) {
+			jasperService = Context.getService(JasperReportService.class);
+		}
+		JasperReport shiftReport = null;
+		String shiftReportId = adminService.getGlobalProperty(CashierWebConstants.CASHIER_SHIFT_REPORT_ID_PROPERTY);
+		if (StringUtils.isNotEmpty(shiftReportId)) {
+			if (StringUtils.isNumeric(shiftReportId)) {
+				shiftReport = jasperService.getJasperReport(Integer.parseInt(shiftReportId));
+
+				if (shiftReport != null) {
+					modelMap.addAttribute("shiftReport", shiftReport);
+				}
+			}
 		}
 
 		addRenderAttributes(modelMap, timesheet, provider, returnUrl);
@@ -115,4 +138,3 @@ public class TimesheetEntryController {
 		modelMap.addAttribute("timesheet", timesheet);
 	}
 }
-

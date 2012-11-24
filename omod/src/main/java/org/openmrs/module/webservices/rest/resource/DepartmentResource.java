@@ -34,3 +34,4 @@ public class DepartmentResource extends BaseRestMetadataResource<Department> {
 	}
 }
 
+

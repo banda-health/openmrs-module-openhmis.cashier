@@ -14,46 +14,53 @@
 package org.openmrs.module.webservices.rest.web.controller;
 
 import org.openmrs.module.webservices.rest.SimpleObject;
-import org.openmrs.module.webservices.rest.resource.ItemResource;
+import org.openmrs.module.webservices.rest.resource.TimesheetResource;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestUtil;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.openmrs.module.webservices.rest.web.v1_0.controller.BaseCrudController;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
-@RequestMapping(value = "/rest/item")
-public class ItemController extends BaseCrudController<ItemResource> {
-	/**
-	 * @param query
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws ResponseException
-	 */
-	@RequestMapping(method = RequestMethod.GET, params = {"q", "department_uuid"})
+@RequestMapping(value = "/rest/timesheet")
+public class TimesheetController extends BaseCrudController<TimesheetResource> {
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		dateFormat.setLenient(false);
+
+		// true passed to CustomDateEditor constructor means convert empty String to null
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	}
+
+	@RequestMapping(method = RequestMethod.GET, params = {"date"})
 	@ResponseBody
-	public SimpleObject search(@RequestParam("q") String query, @RequestParam("department_uuid") String department_uuid, HttpServletRequest request, HttpServletResponse response)
-	        throws ResponseException {
-		ItemResource itemResource;
+	public SimpleObject search(@RequestParam("date") Date date, HttpServletRequest request, HttpServletResponse response)
+			throws ResponseException {
+		if (date == null) {
+			return null;
+		}
+
+		TimesheetResource timesheetResource;
 		try {
-			itemResource = (ItemResource) getResource();
+			timesheetResource = getResource();
 		}
 		catch (ClassCastException ex) {
 			throw new ResourceDoesNotSupportOperationException(getResource().getClass().getSimpleName()
-			        + " is not Searchable", null);
+					+ " is not Searchable", null);
 		}
+
 		RequestContext context = RestUtil.getRequestContext(request, Representation.REF);
-		return itemResource.search(query, department_uuid, context);
+		return timesheetResource.search(date, context);
 	}
 }
-

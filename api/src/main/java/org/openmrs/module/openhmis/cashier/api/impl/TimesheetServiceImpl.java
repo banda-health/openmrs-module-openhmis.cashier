@@ -24,6 +24,10 @@ import org.openmrs.module.openhmis.cashier.api.security.IDataAuthorizationPrivil
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 @Transactional
 public class TimesheetServiceImpl
 		extends BaseDataServiceImpl<Timesheet>
@@ -68,5 +72,48 @@ public class TimesheetServiceImpl
 		criteria.addOrder(Order.desc("clockIn"));
 
 		return dao.selectSingle(Timesheet.class, criteria);
+	}
+
+	@Override
+	public List<Timesheet> getTimesheetsByDate(Provider cashier, Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		Date endDate = calendar.getTime();
+
+		Criteria criteria = dao.createCriteria(Timesheet.class);
+		criteria.add(Restrictions.and(
+				Restrictions.eq("cashier", cashier),
+				Restrictions.or(
+					// Start or end on date
+					Restrictions.or(
+						Restrictions.between("clockIn", startDate, endDate),
+						Restrictions.between("clockOut", startDate, endDate)
+					),
+					Restrictions.or(
+						// Start on or before date and have not ended
+						Restrictions.and(
+							Restrictions.le("clockIn", endDate),
+							Restrictions.isNull("clockOut")
+						),
+						// Start before and end after date
+						Restrictions.and(
+							Restrictions.le("clockIn", startDate),
+							Restrictions.ge("clockOut", endDate)
+						)
+					)
+				)
+			)
+		);
+		criteria.addOrder(Order.desc("clockIn"));
+
+		return dao.select(Timesheet.class, criteria);
 	}
 }

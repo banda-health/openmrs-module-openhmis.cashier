@@ -30,7 +30,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-public class TimesheetLinkExt extends LinkExt {
+public class CashierLinkExt extends LinkExt {
 	protected Log log = LogFactory.getLog(getClass());
 
 	private ITimesheetService timesheetService;
@@ -60,7 +60,7 @@ public class TimesheetLinkExt extends LinkExt {
 			}
 		}
 		} catch (Exception ex) {
-			log.error("An error occurred while attempting to load the cashier timesheet extension point", ex);
+			log.error("An error occurred while attempting to load the cashier extension point", ex);
 
 			isProviderUser = false;
 			currentTimesheet = null;
@@ -70,11 +70,7 @@ public class TimesheetLinkExt extends LinkExt {
 	@Override
 	public String getLabel() {
 		if (isProviderUser) {
-			if (currentTimesheet == null) {
-				return "openhmis.cashier.timesheet.clockIn";
-			} else {
-				return "openhmis.cashier.timesheet.clockOut";
-			}
+			return "openhmis.cashier.page";
 		}
 
 		return null;
@@ -86,7 +82,7 @@ public class TimesheetLinkExt extends LinkExt {
 
 	@Override
 	public String getUrl() {
-		String url = CashierWebConstants.formUrl(CashierWebConstants.TIMESHEET_ENTRY_PAGE);
+		String url = "/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
 
 		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		if (req != null) {

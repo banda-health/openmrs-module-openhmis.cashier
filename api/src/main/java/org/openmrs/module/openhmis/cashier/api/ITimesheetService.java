@@ -16,6 +16,9 @@ package org.openmrs.module.openhmis.cashier.api;
 import org.openmrs.Provider;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 
+import java.util.Date;
+import java.util.List;
+
 public interface ITimesheetService extends IDataService<Timesheet> {
 	/**
 	 * Gets the current {@link Timesheet} that the specified {@link Provider}.
@@ -27,4 +30,18 @@ public interface ITimesheetService extends IDataService<Timesheet> {
 	 * @should return null if the timesheet is clocked out
 	 */
 	Timesheet getCurrentTimesheet(Provider cashier);
+
+	/**
+	 * Gets all the {@link Timesheet}'s for the specified user on the specified day.
+	 * @param cashier The cashier.
+	 * @param date The date.
+	 * @return All the timesheets for the cashier on the specified day.
+	 * @should return empty list if there are no timesheets for date
+	 * @should return timesheets that start and end on date
+	 * @should return timesheets that start on date and end on different date
+	 * @should return timesheet that start on different date and end on date
+	 * @should return timesheets that start before date but end after date
+	 * @should return timesheets that start before date and have not ended
+	 */
+	List<Timesheet> getTimesheetsByDate(Provider cashier, Date date);
 }
