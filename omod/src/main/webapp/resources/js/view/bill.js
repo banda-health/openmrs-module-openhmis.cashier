@@ -99,11 +99,11 @@ define(
 				this.setBill(bill);
 				
 				var billOptions = { showRetiredOption: false, showPaging: false }
-				if (bill.get("status") === bill.BillStatus.PENDING)
-					billOptions["itemActions"] = ["remove", "inlineEdit"];
 				options = _.extend(billOptions, options);
 				
 				openhmis.GenericListView.prototype.initialize.call(this, options);
+				this.options.roundToNearest = options.roundToNearest || 0;
+				this.options.roundingMode = options.roundingMode || "MID";
 				this.itemView = openhmis.BillLineItemView;
 				this.totalsTemplate = this.getTemplate("bill.html", '#bill-totals');
 			},
@@ -118,6 +118,10 @@ define(
 				this.bill = bill;
 				this.model = bill.get("lineItems");
 				this.model.on("all", this.updateTotals);
+				if (bill.get("status") === bill.BillStatus.PENDING)
+					this.options.itemActions = ["remove", "inlineEdit"];
+				else
+					this.options.itemActions = [];
 			},
 			
 			addOne: function(model, schema) {
@@ -196,7 +200,7 @@ define(
 			},
 			
 			updateTotals: function() {
-				var total = this.bill.getAdjustedTotal();
+				var total = openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode);
 				var totalPaid = this.bill.getTotalPayments();
 				this.$totals.html(this.totalsTemplate({
 					bill: this.bill,
@@ -207,8 +211,6 @@ define(
 			},
 			
 			/**
-			 *
-			 *
 			 * @should post bill if it is pending
 			 * @should add payment if the bill has already been posted
 			 */

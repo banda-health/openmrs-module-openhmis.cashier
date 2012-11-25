@@ -28,6 +28,7 @@ define(
 				price: { type: 'BasicNumber' }
 			},
 			format: function(price) {
+				if (price === undefined) return 0;
 				return price.toFixed(2);
 			},
 			
