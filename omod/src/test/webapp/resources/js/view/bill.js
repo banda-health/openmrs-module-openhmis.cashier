@@ -11,7 +11,6 @@ describe("BillView", function() {
 	
 	it("should return to the same state after adding and deleting an item", function() {
 		var billView = new openhmis.BillView();
-		$("body").append(billView.el);
 		billView.render();
 		billView.setupNewItem();
 		var item = new openhmis.Item($.parseJSON(openhmis.testData.JSON.item));
