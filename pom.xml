@@ -9,6 +9,14 @@
 	<name>OpenHMIS Cashier Module</name>
 	<description>Module to provide basic cashier functionality</description>
 	<url>https://github.com/OpenHMIS/OpenHMIS/wiki</url>
+
+	<distributionManagement>
+		<repository>
+			<id>openmrs-repo</id>
+			<name>Modules</name>
+			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules/</url>
+		</repository>
+	</distributionManagement>
 	
 	<developers>
 		<developer>
