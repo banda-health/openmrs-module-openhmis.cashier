@@ -61,6 +61,6 @@ public class SequentialReceiptNumberGeneratorController {
 		// Set the system generator
 		ReceiptNumberGeneratorFactory.setGenerator(new SequentialReceiptNumberGenerator());
 
-		return CashierWebConstants.redirectUrl(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE);
+		return CashierWebConstants.redirectUrl("/" + CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE);
 	}
 }
