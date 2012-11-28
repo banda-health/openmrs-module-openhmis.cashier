@@ -33,8 +33,8 @@
 		<connection>scm:git:git@github.com:OpenHMIS/openmrs-module-openhmis.cashier.git</connection>
 		<developerConnection>scm:git:git@github.com:OpenHMIS/openmrs-module-openhmis.cashier.git</developerConnection>
 		<url>scm:git:git@github.com:OpenHMIS/openmrs-module-openhmis.cashier.git</url>
-	  <tag>HEAD</tag>
-  </scm>
+	    <tag>HEAD</tag>
+    </scm>
 
 	<modules>
 		<module>api</module>
