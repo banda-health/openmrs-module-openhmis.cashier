@@ -16,8 +16,6 @@ package org.openmrs.module.openhmis.cashier.web.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
-import javassist.bytecode.stackmap.BasicBlock.Catch;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.Patient;

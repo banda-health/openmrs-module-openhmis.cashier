@@ -122,35 +122,42 @@ curl(
 			});			
 		}
 		
-		// If a bill is specified
-		if (billUuid) {
-			// Load the bill
-			var bill = new openhmis.Bill({ uuid: billUuid });
-			bill.fetch({ silent: true, success: function(bill, resp) {
-				billView = new openhmis.BillView({ bill: bill });
-				patientView.model = new openhmis.Patient(bill.get("patient"));
-				if (bill.get("billAdjusted")) {
-					bill.get("billAdjusted").fetch({ success: function(billAdjusted, resp) {
-						displayBillView(billView, patientView);						
-					}});
-				}
-				else
-					displayBillView(billView, patientView);
-			}});
-		}
-		// If a patient is specified
-		else if (patientUuid) {
-			var patient = new openhmis.Patient({ uuid: patientUuid });
-			patient.fetch({ silent: true, success: function(patient, resp) {
-				billView = new openhmis.BillView();
-				billView.bill.set("patient", patient);
-				patientView.model = patient;
-				displayBillView(billView, patientView);				
-			}});
-		}
-		else {
-			billView = new openhmis.BillView();
-			displayBillView(billView, patientView);
-		}
+		var options = new openhmis.GenericModel([], {
+			urlRoot: openhmis.config.pageUrlRoot + "options.json"
+		});
+		options.fetch({ success: function(options, resp) {
+			billView = new openhmis.BillView({
+				roundToNearest: options.get("roundToNearest"),
+				roundingMode: options.get("roundingMode")
+			});
+			// If a bill is specified
+			if (billUuid) {
+				// Load the bill
+				var bill = new openhmis.Bill({ uuid: billUuid });
+				bill.fetch({ silent: true, success: function(bill, resp) {
+					billView.setBill(bill);
+					patientView.model = new openhmis.Patient(bill.get("patient"));
+					if (bill.get("billAdjusted")) {
+						bill.get("billAdjusted").fetch({ success: function(billAdjusted, resp) {
+							displayBillView(billView, patientView);						
+						}});
+					}
+					else
+						displayBillView(billView, patientView);
+				}});
+			}
+			// If a patient is specified
+			else if (patientUuid) {
+				var patient = new openhmis.Patient({ uuid: patientUuid });
+				patient.fetch({ silent: true, success: function(patient, resp) {
+					billView.bill.set("patient", patient);
+					patientView.model = patient;
+					displayBillView(billView, patientView);				
+				}});
+			}
+			else {
+				displayBillView(billView, patientView);
+			}
+		}});
 	}
 );

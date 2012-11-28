@@ -11,6 +11,7 @@ curl(
 		var testBaseUrl = '/src/test/webapp/resources/js';
 		curl(
 			[
+				'js!' + testBaseUrl + '/openhmis.js',
 				'js!' + testBaseUrl + '/model/generic.js',
 				'js!' + testBaseUrl + '/model/item.js',
 				'js!' + testBaseUrl + '/view/generic.js',

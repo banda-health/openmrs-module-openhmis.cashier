@@ -81,6 +81,20 @@ define("openhmis",
 			}, 5000);
 		},
 		
+		openhmis.round = function(val, nearest, mode) {
+			nearest = nearest ? nearest : 1;
+			if (nearest === 0) return val;
+			var factor = 1 / nearest;
+			switch (mode) {
+				case 'FLOOR':
+					return Math.floor(val * factor) / factor;
+				case 'CEILING':
+					return Math.ceil(val * factor) / factor;
+				default:
+					return Math.round(val * factor) / factor;
+			}
+		},
+		
 		// Use uuid for id
 		Backbone.Model.prototype.idAttribute = 'uuid';
 		
