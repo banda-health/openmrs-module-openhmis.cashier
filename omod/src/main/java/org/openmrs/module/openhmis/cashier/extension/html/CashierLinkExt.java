@@ -24,10 +24,7 @@ import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.ProviderHelper;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.web.extension.LinkExt;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class CashierLinkExt extends LinkExt {
@@ -82,14 +79,7 @@ public class CashierLinkExt extends LinkExt {
 
 	@Override
 	public String getUrl() {
-		String url = "/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
-
-		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		if (req != null) {
-			url += "?returnUrl=" + req.getAttribute("javax.servlet.forward.servlet_path");
-		}
-
-		return url;
+		return "/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
 	}
 
 	@Override
