@@ -13,38 +13,49 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
-import java.util.Collection;
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
-import org.openmrs.Provider;
 import org.openmrs.api.PatientService;
-import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
-import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
-import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
+import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.api.util.TimesheetHelper;
+import org.openmrs.module.openhmis.cashier.api.util.TimesheetRequiredException;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriUtils;
 
 @Controller
-@RequestMapping(value = "/module/openhmis/cashier/bill.form")
+@RequestMapping(value = CashierWebConstants.BILL_PAGE)
 public class BillAddEditController {
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public void bill(ModelMap model,
+	public String bill(ModelMap model,
 			@RequestParam(value = "billUuid", required = false) String billUuid,
 			@RequestParam(value = "patientUuid", required = false) String patientUuid,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws UnsupportedEncodingException {
 		Patient patient = null;
+		Timesheet timesheet = null;
+		try { timesheet = TimesheetHelper.getCurrentTimesheet(); }
+		catch (TimesheetRequiredException e) {
+			return "redirect:/" + CashierWebConstants.formUrl(CashierWebConstants.TIMESHEET_ENTRY_PAGE)
+				+ "?returnUrl=" + CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE)
+				+ (request.getQueryString() != null ? UriUtils.encodeQuery("?" + request.getQueryString(), "UTF-8") : "");
+		} catch (Exception e) {
+			// Catch other exceptions, like session timeout
+		}
+		model.addAttribute("timesheet", timesheet);
+
 		model.addAttribute("user", Context.getAuthenticatedUser());
 		model.addAttribute("url", CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE)
 			+ ( (request.getQueryString() != null) ? "?" + request.getQueryString() : ""));
@@ -58,6 +69,7 @@ public class BillAddEditController {
 			model.addAttribute("adjustedBy", bill.getAdjustedBy());
 			model.addAttribute("patient", patient);
 			model.addAttribute("cashPoint", bill.getCashPoint());
+			return CashierWebConstants.BILL_PAGE;
 		}
 		else {
 			if (patientUuid != null) {
@@ -71,24 +83,8 @@ public class BillAddEditController {
 				model.addAttribute("patient", patient);
 				model.addAttribute("patientIdentifier", patientIdentifier);
 			}
-			
-			Provider provider = null;
-			CashPoint cashPoint = null;
-			ProviderService providerService = Context.getProviderService();
-			try {
-				Collection<Provider> providers = providerService.getProvidersByPerson(Context.getAuthenticatedUser().getPerson());
-				for (Provider p : providers) { provider = p; break; }
-			} catch (Exception e) { }
-			
-			ITimesheetService tsService = Context.getService(ITimesheetService.class);
-			try {
-				cashPoint = tsService.getCurrentTimesheet(provider).getCashPoint();
-			} catch (Exception e) {
-				// Maybe in the future we'll have an option for what to do if
-				// there is no current timesheet.  For now the view will
-				// redirect.
-			}
-			model.addAttribute("cashPoint", cashPoint);
+			model.addAttribute("cashPoint", timesheet != null ? timesheet.getCashPoint() : null);
+			return CashierWebConstants.BILL_PAGE;
 		}
 	}
 }

@@ -13,9 +13,6 @@
  */
 package org.openmrs.module.webservices.rest.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.resource.ItemResource;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -29,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping(value = "/rest/item")
@@ -55,5 +55,5 @@ public class ItemController extends BaseCrudController<ItemResource> {
 		RequestContext context = RestUtil.getRequestContext(request, Representation.REF);
 		return itemResource.search(query, department_uuid, context);
 	}
-
 }
+

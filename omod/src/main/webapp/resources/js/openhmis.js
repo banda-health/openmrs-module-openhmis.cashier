@@ -59,7 +59,7 @@ define("openhmis",
 		}
 		openhmis.dateFormat = function(date) {
 			var day = date.getDate();
-			var month = date.getMonth();
+			var month = date.getMonth() + 1;
 			var year = date.getFullYear();
 			day = day < 10 ? "0" + day : day.toString();
 			month = month < 10 ? "0" + month: month.toString();
@@ -79,6 +79,20 @@ define("openhmis",
 				$(el).remove();
 				$(parentEl).css("position", prevPosition);
 			}, 5000);
+		},
+		
+		openhmis.round = function(val, nearest, mode) {
+			nearest = nearest ? nearest : 1;
+			if (nearest === 0) return val;
+			var factor = 1 / nearest;
+			switch (mode) {
+				case 'FLOOR':
+					return Math.floor(val * factor) / factor;
+				case 'CEILING':
+					return Math.ceil(val * factor) / factor;
+				default:
+					return Math.round(val * factor) / factor;
+			}
 		},
 		
 		// Use uuid for id

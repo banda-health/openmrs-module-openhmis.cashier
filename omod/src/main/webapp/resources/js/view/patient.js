@@ -61,7 +61,11 @@ define(
 				}
 				else {
 					this.findEl.hide();
-					this.detailsEl.html(this.template({ patient: this.model, readOnly: this.readOnly }));
+					this.detailsEl.html(this.template({
+						patient: this.model,
+						dashboardUri: openhmis.config.pageUrlRoot + "patientDashboard.form?patientUuid=" + encodeURIComponent(this.model.id),
+						readOnly: this.readOnly
+					}));
 					this.detailsEl.show();
 				}
 				return this;

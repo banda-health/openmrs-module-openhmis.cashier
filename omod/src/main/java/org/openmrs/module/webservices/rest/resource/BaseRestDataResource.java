@@ -13,9 +13,6 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import org.openmrs.OpenmrsData;
 import org.openmrs.OpenmrsObject;
 import org.openmrs.api.context.Context;
@@ -26,13 +23,13 @@ import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
-import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
-import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
-import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
-import org.openmrs.module.webservices.rest.web.resource.impl.ServiceSearcher;
+import org.openmrs.module.webservices.rest.web.resource.impl.*;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.springframework.beans.BeanUtils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class BaseRestDataResource<E extends OpenmrsData> extends DataDelegatingCrudResource<E> implements IDataServiceResource<E> {
 

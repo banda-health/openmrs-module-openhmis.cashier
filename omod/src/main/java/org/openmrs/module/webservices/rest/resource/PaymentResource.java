@@ -40,6 +40,7 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 			description.addProperty("paymentMode");
 			description.addProperty("attributes");
 			description.addProperty("amount");
+			description.addProperty("amountTendered");		
 			description.addProperty("dateCreated");
 			description.addProperty("voided");
 		}
@@ -52,6 +53,7 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 		description.addProperty("paymentMode");
 		description.addProperty("attributes");
 		description.addProperty("amount");		
+		description.addProperty("amountTendered");		
 		return description;
 	}
 	
@@ -67,6 +69,11 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	@PropertySetter("amount")
 	public void setPaymentAmount(Payment instance, Object price) throws ConversionException {
 		instance.setAmount(ItemPriceResource.objectToBigDecimal(price));
+	}
+
+	@PropertySetter("amountTendered")
+	public void setPaymentAmountTendered(Payment instance, Object price) throws ConversionException {
+		instance.setAmountTendered(ItemPriceResource.objectToBigDecimal(price));
 	}
 	
 	@PropertyGetter("dateCreated")

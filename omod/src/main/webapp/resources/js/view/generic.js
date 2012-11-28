@@ -103,6 +103,7 @@ define(
 						if (model.collection === undefined) {
 							view.collection.add(model);
 						}
+						model.trigger("sync");
 						view.cancel();
 					},
 					error: function(model, resp) { openhmis.error(resp); }
@@ -177,7 +178,7 @@ define(
 					if (options.schema) this.schema = options.schema;
 					this.template = this.getTemplate();
 
-					this.options.listTite = options.listTitle;
+					this.options.listTitle = options.listTitle;
 					this.options.itemActions = options.itemActions || [];
 					this.options.includeFields = options.listFields;
 					this.options.excludeFields = options.listExcludeFields;
@@ -379,7 +380,7 @@ define(
 					switch (this.actions[act]) {
 						// Display remove action for the item
 						case 'remove':
-							this.events['click .remove'] = 'removeItem';
+							this.events['click .remove'] = 'onRemove'
 							break;
 						case 'inlineEdit':
 							var schema = _.extend({}, this.model.schema, this.schema || {});
@@ -427,16 +428,20 @@ define(
 				return errors;
 			},
 			
-			removeItem: function(event) {
+			onRemove: function(event) {
 				if (confirm(__("Are you sure you want to remove the selected item?"))) {
-					this.removeModel();
-					Backbone.View.prototype.remove.call(this);
-					this.trigger('remove', this.model);
-					this.off();
+					this.removeItem(event);
 					return true;
 				}
 				// Prevent this event from propagating
 				else return false;
+			},
+			
+			removeItem: function(event) {
+				this.removeModel();
+				Backbone.View.prototype.remove.call(this);
+				this.trigger('remove', this.model);
+				this.off();
 			},
 			
 			removeModel: function() {

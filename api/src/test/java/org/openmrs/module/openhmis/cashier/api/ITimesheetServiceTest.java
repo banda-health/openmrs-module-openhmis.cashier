@@ -21,6 +21,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public class ITimesheetServiceTest extends IDataServiceTest<ITimesheetService, Timesheet> {
 	private ProviderService providerService;
@@ -67,7 +69,7 @@ public class ITimesheetServiceTest extends IDataServiceTest<ITimesheetService, T
 
 	@Override
 	protected int getTestEntityCount() {
-		return 3;
+		return 8;
 	}
 
 	@Override
@@ -172,5 +174,88 @@ public class ITimesheetServiceTest extends IDataServiceTest<ITimesheetService, T
 
 		Timesheet timesheet = service.getCurrentTimesheet(cashier);
 		Assert.assertNull(timesheet);
+	}
+
+	/**
+	 * @verifies return empty list if there are no timesheets for date
+	 * @see ITimesheetService#getTimesheetsByDate(org.openmrs.Provider, java.util.Date)
+	 */
+	@Test
+	public void getTimesheetsByDate_shouldReturnEmptyListIfThereAreNoTimesheetsForDate() throws Exception {
+		Provider cashier = providerService.getProvider(0);
+		List<Timesheet> results = service.getTimesheetsByDate(cashier, new GregorianCalendar(2011, 0, 1).getTime());
+
+		Assert.assertNotNull(results);
+		Assert.assertEquals(0, results.size());
+	}
+
+	/**
+	 * @verifies return timesheets that start and end on date
+	 * @see ITimesheetService#getTimesheetsByDate(org.openmrs.Provider, java.util.Date)
+	 */
+	@Test
+	public void getTimesheetsByDate_shouldReturnTimesheetsThatStartAndEndOnDate() throws Exception {
+		Provider cashier = providerService.getProvider(0);
+		List<Timesheet> results = service.getTimesheetsByDate(cashier, new GregorianCalendar(2011, 1, 10).getTime());
+
+		Assert.assertNotNull(results);
+		Assert.assertEquals(1, results.size());
+		Assert.assertEquals(3, (int)results.get(0).getId());
+	}
+
+	/**
+	 * @verifies return timesheets that start on date and end on different date
+	 * @see ITimesheetService#getTimesheetsByDate(org.openmrs.Provider, java.util.Date)
+	 */
+	@Test
+	public void getTimesheetsByDate_shouldReturnTimesheetsThatStartOnDateAndEndOnDifferentDate() throws Exception {
+		Provider cashier = providerService.getProvider(0);
+		List<Timesheet> results = service.getTimesheetsByDate(cashier, new GregorianCalendar(2011, 1, 11).getTime());
+
+		Assert.assertNotNull(results);
+		Assert.assertEquals(1, results.size());
+		Assert.assertEquals(4, (int) results.get(0).getId());
+	}
+
+	/**
+	 * @verifies return timesheet that start on different date and end on date
+	 * @see ITimesheetService#getTimesheetsByDate(org.openmrs.Provider, java.util.Date)
+	 */
+	@Test
+	public void getTimesheetsByDate_shouldReturnTimesheetThatStartOnDifferentDateAndEndOnDate() throws Exception {
+		Provider cashier = providerService.getProvider(0);
+		List<Timesheet> results = service.getTimesheetsByDate(cashier, new GregorianCalendar(2011, 1, 14).getTime());
+
+		Assert.assertNotNull(results);
+		Assert.assertEquals(1, results.size());
+		Assert.assertEquals(5, (int) results.get(0).getId());
+	}
+
+	/**
+	 * @verifies return timesheets that start before date but end after date
+	 * @see ITimesheetService#getTimesheetsByDate(org.openmrs.Provider, java.util.Date)
+	 */
+	@Test
+	public void getTimesheetsByDate_shouldReturnTimesheetsThatStartBeforeDateButEndAfterDate() throws Exception {
+		Provider cashier = providerService.getProvider(0);
+		List<Timesheet> results = service.getTimesheetsByDate(cashier, new GregorianCalendar(2011, 1, 16).getTime());
+
+		Assert.assertNotNull(results);
+		Assert.assertEquals(1, results.size());
+		Assert.assertEquals(6, (int) results.get(0).getId());
+	}
+
+	/**
+	 * @verifies return timesheets that start before date and have not ended
+	 * @see ITimesheetService#getTimesheetsByDate(org.openmrs.Provider, java.util.Date)
+	 */
+	@Test
+	public void getTimesheetsByDate_shouldReturnTimesheetsThatStartBeforeDateAndHaveNotEnded() throws Exception {
+		Provider cashier = providerService.getProvider(0);
+		List<Timesheet> results = service.getTimesheetsByDate(cashier, new GregorianCalendar(2011, 1, 20).getTime());
+
+		Assert.assertNotNull(results);
+		Assert.assertEquals(1, results.size());
+		Assert.assertEquals(7, (int) results.get(0).getId());
 	}
 }

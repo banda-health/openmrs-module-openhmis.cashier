@@ -558,4 +558,9 @@
 		                         baseTableName="cashier_bill_payment_attribute" baseColumnNames="payment_mode_attribute_type_id"
 		                         referencedTableName="cashier_payment_mode_attribute_type" referencedColumnNames="payment_mode_attribute_type_id"/>
 	</changeSet>
+	<changeSet id="openhmis.cashier-v1.0-3" author="ibewes">
+		<addColumn tableName="cashier_bill_payment">
+			<column name="amount_tendered" type="decimal(10,2)"><constraints nullable="false"/></column>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

@@ -105,3 +105,20 @@ describe("GenericListItemView", function() {
 		expect( $(listItemView.$("td")[0]).hasClass("retired") ).toBeTruthy();
 	});
 });
+
+describe("GenericAddEditView", function() {
+	it("should trigger the model's \"sync\" event upon a successful save", function() {
+		var view = new openhmis.GenericAddEditView({
+			collection: new openhmis.GenericCollection({ model: openhmis.GenericModel })
+		});
+		view.model = new openhmis.GenericModel([], { urlRoot: "fakeRoot" });
+		view.modelForm = view.prepareModelForm(view.model);
+		spyOn(jQuery, "ajax").andCallFake(function(options) {
+			options.success();
+		});
+		spyOn(view.model, "trigger");
+		view.save();
+		expect(view.model.trigger).toHaveBeenCalledWith("sync");
+	});
+	
+});

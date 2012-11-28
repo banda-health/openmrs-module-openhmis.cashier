@@ -62,8 +62,9 @@ define(
 				this.paymentListView = new openhmis.GenericListView({
 					model: this.paymentCollection,
 					id: "paymentList",
-					listFields: ['dateCreatedFmt', 'amountFmt', 'paymentMode'],
-					itemActions: this.readOnly ? [] : ["remove"],
+					className: "paymentList",
+					listFields: ['dateCreatedFmt', 'amountTenderedFmt', 'paymentMode'],
+					//itemActions: this.readOnly ? [] : ["remove"],
 					showRetiredOption: false,
 					showPaging: false,
 					hideIfEmpty: true
@@ -150,19 +151,22 @@ define(
 			
 			processPayment: function(event, something) {
 				if (!this.commitForm()) return;
-				var self = this;
-				this.processCallback(this.model, { success: function(model, resp) {
-					if (model instanceof openhmis.Bill) {
-						// Entire bill was saved, so we expect the page to be
-						// refreshed soon
-					} else {
-						// Payment has been saved, so it will be automatically
-						// added to the payment collection, triggering rendering
-					}
-					// Set up new empty Payment
-					self.model = new openhmis.Payment();
-					self.form.fields["amount"].setValue("");
-				}});
+				if (confirm(i18n("Are you sure you want to process a %s payment of %s?",
+							   this.model.get("paymentMode"), this.model.get("amountFmt")))) {
+					var self = this;
+					this.processCallback(this.model, { success: function(model, resp) {
+						if (model instanceof openhmis.Bill) {
+							// Entire bill was saved, so we expect the page to be
+							// refreshed soon
+						} else {
+							// Payment has been saved, so it will be automatically
+							// added to the payment collection, triggering rendering
+						}
+						// Set up new empty Payment
+						self.model = new openhmis.Payment();
+						self.form.fields["amount"].setValue("");
+					}});
+				}
 			},
 			
 			render: function() {

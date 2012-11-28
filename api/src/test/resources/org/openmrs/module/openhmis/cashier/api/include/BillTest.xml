@@ -8,7 +8,7 @@
 	                        creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B963B13B0006" />
 	<cashier_bill_line_item bill_line_item_id="2" bill_id="0" item_id="2" price="103.01" price_name="default" quantity="2" line_item_order="2"
 	                        creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B9645D7B0007" />
-	<cashier_bill_payment bill_payment_id="0" bill_id="0" payment_mode_id="0" amount="913.06"
+	<cashier_bill_payment bill_payment_id="0" bill_id="0" payment_mode_id="0" amount="913.06" amount_tendered="1000.00"
 	                      creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B9674C510008" />
 	<cashier_bill_payment_attribute bill_payment_attribute_id="0" bill_payment_id="0" payment_mode_attribute_type_id="0"
 	                                value_reference="test 1 value" uuid="4028814B39B565A20139B96998DF0009" />

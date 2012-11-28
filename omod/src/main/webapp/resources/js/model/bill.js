@@ -1,6 +1,7 @@
 define(
 	[
 		'model/generic',
+		'model/cashPoint',
 		'model/patient',
 		'model/payment',
 		'model/lineItem'
@@ -17,6 +18,7 @@ define(
 			
 			schema: {
 				billAdjusted: { type: 'Object', objRef: true },
+				cashPoint: { type: 'Object', objRef: true },
 				lineItems: { type: 'Object'},
 				patient: { type: 'Object', objRef: true },
 				payments: { type: 'Object'},
@@ -25,6 +27,7 @@ define(
 						
 			BillStatus: {
 				PENDING:	"PENDING",
+				POSTED:		"POSTED",
 				PAID:		"PAID",
 				ADJUSTED:	"ADJUSTED"
 			},
@@ -55,16 +58,36 @@ define(
 				return total;
 			},
 			
-			getTotalPaid: function() {
+			/**
+			 * This method takes the adjustment process into account when
+			 * calculating the bill total
+			 */
+			getAdjustedTotal: function() {
+				var billAdjusted = this.get("billAdjusted");
+				if (billAdjusted !== undefined && this.get("status") == this.BillStatus.PENDING) {
+					return this.getTotal() + billAdjusted.getTotal() - billAdjusted.getAmountPaid();
+				}
+				else
+					return this.getTotal();
+			},
+			
+			getTotalPayments: function() {
 				var total = 0;
 				var payments = this.get("payments");
 				if (payments && payments.length > 0) {
 					payments.each(function(payment) {
 						if (payment.get("voided") !== true)
-							total += payment.get("amount");
+							total += payment.get("amountTendered");
 					});
 				}
 				return total;
+			},
+			
+			getAmountPaid: function() {
+				var total = this.getTotal();
+				var totalPayments = this.getTotalPayments();
+				
+				return Math.min(total, totalPayments);
 			},
 			
 			validate: function(final) {
@@ -112,6 +135,7 @@ define(
 					//paymentCollection.reset(paymentCollection.reject(function(payment) { return payment.get("voided"); }));
 					resp.payments = paymentCollection;
 				}
+				if (resp.cashPoint) resp.cashPoint = new openhmis.CashPoint(resp.cashPoint);
 				return resp;
 			},
 			

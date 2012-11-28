@@ -9,6 +9,7 @@ import java.util.Set;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.annotation.Handler;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
@@ -20,6 +21,7 @@ import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
@@ -55,6 +57,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("adjustedBy");
 		description.addProperty("billAdjusted");
+		description.addProperty("cashPoint");		
 		description.addProperty("lineItems");
 		description.addProperty("patient");
 		description.addProperty("payments");
@@ -91,6 +94,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	public void setBillStatus(Bill instance, BillStatus status) {
 		if (instance.getStatus() == null)
 			instance.setStatus(status);
+		else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED)
+			instance.setStatus(status);
 	}
 
 	@Override
@@ -108,12 +113,23 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			if (delegate.getCashPoint() == null) {
 				ITimesheetService service = Context.getService(ITimesheetService.class);
 				Timesheet timesheet = service.getCurrentTimesheet(delegate.getCashier());
-				if (timesheet == null)
-					throw new RestClientException("A current timesheet does not exist for cashier " + delegate.getCashier());
-				CashPoint cashPoint = timesheet.getCashPoint();
-				if (cashPoint == null)
-					throw new RestClientException("No cash points defined for the current timesheet!");
-				delegate.setCashPoint(cashPoint);
+				if (timesheet == null) {
+					AdministrationService adminService = Context.getAdministrationService();
+					boolean timesheetRequired;
+					try {
+						timesheetRequired = Boolean.parseBoolean(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY));
+					} catch (Exception e) {
+						timesheetRequired = false;
+					}
+					if (timesheetRequired)
+						throw new RestClientException("A current timesheet does not exist for cashier " + delegate.getCashier());
+				}
+				else {
+					CashPoint cashPoint = timesheet.getCashPoint();
+					if (cashPoint == null)
+						throw new RestClientException("No cash points defined for the current timesheet!");
+					delegate.setCashPoint(cashPoint);					
+				}
 			}
 			// Now that all all attributes have been set (i.e., payments and
 			// bill status) we can check to see if the bill is fully paid.

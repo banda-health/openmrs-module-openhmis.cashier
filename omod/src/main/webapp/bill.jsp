@@ -1,6 +1,5 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require allPrivileges="Manage Cashier Bills, View Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
-<c:if test="${empty cashPoint}"><c:redirect url="/module/openhmis/cashier/timesheetEntry.form?returnUrl=${url}"/></c:if>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
@@ -38,10 +37,13 @@
 	<c:otherwise>
 		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${user.person.personName}</li>
 	</c:otherwise>
-</c:choose>
-	<c:if test="${!empty cashPoint}">
-		<li class="cashPoint"><span class="label"><openmrs:message code="openhmis.cashier.cashPoint.name"/>:</span> ${cashPoint}</li>
-	</c:if>
+</c:choose>	
+	<li class="cashPoint${timesheet != null ? " timesheet" : "" }">
+		<c:if test="${!empty cashPoint}">
+		<span class="label"><openmrs:message code="openhmis.cashier.cashPoint.name"/>:</span>
+			${cashPoint}
+		</c:if>
+	</li>
 </ul>
 <div class="clear"></div>
 
@@ -60,7 +62,9 @@
 <div id="bill"></div>
 <div id="payment" class="box"></div>
 
-<input type="submit" id="saveBill" value="Save Bill" /><input type="button" id="printReceipt" value="Print Receipt" style="display: none;" />
+<input type="submit" id="saveBill" value="Save Bill" />
+<input type="button" id="postBill" value="Post Bill" style="display: none;" />
+<input type="button" id="printReceipt" value="Print Receipt" style="display: none;" />
 <br />
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

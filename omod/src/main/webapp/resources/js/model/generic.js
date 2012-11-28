@@ -59,6 +59,7 @@ define(
 					value.success = function(model, resp) {
 						self.unsaved = false;
 						if (success) success(model, resp);
+						else self.trigger("sync");
 					}
 					return Backbone.Model.prototype.save.call(this, key, value);
 				}

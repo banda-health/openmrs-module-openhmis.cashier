@@ -2,12 +2,15 @@ define(
 	[
 		'lib/jquery',
 		'lib/underscore',
+		'lib/backbone',
 		'view/generic',
 		'lib/i18n',
+		'lib/backbone-forms',
 		'view/editors',
-		'model/bill'
+		'model/bill',
+		'model/cashPoint'
 	],
-	function($, _, openhmis, i18n) {
+	function($, _, Backbone, openhmis, i18n) {
 		openhmis.BillLineItemView = openhmis.GenericListItemView.extend({
 			initialize: function(options) {
 				this.events = _.extend({}, this.events, {
@@ -96,11 +99,11 @@ define(
 				this.setBill(bill);
 				
 				var billOptions = { showRetiredOption: false, showPaging: false }
-				if (bill.get("status") === bill.BillStatus.PENDING)
-					billOptions["itemActions"] = ["remove", "inlineEdit"];
 				options = _.extend(billOptions, options);
 				
 				openhmis.GenericListView.prototype.initialize.call(this, options);
+				this.options.roundToNearest = options.roundToNearest || 0;
+				this.options.roundingMode = options.roundingMode || "MID";
 				this.itemView = openhmis.BillLineItemView;
 				this.totalsTemplate = this.getTemplate("bill.html", '#bill-totals');
 			},
@@ -115,6 +118,10 @@ define(
 				this.bill = bill;
 				this.model = bill.get("lineItems");
 				this.model.on("all", this.updateTotals);
+				if (bill.get("status") === bill.BillStatus.PENDING)
+					this.options.itemActions = ["remove", "inlineEdit"];
+				else
+					this.options.itemActions = [];
 			},
 			
 			addOne: function(model, schema) {
@@ -170,43 +177,75 @@ define(
 				}
 			},
 			
+			setupCashPointForm: function(el) {
+				var cashPoint = this.bill.get("cashPoint");
+				var cashPointId = cashPoint ? cashPoint.id : undefined;
+				this.cashPointForm = new Backbone.Form({
+					schema: {
+						cashPoint: {
+							type: 'Select',
+							title: i18n("Cash Point") + ":",
+							options: new openhmis.GenericCollection([], { model: openhmis.CashPoint })
+						}
+					},
+					data: {
+						cashPoint: cashPointId
+					},
+					template: "trForm",
+					fieldsetTemplate: "blankFieldset"
+				});
+				this.cashPointForm.render();
+				$(el).empty().append(this.cashPointForm.el);
+				return this.cashPointForm;
+			},
+			
 			updateTotals: function() {
+				var total = openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode);
+				var totalPaid = this.bill.getTotalPayments();
 				this.$totals.html(this.totalsTemplate({
 					bill: this.bill,
+					total: total,
+					totalPaid: totalPaid,
 					formatPrice: openhmis.ItemPrice.prototype.format,
 					__: i18n }))
 			},
 			
 			/**
-			 *
-			 *
-			 * @should save bill if it is new
-			 * @should add payment if the bill has already been saved
+			 * @should post bill if it is pending
+			 * @should add payment if the bill has already been posted
 			 */
 			processPayment: function(payment, options) {
 				options = options ? options : {};
 				var success = options.success;
 				var self = this;
 				options.success = function(model, resp) {
-					if (self.bill.getTotalPaid() >= self.bill.getTotal())
+					if (self.bill.getTotalPayments() >= self.bill.getTotal())
 						self.trigger("paid", self.bill);
 					self.updateTotals();
 					if (success) success(model, resp);
 				}
+				payment.set("amountTendered", payment.get("amount"));
+				var paymentChange = (this.bill.getTotalPayments() + payment.get("amount")) - this.bill.getAdjustedTotal();
+				if (paymentChange > 0)
+					payment.set("amount", payment.get("amountTendered") - paymentChange);
 				this.bill.addPayment(payment);
-				if (this.bill.isNew() || this.bill.isUnsaved())
-					this.saveBill(options);
+				if (this.bill.get("status") === this.bill.BillStatus.PENDING)
+					this.postBill(options);
 				else
 					payment.save([], options);
 			},
 			
-			validate: function(final) {
+			validate: function(allowEmptyBill) {
 				var errors = this.bill.validate(true);
 				var elMap = {
 					'lineItems': [ $('#bill'), this ],
 					'patient': [ $('#patient-view'),  $('#inputNode') ]
 				}
-				if (errors) {
+				if (allowEmptyBill === true
+					&& errors
+					&& errors.lineItems !== undefined)
+						delete errors.lineItems;
+				if (errors && _.size(errors) > 0) {
 					for (var e in errors)
 						openhmis.validationMessage(elMap[e][0], errors[e], elMap[e][1]);
 					return false;
@@ -214,20 +253,28 @@ define(
 				return true;
 			},
 			
-			saveBill: function(options) {
+			saveBill: function(options, post) {
 				options = options ? options : {};
-				if (!this.validate()) return;
+				if (!this.validate(post)) return;
+				if (this.cashPointForm !== undefined)
+					this.bill.set("cashPoint", this.cashPointForm.getValue("cashPoint"));
 				// Filter out any invalid lineItems (especially the bottom)
 				// entry cursor
 				this.bill.get("lineItems").reset(
 					this.model.filter(function(item) { return item.isClean(); }),
 					{ silent: true }
 				);
+
+				if (post === true
+					&& this.bill.get("billAdjusted")
+					&& this.bill.get("status") === this.bill.BillStatus.PENDING)
+						this._postAdjustingBill(this.bill);
+				var print = options.print;
 				var success = options.success;
 				var error = options.error;
 				var self = this;
 				options.success = function(model, resp) {
-					self.trigger("save", model);
+					self.trigger(print ? "saveAndPrint" : "save", model);
 					if (success) success(model, resp);
 				}
 				options.error = function(model, resp) {
@@ -237,28 +284,49 @@ define(
 				this.bill.save([], options);
 			},
 			
+			postBill: function(options) {
+				this.saveBill(options, true);
+			},
+			
+			_postAdjustingBill: function(bill) {
+				bill.get("billAdjusted").get("payments").each(function(payment) {
+					payment.set("amountTendered", payment.get("amount"));
+				});
+				bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
+				var adjustingItems = bill.get("lineItems");
+				bill.set("lineItems", bill.get("billAdjusted").get("lineItems"));
+				bill.get("lineItems").add(adjustingItems.models);
+				bill.set("status", bill.BillStatus.POSTED);
+			},
+			
 			adjustBill: function() {
 				var __ = i18n;
 				if (confirm(__("Are you sure you want to adjust this bill?"))) {
-					var adjustedUuid = this.bill.id;
-					this.bill.unset("uuid");
-					delete this.bill.id;
-					var view = this;
+					var adjustingBill = new openhmis.Bill({
+						billAdjusted: this.bill.id,
+						patient: this.bill.get("patient").id
+					});
 					// Unset status to avoid the adjusted bill from being
 					// immediately set to PAID
-					this.bill.unset("status");
-					this.bill.set("billAdjusted", new openhmis.Bill({ uuid: adjustedUuid }));
-					this.bill.save([], { success: function(model, resp) {
+					adjustingBill.unset("status");
+					var view = this;
+					adjustingBill.save([], { success: function(model, resp) {
 						view.trigger("adjusted", model);
 					}});
 				}
 			},
 			
-			printReceipt: function() {
-				if (this.bill.get("receiptNumber")) {
-					var self = this;
-					var url = openhmis.config.pageUrlRoot + "receipt.form?receiptNumber=" + encodeURIComponent(self.bill.get("receiptNumber"));
-					window.open(url, "pdfDownload");
+			printReceipt: function(event) {
+				var url = openhmis.config.pageUrlRoot
+					+ "receipt.form?receiptNumber=" + encodeURIComponent(this.bill.get("receiptNumber"));
+				if (event) {
+					if (this.bill.get("receiptNumber")) {
+						window.open(url, "pdfDownload");
+					}
+				}
+				else {
+					$iframe = $('<iframe id="receiptDownload" src="'+url+'" width="1" height="1"></iframe>');
+					$("body").append($iframe);
 				}
 			},
 			
@@ -272,6 +340,34 @@ define(
 				this.$totals = $('<table class="totals"></table>');
 				this.$('div.box').append(this.$totals);
 				this.updateTotals();
+				return this;
+			}
+		});
+		
+		openhmis.BillAndPaymentsView = Backbone.View.extend({
+			className: "combineBoxes",
+			initialize: function(options) {
+				var __ = i18n;
+				this.itemsView = new openhmis.GenericListView({
+					model: this.model.get("lineItems"),
+					listTitle: __("Previous Bill (%s)", this.model),
+					showPaging: false,
+					showRetiredOption: false
+				});
+				this.paymentsView = new openhmis.GenericListView({
+					model: this.model.get("payments"),
+					className: "paymentList",
+					listTitle: "Previous Payments",
+					listFields: ["dateCreatedFmt", "paymentMode", "amountFmt"],
+					showPaging: false,
+					showRetiredOption: false
+				});
+			},
+			
+			render: function() {
+				this.$el.append(this.itemsView.render().el);
+				this.itemsView.$("table").addClass("bill");
+				this.$el.append(this.paymentsView.render().el);
 				return this;
 			}
 		});

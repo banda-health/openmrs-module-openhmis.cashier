@@ -24,7 +24,7 @@
 					"${bill.dateCreated}",
 					'<a href="<openmrs:contextPath />/module/openhmis/cashier/bill.form?billUuid=${bill.uuid}">${bill.receiptNumber}</a>',
 							"${bill.status}",
-							"${bill.totalPaid}",
+							"${bill.amountPaid}",
 							"${bill.total}"
 				]
 				</c:forEach>
