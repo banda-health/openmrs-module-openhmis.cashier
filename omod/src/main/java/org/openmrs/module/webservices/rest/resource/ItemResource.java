@@ -91,8 +91,9 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 			Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		if (rep instanceof RefRepresentation) {
-			description.addProperty("codes");
+			description.addProperty("codes", Representation.REF);
 			description.addProperty("department", Representation.REF);
+			description.addProperty("defaultPrice", Representation.REF);
 		}
 		else if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
 			description.addProperty("name");

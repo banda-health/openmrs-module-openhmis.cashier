@@ -111,10 +111,12 @@ define(
 			//}
 		});
 		
-		editors.DepartmentSelect = editors.Select.extend({
+		editors.GenericModelSelect = editors.Select.extend({
 		    getValue: function() {
 				$selected = this.$('option:selected');
-				return new openhmis.Department({ uuid: $selected.val(), name: $selected.text() });
+				var model = new this.modelType({ uuid: $selected.val() })
+				model.set(this.displayAttr, $selected.text());
+				return model;
 			},
 			
 			setValue: function(value) {
@@ -126,7 +128,17 @@ define(
 					if (value.attributes) this.$el.val(value.id); // Backbone model
 					else this.$el.val(value.uuid); // bare object
 				}
-			},
+			}
+		});
+		
+		editors.DepartmentSelect = editors.GenericModelSelect.extend({
+			modelType: openhmis.Department,
+			displayAttr: "name"
+		});
+		
+		editors.ItemPriceSelect = editors.GenericModelSelect.extend({
+			modelType: openhmis.ItemPrice,
+			displayAttr: "price"
 		});
 		
 		editors.Item = editors.Base.extend({

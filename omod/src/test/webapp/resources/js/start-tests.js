@@ -18,6 +18,7 @@ curl(
 				'js!' + testBaseUrl + '/view/paginate.js',
 				'js!' + testBaseUrl + '/view/editors.js',
 				'js!' + testBaseUrl + '/view/bill.js',
+				'js!' + testBaseUrl + '/view/item.js',
 				'js!' + testBaseUrl + '/lib/i18n.js'
 			],
 			function() {
