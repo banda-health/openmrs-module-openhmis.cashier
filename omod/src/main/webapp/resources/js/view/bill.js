@@ -27,7 +27,7 @@ define(
 			
 			updateItem: function(form, itemEditor) {
 				var item = itemEditor.getValue();
-				form.fields.price.setValue(item.get('defaultPrice').price);
+				form.fields.price.setValue(item.get('defaultPrice').get("price"));
 				if (form.fields.quantity.getValue() === 0)
 					form.fields.quantity.setValue(1);
 				this.update();
