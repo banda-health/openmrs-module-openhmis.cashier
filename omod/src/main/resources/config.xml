@@ -52,6 +52,11 @@
 		<property>${project.parent.artifactId}.roundToNearest</property>
 		<description>Nearest unit to round to.  Can be a decimal number.</description>
 	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.systemReceiptNumberGenerator</property>
+		<description>Fully qualified class name of the receipt number generator to be used.</description>
+	</globalProperty>
 	
 	<!-- Extensions -->
 	<extension>
