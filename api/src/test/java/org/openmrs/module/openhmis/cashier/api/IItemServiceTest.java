@@ -287,4 +287,84 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 		Assert.assertNotNull(items);
 		Assert.assertEquals(0, items.size());
 	}
+
+	/**
+	 * @verifies throw NullPointerException if the department is null
+	 * @see IItemService#getItemsByDepartment(org.openmrs.module.openhmis.cashier.api.model.Department, boolean)
+	 */
+	@Test(expected = NullPointerException.class)
+	public void getItemsByDepartment_shouldThrowNullPointerExceptionIfTheDepartmentIsNull() throws Exception {
+		service.getItemsByDepartment(null, false);
+	}
+
+	/**
+	 * @verifies return an empty list if the department has no items
+	 * @see IItemService#getItemsByDepartment(org.openmrs.module.openhmis.cashier.api.model.Department, boolean)
+	 */
+	@Test
+	public void getItemsByDepartment_shouldReturnAnEmptyListIfTheDepartmentHasNoItems() throws Exception {
+		Department department = departmentService.getById(2);
+
+		List<Item> results = service.getItemsByDepartment(department, false);
+
+		Assert.assertNotNull(results);
+		Assert.assertEquals(0, results.size());
+	}
+
+	/**
+	 * @verifies not return retired items unless specified
+	 * @see IItemService#getItemsByDepartment(org.openmrs.module.openhmis.cashier.api.model.Department, boolean)
+	 */
+	@Test
+	public void getItemsByDepartment_shouldNotReturnRetiredItemsUnlessSpecified() throws Exception {
+		Item retiredItem = service.getById(2);
+		retiredItem.setRetired(true);
+		retiredItem.setRetireReason("reason");
+
+		service.save(retiredItem);
+		Context.flushSession();
+
+		Department department = departmentService.getById(0);
+
+		List<Item> results = service.getItemsByDepartment(department, false);
+		Assert.assertNotNull(results);
+		Assert.assertEquals(2, results.size());
+		for (Item result : results) {
+			if (result.getId().equals(retiredItem.getId())) {
+				Assert.fail("The retired item was incorrectly returned.");
+			}
+		}
+
+		results = service.getItemsByDepartment(department, true);
+		Assert.assertNotNull(results);
+		Assert.assertEquals(3, results.size());
+	}
+
+	/**
+	 * @verifies return all items for the specified department
+	 * @see IItemService#getItemsByDepartment(org.openmrs.module.openhmis.cashier.api.model.Department, boolean)
+	 */
+	@Test
+	public void getItemsByDepartment_shouldReturnAllItemsForTheSpecifiedDepartment() throws Exception {
+		Department department0 = departmentService.getById(0);
+		Department department2 = departmentService.getById(2);
+		Item item = service.getById(2);
+		item.setDepartment(department2);
+
+		service.save(item);
+		Context.flushSession();
+
+		List<Item> results = service.getItemsByDepartment(department0, false);
+		Assert.assertNotNull(results);
+		Assert.assertEquals(2, results.size());
+		for (Item result : results) {
+			if (result.getId().equals(item.getId())) {
+				Assert.fail("The retired item was incorrectly returned.");
+			}
+		}
+
+		results = service.getItemsByDepartment(department2, false);
+		Assert.assertNotNull(results);
+		Assert.assertEquals(1, results.size());
+	}
 }
