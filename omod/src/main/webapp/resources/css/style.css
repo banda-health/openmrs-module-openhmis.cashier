@@ -23,7 +23,7 @@ form.bbf-form ul { padding: 0; margin: 0; }
 li.bbf-field, .bbf-list li { list-style: none; position: relative }
 li.bbf-field label { }
 li.bbf-field div.bbf-editor { position: relative; top: -1.3em; margin-left: 150px; }
-div.bbf-help {
+div.bbf-help, div.bbf-error {
 	position: absolute;
 	display: none;
 	top: 0;
@@ -33,7 +33,8 @@ div.bbf-help {
 	border-radius: 2px;
 	padding: 2px 4px;
 }
-.bbf-error div.bbf-help { display: block; }
+.bbf-field.bbf-error div.bbf-help,
+.bbf-field.bbf-error div.bbf-error { display: block; }
 
 /* Generic Add/Edit */
 input.reason { width: 25em; }
@@ -119,6 +120,8 @@ div.box, div.combineBoxes { margin-bottom: 1em; }
 #paymentList b.boxHeader, #paymentList div.box { width: auto; }
 .paymentList .field-amountFmt, .paymentList .field-amountTenderedFmt,
 .paymentList .field-paymentMode { width: 13%; }
+
+#nameSearchName { width: 250px; }
 
 /** Validation **/
 div.validation {
