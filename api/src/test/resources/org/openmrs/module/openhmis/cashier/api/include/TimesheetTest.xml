@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<cashier_timesheet timesheet_id="0" provider_id="0" cash_point_id="0" clock_in="2012-01-01 09:02:32.8" clock_out="2012-01-01 18:01:29.0"
+	                   creator="1" date_created="2012-01-01 09:02:32.8" voided="false" uuid="4028814B39DD958D0139DD9FF6C70007" />
+	<cashier_timesheet timesheet_id="1" provider_id="0" cash_point_id="1" clock_in="2012-01-02 09:00:00.0"
+	                   creator="1" date_created="2012-01-02 09:00:00.0" voided="false" uuid="4028814B39DD958D0139DD9FC9560004" />
+	<cashier_timesheet timesheet_id="2" provider_id="1" cash_point_id="0" clock_in="2012-01-02 12:01:00.0" clock_out="2012-01-02 20:10:00.0"
+	                   creator="1" date_created="2012-01-02 12:01:00.0" voided="false" uuid="4028814B39DD958D0139DDA3975C0008" />
+
+	<cashier_timesheet timesheet_id="3" provider_id="0" cash_point_id="0" clock_in="2011-02-10 09:02:32.8" clock_out="2011-02-10 18:01:29.0"
+	                   creator="1" date_created="2011-01-01 09:02:32.8" voided="false" uuid="402881493B2CAA02013B2CAA020A0000" />
+	<cashier_timesheet timesheet_id="4" provider_id="0" cash_point_id="1" clock_in="2011-02-11 09:00:00.0" clock_out="2011-02-12 18:01:29.0"
+	                   creator="1" date_created="2011-01-02 09:00:00.0" voided="false" uuid="402881493B2CAA02013B2CAA0CC60001" />
+	<cashier_timesheet timesheet_id="5" provider_id="0" cash_point_id="0" clock_in="2011-02-13 12:01:00.0" clock_out="2011-02-14 20:10:00.0"
+	                   creator="1" date_created="2011-01-02 12:01:00.0" voided="false" uuid="402881493B2CAA02013B2CAA18C60002" />
+	<cashier_timesheet timesheet_id="6" provider_id="0" cash_point_id="1" clock_in="2011-02-15 09:00:00.0" clock_out="2011-02-17 20:10:00.0"
+	                   creator="1" date_created="2011-01-02 09:00:00.0" voided="false" uuid="402881493B2CAA02013B2CAA210E0003" />
+	<cashier_timesheet timesheet_id="7" provider_id="0" cash_point_id="0" clock_in="2011-02-19 12:01:00.0"
+	                   creator="1" date_created="2011-01-02 12:01:00.0" voided="false" uuid="402881493B2CAA02013B2CAA2C130004" />
+</dataset>

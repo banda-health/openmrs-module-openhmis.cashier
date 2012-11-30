@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/cashier.iml" filepath="$PROJECT_DIR$/cashier.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/cashier-api.iml" filepath="$PROJECT_DIR$/api/cashier-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/omod/cashier-omod.iml" filepath="$PROJECT_DIR$/omod/cashier-omod.iml" />
+    </modules>
+  </component>
+</project>
+

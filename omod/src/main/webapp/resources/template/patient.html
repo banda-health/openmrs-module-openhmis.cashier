@@ -1,0 +1,17 @@
+<script id="patient-details-template" type="text/template">
+	<b class="boxHeader"><?= __("Patient Details") ?></b>
+	<div class="box">
+		<table class="form">
+			<tbody>
+				<tr>
+					<th><?= __("Name") ?>: </th><td><a href="<?= dashboardUri ?>" target="_blank" title="Open patient dashboard"><?= patient.get('person').display ?></a></td>
+					<th><?= __("ID") ?>: </th><td><?= patient.get('identifiers')[0].display ?></td>
+					<? if (!readOnly) { ?>
+						<td><a class="editBillPatient" href="#"><?= __("Edit Patient") ?></a></td>
+					<? } ?>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<p></p>
+</script>

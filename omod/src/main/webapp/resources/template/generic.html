@@ -1,0 +1,100 @@
+<script id="add-edit-template" type="text/template">
+	<p><a class="addLink" href="#"><?= __("Add %s", model.meta.name) ?></a></p>
+	<b class="boxHeader title" style="display: none"><?= model.isNew()
+		? __("Add New %s", model.meta.name)
+		: __("Edit %s", model.meta.name) ?></b>
+	<div class="box form" style="display: none">
+		<input type="submit" class="submit" value="<?= model.isNew() ? __("Create %s", model.meta.name) : __("Update %s", model.meta.name) ?>" />
+		<button class="cancel"><?= __("Cancel") ?></button>
+	</div>
+	<br />
+	<div class="retireVoidPurge" style="display: none;">
+		<div class="box">
+			<? var strRetireOrVoid = model.getDataType() === "data" ? "Void" : "Retire" ?>
+			<? if (model.isRetired()) { ?>
+			<? var strUnretire = "Un" + strRetireOrVoid.toLowerCase() ?>
+			<h4><?= __(strUnretire + " %s", model.meta.name) ?></h4>
+			<button class="unretireOrUnvoid"><?= __(strUnretire) ?></button>
+			<? } else { ?>
+			<h4><?= __(strRetireOrVoid + " %s", model.meta.name) ?></h4>
+			<label for="reason">Reason</label> <input name="reason" id="reason" class="reason" type="text" /><br />
+			<button class="retireOrVoid"><?= __(strRetireOrVoid) ?></button>
+			<? } ?>
+		</div>
+		<br />
+		<div class="box">
+			<h4><?= __("Purge %s", model.meta.name) ?></h4>
+			<button class="purge"><?= __("Purge") ?></button>
+		</div>
+	</div>
+</script>
+
+<script id="generic-list" type="text/template">
+<b class="boxHeader"><?= options.listTitle !== undefined ? options.listTitle : __("Current %s", modelMeta.namePlural) ?></b>
+<div class="box">
+	<? if (listLength === 0) { ?>
+		<p class="empty"><?= __("There are currently no %s", modelMeta.namePlural.toLowerCase()) ?></p>
+	<? } else { ?>
+	<table class="display" width="100%">
+		<thead>
+			<tr>
+			<? if (options.itemActions.length > 0) { ?><th class="item-actions end" style="width: <?= options.itemActions.length * 10 ?>px;"></td> <? } ?>
+			<? for (var field in fields) { ?>
+				<? var fieldClassName = "field-" + fields[field]; ?>
+				<th class="<?= fieldClassName ?>"><?= modelSchema[fields[field]].title === undefined ? helpers.keyToTitle(fields[field]) : modelSchema[fields[field]].title ?></th>
+			<? } ?>
+			</tr>
+		</thead>
+		<tbody class="list"></tbody>
+		<tfoot></tfoot>
+	</table>
+	<? } ?>
+	<? if (pagingEnabled) { ?>
+		<div class="paging-container ui-helper-clearfix"></div>
+	<? } ?>
+	<? var strRetiredOrVoided = (modelMeta.openmrsType === 'data') ? "voided" : "retired" ?>
+	<? if (pagingEnabled) { ?><span class="pageSize"></span><? } ?>
+	<? if (options.showRetiredOption) { ?><span class="showRetired"><input id="showRetired" type="checkbox"<?= showRetired ? ' checked="checked"' : '' ?>/><label for="showRetired"><?= __("Show " + strRetiredOrVoided) ?></label></span><? } ?>
+</div>
+</script>
+
+<script id="generic-searchable-list" type="text/template">
+</script>
+
+<script id="generic-list-item" type="text/template">
+	<? if (actions.length > 0) { ?>
+		<td class="item-actions end">
+		<? for (var act in actions) {
+			switch (actions[act]) {
+				case 'remove': ?>
+					<input type="image" src="/openmrs/images/trash.gif" title="<?= __("Remove %s", model.meta.name) ?>" class="remove"/>
+					<? break;
+			}
+		} ?>
+		</td>
+	<? } ?>
+	
+	<? if (actions.indexOf('inlineEdit') !== -1) {
+		// do nothing, leave blank for form to be rendered
+	 } else { ?>
+		<? var cssClass; ?>
+		<? for (var field in fields) { ?>
+		<? cssClass = "field-" + fields[field];
+			if (model.isRetired()) cssClass += " retired";
+			if (model.schema[fields[field]].type in {'Number':0, 'BasicNumber':0})
+				cssClass += " numeric"; ?>
+		<td class="<?= cssClass ?>">
+			<? if (model.schema[fields[field]].type === 'List' && model.schema[fields[field]].model !== undefined) {
+				print(GenericCollection.prototype.toString.call(
+					model.get([fields[field]]),
+					model.schema[fields[field]])
+				);
+			} else if (model.schema[fields[field]].format !== undefined) {
+				print(model.schema[fields[field]].format(model.get(fields[field])));
+			} else {
+				print(model.get(fields[field]));
+			} ?>
+		</td>
+		<? } ?>
+	<? } ?>
+</script>
