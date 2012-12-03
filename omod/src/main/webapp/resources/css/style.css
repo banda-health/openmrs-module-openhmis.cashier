@@ -22,7 +22,7 @@ form.bbf-form fieldset { border: none; }
 form.bbf-form ul { padding: 0; margin: 0; }
 li.bbf-field, .bbf-list li { list-style: none; position: relative }
 li.bbf-field label { }
-li.bbf-field div.bbf-editor { position: relative; top: -1.3em; margin-left: 150px; }
+li.bbf-field div.bbf-editor { position: relative; top: -1.3em; margin-left: 170px; }
 div.bbf-help, div.bbf-error {
 	position: absolute;
 	display: none;
@@ -35,6 +35,10 @@ div.bbf-help, div.bbf-error {
 }
 .bbf-field.bbf-error div.bbf-help,
 .bbf-field.bbf-error div.bbf-error { display: block; }
+.bbf-form.inline li.bbf-field { display: inline-block; margin-right: 20px; }
+.bbf-form.inline li.bbf-field label { margin-right: .5em; }
+.bbf-form.inline li.bbf-field label:after { content: ':'; }
+.bbf-form.inline li.bbf-field div.bbf-editor { display: inline-block; top: auto; margin-left: auto; }
 
 /* Generic Add/Edit */
 input.reason { width: 25em; }

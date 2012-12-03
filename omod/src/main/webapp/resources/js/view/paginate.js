@@ -89,6 +89,8 @@ define(
 			},
 			
 			getMaxPageNum: function() {
+				if (this.model.totalLength === 0)
+					return 1;
 				return Math.floor(this.model.totalLength / this.options.pageSize)
 					+ (this.model.totalLength % this.options.pageSize === 0 ? 0 : 1);
 			},
@@ -119,7 +121,7 @@ define(
 			
 			checkPage: function() {
 				var max = this.getMaxPageNum();
-				if (max < this.page) {
+				if (max > 0 && max < this.page) {
 					this.page = max;
 					this.fetch();
 				}

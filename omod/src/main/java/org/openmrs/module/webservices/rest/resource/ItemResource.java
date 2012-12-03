@@ -86,6 +86,17 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		return null;
 	}
 	
+	public SimpleObject searchByDepartment(String department_uuid, RequestContext context) throws ResponseException {
+		IItemService service = (IItemService) Context.getService(getServiceClass());
+		IDepartmentService deptService = (IDepartmentService) Context.getService(IDepartmentService.class);
+		Department department = deptService.getByUuid(department_uuid);
+		
+		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
+		List<Item> items = service.getItemsByDepartment(department, context.getIncludeAll(), pagingInfo);
+		PageableResult results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
+		return results.toSimpleObject();
+	}
+	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(
 			Representation rep) {

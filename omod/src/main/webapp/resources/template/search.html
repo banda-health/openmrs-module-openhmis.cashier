@@ -1,8 +1,13 @@
 <script id="name-search" type="text/template">
-	<b class="boxHeader"></b>
+	<b class="boxHeader"><?= __("Search") ?></b>
 	<div class="box">
 		<form>
-			<p><label for="nameSearchName"><?= __("%s Identifier or %s Name", model.meta.name, model.meta.name) ?>:</label> <input type="text" id="nameSearchName"<?= searchFilter ? ' value="'+searchFilter+'"' : '' ?> /></p>
+			<p><label for="nameSearchName"><?= __("%s Identifier or Name", model.meta.name) ?>:</label> <input type="text" id="nameSearchName"<?= searchFilter ? ' value="'+searchFilter+'"' : '' ?> /></p>
 		</form>
 	</div>
+</script>
+
+<script id="department-name-search" type="text/template">
+	<b class="boxHeader"><?= __("Search") ?></b>
+	<div class="box"></div>
 </script>
