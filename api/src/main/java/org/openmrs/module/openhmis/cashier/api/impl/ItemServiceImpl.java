@@ -74,7 +74,7 @@ public class ItemServiceImpl
 		}
 
 		loadPagingTotal(pagingInfo, criteria);
-		return dao.select(getEntityClass(), criteria);
+		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
 	}
 
 	@Override
