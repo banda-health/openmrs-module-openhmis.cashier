@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
+import org.openmrs.module.jasperreport.JasperReportService;
 import org.openmrs.module.jasperreport.ReportGenerator;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
@@ -43,15 +44,14 @@ public class ReceiptController {
 			}
 			AdministrationService adminService = Context.getAdministrationService();
 			Integer reportId;
-			String reportName;
 			try {
 				reportId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY));
-				reportName = adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_NAME_PROPERTY);
+				//reportName = adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_NAME_PROPERTY);
 			} catch (Exception e) {
-				response.sendError(500, "Configuration error: need to specify global options for default report ID and name."); return null;
+				response.sendError(500, "Configuration error: need to specify global option for default report ID."); return null;
 			}
-			JasperReport report = new JasperReport(reportId);
-			report.setFileName(reportName);
+			JasperReportService reportService = Context.getService(JasperReportService.class);
+			JasperReport report = reportService.getJasperReport(reportId);
 			report.setName(receiptNumber);
 			HashMap<String, Object> params = new HashMap<String, Object>();
 			params.put("billId", bill.getId());

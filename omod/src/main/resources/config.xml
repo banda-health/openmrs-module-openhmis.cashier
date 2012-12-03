@@ -29,11 +29,6 @@
 	</globalProperty>
 
 	<globalProperty>
-		<property>${project.parent.artifactId}.defaultReceiptReportName</property>
-		<description>Name of the default Jasper report to use for generating a receipt</description>
-	</globalProperty>
-
-	<globalProperty>
 		<property>${project.parent.artifactId}.defaultShiftReportId</property>
 		<description>ID of the Jaster Cashier Shift report.</description>
 	</globalProperty>
