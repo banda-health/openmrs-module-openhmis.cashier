@@ -98,6 +98,7 @@ define(
 						q: {
 							title: __("%s Identifier or Name", this.model.meta.name),
 							type: "Text",
+							editorClass: "search"
 						}
 					},
 					data: {}

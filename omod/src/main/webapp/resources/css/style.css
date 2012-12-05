@@ -125,7 +125,7 @@ div.box, div.combineBoxes { margin-bottom: 1em; }
 .paymentList .field-amountFmt, .paymentList .field-amountTenderedFmt,
 .paymentList .field-paymentMode { width: 13%; }
 
-#nameSearchName { width: 250px; }
+input.search { width: 250px; }
 
 /** Validation **/
 div.validation {
