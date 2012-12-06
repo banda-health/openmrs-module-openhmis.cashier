@@ -13,11 +13,6 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.api.PatientService;
@@ -35,6 +30,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.util.Set;
+
 @Controller
 @RequestMapping(value = CashierWebConstants.BILL_PAGE)
 public class BillAddEditController {
@@ -48,7 +47,7 @@ public class BillAddEditController {
 		Timesheet timesheet = null;
 		try { timesheet = TimesheetHelper.getCurrentTimesheet(); }
 		catch (TimesheetRequiredException e) {
-			return "redirect:/" + CashierWebConstants.formUrl(CashierWebConstants.TIMESHEET_ENTRY_PAGE)
+			return "redirect:/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE)
 				+ "?returnUrl=" + CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE)
 				+ (request.getQueryString() != null ? UriUtils.encodeQuery("?" + request.getQueryString(), "UTF-8") : "");
 		} catch (Exception e) {
