@@ -28,7 +28,7 @@ import java.util.List;
 
 @Transactional
 public class ReceiptNumberGeneratorFactory {
-	public static final String SYSTEM_RECEIPT_NUMBER_GENERATOR = "cashier.systemReceiptNumberGenerator";
+	public static final String SYSTEM_RECEIPT_NUMBER_GENERATOR = "openhmis.cashier.systemReceiptNumberGenerator";
 
 	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
 	private static volatile IReceiptNumberGenerator generator;
