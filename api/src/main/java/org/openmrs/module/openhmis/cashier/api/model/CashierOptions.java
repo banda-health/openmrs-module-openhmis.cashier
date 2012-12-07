@@ -38,7 +38,9 @@ public class CashierOptions {
 	
 	public void loadFromGlobalOptions() {
 		AdministrationService service = Context.getAdministrationService();
-		setDefaultReceiptReportId(Integer.parseInt(service.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY)));
+		try {
+			setDefaultReceiptReportId(Integer.parseInt(service.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY)));
+		} catch (NumberFormatException e) { /* Leave unset; must be handled, e.g. in ReceiptController */ }
 		try {
 			setRoundingMode(
 				CashierOptions.RoundingMode.valueOf(service.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY)));
@@ -49,6 +51,7 @@ public class CashierOptions {
 				new BigDecimal(service.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY)));
 		} catch (NullPointerException e) { /* Use default */ }
 		
+		// Will default to false
 		setTimesheetRequired(Boolean.parseBoolean(service.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY)));
 	}
 	
