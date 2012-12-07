@@ -34,13 +34,11 @@ public class CashierOptions {
 	private BigDecimal roundToNearest = new BigDecimal(1);
 	private RoundingMode roundingMode = RoundingMode.MID;
 	private int defaultReceiptReportId;
-	private String defaultReceiptReportName;
 	private boolean timesheetRequired;
 	
 	public void loadFromGlobalOptions() {
 		AdministrationService service = Context.getAdministrationService();
 		setDefaultReceiptReportId(Integer.parseInt(service.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY)));
-		setDefaultReceiptReportName(service.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_NAME_PROPERTY));
 		try {
 			setRoundingMode(
 				CashierOptions.RoundingMode.valueOf(service.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY)));
@@ -72,12 +70,6 @@ public class CashierOptions {
 	}
 	public void setDefaultReceiptReportId(int defaultReceiptReportId) {
 		this.defaultReceiptReportId = defaultReceiptReportId;
-	}
-	public String getDefaultReceiptReportName() {
-		return defaultReceiptReportName;
-	}
-	public void setDefaultReceiptReportName(String defaultReceiptReportName) {
-		this.defaultReceiptReportName = defaultReceiptReportName;
 	}
 	public boolean isTimesheetRequired() {
 		return timesheetRequired;

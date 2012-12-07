@@ -46,7 +46,6 @@ public class ReceiptController {
 			Integer reportId;
 			try {
 				reportId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY));
-				//reportName = adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_NAME_PROPERTY);
 			} catch (Exception e) {
 				response.sendError(500, "Configuration error: need to specify global option for default report ID."); return null;
 			}
