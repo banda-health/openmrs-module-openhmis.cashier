@@ -2,9 +2,11 @@ define(
 	[
 		'lib/backbone',
 		'lib/underscore',
-		'model/patient'
+		'lib/i18n',
+		'model/patient',
+		'model/visit'
 	],
-	function(Backbone, _, openhmis) {
+	function(Backbone, _, __, openhmis) {
 		openhmis.PatientView = Backbone.View.extend({
 			tmplFile: 'patient.html',
 			tmplSelector: '#patient-details-template',
@@ -13,6 +15,7 @@ define(
 				_.bindAll(this);
 				this.template = this.getTemplate();
 				this.readOnly = (options && options.readOnly) ? options.readOnly : false;
+				this.visit = undefined;
 			},
 			
 			setElement: function(el) {
@@ -22,7 +25,8 @@ define(
 			},
 			
 			events: {
-				'click .editBillPatient': 'editPatient'
+				'click .editBillPatient': 'editPatient',
+				'click #endVisit': 'endVisit'
 			},
 			
 			takeRawPatient: function(index, data) {
@@ -35,8 +39,46 @@ define(
 			selectPatient: function(patient) {
 				patient = patient ? patient : this.model;
 				this.model = patient;
+				this.visit = undefined;
+				this.getVisit();
 				this.render();
 				this.trigger('selected', this.model);
+			},
+			
+			getVisit: function() {
+				var self = this;
+				var success = function(collection, resp) {
+					if (collection.length > 0) {
+						self.visit = collection.models[0];
+						self.render();
+					}
+				}
+				if (this.model.get("uuid")) {
+					openhmis.Visit.prototype.fetchVisitsByPatient({
+						patient: this.model,
+						active: true,
+						success: success
+					});
+				}
+			},
+			
+			endVisit: function() {
+				if (confirm(__("Are you sure you want to end this patient's visit now?"))) {
+					var $endVisit = this.$("#endVisit");
+					var $spinner = this.$(".spinner");
+					var self = this;
+					$endVisit.attr("disabled", true);
+					$spinner.css("visibility", "visible");
+					this.visit.end(new Date(), {
+						success: function(model, resp) {
+							self.$(".visit").remove();
+							$removeMsg = self.$(".removeMsg");
+							$removeMsg.show(0, function() {
+								$(this).fadeOut(2000);
+							})
+						}
+					});
+				}
 			},
 			
 			editPatient: function() {
@@ -61,14 +103,20 @@ define(
 				}
 				else {
 					this.findEl.hide();
-					this.detailsEl.html(this.template({
-						patient: this.model,
-						dashboardUri: openhmis.config.pageUrlRoot + "patientDashboard.form?patientUuid=" + encodeURIComponent(this.model.id),
-						readOnly: this.readOnly
-					}));
+					this.renderPatientDetails();
 					this.detailsEl.show();
 				}
 				return this;
+			},
+			
+			renderPatientDetails: function() {
+				this.detailsEl.html(this.template({
+					patient: this.model,
+					visit: this.visit,
+					dateFormat: openhmis.dateFormat,
+					dashboardUri: openhmis.config.pageUrlRoot + "patientDashboard.form?patientUuid=" + encodeURIComponent(this.model.id),
+					readOnly: this.readOnly
+				}));
 			}
 		});
 		

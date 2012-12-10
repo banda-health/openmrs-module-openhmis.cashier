@@ -61,14 +61,33 @@ define("openhmis",
 		openhmis.addQueryStringParameter = function(queryString, parameter) {
 			return queryString ? queryString + "&" + parameter : parameter;
 		}
-		openhmis.dateFormat = function(date) {
+		
+		openhmis.padZero = function(n) { return n < 10 ? "0" + n : n; }
+		openhmis.pad2Zeros = function(n) {
+			if (n < 100) n = '0' + n;
+			if (n < 10) n = '0' + n;
+			return n;
+		}
+		openhmis.dateFormat = function(date, includeTime) {
+			var padZero = openhmis.padZero;
 			var day = date.getDate();
 			var month = date.getMonth() + 1;
 			var year = date.getFullYear();
-			day = day < 10 ? "0" + day : day.toString();
-			month = month < 10 ? "0" + month: month.toString();
-			return day + '-' + month + '-' + year;
-		},
+			day = padZero(day);
+			month = padZero(month);
+			var strDate = day + '-' + month + '-' + year;
+			if (includeTime === true) {
+				strDate += " " + padZero(date.getHours())
+					+ ":" + padZero(date.getMinutes());
+			}
+			return strDate;
+		}
+		
+		openhmis.iso8601Date = function(d) {
+			var padZero = openhmis.padZero;
+			var pad2Zeros = openhmis.pad2Zeros;
+			return d.getUTCFullYear() + '-' +  padZero(d.getUTCMonth() + 1) + '-' + padZero(d.getUTCDate()) + 'T' + padZero(d.getUTCHours()) + ':' +  padZero(d.getUTCMinutes()) + ':' + padZero(d.getUTCSeconds()) + '.' + pad2Zeros(d.getUTCMilliseconds()) + '+0000';
+		}
 		
 		openhmis.validationMessage = function(parentEl, message, inputEl) {
 			if ($(parentEl).length > 1) parentEl = $(parentEl)[0];

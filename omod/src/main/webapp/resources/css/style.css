@@ -13,7 +13,7 @@ ul.floating li {
 
 /* General form styles */
 /* Table styles */
-table.form td { padding-right: 10px; }
+table.form td { padding-right: 20px; }
 table.form td.end { padding-right: 0px; }
 table.form tbody th { font-weight: normal; }
 
