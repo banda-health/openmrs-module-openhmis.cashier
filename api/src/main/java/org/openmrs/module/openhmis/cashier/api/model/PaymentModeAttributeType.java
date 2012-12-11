@@ -34,7 +34,7 @@ public class PaymentModeAttributeType extends BaseOpenmrsMetadata {
 	private Integer foreignKey;
 
 	private String regExp;
-	private Boolean required;
+	private Boolean required = false;
 
 	public Integer getId() {
 		return paymentModeAttributeTypeId;
