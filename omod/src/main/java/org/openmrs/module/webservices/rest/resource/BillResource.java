@@ -136,6 +136,11 @@ public class BillResource extends BaseRestDataResource<Bill> {
 					}
 					if (timesheetRequired)
 						throw new RestClientException("A current timesheet does not exist for cashier " + delegate.getCashier());
+					// If this is an adjusting bill, copy cash point from billAdjusted
+					else if (delegate.getBillAdjusted() != null)
+						delegate.setCashPoint(delegate.getBillAdjusted().getCashPoint());
+					else
+						throw new RestClientException("Cash point cannot be null!");
 				}
 				else {
 					CashPoint cashPoint = timesheet.getCashPoint();
