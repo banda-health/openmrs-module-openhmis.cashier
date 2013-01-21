@@ -86,6 +86,9 @@ ul#bill-info li { margin: 0 3em 10px 0; }
 table.bill th.field-quantity, table.bill th.field-price, table.bill th.field-total {
 	width: 13%;
 }
+table.bill td.field-quantity select, table.bill td.field-price select {
+	max-width: 100px;
+}
 table.bill td input[type="text"], table.bill td input[type="number"] {
 	width: 100%;
 	background-color: transparent;

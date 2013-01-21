@@ -118,6 +118,10 @@ define("openhmis",
 			}
 		},
 		
+		openhmis.isNumeric = function(n) {
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+		
 		// Use uuid for id
 		Backbone.Model.prototype.idAttribute = 'uuid';
 		
