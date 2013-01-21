@@ -499,7 +499,7 @@ define(
   
         var form = new Form({
           schema: this.nestedSchema,
-          data: this.value
+          data: this.value instanceof Backbone.Model ? this.value.attributes : this.value
         });
   
         var modal = this.modal = new Backbone.BootstrapModal({

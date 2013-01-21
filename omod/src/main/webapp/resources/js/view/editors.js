@@ -120,14 +120,27 @@ define(
 			},
 			
 			setValue: function(value) {
+				var flt = parseFloat(value);
 				if (value === null)
 					return;
 				else if (_.isString(value))
 					this.$el.val(value);
-				else {
-					if (value.attributes) this.$el.val(value.id); // Backbone model
-					else this.$el.val(value.uuid); // bare object
-				}
+				else if (value.attributes)
+					this.$el.val(value.id); // Backbone model
+				// This should be after Backbone model because it can evaluate
+				// to a number :S
+				else if (!isNaN(parseFloat(value)))
+					this.$el.val(value);
+				else
+					this.$el.val(value.uuid); // bare object
+			},
+			
+			render: function() {
+				if (this.options.options !== undefined)
+					this.setOptions(this.options.options);
+				else
+					this.setOptions(this.schema.options);
+				return this;
 			}
 		});
 		

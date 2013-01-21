@@ -25,6 +25,7 @@ define(
 				openmrsType: 'metadata'
 			},
 			schema: {
+				name: { type: "Text" },
 				price: { type: 'BasicNumber' }
 			},
 			
@@ -43,7 +44,10 @@ define(
 				return price.toFixed(2);
 			},
 			
-			toString: function() { return this.format(this.get('price')); }
+			toString: function() {
+				var name = this.get("name") ? " (" + this.get("name") + ")" : "";
+				return this.format(this.get('price')) + name;
+			}
 		});
 		
 		openhmis.Item = openhmis.GenericModel.extend({
