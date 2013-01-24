@@ -33,7 +33,7 @@ public class CashierWebConstants {
 	public static final String ROUNDING_MODE_PROPERTY = "openhmis.cashier.roundingMode";
 	public static final String ROUND_TO_NEAREST_PROPERTY = "openhmis.cashier.roundToNearest";
 
-	public static final String REPORT_DOWNLOAD_URL = "/moduleServlet/jasperreport/jreportDownload";
+	public static final String REPORT_DOWNLOAD_URL = "/moduleServlet/jasperreports/jreportDownload";
 
 	public static String formUrl(String page) {
 		return page.endsWith(".form") ? page : page + ".form";

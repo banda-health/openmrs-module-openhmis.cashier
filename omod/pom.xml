@@ -16,11 +16,11 @@
 
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
-			<artifactId>jasperreport</artifactId>
+			<artifactId>jasperreports</artifactId>
 			<type>jar</type>
 			<scope>system</scope>
 			<version>1.4.11</version>
-			<systemPath>${project.basedir}/../lib/jasperreport-1.4.11.jar</systemPath>
+			<systemPath>${project.basedir}/../lib/jasperreports-1.5.0.jar</systemPath>
 		</dependency>
 
 		<dependency>
