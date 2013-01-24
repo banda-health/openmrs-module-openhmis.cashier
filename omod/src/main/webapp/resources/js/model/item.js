@@ -40,7 +40,10 @@ define(
 				return openhmis.GenericModel.prototype.set.call(this, key, value, options);
 			},			
 			format: function(price) {
-				if (price === undefined) return 0;
+				if (price === undefined)
+					return 0;
+				if (price instanceof openhmis.ItemPrice)
+					return price.toString();
 				return price.toFixed(2);
 			},
 			

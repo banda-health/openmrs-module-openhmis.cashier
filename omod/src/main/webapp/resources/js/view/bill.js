@@ -50,9 +50,9 @@ define(
 				if (form) {
 					form.fields.price.editor.options.options = options;
 					form.fields.price.editor.render();
+					if (price)
+						form.fields.price.setValue(price);
 				}
-				if (price)
-					form.fields.price.setValue(price);
 			},
 			
 			update: function() {
