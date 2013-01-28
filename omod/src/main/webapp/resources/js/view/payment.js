@@ -94,6 +94,7 @@ define(
 			paymentModeChange: function(event) {
 				var paymentModeUuid = $(event.target).val();
 				var self = this;
+				// Load payment mode form HTML fragment from server
 				this.$attributes.load(openhmis.config.pageUrlRoot + "paymentModeFragment.form?uuid=" + paymentModeUuid,
 					function(content) {
 						if ($(self.$attributes).find('#openmrs_dwr_error').length > 0 && content.indexOf("ContextAuthenticationException") !== -1) {
@@ -165,6 +166,7 @@ define(
 						// Set up new empty Payment
 						self.model = new openhmis.Payment();
 						self.form.fields["amount"].setValue("");
+						self.$("#paymentAttributes input").val("");
 					}});
 				}
 			},
