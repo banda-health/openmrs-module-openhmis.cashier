@@ -36,13 +36,15 @@ define(
 				this.selectPatient(model);
 			},
 			
-			selectPatient: function(patient) {
+			selectPatient: function(patient, options) {
 				patient = patient ? patient : this.model;
+				options = options ? options : {};
 				this.model = patient;
 				this.visit = undefined;
 				this.getVisit();
 				this.render();
-				this.trigger('selected', this.model);
+				if (options.silent !== true)
+					this.trigger('selected', this.model);
 			},
 			
 			getVisit: function() {
