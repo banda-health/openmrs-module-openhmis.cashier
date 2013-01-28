@@ -255,8 +255,10 @@ define(
 				if (paymentChange > 0)
 					payment.set("amount", payment.get("amountTendered") - paymentChange);
 				this.bill.addPayment(payment);
-				if (this.bill.get("status") === this.bill.BillStatus.PENDING)
-					this.postBill(options);
+				if (this.bill.get("status") === this.bill.BillStatus.PENDING) {
+					if (!this.postBill(options));
+						this.bill.get("payments").remove(payment);
+				}
 				else
 					payment.save([], options);
 			},
@@ -281,7 +283,7 @@ define(
 			
 			saveBill: function(options, post) {
 				options = options ? options : {};
-				if (!this.validate(post)) return;
+				if (!this.validate(post)) return false;
 				if (this.cashPointForm !== undefined)
 					this.bill.set("cashPoint", this.cashPointForm.getValue("cashPoint"));
 				// Filter out any invalid lineItems (especially the bottom)
@@ -308,10 +310,11 @@ define(
 					if (error) error(model, resp);
 				}
 				this.bill.save([], options);
+				return true;
 			},
 			
 			postBill: function(options) {
-				this.saveBill(options, true);
+				return this.saveBill(options, true);
 			},
 			
 			_postAdjustingBill: function(bill) {
