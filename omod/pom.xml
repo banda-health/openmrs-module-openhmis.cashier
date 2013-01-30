@@ -18,9 +18,8 @@
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>jasperreports</artifactId>
 			<type>jar</type>
-			<scope>system</scope>
-			<version>1.4.11</version>
-			<systemPath>${project.basedir}/../lib/jasperreports-1.5.0.jar</systemPath>
+			<scope>provided</scope>
+			<version>1.5.2</version>
 		</dependency>
 
 		<dependency>
