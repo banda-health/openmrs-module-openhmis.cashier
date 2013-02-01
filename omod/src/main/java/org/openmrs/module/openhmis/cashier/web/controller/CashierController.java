@@ -14,13 +14,15 @@
 package org.openmrs.module.openhmis.cashier.web.controller;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Provider;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.jasperreport.JasperReport;
-import org.openmrs.module.jasperreport.JasperReportService;
+import org.openmrs.module.jasperreports.JasperReport;
+import org.openmrs.module.jasperreports.JasperReportService;
 import org.openmrs.module.openhmis.cashier.api.ICashPointService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
@@ -35,14 +37,21 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = CashierWebConstants.CASHIER_PAGE)
 public class CashierController {
+	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorController.class);
+
 	private ITimesheetService timesheetService;
 	private ICashPointService cashPointService;
 	private ProviderService providerService;
@@ -77,6 +86,28 @@ public class CashierController {
 
 		if (provider == null) {
 			throw new APIException("Could not locate the provider.");
+		}
+
+		if (StringUtils.isEmpty(returnUrl)) {
+			HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+			returnUrl = req.getHeader("Referer");
+
+			if (!StringUtils.isEmpty(returnUrl)) {
+				try {
+					URL url = new URL(returnUrl);
+
+
+					returnUrl = url.getPath();
+					if (StringUtils.startsWith(returnUrl, req.getContextPath())) {
+
+						returnUrl = returnUrl.substring(req.getContextPath().length());
+					}
+				} catch (MalformedURLException e) {
+					log.warn("Could not parse referrer url '" + returnUrl + "'");
+
+					returnUrl = "";
+				}
+			}
 		}
 
 		// Load the current timesheet information

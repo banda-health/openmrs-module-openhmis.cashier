@@ -137,13 +137,21 @@ define(
 						if (this.schema[attr].readOnly === undefined
 							|| this.schema[attr].readOnly === false)
 								attributes[attr] = this.attributes[attr];
-						if (this.schema[attr].objRef === true && typeof attributes[attr] !== "string")
-							attributes[attr] = attributes[attr].id;
+						if (this.schema[attr].objRef === true) {
+							if (attributes[attr] instanceof openhmis.GenericCollection)
+								attributes[attr] = attributes[attr].toJSON({ objRef: true })
+							else if (attributes[attr] instanceof Array)
+								attributes[attr] = new openhmis.GenericCollection(attributes[attr]).toJSON({ objRef: true });
+							else if (attributes[attr].id !== undefined)
+								attributes[attr] = attributes[attr].id;
+						}
 					}
 					else if (attr === "retired" || attr === "voided" && this.attributes[attr]) {
 						attributes[attr] = this.attributes[attr];
 					}
 				}
+				if (options && options.objRef === true && this.id !== undefined)
+					attributes.uuid = this.id;
 				return _.clone(attributes);
 			},
 			

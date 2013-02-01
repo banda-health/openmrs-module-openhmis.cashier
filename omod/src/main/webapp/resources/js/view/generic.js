@@ -493,6 +493,7 @@ define(
 				openhmis.GenericListView.prototype.render.call(this);
 				this.$el.prepend(this.searchView.render().el);
 				this.searchView.delegateEvents();
+				this.searchView.focus();
 				return this;
 			}
 		});

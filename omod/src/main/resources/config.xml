@@ -17,7 +17,7 @@
 
 	<require_modules>
 		<require_module version="1.1">org.openmrs.module.webservices.rest</require_module>
-		<require_module version="1.4.11">org.openmrs.module.jasperreport</require_module>
+		<require_module version="1.5.2">org.openmrs.module.jasperreports</require_module>
 	</require_modules>
 	
 	<!-- Module Activator -->
@@ -26,11 +26,6 @@
 	<globalProperty>
 		<property>${project.parent.artifactId}.defaultReceiptReportId</property>
 		<description>ID of the default Jasper report to use for generating a receipt on the Bill page</description>
-	</globalProperty>
-
-	<globalProperty>
-		<property>${project.parent.artifactId}.defaultReceiptReportName</property>
-		<description>Name of the default Jasper report to use for generating a receipt</description>
 	</globalProperty>
 
 	<globalProperty>
@@ -51,6 +46,11 @@
 	<globalProperty>
 		<property>${project.parent.artifactId}.roundToNearest</property>
 		<description>Nearest unit to round to.  Can be a decimal number.</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.systemReceiptNumberGenerator</property>
+		<description>Fully qualified class name of the receipt number generator to be used.</description>
 	</globalProperty>
 	
 	<!-- Extensions -->

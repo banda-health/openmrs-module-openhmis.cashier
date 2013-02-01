@@ -139,11 +139,12 @@ curl(
 					patientView.model = new openhmis.Patient(bill.get("patient"));
 					if (bill.get("billAdjusted")) {
 						bill.get("billAdjusted").fetch({ success: function(billAdjusted, resp) {
-							displayBillView(billView, patientView);						
+							displayBillView(billView, patientView);
 						}});
 					}
 					else
 						displayBillView(billView, patientView);
+					patientView.selectPatient(patientView.model, {silent:true});
 				}});
 			}
 			// If a patient is specified

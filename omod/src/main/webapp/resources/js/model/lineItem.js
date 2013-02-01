@@ -73,9 +73,10 @@ define(
 			
 			toJSON: function() {
 				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
-				if (attrs.item) {
+				if (attrs.item)
 					attrs.item = attrs.item.id;
-				}
+				if (attrs.price)
+					attrs.price = parseFloat(attrs.price);
 				return attrs;
 			}
 		});

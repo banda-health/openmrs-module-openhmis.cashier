@@ -36,6 +36,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -86,13 +87,25 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		return null;
 	}
 	
+	public SimpleObject searchByDepartment(String department_uuid, RequestContext context) throws ResponseException {
+		IItemService service = (IItemService) Context.getService(getServiceClass());
+		IDepartmentService deptService = (IDepartmentService) Context.getService(IDepartmentService.class);
+		Department department = deptService.getByUuid(department_uuid);
+		
+		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
+		List<Item> items = service.getItemsByDepartment(department, context.getIncludeAll(), pagingInfo);
+		PageableResult results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
+		return results.toSimpleObject();
+	}
+	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(
 			Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		if (rep instanceof RefRepresentation) {
-			description.addProperty("codes");
+			description.addProperty("codes", Representation.REF);
 			description.addProperty("department", Representation.REF);
+			description.addProperty("defaultPrice", Representation.REF);
 		}
 		else if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
 			description.addProperty("name");
@@ -149,13 +162,37 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 		for (ItemPrice price : instance.getPrices()) {
 			if (price.getUuid().equals(uuidOrPrice)) {
 				instance.setDefaultPrice(price);
-				break;
+				return;
 			}
 			else if (price.getPrice().toPlainString().equals(uuidOrPrice)) {
 				instance.setDefaultPrice(price);
-				break;
+				return;
 			}
 		}
+		// If there are no matches in the current price set, save the price in
+		// a new ItemPrice to hopefully be updated later, in case we haven't
+		// set new prices yet.
+		ItemPrice defaultPrice = new ItemPrice(new BigDecimal(uuidOrPrice), "");
+		instance.setDefaultPrice(defaultPrice);
+	}
+	
+	@Override
+	public Item save(Item delegate) {
+		// Check that default price has been properly set now that the item's
+		// prices have definitely been set
+		if (!delegate.getPrices().contains(delegate.getDefaultPrice())) {
+			if (delegate.getDefaultPrice().getId() == null)
+				setDefaultPrice(delegate, delegate.getDefaultPrice().getPrice().toString());
+			// If it's still not set to one of the item's prices, set it to the
+			// first available price, or null.
+			if (!delegate.getPrices().contains(delegate.getDefaultPrice())) {
+				if (delegate.getPrices().size() > 0)
+					delegate.setDefaultPrice(delegate.getPrices().toArray(new ItemPrice[0])[0]);
+				else
+					delegate.setDefaultPrice(null);
+			}
+		}
+		return super.save(delegate);
 	}
 
 	@Override

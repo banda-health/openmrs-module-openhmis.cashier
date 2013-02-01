@@ -1,3 +1,16 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
 import java.io.IOException;
@@ -6,8 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.jasperreport.JasperReport;
-import org.openmrs.module.jasperreport.ReportGenerator;
+import org.openmrs.module.jasperreports.JasperReport;
+import org.openmrs.module.jasperreports.JasperReportService;
+import org.openmrs.module.jasperreports.ReportGenerator;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
@@ -30,15 +44,13 @@ public class ReceiptController {
 			}
 			AdministrationService adminService = Context.getAdministrationService();
 			Integer reportId;
-			String reportName;
 			try {
 				reportId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY));
-				reportName = adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_NAME_PROPERTY);
 			} catch (Exception e) {
-				response.sendError(500, "Configuration error: need to specify global options for default report ID and name."); return null;
+				response.sendError(500, "Configuration error: need to specify global option for default report ID."); return null;
 			}
-			JasperReport report = new JasperReport(reportId);
-			report.setFileName(reportName);
+			JasperReportService reportService = Context.getService(JasperReportService.class);
+			JasperReport report = reportService.getJasperReport(reportId);
 			report.setName(receiptNumber);
 			HashMap<String, Object> params = new HashMap<String, Object>();
 			params.put("billId", bill.getId());

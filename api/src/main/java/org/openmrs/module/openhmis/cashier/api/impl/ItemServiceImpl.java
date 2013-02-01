@@ -57,6 +57,27 @@ public class ItemServiceImpl
 	}
 
 	@Override
+	public List<Item> getItemsByDepartment(Department department, boolean includeRetired) throws APIException {
+		return getItemsByDepartment(department, includeRetired, null);
+	}
+
+	@Override
+	public List<Item> getItemsByDepartment(Department department, boolean includeRetired, PagingInfo pagingInfo) throws APIException {
+		if (department == null) {
+			throw new NullPointerException("The department must be defined");
+		}
+
+		Criteria criteria = dao.createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("department", department));
+		if (!includeRetired) {
+			criteria.add(Restrictions.eq("retired", false));
+		}
+
+		loadPagingTotal(pagingInfo, criteria);
+		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
+	}
+
+	@Override
 	@Authorized( { CashierPrivilegeConstants.VIEW_ITEMS } )
 	@Transactional(readOnly = true)
 	public List<Item> findItems(Department department, String name, boolean includeRetired) throws APIException {

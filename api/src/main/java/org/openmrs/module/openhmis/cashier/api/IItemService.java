@@ -41,10 +41,37 @@ public interface IItemService extends IMetadataService<Item> {
 	Item getItemByCode(String itemCode) throws APIException;
 
 	/**
+	 * Gets all the items for the specified {@link Department}.
+	 * @param department The department.
+	 * @param includeRetired Whether retired items should be included in the results.
+	 * @return All items for the specified {@link Department}.
+	 * @throws APIException
+	 * @should throw NullPointerException if the department is null
+	 * @should return an empty list if the department has no items
+	 * @should not return retired items unless specified
+	 * @should return all items for the specified department
+	 */
+	@Transactional(readOnly = true)
+	@Authorized( {CashierPrivilegeConstants.VIEW_ITEMS})
+	List<Item> getItemsByDepartment(Department department, boolean includeRetired) throws APIException;
+
+	/**
+	 * Gets all the items for the specified {@link Department}.
+	 * @param department The department.
+	 * @param includeRetired Whether retired items should be included in the results.
+	 * @param pagingInfo The paging information
+	 * @return All items for the specified {@link Department}.
+	 * @throws APIException
+	 */
+	@Transactional(readOnly = true)
+	@Authorized( {CashierPrivilegeConstants.VIEW_ITEMS})
+	List<Item> getItemsByDepartment(Department department, boolean includeRetired, PagingInfo pagingInfo) throws APIException;
+
+	/**
 	 * Finds all items in the specified {@link Department} that start with the specified name.
 	 * @param department The department to search within
 	 * @param name The item name fragment
-	 * @param includeRetired Whether retired item should be included in the results
+	 * @param includeRetired Whether retired items should be included in the results
 	 * @return All items in the specified {@link Department} that start with the specified name.
 	 * @throws APIException
 	 * @should throw NullPointerException if the department is null

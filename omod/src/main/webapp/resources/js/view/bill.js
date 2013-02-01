@@ -27,11 +27,32 @@ define(
 			
 			updateItem: function(form, itemEditor) {
 				var item = itemEditor.getValue();
-				form.fields.price.setValue(item.get('defaultPrice').price);
+				this.updatePriceOptions(item, form);
 				if (form.fields.quantity.getValue() === 0)
 					form.fields.quantity.setValue(1);
 				this.update();
 				this.$('.field-quantity input').focus();
+			},
+			
+			updatePriceOptions: function(item, form) {
+				item = item ? item : this.model.get("item");
+				form = form ? form : this.form;
+				var price;
+				var defaultPrice = item ? item.get("defaultPrice") : undefined;
+				var price = this.model.get("price") || defaultPrice;
+				if (price !== undefined)
+					price = price.id;
+				var options = new openhmis.GenericCollection([], { model: openhmis.ItemPrice });
+				if (item)
+					options.reset(item.get("prices"));
+				else
+					options.add(0);
+				if (form) {
+					form.fields.price.editor.options.options = options;
+					form.fields.price.editor.render();
+					if (price)
+						form.fields.price.setValue(price);
+				}
 			},
 			
 			update: function() {
@@ -83,6 +104,7 @@ define(
 			
 			render: function() {
 				openhmis.GenericListItemView.prototype.render.call(this);
+				this.updatePriceOptions();
 				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
 				return this;
 			},
@@ -111,7 +133,11 @@ define(
 			schema: {
 				item: { type: "Item" },
 				quantity: { type: "CustomNumber" },
-				price: { type: "BasicNumber", readOnly: true, format: openhmis.ItemPrice.prototype.format }
+				price: {
+					type: "ItemPriceSelect",
+					options: new openhmis.GenericCollection([0], {model: openhmis.ItemPrice}),
+					format: openhmis.ItemPrice.prototype.format
+				}
 			},
 			
 			setBill: function(bill) {
@@ -229,8 +255,10 @@ define(
 				if (paymentChange > 0)
 					payment.set("amount", payment.get("amountTendered") - paymentChange);
 				this.bill.addPayment(payment);
-				if (this.bill.get("status") === this.bill.BillStatus.PENDING)
-					this.postBill(options);
+				if (this.bill.get("status") === this.bill.BillStatus.PENDING) {
+					if (!this.postBill(options));
+						this.bill.get("payments").remove(payment);
+				}
 				else
 					payment.save([], options);
 			},
@@ -255,7 +283,7 @@ define(
 			
 			saveBill: function(options, post) {
 				options = options ? options : {};
-				if (!this.validate(post)) return;
+				if (!this.validate(post)) return false;
 				if (this.cashPointForm !== undefined)
 					this.bill.set("cashPoint", this.cashPointForm.getValue("cashPoint"));
 				// Filter out any invalid lineItems (especially the bottom)
@@ -282,10 +310,11 @@ define(
 					if (error) error(model, resp);
 				}
 				this.bill.save([], options);
+				return true;
 			},
 			
 			postBill: function(options) {
-				this.saveBill(options, true);
+				return this.saveBill(options, true);
 			},
 			
 			_postAdjustingBill: function(bill) {

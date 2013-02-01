@@ -53,7 +53,12 @@ public class ItemController extends BaseCrudController<ItemResource> {
 			        + " is not Searchable", null);
 		}
 		RequestContext context = RestUtil.getRequestContext(request, Representation.REF);
-		return itemResource.search(query, department_uuid, context);
+		if (query.isEmpty())
+			return itemResource.searchByDepartment(department_uuid, context);
+		else if (department_uuid.isEmpty())
+			return itemResource.search(query, context);
+		else
+			return itemResource.search(query, department_uuid, context);
 	}
 }
 

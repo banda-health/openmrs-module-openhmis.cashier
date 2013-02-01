@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>1.0.0</version>
+		<version>1.1.0</version>
 	</parent>
 
 	<artifactId>openhmis.cashier-omod</artifactId>
@@ -16,11 +16,8 @@
 
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
-			<artifactId>jasperreport</artifactId>
+			<artifactId>jasperreports-api</artifactId>
 			<type>jar</type>
-			<scope>system</scope>
-			<version>1.4.11</version>
-			<systemPath>${project.basedir}/../lib/jasperreport-1.4.11.jar</systemPath>
 		</dependency>
 
 		<dependency>

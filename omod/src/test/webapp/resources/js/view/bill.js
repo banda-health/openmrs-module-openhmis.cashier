@@ -13,7 +13,7 @@ describe("BillView", function() {
 		var billView = new openhmis.BillView();
 		billView.render();
 		billView.setupNewItem();
-		var item = new openhmis.Item($.parseJSON(openhmis.testData.JSON.item));
+		var item = new openhmis.Item($.parseJSON(openhmis.testData.JSON.item), { parse: true });
 		// Setting attributes will trigger change, which will trigger adding
 		// the new item
 		billView.newItem.set({

@@ -1,3 +1,16 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 package org.openmrs.module.openhmis.cashier.api.model;
 
 import java.math.BigDecimal;
@@ -21,13 +34,13 @@ public class CashierOptions {
 	private BigDecimal roundToNearest = new BigDecimal(1);
 	private RoundingMode roundingMode = RoundingMode.MID;
 	private int defaultReceiptReportId;
-	private String defaultReceiptReportName;
 	private boolean timesheetRequired;
 	
 	public void loadFromGlobalOptions() {
 		AdministrationService service = Context.getAdministrationService();
-		setDefaultReceiptReportId(Integer.parseInt(service.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY)));
-		setDefaultReceiptReportName(service.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_NAME_PROPERTY));
+		try {
+			setDefaultReceiptReportId(Integer.parseInt(service.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY)));
+		} catch (NumberFormatException e) { /* Leave unset; must be handled, e.g. in ReceiptController */ }
 		try {
 			setRoundingMode(
 				CashierOptions.RoundingMode.valueOf(service.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY)));
@@ -38,6 +51,7 @@ public class CashierOptions {
 				new BigDecimal(service.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY)));
 		} catch (NullPointerException e) { /* Use default */ }
 		
+		// Will default to false
 		setTimesheetRequired(Boolean.parseBoolean(service.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY)));
 	}
 	
@@ -59,12 +73,6 @@ public class CashierOptions {
 	}
 	public void setDefaultReceiptReportId(int defaultReceiptReportId) {
 		this.defaultReceiptReportId = defaultReceiptReportId;
-	}
-	public String getDefaultReceiptReportName() {
-		return defaultReceiptReportName;
-	}
-	public void setDefaultReceiptReportName(String defaultReceiptReportName) {
-		this.defaultReceiptReportName = defaultReceiptReportName;
 	}
 	public boolean isTimesheetRequired() {
 		return timesheetRequired;

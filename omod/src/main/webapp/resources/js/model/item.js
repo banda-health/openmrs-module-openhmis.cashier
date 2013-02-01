@@ -25,14 +25,32 @@ define(
 				openmrsType: 'metadata'
 			},
 			schema: {
+				name: { type: "Text" },
 				price: { type: 'BasicNumber' }
 			},
+			
+		    set: function(key, value, options) {
+				if (typeof key === "string") {
+					switch (key) {
+						case "price":
+							value = parseFloat(value);
+							break;
+					}
+				}
+				return openhmis.GenericModel.prototype.set.call(this, key, value, options);
+			},			
 			format: function(price) {
-				if (price === undefined) return 0;
+				if (price === undefined)
+					return 0;
+				if (price instanceof openhmis.ItemPrice)
+					return price.toString();
 				return price.toFixed(2);
 			},
 			
-			toString: function() { return this.format(this.get('price')); }
+			toString: function() {
+				var name = this.get("name") ? " (" + this.get("name") + ")" : "";
+				return this.format(this.get('price')) + name;
+			}
 		});
 		
 		openhmis.Item = openhmis.GenericModel.extend({
@@ -53,13 +71,26 @@ define(
 					objRef: true
 				},
 				codes: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemCode },
-				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice },
-				defaultPrice: { type: 'Select', options: [], objRef: true }
+				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice, objRef: true },
+				defaultPrice: { type: 'ItemPriceSelect', options: [], objRef: true }
 			},
 			
 			initialize: function(attributes, options) {
 				openhmis.GenericModel.prototype.initialize.call(this, attributes, options);
 				this.setPriceOptions();
+			},
+			
+		    set: function(key, value, options) {
+				if (typeof key === "string") {
+					switch (key) {
+						case "defaultPrice":
+							var price;
+							if (this.get("prices") && (price = this.get("prices").get(value)))
+								value = price;
+							break;
+					}
+				}
+				return openhmis.GenericModel.prototype.set.call(this, key, value, options);
 			},
 			
 			fetch: function(options) {
@@ -87,7 +118,14 @@ define(
 			
 			setPriceOptions: function(prices) {
 				prices = prices ? prices : this.get('prices');
-				this.schema.defaultPrice.options = _.map(prices, function(price) { return { val: price.uuid || price.price, label: openhmis.ItemPrice.prototype.format(price.price) } });
+				if (prices instanceof openhmis.GenericCollection) prices = prices.models;
+				this.schema.defaultPrice.options = _.map(prices, function(price) {
+					if (!(price instanceof openhmis.ItemPrice)) price = new openhmis.ItemPrice(price);
+					return {
+						val: price.id || price.price || price.get("price"),
+						label: openhmis.ItemPrice.prototype.format(price.get("price"))
+					}
+				});
 			},
 			
 			validate: function(attrs, options) {
@@ -102,6 +140,8 @@ define(
 				if (resp) {
 					if (resp.department && _.isObject(resp.department))
 						resp.department = new openhmis.Department(resp.department);
+					if (resp.prices) resp.prices = new openhmis.GenericCollection(resp.prices, { model: openhmis.ItemPrice }).models;
+					if (resp.defaultPrice) resp.defaultPrice = new openhmis.ItemPrice(resp.defaultPrice);
 				}
 				return resp;
 			},

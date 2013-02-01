@@ -48,6 +48,10 @@ openhmis.testData.JSON = {
 			{\
 				"uuid":"1b81faeb-8380-4400-92d8-176f9282f06c",\
 				"price":1000.00\
+			},\
+			{\
+				"uuid":"4c99f971-7d44-4bfc-acff-ad5d395c2e39",\
+				"price":4.40\
 			}\
 		],\
 		"department":{\
@@ -59,5 +63,21 @@ openhmis.testData.JSON = {
 			"price":1000.00\
 		},\
 		"resourceVersion":"1.8"\
+	}',
+	
+	departmentCollection: '{\
+		"results":[\
+			{\
+				"uuid":"faf2f364-189c-4959-9428-4f917f52b8de",\
+				"name":"Pharmacy",\
+				"retired":false\
+			},\
+			{\
+				"uuid":"f53f0242-b9df-4b56-8734-4e1c31903f96",\
+				"name":"Lab",\
+				"retired":false\
+			}\
+		],\
+		"length":2\
 	}'
 }

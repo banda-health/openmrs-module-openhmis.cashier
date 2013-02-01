@@ -16,9 +16,9 @@ curl(
 		$(function() {
 			openhmis.startAddEditScreen(openhmis.Item, {
 				listView: openhmis.GenericSearchableListView,
-				searchView: openhmis.NameSearchView,
+				searchView: openhmis.DepartmentAndNameSearchView,
 				addEditViewType: openhmis.ItemAddEditView,
-				listFields: ['name', 'department', 'codes']
+				listFields: ['name', 'department', 'codes', 'defaultPrice']
 			});
 		});
 	}
