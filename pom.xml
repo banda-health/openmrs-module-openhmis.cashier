@@ -112,6 +112,14 @@
 			<!-- End webservices.rest -->
 
 			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>jasperreports-api</artifactId>
+				<version>1.5.2</version>
+				<type>jar</type>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
 				<groupId>org.reflections</groupId>
 				<artifactId>reflections</artifactId>
 				<version>0.9.8</version>

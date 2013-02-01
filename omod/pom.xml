@@ -18,8 +18,6 @@
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>jasperreports-api</artifactId>
 			<type>jar</type>
-			<scope>provided</scope>
-			<version>1.5.2</version>
 		</dependency>
 
 		<dependency>
