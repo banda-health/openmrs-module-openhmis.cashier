@@ -46,10 +46,17 @@ define(
 				this.unsaved = true;
 			},
 			
+			/**
+			 * @returns {boolean} whether the model has changed since the last
+			 * time it was saved (if option trackUnsaved was specified)
+			 */
 			isUnsaved: function() {
 				return this.unsaved;
 			},
 			
+			/**
+			 * Override Backbone model save to support isUnsaved()
+			 */
 			save: function(key, value, options) {
 				// Handle a "normal" save where options are specified as the
 				// second parameter
