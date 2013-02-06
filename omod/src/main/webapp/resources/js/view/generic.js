@@ -1,4 +1,3 @@
-/** @namespace openhmis */
 define(
 	[
 		'lib/jquery',
@@ -12,12 +11,27 @@ define(
 		'view/paginate',
 		'view/editors',
 		'link!/openmrs/scripts/jquery/dataTables/css/dataTables_jui.css'
-	], 
+	],
 	function($, _, Backbone, __, openhmis) {
+		
+		/*======================================================================
+		 *
+		 * GenericAddEditView
+		 *
+		 */
 		openhmis.GenericAddEditView = Backbone.View.extend(
+		/** @lends GenericAddEditView.prototype */
 		{
 			tmplFile: 'generic.html',
 			tmplSelector: '#add-edit-template',
+			
+			/**
+			 * @class GenericAddEditView
+			 * @classdesc Generic view for performing add/edit/delete operations
+			 *     on a GenericModel
+			 * @constructor GenericAddEditView
+			 * @param {map} options Optional. View options.
+			 */
 			initialize: function(options) {
 				_.bindAll(this);
 				this.collection = options.collection;
@@ -35,6 +49,14 @@ define(
 				'click button.purge': 'purge'
 			},
 			
+			/**
+			 * Prepare a Backbone form based on a model
+			 * 
+			 * @static
+			 * @param {Model} model A model with a defined backbone-forms schema
+			 * @param {map} options Options for the Backbone form
+			 * @returns {Form} A prerendered Backbone form
+			 */
 			prepareModelForm: function(model, options) {
 				options = options ? options : {};
 				var formFields = [];
@@ -53,7 +75,8 @@ define(
 				modelForm.render();
 				return modelForm;
 			},
-		
+			
+			/** Switch to Add mode, for adding a new model. */
 			beginAdd: function() {
 				this.model = new this.collection.model(null, { urlRoot: this.collection.url });
 				this.render();
@@ -66,6 +89,11 @@ define(
 				$(this.formEl).find('input')[0].focus();
 			},
 			
+			/**
+			 * Cancel the current view
+			 *
+			 * @fires cancel
+			 */
 			cancel: function() {
 				this.trigger('cancel');
 				$(this.addLinkEl).show();
@@ -74,6 +102,11 @@ define(
 				$(this.retireVoidPurgeEl).hide();
 			},
 			
+			/**
+			 * Switch to edit mode, for editing a model
+			 *
+			 * @param {GenericModel} A model for editing
+			 */
 			edit: function(model) {
 				this.model = model;
 				var self = this;
@@ -91,6 +124,11 @@ define(
 				});
 			},
 			
+			/**
+			 * Save the current model
+			 *
+			 * @param {event} event Optional.  Pass an event.
+			 */
 			save: function(event) {
 				if (event) event.preventDefault();
 				var errors = this.modelForm.commit();
@@ -108,6 +146,7 @@ define(
 				});
 			},
 			
+			/** Retire or void an existing model */
 			retireOrVoid: function() {
 				var reason = this.$('#reason').val();
 				var view = this;
@@ -120,6 +159,7 @@ define(
 				});
 			},
 			
+			/** Unretire or unvoid an existing model */
 			unretireOrUnvoid: function() {
 				if (confirm("Are you sure you want to unretire this object? It will then be restored to the system")) {
 					this.model.set('retired', false);
@@ -134,6 +174,7 @@ define(
 				}
 			},
 			
+			/** Purge an existing model */
 			purge: function() {
 				if (confirm(__("Are you sure you want to purge this object? It will be permanently removed from the system."))) {
 					var view = this;
@@ -143,7 +184,11 @@ define(
 					});
 				}
 			},
-		
+			
+			/**
+			 * Render the view
+			 * @returns {View} The rendered view
+			 */
 			render: function() {
 				this.$el.html(this.template({ model: this.model }));
 				this.addLinkEl = this.$('a.addLink');
@@ -154,8 +199,14 @@ define(
 			}
 		});
 		
+		
+		/*======================================================================
+		 *
+		 * GenericListView
+		 *
+		 */
 		openhmis.GenericListView = Backbone.View.extend(
-		/** @lends GenericListView */
+		/** @lends GenericListView.prototype */
 		{
 			// The template file to use
 			tmplFile: 'generic.html',
@@ -167,10 +218,10 @@ define(
 			itemView: openhmis.GenericListItemView,
 			
 			/**
-			 * A list of other FetchingViews that may affect the fetch results
-			 * for this view.
+			 * A list of other FetchHelpers that may affect the fetch results
+			 * for this view.  A FetchHelper must implement the
+			 * <b>getFetchOptions<b> method which will return
 			 * 
-			 * @name GenericListView#fetchable
 			 * @type Array
 			 */
 			fetchable: [],
@@ -241,7 +292,6 @@ define(
 			 *      <li><b>itemRemoved</b> on ListItemView <b>remove</b></li>
 			 *     </ul>
 
-			 * @function GenericListView#addOne
 			 * @param {model} model Required. A GenericModel to be added to the
 			 *     list.
 			 * @param {schema} schema Optional. A schema to override the model's
@@ -298,7 +348,6 @@ define(
 			/**
 			 * Called when a ListItemView is removed.
 			 * 
-			 * @function GenericListView#onItemRemoved
 			 * @param {GenericListItemView} item The view that has been removed
 			 */
 			onItemRemoved: function(item) {
@@ -311,7 +360,6 @@ define(
 			/**
 			 * Called when a ListItemView is selected.
 			 *
-			 * @function GenericListView#onItemSelected
 			 * @param {GenericListItemView} view The view that has been selected
 			 */
 			onItemSelected: function(view) {
@@ -320,20 +368,12 @@ define(
 				if (this.addEditView) this.addEditView.edit(view.model);
 			},
 			
-			/**
-			 * Called when the view loses form focus.
-			 * @function GenericListView#blur
-			 *
-			 */
+			/** Called when the view loses form focus. */
 			blur: function() {
 				this._deselectAll();
 			},
 			
-			/**
-			 * Called when the view gains form focus.
-			 * @function GenericListView#focus
-			 *
-			 */
+			/** Called when the view gains form focus. */
 			focus: function() {
 				if (this.selectedItem) {
 					this.selectedItem.focus();
@@ -344,11 +384,9 @@ define(
 			 * Use the GenericCollection to fetch an updated list of items from
 			 * the server.  Uses the list of fetchables.
 			 * 
-			 * @function GenericListView#fetch
 			 * @param {map} options Options for the fetch operation.
-			 * @param {FetchingView} sender Optional. The FetchingView that
+			 * @param {FetchHelper} sender Optional. The FetchHelper that
 			 *     called for this fetch.
-			 * 
 			 */
 			fetch: function(options, sender) {
 				options = options ? options : {};
@@ -363,10 +401,9 @@ define(
 			/**
 			 * Render the list view
 			 *
-			 * @function GenericListView#render
 			 * @param {map} extraContext Optional. Extra context to override the
 			 *     base context and be passed to the template.
-			 * 
+			 * @returns {View} The rendered view
 			 */
 			render: function(extraContext) {
 				var self = this;
@@ -467,8 +504,14 @@ define(
 			}
 		});
 		
+
+		/*======================================================================
+		 *
+		 * GenericListItemView
+		 *
+		 */
 		openhmis.GenericListItemView = Backbone.View.extend(
-		/** @lends GenericListItemView */
+		/** @lends GenericListItemView.prototype */
 		{
 			// Name of the HTML tag to use for the view's containing element
 			tagName: "tr",
@@ -486,7 +529,6 @@ define(
 			 *     <li><b>inlineEdit:</b> Support editing the values of the item attributes</li>
 			 * </ul>
 			 *
-			 * @name GenericListItemView#actions
 			 * @type Array
 			 */
 			actions: [], // see enableActions()
@@ -517,7 +559,6 @@ define(
 			
 			/**
 			 * Cause the item to be selected
-			 * @function GenericListItemView#select
 			 * @fires select
 			 */
 			select: function() {
@@ -530,7 +571,6 @@ define(
 			
 			/**
 			 * Focus the item
-			 * @function GenericListItemView#focus
 			 * @fires focus
 			 */
 			focus: function() {
@@ -540,7 +580,6 @@ define(
 			
 			/**
 			 * Blur the item (cancel focus)
-			 * @function GenericListItemView#blur
 			 * @param {event} event Optional. Because blur will commit form data
 			 *     if applicable, it may be helpful to pass on an event, if this
 			 *     method is used as an event handler.
@@ -554,7 +593,6 @@ define(
 			/**
 			 * Called when the view's model changes
 			 * 
-			 * @function GenericListItemView#onModelChange
 			 * @param {Model} model The model that has changed
 			 * @fires change
 			 */
@@ -568,7 +606,6 @@ define(
 			 * the view, for example in the case that it supports inline editing
 			 * of fields.
 			 *
-			 * @function GenericListItemView#displayErrors
 			 * @param {map} errorMap A map from model attributes or form fields
 			 *     to error messages
 			 * @param {event} event Optional. The event that triggered the
@@ -579,7 +616,6 @@ define(
 			/**
 			 * Commit the current form data, triggering validation.
 			 *
-			 * @function GenericListItemView#commitForm
 			 * @param {event} event Optional. Triggering event.
 			 * @returns {map} A map from field names to error messages, or
 			 *     undefined if validation is successful
@@ -590,26 +626,25 @@ define(
 				return errors;
 			},
 			
+			/**
+			 * Called when the remove action has been chosen for the item
+			 *
+			 * @param {event} event Optional. Triggering event.
+			 */
 			onRemove: function(event) {
 				if (confirm(__("Are you sure you want to remove the selected item?"))) {
-					this.removeItem(event);
+					this._removeItem(event);
 					return true;
 				}
 				// Prevent this event from propagating
 				else return false;
 			},
 			
-			removeItem: function(event) {
-				this.removeModel();
-				Backbone.View.prototype.remove.call(this);
-				this.trigger('remove', this.model);
-				this.off();
-			},
-			
-			removeModel: function() {
-				this.model.destroy();
-			},
-			
+			/**
+			 * Render the list item
+			 * 
+			 * @returns {View} The rendered view
+			 */
 			render: function() {
 				this.$el.html(this.template({
 					model: this.model,
@@ -623,7 +658,34 @@ define(
 				}
 				return this;
 			},
+
 			
+			/**
+			 * Remove this item
+			 *
+			 * @private
+			 */
+			_removeItem: function(event) {
+				this._removeModel();
+				Backbone.View.prototype.remove.call(this);
+				this.trigger('remove', this.model);
+				this.off();
+			},
+			
+			/**
+			 * Destroy the view's model
+			 *
+			 * @private
+			 */
+			_removeModel: function() {
+				this.model.destroy();
+			},
+			
+			/**
+			 * Enable actions according to this.actions
+			 *
+			 * @private
+			 */
 			_enableActions: function() {
 				for (var act in this.actions) {
 					switch (this.actions[act]) {
@@ -650,10 +712,49 @@ define(
 		
 		
 		/**
+		 * <b>Not a real class!</b>  Interface/pseudoclass for documentation
+		 * purposes.
+		 *
+		 * @class FetchHelper
+		 * @classdesc A FetchHelper is a view that can be used by a base view
+		 *     (such as {@link GenericListView}) to affect the query sent to the
+		 *     server when fetch() is called.  A FetchHelper view should
+		 *     implement the getFetchOptions() method.<br>
+		 *     <br>
+		 *     <b>NOTE: This is not a real class.</b>  It's an interface and is
+		 *     listed here for documentation purposes.  {@link NameSearchView}
+		 *     and {@link DepartmentAndNameSearchView} are examples of
+		 *     FetchHelpers.
+		 */
+		
+		/**
+		 * @function FetchHelper#getFetchOptions
+		 * @param {map} options The current fetch options.  Should not be
+		 *     modified.
+		 * @returns {map} options The fetch options that the FetchHelper wants
+		 *     to submit.
+		 */
+		
+		
+		/*======================================================================
+		 *
 		 * GenericSearchableListView
 		 *
 		 */
-		openhmis.GenericSearchableListView = openhmis.GenericListView.extend({
+		openhmis.GenericSearchableListView = openhmis.GenericListView.extend(
+		/** @lends GenericSearchableListView.prototype */
+		{
+			/**
+			 * @class GenericSearchableListView
+			 * @extends GenericListView
+			 * @classdesc Specialized GenericListView that supports filtering
+			 *     results by search criteria.
+			 * @constructor GenericSearchableListView
+			 * @param {map} options Optional.  View options.
+			 *     GenericSearchableListView-specific options are: <ul>
+			 *      <li><b>searchView:</b> A FetchHelper view to be used for setting the search filter</li>
+			 * </ul>
+			 */
 			initialize: function(options) {
 				_.bindAll(this);
 				openhmis.GenericListView.prototype.initialize.call(this, options);
@@ -665,11 +766,22 @@ define(
 				this.fetchable.push(this.searchView);
 			},
 			
+			/**
+			 * Called when the search view fires a fetch event
+			 *
+			 * @param {map} options Fetch options
+			 * @param {SearchView} sender The view that is triggering the search
+			 */
 			onSearch: function(options, sender) {
 				if (this.paginateView) this.paginateView.setPage(1);
 				this.fetch(options, sender);
 			},
 			
+			/**
+			 * Render the view.  Overrides GenericListView.render()
+			 *
+			 * @returns {View} The rendered view
+			 */
 			render: function() {
 				if (this.searchView.lastSearch)
 					this.options.listTitle = __('Results for "%s"', this.searchView.lastSearch);

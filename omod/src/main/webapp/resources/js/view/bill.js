@@ -96,8 +96,9 @@ define(
 				if (!form)
 					this.$('.item-name').focus();
 			},
-						
-			removeModel: function() {
+			
+			// Maybe this should just be moved into generic.js			
+			_removeModel: function() {
 				if (this.model.collection)
 					this.model.collection.remove(this.model, { silent: true });
 			},
