@@ -16,7 +16,7 @@
 
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
-			<artifactId>jasperreports-api</artifactId>
+			<artifactId>jasperreport-api</artifactId>
 			<type>jar</type>
 		</dependency>
 
