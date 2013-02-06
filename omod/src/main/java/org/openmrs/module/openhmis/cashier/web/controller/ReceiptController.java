@@ -13,15 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import javax.servlet.http.HttpServletResponse;
-
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.jasperreports.JasperReport;
-import org.openmrs.module.jasperreports.JasperReportService;
-import org.openmrs.module.jasperreports.ReportGenerator;
+import org.openmrs.module.jasperreport.JasperReport;
+import org.openmrs.module.jasperreport.JasperReportService;
+import org.openmrs.module.jasperreport.ReportGenerator;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
@@ -29,6 +25,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping(value = CashierWebConstants.RECEIPT)
