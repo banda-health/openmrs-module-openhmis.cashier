@@ -162,13 +162,13 @@ define(
 				return view;
 			},
 			
-			itemSelected: function(itemView) {
-				openhmis.GenericListView.prototype.itemSelected.call(this, itemView);
+			onItemSelected: function(itemView) {
+				openhmis.GenericListView.prototype.onItemSelected.call(this, itemView);
 				this.updateTotals();
 			},
 
-			itemRemoved: function(item) {
-				openhmis.GenericListView.prototype.itemRemoved.call(this, item);
+			onItemRemoved: function(item) {
+				openhmis.GenericListView.prototype.onItemRemoved.call(this, item);
 				if (item === this.newItem) {
 					this.setupNewItem();
 				}
@@ -189,7 +189,7 @@ define(
 					this.model.add(lineItemView.model, { silent: true });
 					this.bill.setUnsaved();
 					lineItemView.on("change remove", this.bill.setUnsaved);
-					this.deselectAll();
+					this._deselectAll();
 					dept_uuid = lineItemView.model.get("item").get("department").id;
 				}
 				this.newItem = new openhmis.LineItem();

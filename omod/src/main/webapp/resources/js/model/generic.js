@@ -12,6 +12,12 @@ define(
 		 * 
 		 */
 		openhmis.GenericModel = Backbone.Model.extend({
+			
+			/**
+			 * @constructor
+			 * @param {map} attributes Model attributes
+			 * @param {map} options Model options
+			 */
 			initialize: function(attributes, options) {
 				_.bindAll(this, 'setUnsaved');
 				if (options !== undefined) {
@@ -48,14 +54,14 @@ define(
 			
 			/**
 			 * @returns {boolean} whether the model has changed since the last
-			 * time it was saved (if option trackUnsaved was specified)
+			 *     time it was saved (if option trackUnsaved was specified)
 			 */
 			isUnsaved: function() {
 				return this.unsaved;
 			},
 			
 			/**
-			 * Override Backbone model save to support isUnsaved()
+			 * Override Backbone model save() to support isUnsaved()
 			 */
 			save: function(key, value, options) {
 				// Handle a "normal" save where options are specified as the
@@ -73,7 +79,9 @@ define(
 				return Backbone.Model.prototype.save.call(this, key, value, options);
 			},
 			
-			// OpenMRS-specific delete functions
+			/**
+			 * OpenMRS-specific delete functions
+			 */
 			retire: function(options) {
 				options = options ? _.clone(options) : {};
 				if (options.reason !== undefined)
@@ -175,6 +183,12 @@ define(
 		openhmis.GenericCollection = Backbone.Collection.extend({
 			baseUrl: openhmis.config.restUrlRoot,
 			
+			/**
+			 * @constructor
+			 * @param {array} models Models with which to initialize the
+			 *     collection
+			 * @param {map} options Options for the collection
+			 */
 			initialize: function(models, options) {
 				if (options) {
 					if (options.baseUrl) this.baseUrl = options.baseUrl;
@@ -194,6 +208,8 @@ define(
 				var error = options.error;
 				var silent = options.silent;
 				options.success = function(collection, resp) {
+					// totalLength tracks the total number of objects available
+					// on the server, even if they are not all fetched
 					if (resp.length)
 						collection.totalLength = resp.length;
 					else
