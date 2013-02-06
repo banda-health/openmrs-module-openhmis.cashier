@@ -17,7 +17,7 @@
 
 	<require_modules>
 		<require_module version="1.1">org.openmrs.module.webservices.rest</require_module>
-		<require_module version="1.5.2">org.openmrs.module.jasperreports</require_module>
+		<require_module version="1.5.3">org.openmrs.module.jasperreport</require_module>
 	</require_modules>
 	
 	<!-- Module Activator -->
@@ -30,7 +30,7 @@
 
 	<globalProperty>
 		<property>${project.parent.artifactId}.defaultShiftReportId</property>
-		<description>ID of the Jaster Cashier Shift report.</description>
+		<description>ID of the Jasper Cashier Shift report.</description>
 	</globalProperty>
 
 	<globalProperty>
