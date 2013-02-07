@@ -23,10 +23,25 @@ describe("BillView", function() {
 		});
 		expect(billView.bill.get("lineItems").length).toEqual(1);
 		var newItem = billView.bill.get("lineItems").models[0];
-		newItem.view.removeItem();
+		newItem.view._removeItem();
 		// Removing the item should remove its row; there should be one row
 		// left
 		$trs = billView.$("table.bill tbody tr");
 		expect($trs.length).toEqual(1);
+	});
+	
+	it("should post a bill", function() {
+		var bill = new openhmis.Bill($.parseJSON(openhmis.testData.JSON.bill), { parse: true });
+		// Check that the bill is PENDING to begin with
+		expect(bill.get("status")).toEqual(bill.BillStatus.PENDING);		
+		var billView = new openhmis.BillView({ bill: bill });
+		spyOn(Backbone, "sync").andCallFake(function(method, model, options) {
+			options.success(model);
+		});
+		billView.postBill();
+		// Get the bill model as it was passed to Backbone.sync
+		bill = Backbone.sync.mostRecentCall.args[1];
+		// Expect the status to be POSTED as it is being saved
+		expect(bill.get("status")).toEqual(bill.BillStatus.POSTED);
 	});
 });

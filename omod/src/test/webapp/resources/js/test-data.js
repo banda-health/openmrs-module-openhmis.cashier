@@ -79,5 +79,19 @@ openhmis.testData.JSON = {
 			}\
 		],\
 		"length":2\
+	}',
+	
+	bill: '{\
+		"lineItems":\
+		[{\
+			"item":"368a0146-007c-4e1e-9dfb-fa04aac1d675",\
+			"quantity":1,\
+			"price":100,\
+			"lineItemOrder":"0"\
+		}],\
+		"payments":[],\
+		"status":"PENDING",\
+		"patient":"e14250a5-4e90-4bbd-8fdf-e81fa50e1e53",\
+		"cashPoint":"fae1359d-e7e0-4a1b-a3a5-5745789f8769"\
 	}'
 }

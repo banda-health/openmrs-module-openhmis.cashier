@@ -298,6 +298,8 @@ define(
 					&& this.bill.get("billAdjusted")
 					&& this.bill.get("status") === this.bill.BillStatus.PENDING)
 						this._postAdjustingBill(this.bill);
+				else if (post === true)
+					this.bill.set("status", this.bill.BillStatus.POSTED);
 				var print = options.print;
 				var success = options.success;
 				var error = options.error;
