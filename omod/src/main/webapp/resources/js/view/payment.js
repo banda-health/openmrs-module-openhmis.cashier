@@ -150,7 +150,7 @@ define(
 				}
 			},
 			
-			processPayment: function(event, something) {
+			processPayment: function(event) {
 				if (!this.commitForm()) return;
 				if (confirm(i18n("Are you sure you want to process a %s payment of %s?",
 							   this.model.get("paymentMode"), this.model.get("amountFmt")))) {

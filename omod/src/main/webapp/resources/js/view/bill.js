@@ -284,7 +284,11 @@ define(
 			
 			saveBill: function(options, post) {
 				options = options ? options : {};
-				if (!this.validate(post)) return false;
+				// If the bill is an adjustment, we will allow posting with zero
+				// line items
+				var billAdjusted = this.bill.get("billAdjusted");
+				var allowEmptyBill = (billAdjusted !== undefined && billAdjusted.id !== undefined);
+				if (!this.validate(allowEmptyBill)) return false;
 				if (this.cashPointForm !== undefined)
 					this.bill.set("cashPoint", this.cashPointForm.getValue("cashPoint"));
 				// Filter out any invalid lineItems (especially the bottom)
@@ -351,11 +355,13 @@ define(
 			printReceipt: function(event) {
 				var url = openhmis.config.pageUrlRoot
 					+ "receipt.form?receiptNumber=" + encodeURIComponent(this.bill.get("receiptNumber"));
+				// Triggered by an event
 				if (event) {
 					if (this.bill.get("receiptNumber")) {
 						window.location = url;
 					}
 				}
+				// Print on page load (Post & Print)
 				else {
 					$iframe = $('<iframe id="receiptDownload" src="'+url+'" width="1" height="1"></iframe>');
 					$("body").append($iframe);

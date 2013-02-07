@@ -55,7 +55,7 @@ define(
                     return { amount: __("Amount is required.") }
                 if (isNaN(this.get("amount")))
                     return { amount: __("Amount needs to be a number") }
-                if (!this.get("paymentMode"))
+                if (!this.get("paymentMode") || !this.get("paymentMode").id)
                     return { paymentMode: __("Payment mode is required.") }
                 return null;
             },

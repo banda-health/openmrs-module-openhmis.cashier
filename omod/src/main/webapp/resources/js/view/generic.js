@@ -333,7 +333,7 @@ define(
 				});
 				model.view = itemView;
 				this.$('tbody.list').append(itemView.render().el);
-				itemView.on('select focus', this.itemSelected);
+				itemView.on('select focus', this.onItemSelected);
 				itemView.on('remove', this.onItemRemoved);
 				var view = this;
 				//TODO: Should de-anonymize this function
