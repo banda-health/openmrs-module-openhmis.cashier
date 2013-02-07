@@ -351,7 +351,7 @@ define(
 					+ "receipt.form?receiptNumber=" + encodeURIComponent(this.bill.get("receiptNumber"));
 				if (event) {
 					if (this.bill.get("receiptNumber")) {
-						window.open(url, "pdfDownload");
+						window.location = url;
 					}
 				}
 				else {
