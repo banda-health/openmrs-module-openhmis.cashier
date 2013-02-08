@@ -32,7 +32,7 @@ define(
 					var getValue = items[id].getValue;
 					var newGetValue = function() {
 						var order = $(this.el).attr("id");
-						var order = parseInt(order.substring(order.lastIndexOf('-') + 1));
+						order = parseInt(order.substring(order.lastIndexOf('-') + 1));
 						var value = getValue.call(this);
 						value.attributeOrder = order;
 						return value;
@@ -133,7 +133,7 @@ define(
 					name: this.form.fields["paymentMode"].editor.$('option:selected').text()
 				}));
 				this.model.set("dateCreated", new Date().getTime());
-				var errors = this.model.validate(true);
+				errors = this.model.validate(true);
 				if (errors) {
 					this.displayErrors(errors);
 					return false;

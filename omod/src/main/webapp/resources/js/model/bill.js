@@ -90,11 +90,11 @@ define(
 				return Math.min(total, totalPayments);
 			},
 			
-			validate: function(final) {
+			validate: function(goAhead) {
 				// By default, backbone validates every time we try try to alter
 				// the model.  We don't want to be bothered with this until we
 				// care.
-                if (final !== true) return null;
+                if (goAhead !== true) return null;
 				
 				if (this.get("patient") === undefined)
 					return { patient: "A bill needs to be associated with a patient." }
