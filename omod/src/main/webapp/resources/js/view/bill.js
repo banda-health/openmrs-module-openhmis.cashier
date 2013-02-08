@@ -37,7 +37,6 @@ define(
 			updatePriceOptions: function(item, form) {
 				item = item ? item : this.model.get("item");
 				form = form ? form : this.form;
-				var price;
 				var defaultPrice = item ? item.get("defaultPrice") : undefined;
 				var price = this.model.get("price") || defaultPrice;
 				if (price !== undefined)

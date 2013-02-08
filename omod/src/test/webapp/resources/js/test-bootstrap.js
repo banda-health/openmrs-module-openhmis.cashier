@@ -1,5 +1,6 @@
 window.openhmis = {};
 openhmis.config = {
+	//wwwUrlRoot: "/target/classes/web/module/resources/", // Test minified JS
 	wwwUrlRoot: "/src/main/webapp/resources/",
 	restUrlRoot: "/rest/"
 }
