@@ -24,7 +24,6 @@ define(
 					this.urlRoot = options.urlRoot;
 					this.trackUnsaved = options.trackUnsaved;
 				}
-				var self = this;
 				if (this.trackUnsaved === true) {
 					this.unsaved = false;
 					this.on("change", this.setUnsaved);
@@ -106,8 +105,24 @@ define(
 			},
 			
 			unretire: function(options) {
-				this._setRetired(false);
-				this.save();
+				// Temporarily remove id to get base URL
+				var savedId = this.id;
+				this.id = undefined
+				var proxy = new openhmis.GenericModel(
+					{ uuid: savedId },
+					{ urlRoot: this.url() }
+				);
+				this.id = savedId;
+				proxy.set(this.getDataType() === "data" ? "voided": "retired", false);
+
+				var success = options.success;
+				var self = this;
+				options.success = function(model, resp) {
+					self._setRetired(false);
+					if (success) success(self, resp);
+					else self.trigger("unretire sync");
+				}
+				proxy.save([], options);
 			},
 			
 			purge: function(options) {
@@ -121,7 +136,7 @@ define(
 			},
 			
 			_setRetired: function(retired) {
-				retired = retired ? retired : true;
+				retired = retired !== undefined ? retired : true;
 				switch (this.getDataType()) {
 					case "data":
 						this.set("voided", retired);
@@ -142,32 +157,42 @@ define(
 			},
 			
 			toJSON: function(options) {
-				if (this.schema === undefined) return Backbone.Model.prototype.toJSON.call(this, options);
-				var attributes = {};
-				for (var attr in this.attributes) {
-					// This gets added to representations but cannot be set
-					if (attr === 'resourceVersion') continue;
-					
-					if (this.schema[attr] !== undefined) {
-						if (this.schema[attr].readOnly === undefined
-							|| this.schema[attr].readOnly === false)
-								attributes[attr] = this.attributes[attr];
-						if (this.schema[attr].objRef === true) {
-							if (attributes[attr] instanceof openhmis.GenericCollection)
-								attributes[attr] = attributes[attr].toJSON({ objRef: true })
-							else if (attributes[attr] instanceof Array)
-								attributes[attr] = new openhmis.GenericCollection(attributes[attr]).toJSON({ objRef: true });
-							else if (attributes[attr].id !== undefined)
-								attributes[attr] = attributes[attr].id;
+				var attributes;
+				if (this.schema === undefined)
+					attributes = Backbone.Model.prototype.toJSON.call(this, options);
+				else {
+					attributes = {};
+					for (var attr in this.attributes) {
+						// This gets added to representations but cannot be set
+						if (attr === 'resourceVersion') continue;
+						
+						if (this.schema[attr] !== undefined) {
+							if (this.schema[attr].readOnly === undefined
+								|| this.schema[attr].readOnly === false)
+									attributes[attr] = this.attributes[attr];
+							if (this.schema[attr].objRef === true) {
+								if (attributes[attr] instanceof openhmis.GenericCollection)
+									attributes[attr] = attributes[attr].toJSON({ objRef: true })
+								else if (attributes[attr] instanceof Array)
+									attributes[attr] = new openhmis.GenericCollection(attributes[attr]).toJSON({ objRef: true });
+								else if (attributes[attr].id !== undefined)
+									attributes[attr] = attributes[attr].id;
+							}
+						}
+						else if (attr === "retired" || attr === "voided" && this.attributes[attr]) {
+							attributes[attr] = this.attributes[attr];
 						}
 					}
-					else if (attr === "retired" || attr === "voided" && this.attributes[attr]) {
-						attributes[attr] = this.attributes[attr];
-					}
+					/* I realize the delete below contradicts these lines, but I
+					 * have serious doubts about these anyway and will
+					 * investigate.
+					 */
+					if (options && options.objRef === true && this.id !== undefined)
+						attributes.uuid = this.id;
 				}
-				if (options && options.objRef === true && this.id !== undefined)
-					attributes.uuid = this.id;
-				return _.clone(attributes);
+				// This is never createable in the REST interface
+				delete attributes[this.idAttribute];
+				return attributes;
 			},
 			
 			toString: function() {

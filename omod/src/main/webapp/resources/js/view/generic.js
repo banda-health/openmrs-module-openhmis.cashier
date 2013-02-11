@@ -162,11 +162,10 @@ define(
 			/** Unretire or unvoid an existing model */
 			unretireOrUnvoid: function() {
 				if (confirm("Are you sure you want to unretire this object? It will then be restored to the system")) {
-					this.model.set('retired', false);
 					var view = this;
-					this.model.save([], {
+					this.model.unretire({
 						success: function(model, resp) {
-							model.trigger('sync', model, resp);
+							view.model.trigger('sync', model, resp);
 							view.cancel();
 						},
 						error: function(model, resp) { openhmis.error(resp); }
