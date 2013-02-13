@@ -282,7 +282,8 @@ define(
 			},
 			
 			saveBill: function(options, post) {
-				options = options ? options : {};
+				// Set up options, ignoring events
+				options = options !== undefined && options.srcElement === undefined ? options : {};
 				// If the bill is an adjustment, we will allow posting with zero
 				// line items
 				var billAdjusted = this.bill.get("billAdjusted");
