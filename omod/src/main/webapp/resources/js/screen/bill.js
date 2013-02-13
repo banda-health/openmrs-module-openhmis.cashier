@@ -9,156 +9,213 @@ curl(
 		'model/lineItem'
 	],
 	function($, openhmis, __) {
-		var billUuid = openhmis.getQueryStringParameter("billUuid");
-		var patientUuid = openhmis.getQueryStringParameter("patientUuid");
+		var Screen = function() {
+			this.billUuid = openhmis.getQueryStringParameter("billUuid");
+			this.patientUuid = openhmis.getQueryStringParameter("patientUuid");
+			
+			this.patientView = new openhmis.PatientView();
+			// Set up patient search selection handler
+			openhmis.doSelectionHandler = this.patientView.takeRawPatient;
+			
+			var options = new openhmis.GenericModel([], {
+				urlRoot: openhmis.config.pageUrlRoot + "options.json"
+			});
 		
-		var patientView = new openhmis.PatientView();
-		// Set up patient search selection handler
-		openhmis.doSelectionHandler = patientView.takeRawPatient;
-		
-		var billView;
-
-		// Callback in case we need to load a bill or patient first		
-		var displayBillView = function(billView, patientView) {
-			$(document).ready(function() {
-				// Easy access to status enumeration
-				var BillStatus = billView.bill.BillStatus;
-				
-				// Automatic receipt printing
-				if (openhmis.getQueryStringParameter("print") === "true")
-					billView.printReceipt();
-				
-				// Patient View
-				if (billView.bill.get("status") !== BillStatus.PENDING)
-					patientView.readOnly = true;
-				patientView.setElement($('#patient-view'));
-				patientView.render();
-				
-				billView.on("save paid adjusted", function(bill) {
-					window.location = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
-				});
-				billView.on("saveAndPrint", function(bill) {
-					var url = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
-					url = openhmis.addQueryStringParameter(url, "print=true");
-					window.location = url;
-				});
-				billView.setElement($('#bill'));
-				
-				$saveButton = $('#saveBill');
-				$postButton = $('#postBill');
-				$printButton = $("#printReceipt");
-				switch (billView.bill.get("status")) {
-					case BillStatus.PENDING:
-						$saveButton.val(__("Save Bill"));
-						$saveButton.click(function() { billView.saveBill() });
-						var confirmMsg = __("Are you sure you want to post this bill?");
-						$postButton.click(function() { if (confirm(confirmMsg)) { billView.postBill() }});
-						$postButton.show();
-						$printButton.val(__("Post & Print"));
-						$printButton.click(function() { if (confirm(confirmMsg)) { billView.postBill({ print: true }) }});
-						$printButton.show();
-						
-						if (billView.bill.get("billAdjusted")) {
-							adjustedBillView = new openhmis.BillAndPaymentsView({
-								model: billView.bill.get("billAdjusted")
-							});
-							$("#patient-view").after(adjustedBillView.el).addClass("combineBoxes");
-							adjustedBillView.render();
-							$("#bill").appendTo(adjustedBillView.$el);
-							billView.options.listTitle = __("Adjustments");
-						}
-						
-						// Provide cash point select, if this option is enabled
-						var $cashPointLi = $("li.cashPoint");
-						if (!$cashPointLi.hasClass("timesheet") && !billView.bill.get("billAdjusted"))
-							billView.setupCashPointForm($("li.cashPoint"));
-						break;
-					case BillStatus.POSTED:
-					case BillStatus.PAID:
-						$saveButton.val(__("Adjust Bill"));
-						$saveButton.click(function() { billView.adjustBill() });
-						$printButton.val(__("Print Receipt"));
-						$printButton.click(billView.printReceipt);
-						$printButton.show();
-						break;
-					case BillStatus.ADJUSTED:
-						$saveButton.remove();
-						break;
-				}
-
-				billView.render();
-				
-				if (billView.bill.get("status") === BillStatus.PENDING)
-					billView.setupNewItem();
-				
-				patientView.on('selected', billView.patientSelected);
-				patientView.on('editing', billView.blur);
-				
-				// Payment View
-				var readOnly = !(billView.bill.get("status") == BillStatus.PENDING
-								 || billView.bill.get("status") == BillStatus.POSTED);
-				var paymentView = new openhmis.PaymentView({
-					paymentCollection: billView.bill.get("payments"),
-					processCallback: billView.processPayment,
-					readOnly: readOnly
-				});
-				// Disable add event when the bill is saving to prevent
-				// unsettling page drawing
-				billView.on("save", function() { paymentView.model.off("add"); });
-				paymentView.paymentCollection.on("remove", billView.updateTotals);
-				paymentView.setElement($('#payment'));
-				paymentView.render();
-				
-				window.onbeforeunload = function() {
-					if (billView.bill.isUnsaved())
-						return __("There are unsaved changes.");
-					return null;
-				}
-				
-				if (billView.bill.get("patient"))
-					billView.focus();
-				else
-					$('#inputNode').focus();
-			});			
+			var self = this;
+			options.fetch({ success: function(options, resp) {
+				self.createBillView.call(self, options, resp);
+			}});
 		}
 		
-		var options = new openhmis.GenericModel([], {
-			urlRoot: openhmis.config.pageUrlRoot + "options.json"
-		});
-		options.fetch({ success: function(options, resp) {
-			billView = new openhmis.BillView({
+		/**
+		 * createBillView
+		 *
+		 * Create the bill view, using specified options, then fetch data needed
+		 * to populate the view.
+		 *
+		 * @param {Model} options A populated options model
+		 */
+		Screen.prototype.createBillView = function(options) {
+			this.billView = new openhmis.BillView({
 				roundToNearest: options.get("roundToNearest"),
 				roundingMode: options.get("roundingMode")
 			});
+			var self = this;
 			// If a bill is specified
-			if (billUuid) {
+			if (this.billUuid) {
 				// Load the bill
-				var bill = new openhmis.Bill({ uuid: billUuid });
-				bill.fetch({ silent: true, success: function(bill, resp) {
-					billView.setBill(bill);
-					patientView.model = new openhmis.Patient(bill.get("patient"));
-					if (bill.get("billAdjusted")) {
-						bill.get("billAdjusted").fetch({ success: function(billAdjusted, resp) {
-							displayBillView(billView, patientView);
-						}});
+				var bill = new openhmis.Bill({ uuid: this.billUuid });
+				bill.fetch({
+					silent: true,
+					success: function(bill, resp) {
+						self.setupBillViewWithBill.call(self, bill, resp);
 					}
-					else
-						displayBillView(billView, patientView);
-					patientView.selectPatient(patientView.model, {silent:true});
-				}});
+				});
 			}
 			// If a patient is specified
-			else if (patientUuid) {
-				var patient = new openhmis.Patient({ uuid: patientUuid });
-				patient.fetch({ silent: true, success: function(patient, resp) {
-					billView.bill.set("patient", patient);
-					patientView.model = patient;
-					displayBillView(billView, patientView);				
-				}});
+			else if (this.patientUuid) {
+				var patient = new openhmis.Patient({ uuid: this.patientUuid });
+				patient.fetch({
+					silent: true,
+					success: function(patient, resp) {
+						self.setupBillViewWithPatient.call(self, patient, resp);
+					}
+				});
 			}
 			else {
-				displayBillView(billView, patientView);
+				this.displayBillView.call(this);
 			}
-		}});
+		}
+		
+		/*
+		 * setupBillViewWithBill
+		 *
+		 * For setting up the BillView with an existing bill
+		 *
+		 * @param {Bill} bill An initialized openhmis.Bill model
+		 */
+		Screen.prototype.setupBillViewWithBill = function(bill) {
+			this.billView.setBill(bill);
+			this.patientView.model = new openhmis.Patient(bill.get("patient"));
+			if (bill.get("billAdjusted")) {
+				var self = this;
+				bill.get("billAdjusted").fetch({
+					success: function(billAdjusted, resp) {
+						self.displayBillView();
+					}
+				});
+			}
+			else
+				this.displayBillView();
+			this.patientView.selectPatient(this.patientView.model, {silent:true});			
+		}
+		
+		/*
+		 * setupBillViewWithPatient
+		 *
+		 * For setting up the BillView to be associated with a patient
+		 *
+		 * @param {Patient} patient An initialized openhmis.Patient model
+		 */
+		Screen.prototype.setupBillViewWithPatient = function(patient) {
+			this.billView.bill.set("patient", patient);
+			this.patientView.model = patient;
+			this.displayBillView();
+		}
+		
+		/*
+		 * displayBillView
+		 *
+		 * Take care of putting together and rendering all the elements of the
+		 * BillView.  Relies on initialized billView and patientView
+		 */
+		Screen.prototype.displayBillView = function() {
+			var self = this;
+			// Easy access to status enumeration
+			var BillStatus = this.billView.bill.BillStatus;
+			
+			// Automatic receipt printing
+			if (openhmis.getQueryStringParameter("print") === "true")
+				this.billView.printReceipt();
+			
+			// Patient View
+			if (this.billView.bill.get("status") !== BillStatus.PENDING)
+				this.patientView.readOnly = true;
+			this.patientView.setElement($('#patient-view'));
+			this.patientView.render();
+			
+			this.billView.on("save paid adjusted", function(bill) {
+				window.location = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
+			});
+			this.billView.on("saveAndPrint", function(bill) {
+				var url = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
+				url = openhmis.addQueryStringParameter(url, "print=true");
+				window.location = url;
+			});
+			this.billView.setElement($('#bill'));
+			
+			$saveButton = $('#saveBill');
+			$postButton = $('#postBill');
+			$printButton = $("#printReceipt");
+			switch (this.billView.bill.get("status")) {
+				case BillStatus.PENDING:
+					$saveButton.val(__("Save Bill"));
+					$saveButton.click(this.billView.saveBill);
+					var confirmMsg = __("Are you sure you want to post this bill?");
+					$postButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill() }});
+					$postButton.show();
+					$printButton.val(__("Post & Print"));
+					$printButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill({ print: true }) }});
+					$printButton.show();
+					
+					if (this.billView.bill.get("billAdjusted")) {
+						adjustedBillView = new openhmis.BillAndPaymentsView({
+							model: this.billView.bill.get("billAdjusted")
+						});
+						$("#patient-view").after(adjustedBillView.el).addClass("combineBoxes");
+						adjustedBillView.render();
+						$("#bill").appendTo(adjustedBillView.$el);
+						this.billView.options.listTitle = __("Adjustments");
+					}
+					
+					// Provide cash point select, if this option is enabled
+					var $cashPointLi = $("li.cashPoint");
+					if (!$cashPointLi.hasClass("timesheet") && !this.billView.bill.get("billAdjusted"))
+						this.billView.setupCashPointForm($("li.cashPoint"));
+					break;
+				case BillStatus.POSTED:
+				case BillStatus.PAID:
+					$saveButton.val(__("Adjust Bill"));
+					$saveButton.click(this.billView.adjustBill);
+					$printButton.val(__("Print Receipt"));
+					$printButton.click(this.billView.printReceipt);
+					$printButton.show();
+					break;
+				case BillStatus.ADJUSTED:
+					$saveButton.remove();
+					break;
+			}
+
+			this.billView.render();
+			
+			if (this.billView.bill.get("status") === BillStatus.PENDING)
+				this.billView.setupNewItem();
+			
+			this.patientView.on('selected', this.billView.patientSelected);
+			this.patientView.on('editing', this.billView.blur);
+			
+			// Payment View
+			var readOnly = !(this.billView.bill.get("status") == BillStatus.PENDING
+							 || this.billView.bill.get("status") == BillStatus.POSTED);
+			var paymentView = new openhmis.PaymentView({
+				paymentCollection: this.billView.bill.get("payments"),
+				processCallback: this.billView.processPayment,
+				readOnly: readOnly
+			});
+			// Disable add event when the bill is saving to prevent
+			// unsettling page drawing
+			this.billView.on("save", function() { paymentView.model.off("add"); });
+			paymentView.paymentCollection.on("remove", this.billView.updateTotals);
+			paymentView.setElement($('#payment'));
+			paymentView.render();
+			
+			window.onbeforeunload = function() {
+				if (self.billView.bill.isUnsaved())
+					return __("There are unsaved changes.");
+				return null;
+			}
+			
+			if (this.billView.bill.get("patient"))
+				this.billView.focus();
+			else
+				$('#inputNode').focus();
+		}
+		
+		$(document).ready(function() {
+			if ($("#bill").length > 0)
+				var screen = new Screen();
+		});
+		
+		return Screen;
 	}
 );

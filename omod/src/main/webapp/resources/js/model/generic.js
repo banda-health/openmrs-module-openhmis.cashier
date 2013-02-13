@@ -183,12 +183,6 @@ define(
 							attributes[attr] = this.attributes[attr];
 						}
 					}
-					/* I realize the delete below contradicts these lines, but I
-					 * have serious doubts about these anyway and will
-					 * investigate.
-					 */
-					if (options && options.objRef === true && this.id !== undefined)
-						attributes.uuid = this.id;
 				}
 				// This is never createable in the REST interface
 				delete attributes[this.idAttribute];
