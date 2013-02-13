@@ -86,6 +86,16 @@
 		<name>Manage Cashier Bills</name>
 		<description>Able to add/edit/delete bills</description>
 	</privilege>
+
+	<privilege>
+		<name>Adjust Cashier Bills</name>
+		<description>Able to adjust bills</description>
+	</privilege>
+
+	<privilege>
+		<name>Give Refund</name>
+		<description>Able to create/adjust a bill so that it refunds money.</description>
+	</privilege>
 		
 	<privilege>
 		<name>Purge Cashier Bills</name>

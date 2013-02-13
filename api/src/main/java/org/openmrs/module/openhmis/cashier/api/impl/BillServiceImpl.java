@@ -20,6 +20,7 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
@@ -28,6 +29,8 @@ import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.security.AccessControlException;
 import java.util.List;
 @Transactional
 public class BillServiceImpl
@@ -58,6 +61,13 @@ public class BillServiceImpl
 		if (bill == null) {
 			throw new NullPointerException("The bill must be defined.");
 		}
+		
+		/* Check for refund.
+		 * A refund is given when the total of the bill's line items is negative.
+		 */
+		if (bill.getTotal().compareTo(new BigDecimal(0)) < 0
+				&& !Context.hasPrivilege(CashierPrivilegeConstants.REFUND_MONEY))
+			throw new AccessControlException("Access denied to give a refund.");
 
 		if (StringUtils.isEmpty(bill.getReceiptNumber())) {
 			bill.setReceiptNumber(ReceiptNumberGeneratorFactory.getGenerator().generateNumber(bill));

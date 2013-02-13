@@ -28,6 +28,12 @@ public class CashierPrivilegeConstants {
 	@AddOnStartup(description = "Able to add and edit bills")
 	public static final String MANAGE_BILLS = "Manage Cashier Bills";
 
+	@AddOnStartup(description = "Able to adjust bills")
+	public static final String ADJUST_BILLS = "Adjust Cashier Bills";
+
+	@AddOnStartup(description = "Able to create/adjust a bill so that it refunds money")
+	public static final String REFUND_MONEY = "Refund Money";
+
 	@AddOnStartup(description = "Able to view bills")
 	public static final String VIEW_BILLS = "View Cashier Bills";
 

@@ -346,9 +346,11 @@ define(
 					// immediately set to PAID
 					adjustingBill.unset("status");
 					var view = this;
-					adjustingBill.save([], { success: function(model, resp) {
-						view.trigger("adjusted", model);
-					}});
+					adjustingBill.save([], {
+						success: function(model, resp) {
+							view.trigger("adjusted", model);
+						}, error: openhmis.error
+					});
 				}
 			},
 			

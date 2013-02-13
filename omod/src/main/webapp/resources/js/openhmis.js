@@ -16,13 +16,22 @@ define("openhmis",
 		
 		var openhmis = window.openhmis || {};
 		openhmis.templates = {};
-				
+		
+		//TODO: Better system for identifying specific errors
 		openhmis.error = function(model, resp) {
 			var handleErrorResp = function(resp) {
 				var o = $.parseJSON(resp).error;
 				if (o.detail.indexOf("ContextAuthenticationException") !== -1) {
 					alert(__("Your session has timed out.  You will be redirected to the login page."));
 					window.location.reload();
+				}
+				else if (o.detail.indexOf("AccessControlException") !== -1) {
+					if (o.detail.indexOf("refund") !== -1) {
+						alert(__("The total of the bill is negative and you do not have the required privileges to process a refund.\n\nPlease contact your supervisor about processing refunds."));
+					}
+					else if (o.detail.indexOf("adjust") !== -1) {
+						alert(__("You do not have the required privileges to adjust a bill.\n\nPlease contact your supervisor about adjusting a bill."));
+					}
 				}
 				else {
 					console.log("Message: " + o.message + "\n" + "Code: " + o.code + "\n" + "Detail: " + o.detail);
