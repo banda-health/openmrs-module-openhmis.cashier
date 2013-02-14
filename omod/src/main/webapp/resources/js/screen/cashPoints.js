@@ -1,11 +1,11 @@
 curl(
-    { baseUrl: openhmis.config.wwwUrlRoot + 'js/' },
+    { baseUrl: openhmis.url.resources },
     [
-        'lib/jquery',
-        'openhmis',
-        'lib/backbone-forms',
-        'model/cashPoint',
-        'view/generic'
+        openhmis.url.backboneBase + 'js/lib/jquery',
+        openhmis.url.backboneBase + 'js/openhmis',
+        openhmis.url.backboneBase + 'js/lib/backbone-forms',
+        openhmis.url.cashierBase + 'js/model/cashPoint',
+        openhmis.url.backboneBase + 'js/view/generic'
     ],
     function($, openhmis) {
         $(function() {

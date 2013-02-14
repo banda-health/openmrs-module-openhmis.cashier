@@ -1,10 +1,10 @@
 define(
 	[
-		'model/generic',
-		'model/cashPoint',
-		'model/patient',
-		'model/payment',
-		'model/lineItem'
+		openhmis.url.backboneBase + 'js/model/generic',
+		openhmis.url.cashierBase + 'js/model/cashPoint',
+		openhmis.url.backboneBase + 'js/model/patient',
+		openhmis.url.cashierBase + 'js/model/payment',
+		openhmis.url.cashierBase + 'js/model/lineItem'
 	],
 	function(openhmis) {
 		openhmis.Bill = openhmis.GenericModel.extend({

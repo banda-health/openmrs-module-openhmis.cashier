@@ -1,12 +1,12 @@
 curl(
-	{ baseUrl: openhmis.config.wwwUrlRoot + 'js/' },
+	{ baseUrl: openhmis.url.resources },
 	[
-		'lib/jquery',
-		'view/patient',
-		'lib/i18n',
-		'view/bill',
-		'view/payment',
-		'model/lineItem'
+		openhmis.url.backboneBase + 'js/lib/jquery',
+		openhmis.url.backboneBase + 'js/view/patient',
+		openhmis.url.backboneBase + 'js/lib/i18n',
+		openhmis.url.cashierBase + 'js/view/bill',
+		openhmis.url.cashierBase + 'js/view/payment',
+		openhmis.url.cashierBase + 'js/model/lineItem'
 	],
 	function($, openhmis, __) {
 		var Screen = function() {
@@ -18,7 +18,7 @@ curl(
 			openhmis.doSelectionHandler = this.patientView.takeRawPatient;
 			
 			var options = new openhmis.GenericModel([], {
-				urlRoot: openhmis.config.pageUrlRoot + "options.json"
+				urlRoot: openhmis.url.page + openhmis.url.cashierBase + "options.json"
 			});
 		
 			var self = this;
@@ -125,10 +125,10 @@ curl(
 			this.patientView.render();
 			
 			this.billView.on("save paid adjusted", function(bill) {
-				window.location = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
+				window.location = openhmis.url.page + 'bill.form?billUuid=' + bill.id;
 			});
 			this.billView.on("saveAndPrint", function(bill) {
-				var url = openhmis.config.pageUrlRoot + 'bill.form?billUuid=' + bill.id;
+				var url = openhmis.url.page + 'bill.form?billUuid=' + bill.id;
 				url = openhmis.addQueryStringParameter(url, "print=true");
 				window.location = url;
 			});

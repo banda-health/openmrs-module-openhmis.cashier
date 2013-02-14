@@ -63,10 +63,6 @@
 		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierMenuItem</class>
 	</extension>
 	<extension>
-		<point>org.openmrs.headerFullIncludeExt</point>
-		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierHeadIncludes</class>
-	</extension>
-	<extension>
 		<point>org.openmrs.patientDashboardTab</point>
 		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierPatientBilHistoryExt</class>
 	</extension>
