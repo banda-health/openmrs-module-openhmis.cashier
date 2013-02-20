@@ -39,6 +39,8 @@
 			<one-to-many class="Bill" />
 		</set>
 
+		<property name="receiptPrinted" column="receipt_printed" type="java.lang.Boolean" length="1" not-null="true" />
+
 		<!-- bi-directional many-to-one association to User -->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
 		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />

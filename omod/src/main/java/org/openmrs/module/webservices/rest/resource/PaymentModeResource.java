@@ -66,7 +66,6 @@ public class PaymentModeResource extends BaseRestMetadataResource<PaymentMode> {
 		return new PaymentMode();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Class<? extends IMetadataService<PaymentMode>> getServiceClass() {
 		return IPaymentModeService.class;

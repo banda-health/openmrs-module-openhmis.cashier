@@ -358,16 +358,14 @@ define(
 				var url = openhmis.config.pageUrlRoot
 					+ "receipt.form?receiptNumber=" + encodeURIComponent(this.bill.get("receiptNumber"));
 				// Triggered by an event
-				if (event) {
-					if (this.bill.get("receiptNumber")) {
-						window.location = url;
-					}
-				}
+				//if (event) {}
 				// Print on page load (Post & Print)
-				else {
-					$iframe = $('<iframe id="receiptDownload" src="'+url+'" width="1" height="1"></iframe>');
-					$("body").append($iframe);
-				}
+				//else {
+				// Remove if print has been clicked before?
+				$("#receiptDownload").remove();
+				$iframe = $('<iframe id="receiptDownload" src="'+url+'" width="1" height="1"></iframe>');
+				$iframe.load(function() { $(this).get(0).contentWindow.print(); });
+				$("body").append($iframe);
 			},
 			
 			render: function() {

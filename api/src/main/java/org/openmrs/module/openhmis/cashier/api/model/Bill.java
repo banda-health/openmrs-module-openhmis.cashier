@@ -40,7 +40,16 @@ public class Bill extends BaseOpenmrsData {
 	private List<BillLineItem> lineItems;
 	private Set<Payment> payments;
 	private Set<Bill> adjustedBy;
+	private Boolean receiptPrinted = false;
 	
+	public Boolean isReceiptPrinted() {
+		return receiptPrinted;
+	}
+
+	public void setReceiptPrinted(Boolean receiptPrinted) {
+		this.receiptPrinted = receiptPrinted;
+	}
+
 	public BigDecimal getTotal() {
 		if (lineItems == null) return new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
