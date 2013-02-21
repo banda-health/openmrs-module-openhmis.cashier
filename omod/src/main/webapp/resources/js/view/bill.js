@@ -9,7 +9,8 @@ define(
 		openhmis.url.backboneBase + 'js/view/editors',
 		openhmis.url.cashierBase + 'js/view/editors',
 		openhmis.url.cashierBase + 'js/model/bill',
-		openhmis.url.cashierBase + 'js/model/cashPoint'
+		openhmis.url.cashierBase + 'js/model/cashPoint',
+		'link!' + openhmis.url.cashierBase + 'css/style.css'
 	],
 	function($, _, Backbone, openhmis, i18n) {
 		openhmis.BillLineItemView = openhmis.GenericListItemView.extend({
@@ -356,7 +357,7 @@ define(
 			},
 			
 			printReceipt: function(event) {
-				var url = openhmis.url.page
+				var url = openhmis.url.getPage("cashierBase")
 					+ "receipt.form?receiptNumber=" + encodeURIComponent(this.bill.get("receiptNumber"));
 				// Triggered by an event
 				//if (event) {}

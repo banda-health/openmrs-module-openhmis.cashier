@@ -54,7 +54,7 @@
 		<openmrs:portlet id="findPatient" url="findPatient" parameters="size=full|hideAddNewPatient=true|showIncludeVoided=false" />
 		<!-- Make sure that the global "doSelectionHandler" is hijacked -->
 		<script type="text/javascript">window.doSelectionHandler = function(index, data) {
-			curl(['openhmis'], function(openhmis) { openhmis.doSelectionHandler(index,data); });
+			curl([openhmis.url.backboneBase + 'js/openhmis'], function(openhmis) { openhmis.doSelectionHandler(index,data); });
 		};</script>
 	</div>
 </div>
