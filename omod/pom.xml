@@ -29,6 +29,15 @@
 			<systemPath>${project.basedir}/../lib/openhmis.commons-1.0.0.jar</systemPath>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.backboneforms-omod</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		
+		
 		<!-- Begin OpenMRS modules -->
 		
 		<dependency>
@@ -201,6 +210,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>${project.parent.groupId}</groupId>																	
+							<artifactId>openhmis.backboneforms-omod</artifactId>
+							<overWrite>true</overWrite>
+							<outputDirectory>${project.build.directory}/jasmine/backboneforms</outputDirectory>
+							<includes>web/module/resources/**</includes>
+						</artifactItem>
+					</artifactItems>
+				</configuration>				
 				<executions>
 					<execution>
 						<id>Expand moduleApplicationContext and messages</id>
@@ -237,7 +257,7 @@
 		        	<jsSrcDir>${project.basedir}/src/main/webapp/resources/js</jsSrcDir>
 		       		<jsTestSrcDir>${project.basedir}/src/test/webapp/resources/js</jsTestSrcDir>
 		       		<preloadSources>
-		         		<include>curl.js</include>
+		         		<include>/target/jasmine/backboneforms/web/module/resources/js/curl.js</include>
 		         		<include>/src/test/webapp/resources/js/test-bootstrap.js</include>
 		         		<include>/src/test/webapp/resources/js/test-data.js</include>
 		         		<include>/src/test/webapp/resources/js/start-tests.js</include>

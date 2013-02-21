@@ -1,8 +1,10 @@
 window.openhmis = {};
-openhmis.config = {
+openhmis.url = {
 	//wwwUrlRoot: "/target/classes/web/module/resources/", // Test minified JS
-	wwwUrlRoot: "/src/main/webapp/resources/",
-	restUrlRoot: "/rest/"
+	backboneBase: "/target/jasmine/backboneforms/web/module/resources/",
+	cashierBase: "/src/main/webapp/resources/",
+	resources: "",
+	rest: "/rest/"
 }
 
 // Global utility function for loading JS modules during a Jasmine spec
@@ -11,7 +13,7 @@ var require = function(map, libs) {
 	for (var lib in libs) { delete libs[lib]; }
 	var list = [];
 	for (var lib in map) { list.push(lib); }
-	curl({ baseUrl: openhmis.config.wwwUrlRoot + "js"}, list, function(something, somethinelse) {
+	curl({ baseUrl: openhmis.url.resources }, list, function(something, somethinelse) {
 		libList = {};
 		for (var lib in arguments) {
 			libs[map[list[lib]]] = arguments[lib];

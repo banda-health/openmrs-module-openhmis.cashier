@@ -123,7 +123,7 @@ define(
 					if (!(price instanceof openhmis.ItemPrice)) price = new openhmis.ItemPrice(price);
 					return {
 						val: price.id || price.price || price.get("price"),
-						label: price
+						label: price.toString()
 					}
 				});
 			},
