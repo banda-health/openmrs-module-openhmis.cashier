@@ -77,20 +77,20 @@ define(
 			
 			initialize: function(attributes, options) {
 				openhmis.GenericModel.prototype.initialize.call(this, attributes, options);
+				this.on("change:defaultPrice", function(model, defaultPrice, options) {
+					this._getDefaultPriceFromPricesIfAvailable(defaultPrice.id || defaultPrice);
+				});
 				this.setPriceOptions();
 			},
 			
-		    set: function(key, value, options) {
-				if (typeof key === "string") {
-					switch (key) {
-						case "defaultPrice":
-							var price;
-							if (this.get("prices") && (price = this.get("prices").get(value)))
-								value = price;
-							break;
+			_getDefaultPriceFromPricesIfAvailable: function(id) {
+				var prices = this.get("prices");
+				for (price in prices) {
+					if (prices[price].id === id) {
+						this.attributes["defaultPrice"] = prices[price];
+						break;
 					}
 				}
-				return openhmis.GenericModel.prototype.set.call(this, key, value, options);
 			},
 			
 			fetch: function(options) {
@@ -123,7 +123,7 @@ define(
 					if (!(price instanceof openhmis.ItemPrice)) price = new openhmis.ItemPrice(price);
 					return {
 						val: price.id || price.price || price.get("price"),
-						label: openhmis.ItemPrice.prototype.format(price.get("price"))
+						label: price
 					}
 				});
 			},

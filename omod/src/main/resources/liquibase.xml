@@ -563,4 +563,11 @@
 			<column name="amount_tendered" type="decimal(10,2)"><constraints nullable="false"/></column>
 		</addColumn>
 	</changeSet>
+	<changeSet id="openhmis.cashier-v1.5-1" author="shortend">
+		<addColumn tableName="cashier_bill">
+			<column name="receipt_printed" type="boolean" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

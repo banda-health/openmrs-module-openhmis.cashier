@@ -20,6 +20,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetHelper;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetRequiredException;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
@@ -68,6 +69,9 @@ public class BillAddEditController {
 			model.addAttribute("adjustedBy", bill.getAdjustedBy());
 			model.addAttribute("patient", patient);
 			model.addAttribute("cashPoint", bill.getCashPoint());
+			if (!bill.isReceiptPrinted()
+					|| (bill.isReceiptPrinted() && Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT)))
+				model.addAttribute("showPrint", true);
 			return CashierWebConstants.BILL_PAGE;
 		}
 		else {
@@ -82,6 +86,7 @@ public class BillAddEditController {
 				model.addAttribute("patient", patient);
 				model.addAttribute("patientIdentifier", patientIdentifier);
 			}
+			model.addAttribute("showPrint", true);
 			model.addAttribute("cashPoint", timesheet != null ? timesheet.getCashPoint() : null);
 			return CashierWebConstants.BILL_PAGE;
 		}

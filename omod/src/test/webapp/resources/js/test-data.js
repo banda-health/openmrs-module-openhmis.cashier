@@ -47,10 +47,14 @@ openhmis.testData.JSON = {
 		"prices":[\
 			{\
 				"uuid":"1b81faeb-8380-4400-92d8-176f9282f06c",\
+				"name":"AIDS",\
+				"retired":false,\
 				"price":1000.00\
 			},\
 			{\
 				"uuid":"4c99f971-7d44-4bfc-acff-ad5d395c2e39",\
+				"name":"Default",\
+				"retired":false,\
 				"price":4.40\
 			}\
 		],\

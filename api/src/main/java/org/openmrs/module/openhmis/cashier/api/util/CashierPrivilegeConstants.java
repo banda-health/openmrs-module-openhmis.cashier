@@ -34,6 +34,9 @@ public class CashierPrivilegeConstants {
 	@AddOnStartup(description = "Able to create/adjust a bill so that it refunds money")
 	public static final String REFUND_MONEY = "Refund Money";
 
+	@AddOnStartup(description = "Able to print bill receipts more than once")
+	public static final String REPRINT_RECEIPT = "Reprint Receipt";
+
 	@AddOnStartup(description = "Able to view bills")
 	public static final String VIEW_BILLS = "View Cashier Bills";
 

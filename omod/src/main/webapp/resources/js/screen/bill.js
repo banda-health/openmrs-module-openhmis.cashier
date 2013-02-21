@@ -115,8 +115,10 @@ curl(
 			var BillStatus = this.billView.bill.BillStatus;
 			
 			// Automatic receipt printing
-			if (openhmis.getQueryStringParameter("print") === "true")
+			if (openhmis.getQueryStringParameter("print") === "true") {
 				this.billView.printReceipt();
+				$("#printReceipt").attr("disabled", "disabled");
+			}
 			
 			// Patient View
 			if (this.billView.bill.get("status") !== BillStatus.PENDING)
@@ -168,7 +170,10 @@ curl(
 					$saveButton.val(__("Adjust Bill"));
 					$saveButton.click(this.billView.adjustBill);
 					$printButton.val(__("Print Receipt"));
-					$printButton.click(this.billView.printReceipt);
+					$printButton.click(function(event) {
+						self.billView.printReceipt(event);
+						$(this).attr("disabled", "disabled");
+					});
 					$printButton.show();
 					break;
 				case BillStatus.ADJUSTED:
