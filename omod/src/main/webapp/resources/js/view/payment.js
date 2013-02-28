@@ -95,7 +95,7 @@ define(
 				var paymentModeUuid = $(event.target).val();
 				var self = this;
 				// Load payment mode form HTML fragment from server
-				this.$attributes.load(openhmis.url.page + "paymentModeFragment.form?uuid=" + paymentModeUuid,
+				this.$attributes.load(openhmis.url.getPage("cashierBase") + "paymentModeFragment.form?uuid=" + paymentModeUuid,
 					function(content) {
 						if ($(self.$attributes).find('#openmrs_dwr_error').length > 0 && content.indexOf("ContextAuthenticationException") !== -1) {
 							$(self.$attributes).html("");
