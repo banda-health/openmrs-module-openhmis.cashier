@@ -15,8 +15,8 @@ package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
-import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
 @Resource("department")
@@ -29,7 +29,7 @@ public class DepartmentResource extends BaseRestMetadataResource<Department> {
 	}
 
 	@Override
-	public Class<? extends IMetadataService<Department>> getServiceClass() {
+	public Class<? extends IMetadataDataService<Department>> getServiceClass() {
 		return IDepartmentService.class;
 	}
 }

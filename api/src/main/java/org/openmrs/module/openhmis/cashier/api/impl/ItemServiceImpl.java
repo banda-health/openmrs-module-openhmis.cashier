@@ -20,18 +20,19 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
-import org.openmrs.module.openhmis.cashier.api.security.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
+import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
-import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
+import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional
 public class ItemServiceImpl
-		extends BaseMetadataServiceImpl<Item>
+		extends BaseMetadataDataServiceImpl<Item>
 		implements IItemService, IMetadataAuthorizationPrivileges {
 	@Override
 	protected void validate(Item entity) throws APIException {
@@ -49,11 +50,11 @@ public class ItemServiceImpl
 			throw new IllegalArgumentException("The item code must be less than 256 characters.");
 		}
 
-		Criteria criteria = dao.createCriteria(getEntityClass());
+		Criteria criteria = repository.createCriteria(getEntityClass());
 		criteria.createAlias("codes", "c")
 				.add(Restrictions.ilike("c.code", itemCode));
 
-		return dao.selectSingle(getEntityClass(), criteria);
+		return repository.selectSingle(getEntityClass(), criteria);
 	}
 
 	@Override
@@ -67,14 +68,14 @@ public class ItemServiceImpl
 			throw new NullPointerException("The department must be defined");
 		}
 
-		Criteria criteria = dao.createCriteria(getEntityClass());
+		Criteria criteria = repository.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("department", department));
 		if (!includeRetired) {
 			criteria.add(Restrictions.eq("retired", false));
 		}
 
 		loadPagingTotal(pagingInfo, criteria);
-		return dao.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
+		return repository.select(getEntityClass(), createPagingCriteria(pagingInfo, criteria));
 	}
 
 	@Override
@@ -98,7 +99,7 @@ public class ItemServiceImpl
 			throw new IllegalArgumentException("The item code must be less than 256 characters.");
 		}
 
-		Criteria criteria = dao.createCriteria(getEntityClass());
+		Criteria criteria = repository.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("department", department))
 				.add(Restrictions.ilike("name", name, MatchMode.START));
 
@@ -107,7 +108,7 @@ public class ItemServiceImpl
 		}
 
 		loadPagingTotal(pagingInfo, criteria);
-		return dao.select(getEntityClass(), criteria);
+		return repository.select(getEntityClass(), criteria);
 	}
 
 	@Override

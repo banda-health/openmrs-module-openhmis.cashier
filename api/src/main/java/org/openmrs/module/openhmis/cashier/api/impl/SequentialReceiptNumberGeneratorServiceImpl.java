@@ -20,13 +20,14 @@ import org.openmrs.module.openhmis.cashier.api.ISequentialReceiptNumberGenerator
 import org.openmrs.module.openhmis.cashier.api.model.GroupSequence;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
 import org.openmrs.module.openhmis.cashier.api.security.BasicEntityAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.entity.impl.BaseObjectDataServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional
 public class SequentialReceiptNumberGeneratorServiceImpl
-		extends BaseEntityServiceImpl<SequentialReceiptNumberGeneratorModel, BasicEntityAuthorizationPrivileges>
+		extends BaseObjectDataServiceImpl<SequentialReceiptNumberGeneratorModel, BasicEntityAuthorizationPrivileges>
 		implements ISequentialReceiptNumberGeneratorService{
 	@Override
 	protected BasicEntityAuthorizationPrivileges getPrivileges() {
@@ -76,7 +77,7 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 	@Override
 	@Transactional(readOnly = true)
 	public List<GroupSequence> getSequences() {
-		return dao.select(GroupSequence.class);
+		return repository.select(GroupSequence.class);
 	}
 
 	@Override
@@ -86,10 +87,10 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 			throw new IllegalArgumentException("The group must be defined.");
 		}
 
-		Criteria criteria = dao.createCriteria(GroupSequence.class);
+		Criteria criteria = repository.createCriteria(GroupSequence.class);
 		criteria.add(Restrictions.eq("group", group));
 
-		return dao.selectSingle(GroupSequence.class, criteria);
+		return repository.selectSingle(GroupSequence.class, criteria);
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 			throw new NullPointerException("The sequence to save must be defined.");
 		}
 
-		return dao.save(sequence);
+		return repository.save(sequence);
 	}
 
 	@Override
@@ -109,6 +110,6 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 			throw new NullPointerException("The sequence to purge must be defined.");
 		}
 
-		dao.delete(sequence);
+		repository.delete(sequence);
 	}
 }

@@ -83,17 +83,12 @@
 		</property>
 	</bean>
 
-	<!-- Core Module Beans -->
-	<bean id="genericDAO" class="org.openmrs.module.openhmis.cashier.api.db.hibernate.GenericHibernateDAO">
-		<constructor-arg name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
 	<!-- Service Bean Definitions -->
 	<bean id="cashierItemService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.ItemServiceImpl">
-				<property name="dao" ref="genericDAO" />
+				<property name="repository" ref="genericRepository" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />
@@ -103,7 +98,7 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.DepartmentServiceImpl">
-				<property name="dao" ref="genericDAO" />
+				<property name="repository" ref="genericRepository" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />
@@ -113,7 +108,7 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.BillServiceImpl">
-				<property name="dao" ref="genericDAO" />
+				<property name="repository" ref="genericRepository" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />
@@ -123,7 +118,7 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.PaymentModeServiceImpl">
-				<property name="dao" ref="genericDAO" />
+				<property name="repository" ref="genericRepository" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />
@@ -133,7 +128,7 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.PaymentModeAttributeTypeServiceImpl">
-				<property name="dao" ref="genericDAO" />
+				<property name="repository" ref="genericRepository" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />
@@ -143,7 +138,7 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.CashPointServiceImpl">
-				<property name="dao" ref="genericDAO" />
+				<property name="repository" ref="genericRepository" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />
@@ -153,7 +148,7 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.TimesheetServiceImpl">
-				<property name="dao" ref="genericDAO" />
+				<property name="repository" ref="genericRepository" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />
@@ -163,7 +158,7 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
 			<bean class="org.openmrs.module.openhmis.cashier.api.impl.SequentialReceiptNumberGeneratorServiceImpl">
-				<property name="dao" ref="genericDAO" />
+				<property name="repository" ref="genericRepository" />
 			</bean>
 		</property>
 		<property name="preInterceptors" ref="serviceInterceptors" />

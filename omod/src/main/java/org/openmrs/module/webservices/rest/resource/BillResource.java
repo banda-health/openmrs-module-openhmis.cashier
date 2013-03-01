@@ -26,7 +26,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
-import org.openmrs.module.openhmis.cashier.api.IDataService;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
@@ -160,8 +160,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IDataService<Bill>> getServiceClass() {
-		return (Class<IDataService<Bill>>)(Object)IBillService.class;
+	public Class<IEntityDataService<Bill>> getServiceClass() {
+		return (Class<IEntityDataService<Bill>>)(Object)IBillService.class;
 	}
 
 	public String getDisplayString(Bill instance) {

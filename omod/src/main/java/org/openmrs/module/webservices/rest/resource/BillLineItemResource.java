@@ -14,7 +14,7 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
-import org.openmrs.module.openhmis.cashier.api.IDataService;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
@@ -49,5 +49,5 @@ public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
 	}
 
 	@Override
-	public Class<IDataService<BillLineItem>> getServiceClass() { return null; }
+	public Class<IEntityDataService<BillLineItem>> getServiceClass() { return null; }
 }

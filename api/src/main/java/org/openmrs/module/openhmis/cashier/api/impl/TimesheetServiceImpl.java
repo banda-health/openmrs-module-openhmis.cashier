@@ -20,8 +20,9 @@ import org.openmrs.Provider;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
-import org.openmrs.module.openhmis.cashier.api.security.IDataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
@@ -30,11 +31,11 @@ import java.util.List;
 
 @Transactional
 public class TimesheetServiceImpl
-		extends BaseDataServiceImpl<Timesheet>
-		implements ITimesheetService, IDataAuthorizationPrivileges {
+		extends BaseEntityDataServiceImpl<Timesheet>
+		implements ITimesheetService, IEntityAuthorizationPrivileges {
 
 	@Override
-	protected IDataAuthorizationPrivileges getPrivileges() {
+	protected IEntityAuthorizationPrivileges getPrivileges() {
 		return this;
 	}
 
@@ -64,14 +65,14 @@ public class TimesheetServiceImpl
 
 	@Override
 	public Timesheet getCurrentTimesheet(Provider cashier) {
-		Criteria criteria = dao.createCriteria(Timesheet.class);
+		Criteria criteria = repository.createCriteria(Timesheet.class);
 		criteria.add(Restrictions.and(
 				Restrictions.eq("cashier", cashier),
 				Restrictions.isNull("clockOut"))
 		);
 		criteria.addOrder(Order.desc("clockIn"));
 
-		return dao.selectSingle(Timesheet.class, criteria);
+		return repository.selectSingle(Timesheet.class, criteria);
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class TimesheetServiceImpl
 		calendar.set(Calendar.SECOND, 59);
 		Date endDate = calendar.getTime();
 
-		Criteria criteria = dao.createCriteria(Timesheet.class);
+		Criteria criteria = repository.createCriteria(Timesheet.class);
 		criteria.add(Restrictions.and(
 				Restrictions.eq("cashier", cashier),
 				Restrictions.or(
@@ -114,6 +115,6 @@ public class TimesheetServiceImpl
 		);
 		criteria.addOrder(Order.desc("clockIn"));
 
-		return dao.select(Timesheet.class, criteria);
+		return repository.select(Timesheet.class, criteria);
 	}
 }

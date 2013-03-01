@@ -14,7 +14,7 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
-import org.openmrs.module.openhmis.cashier.api.IDataService;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
 
 @Handler(supports = {PaymentAttribute.class}, order = 0)
@@ -26,7 +26,7 @@ public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttrib
 	}
 
 	@Override
-	public Class<IDataService<PaymentAttribute>> getServiceClass() {
+	public Class<IEntityDataService<PaymentAttribute>> getServiceClass() {
 		throw new RuntimeException("No service class implemented for " + getClass().getSimpleName());
 	}
 }

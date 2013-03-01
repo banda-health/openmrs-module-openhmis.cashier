@@ -15,8 +15,9 @@
 package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface IPaymentModeService extends IMetadataService<PaymentMode> {
+public interface IPaymentModeService extends IMetadataDataService<PaymentMode> {
 }

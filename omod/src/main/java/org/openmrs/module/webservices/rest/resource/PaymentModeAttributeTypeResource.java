@@ -14,7 +14,7 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
-import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeAttributeTypeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
@@ -44,7 +44,7 @@ public class PaymentModeAttributeTypeResource extends BaseRestMetadataResource<P
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataService<PaymentModeAttributeType>> getServiceClass() {
-		return (Class<IMetadataService<PaymentModeAttributeType>>)(Object)IPaymentModeAttributeTypeService.class;
+	public Class<IMetadataDataService<PaymentModeAttributeType>> getServiceClass() {
+		return (Class<IMetadataDataService<PaymentModeAttributeType>>)(Object)IPaymentModeAttributeTypeService.class;
 	}
 }

@@ -15,7 +15,7 @@ package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.openhmis.cashier.api.ICashPointService;
-import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
@@ -30,7 +30,7 @@ public class CashPointResource extends BaseRestMetadataResource<CashPoint> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataService<CashPoint>> getServiceClass() {
-		return (Class<IMetadataService<CashPoint>>)(Object)ICashPointService.class;
+	public Class<IMetadataDataService<CashPoint>> getServiceClass() {
+		return (Class<IMetadataDataService<CashPoint>>)(Object)ICashPointService.class;
 	}
 }

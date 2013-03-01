@@ -16,10 +16,10 @@ package org.openmrs.module.webservices.rest.resource;
 import org.openmrs.Provider;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.IDataService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
-import org.openmrs.module.openhmis.cashier.api.util.ProviderHelper;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
+import org.openmrs.module.openhmis.commons.api.ProviderHelper;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -41,7 +41,7 @@ public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 	}
 
 	@Override
-	public Class<? extends IDataService<Timesheet>> getServiceClass() {
+	public Class<? extends IEntityDataService<Timesheet>> getServiceClass() {
 		return ITimesheetService.class;
 	}
 

@@ -15,14 +15,15 @@ package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.ICashPointService;
-import org.openmrs.module.openhmis.cashier.api.security.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class CashPointServiceImpl
-		extends BaseMetadataServiceImpl<CashPoint>
+		extends BaseMetadataDataServiceImpl<CashPoint>
 		implements ICashPointService {
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
