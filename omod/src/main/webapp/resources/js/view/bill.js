@@ -1,14 +1,16 @@
 define(
 	[
-		'lib/jquery',
-		'lib/underscore',
-		'lib/backbone',
-		'view/generic',
-		'lib/i18n',
-		'lib/backbone-forms',
-		'view/editors',
-		'model/bill',
-		'model/cashPoint'
+		openhmis.url.backboneBase + 'js/lib/jquery',
+		openhmis.url.backboneBase + 'js/lib/underscore',
+		openhmis.url.backboneBase + 'js/lib/backbone',
+		openhmis.url.backboneBase + 'js/view/generic',
+		openhmis.url.backboneBase + 'js/lib/i18n',
+		openhmis.url.backboneBase + 'js/lib/backbone-forms',
+		openhmis.url.backboneBase + 'js/view/editors',
+		openhmis.url.cashierBase + 'js/view/editors',
+		openhmis.url.cashierBase + 'js/model/bill',
+		openhmis.url.cashierBase + 'js/model/cashPoint',
+		'link!' + openhmis.url.cashierBase + 'css/style.css'
 	],
 	function($, _, Backbone, openhmis, i18n) {
 		openhmis.BillLineItemView = openhmis.GenericListItemView.extend({
@@ -127,7 +129,7 @@ define(
 				this.options.roundToNearest = options.roundToNearest || 0;
 				this.options.roundingMode = options.roundingMode || "MID";
 				this.itemView = openhmis.BillLineItemView;
-				this.totalsTemplate = this.getTemplate("bill.html", '#bill-totals');
+				this.totalsTemplate = this.getTemplate(openhmis.url.cashierBase + "template/bill.html", '#bill-totals');
 			},
 			
 			schema: {
@@ -355,7 +357,7 @@ define(
 			},
 			
 			printReceipt: function(event) {
-				var url = openhmis.config.pageUrlRoot
+				var url = openhmis.url.getPage("cashierBase")
 					+ "receipt.form?receiptNumber=" + encodeURIComponent(this.bill.get("receiptNumber"));
 				// Triggered by an event
 				//if (event) {}

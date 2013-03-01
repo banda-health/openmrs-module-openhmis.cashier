@@ -17,10 +17,11 @@ import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeAttributeTypeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizationPrivileges;
-import org.openmrs.module.openhmis.cashier.api.security.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 
 public class PaymentModeAttributeTypeServiceImpl
-		extends BaseMetadataServiceImpl<PaymentModeAttributeType>
+		extends BaseMetadataDataServiceImpl<PaymentModeAttributeType>
 		implements IPaymentModeAttributeTypeService {
 
 	@Override

@@ -9,9 +9,9 @@ describe('Item', function() {
 		var option1 = item.schema.defaultPrice.options[0];
 		var option2 = item.schema.defaultPrice.options[1];
 		expect(option1.val).toEqual(price1.uuid);
-		expect(option1.label).toEqual("1000.00");
+		expect(option1.label).toEqual("1000.00 (AIDS)");
 		expect(option2.val).toEqual(price2.uuid);
-		expect(option2.label).toEqual("4.40");
+		expect(option2.label).toEqual("4.40 (Default)");
 	});
 	it("should get the full price from the prices attribute when setting defaultPrice", function() {
 		var item = new openhmis.Item(_.clone(testItem), { parse: true });

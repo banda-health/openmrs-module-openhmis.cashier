@@ -21,8 +21,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
-import org.openmrs.module.openhmis.cashier.api.util.ProviderHelper;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.commons.api.ProviderHelper;
 import org.openmrs.module.web.extension.LinkExt;
 
 import java.util.Map;

@@ -15,9 +15,10 @@
 package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.module.openhmis.cashier.api.model.Department;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataServiceTest;
 
-public class IDepartmentServiceTest extends IMetadataServiceTest<IDepartmentService, Department> {
-	public static final String DEPARTMENT_DATASET = BASE_DATASET_DIR + "DepartmentTest.xml";
+public class IDepartmentServiceTest extends IMetadataDataServiceTest<IDepartmentService, Department> {
+	public static final String DEPARTMENT_DATASET = TestConstants.BASE_DATASET_DIR + "DepartmentTest.xml";
 
 	@Override
 	public void before() throws Exception{

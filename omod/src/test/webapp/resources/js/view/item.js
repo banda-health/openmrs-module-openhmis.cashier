@@ -17,7 +17,11 @@ describe("ItemAddEditView", function() {
 		});
 	});
 
-	it("requires ItemAddEditView", function() { require({"view/item": null}); });
+	it("requires ItemAddEditView", function() {
+		var required = {};
+		required[openhmis.url.cashierBase + "js/view/item"] = null;
+		require(required);
+	});
 	
 	it("should edit an item's department", function() {
 		var secondDepartment = departmentsObj.results[1];		

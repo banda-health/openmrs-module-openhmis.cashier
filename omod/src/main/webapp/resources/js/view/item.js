@@ -1,6 +1,6 @@
 define(
 	[
-		'view/generic'
+		openhmis.url.backboneBase + 'js/view/generic'
 	],
 	function(openhmis) {
 		openhmis.ItemAddEditView = openhmis.GenericAddEditView.extend({

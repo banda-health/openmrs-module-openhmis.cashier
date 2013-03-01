@@ -1,8 +1,8 @@
 define(
     [
-        'openhmis',
-        'lib/i18n',
-        'model/generic'
+        openhmis.url.backboneBase + 'js/openhmis',
+        openhmis.url.backboneBase + 'js/lib/i18n',
+        openhmis.url.backboneBase + 'js/model/generic'
     ],
     function(openhmis, __) {
         openhmis.CashPoint = openhmis.GenericModel.extend({

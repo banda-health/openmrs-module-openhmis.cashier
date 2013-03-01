@@ -22,16 +22,17 @@ import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.model.ItemCode;
 import org.openmrs.module.openhmis.cashier.api.model.ItemPrice;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataServiceTest;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
+public class IItemServiceTest extends IMetadataDataServiceTest<IItemService, Item> {
 	IDepartmentService departmentService;
 
-	public static final String ITEM_DATASET = BASE_DATASET_DIR + "ItemTest.xml";
+	public static final String ITEM_DATASET = TestConstants.BASE_DATASET_DIR + "ItemTest.xml";
 
 	@Override
 	public void before() throws Exception {

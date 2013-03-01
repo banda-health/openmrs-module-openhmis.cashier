@@ -20,15 +20,17 @@ import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.TestConstants;
 import org.openmrs.module.openhmis.cashier.api.model.*;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataServiceTest;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public abstract class IBillServiceTest extends IDataServiceTest<IBillService, Bill> {
-	public static final String BILL_DATASET = BASE_DATASET_DIR + "BillTest.xml";
+public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillService, Bill> {
+	public static final String BILL_DATASET = TestConstants.BASE_DATASET_DIR + "BillTest.xml";
 
 	private ProviderService providerService;
 	private PatientService patientService;
@@ -49,7 +51,7 @@ public abstract class IBillServiceTest extends IDataServiceTest<IBillService, Bi
 		executeDataSet(IItemServiceTest.ITEM_DATASET);
 		executeDataSet(IPaymentModeServiceTest.PAYMENT_MODE_DATASET);
 		executeDataSet(ICashPointServiceTest.CASH_POINT_DATASET);
-		executeDataSet(CORE_DATASET);
+		executeDataSet(TestConstants.CORE_DATASET);
 		executeDataSet(BILL_DATASET);
 	}
 

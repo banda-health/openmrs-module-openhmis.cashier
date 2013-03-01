@@ -1,11 +1,11 @@
 define(
     [
-        'lib/underscore',
-        'lib/backbone',
-        'model/generic',
-        'lib/i18n',
-        'model/item',
-        'model/fieldGenHandler'
+        openhmis.url.backboneBase + 'js/lib/underscore',
+        openhmis.url.backboneBase + 'js/lib/backbone',
+        openhmis.url.backboneBase + 'js/model/generic',
+        openhmis.url.backboneBase + 'js/lib/i18n',
+        openhmis.url.cashierBase + 'js/model/item',
+        openhmis.url.backboneBase + 'js/model/fieldGenHandler'
     ],
     function(_, Backbone, openhmis, __) {
         openhmis.Payment = openhmis.GenericModel.extend({

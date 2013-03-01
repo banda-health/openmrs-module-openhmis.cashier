@@ -1,12 +1,12 @@
 define(
 	[
-		'lib/jquery',
-		'lib/backbone',
-		'model/payment',
-		'lib/i18n',
-		'model/bill',
-		'lib/backbone-forms',
-		'view/generic'
+		openhmis.url.backboneBase + 'js/lib/jquery',
+		openhmis.url.backboneBase + 'js/lib/backbone',
+		openhmis.url.cashierBase + 'js/model/payment',
+		openhmis.url.backboneBase + 'js/lib/i18n',
+		openhmis.url.cashierBase + 'js/model/bill',
+		openhmis.url.backboneBase + 'js/lib/backbone-forms',
+		openhmis.url.backboneBase + 'js/view/generic'
 	],
 	function($, Backbone, openhmis, i18n) {
 		openhmis.PaymentModeAddEditView = openhmis.GenericAddEditView.extend({
@@ -44,7 +44,7 @@ define(
 		});
 		
 		openhmis.PaymentView = Backbone.View.extend({
-			tmplFile: 'payment.html',
+			tmplFile: openhmis.url.cashierBase + 'template/payment.html',
 			tmplSelector: '#payment-view',
 			initialize: function(options) {
 				if (options) {
@@ -95,7 +95,7 @@ define(
 				var paymentModeUuid = $(event.target).val();
 				var self = this;
 				// Load payment mode form HTML fragment from server
-				this.$attributes.load(openhmis.config.pageUrlRoot + "paymentModeFragment.form?uuid=" + paymentModeUuid,
+				this.$attributes.load(openhmis.url.getPage("cashierBase") + "paymentModeFragment.form?uuid=" + paymentModeUuid,
 					function(content) {
 						if ($(self.$attributes).find('#openmrs_dwr_error').length > 0 && content.indexOf("ContextAuthenticationException") !== -1) {
 							$(self.$attributes).html("");

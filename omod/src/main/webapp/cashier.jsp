@@ -53,7 +53,7 @@
         resultDiv.empty();
 
         // get timesheets from server
-        $j.getJSON(openhmis.config.restUrlRoot + "timesheet?date=" + encodeURIComponent(element.val()), function(data) {
+        $j.getJSON(openhmis.url.rest + "timesheet?date=" + encodeURIComponent(element.val()), function(data) {
             if (data == null || data.length == 0) {
                 resultDiv.append("No timesheets found on " + dt.toDateString());
             }
@@ -73,7 +73,7 @@
             return false;
         }
 
-        var url = openhmis.config.openmrsUrlRoot + "<%= CashierWebConstants.JASPER_REPORT_PAGE %>.form?"
+        var url = openhmis.url.openmrs + "<%= CashierWebConstants.JASPER_REPORT_PAGE %>.form?"
         url += "reportId=" + reportId  + "&timesheetId=" + timesheetId;
         window.open(url, "pdfDownload");
         return false;

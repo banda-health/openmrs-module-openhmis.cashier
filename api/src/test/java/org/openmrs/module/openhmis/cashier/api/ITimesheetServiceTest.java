@@ -19,16 +19,17 @@ import org.openmrs.Provider;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataServiceTest;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class ITimesheetServiceTest extends IDataServiceTest<ITimesheetService, Timesheet> {
+public class ITimesheetServiceTest extends IEntityDataServiceTest<ITimesheetService, Timesheet> {
 	private ProviderService providerService;
 	private ICashPointService cashPointService;
 
-	public static final String TIMESHEET_DATASET = BASE_DATASET_DIR + "TimesheetTest.xml";
+	public static final String TIMESHEET_DATASET = TestConstants.BASE_DATASET_DIR + "TimesheetTest.xml";
 
 	@Override
 	public void before() throws Exception {
@@ -38,7 +39,7 @@ public class ITimesheetServiceTest extends IDataServiceTest<ITimesheetService, T
 		cashPointService = Context.getService(ICashPointService.class);
 
 		executeDataSet(ICashPointServiceTest.CASH_POINT_DATASET);
-		executeDataSet(CORE_DATASET);
+		executeDataSet(TestConstants.CORE_DATASET);
 		executeDataSet(TIMESHEET_DATASET);
 	}
 

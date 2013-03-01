@@ -15,11 +15,12 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.Provider;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 
 import java.util.Date;
 import java.util.List;
 
-public interface ITimesheetService extends IDataService<Timesheet> {
+public interface ITimesheetService extends IEntityDataService<Timesheet> {
 	/**
 	 * Gets the current {@link Timesheet} that the specified {@link Provider}.
 	 * @param cashier The cashier.

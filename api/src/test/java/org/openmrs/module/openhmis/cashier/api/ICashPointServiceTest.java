@@ -14,9 +14,10 @@
 package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataServiceTest;
 
-public class ICashPointServiceTest extends IMetadataServiceTest<ICashPointService, CashPoint> {
-	public static final String CASH_POINT_DATASET = BASE_DATASET_DIR + "CashPointTest.xml";
+public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointService, CashPoint> {
+	public static final String CASH_POINT_DATASET = TestConstants.BASE_DATASET_DIR + "CashPointTest.xml";
 
 	@Override
 	public void before() throws Exception {

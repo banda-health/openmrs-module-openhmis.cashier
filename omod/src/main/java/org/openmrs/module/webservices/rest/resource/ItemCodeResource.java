@@ -15,13 +15,13 @@ package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
-import org.openmrs.module.openhmis.cashier.api.IMetadataService;
 import org.openmrs.module.openhmis.cashier.api.model.ItemCode;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
 @Handler(supports = ItemCode.class, order = 0)
-public class ItemCodeResource extends BaseRestMetadataResource<ItemCode> implements IMetadataServiceResource<ItemCode> {
+public class ItemCodeResource extends BaseRestMetadataResource<ItemCode> implements IMetadataDataServiceResource<ItemCode> {
 
 	@Override
 	public ItemCode newDelegate() {
@@ -46,7 +46,7 @@ public class ItemCodeResource extends BaseRestMetadataResource<ItemCode> impleme
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends IMetadataService<ItemCode>> getServiceClass() {
-		return (Class<IMetadataService<ItemCode>>)(Object)IItemService.class;
+	public Class<? extends IMetadataDataService<ItemCode>> getServiceClass() {
+		return (Class<IMetadataDataService<ItemCode>>)(Object)IItemService.class;
 	}
 }
