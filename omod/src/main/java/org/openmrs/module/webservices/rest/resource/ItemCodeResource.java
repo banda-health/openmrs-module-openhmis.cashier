@@ -21,7 +21,7 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
 @Handler(supports = ItemCode.class, order = 0)
-public class ItemCodeResource extends BaseRestMetadataResource<ItemCode> implements IMetadataServiceResource<ItemCode> {
+public class ItemCodeResource extends BaseRestMetadataResource<ItemCode> implements IMetadataDataServiceResource<ItemCode> {
 
 	@Override
 	public ItemCode newDelegate() {

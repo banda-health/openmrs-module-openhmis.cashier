@@ -25,7 +25,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.response.ConversionException;
 
 @Handler(supports = ItemPrice.class, order = 0)
-public class ItemPriceResource extends BaseRestMetadataResource<ItemPrice> implements IMetadataServiceResource<ItemPrice> {
+public class ItemPriceResource extends BaseRestMetadataResource<ItemPrice> implements IMetadataDataServiceResource<ItemPrice> {
 
 	@PropertySetter(value = "price")
 	public void setPrice(ItemPrice instance, Object price) throws ConversionException {
