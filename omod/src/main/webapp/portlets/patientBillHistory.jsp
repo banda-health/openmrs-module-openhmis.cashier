@@ -29,6 +29,7 @@
 				]
 				</c:forEach>
 			],
+			aaSorting: [[0,'desc']],
 			aoColumns: [
 				{ sTitle: "<openmrs:message code="openhmis.cashier.bill.createdOn" />" },
 				{ sTitle: "<openmrs:message code="openhmis.cashier.bill.receiptNumber" />" },
