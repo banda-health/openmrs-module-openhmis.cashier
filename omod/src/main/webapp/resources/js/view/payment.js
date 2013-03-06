@@ -43,6 +43,17 @@ define(
 			}
 		});
 		
+		openhmis.PaymentListItemView = openhmis.GenericListItemView.extend({
+			onDetails: function(event) {
+				this.model.fetch({ success: this.displayDetailsModal });
+			},
+			
+			displayDetailsModal: function() {
+				var form = openhmis.GenericAddEdit.prototype.prepareModelForm(this.model);
+				form.$el.dialog();
+			}
+		});
+		
 		openhmis.PaymentView = Backbone.View.extend({
 			tmplFile: openhmis.url.cashierBase + 'template/payment.html',
 			tmplSelector: '#payment-view',
@@ -61,10 +72,11 @@ define(
 				this.paymentCollection.sort();
 				this.paymentListView = new openhmis.GenericListView({
 					model: this.paymentCollection,
+					itemView: openhmis.PaymentListItemView,
 					id: "paymentList",
 					className: "paymentList",
 					listFields: ['dateCreatedFmt', 'amountTenderedFmt', 'paymentMode'],
-					//itemActions: this.readOnly ? [] : ["remove"],
+					//itemActions: ["details"],
 					showRetiredOption: false,
 					showPaging: false,
 					hideIfEmpty: true
