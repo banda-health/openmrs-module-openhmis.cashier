@@ -33,7 +33,7 @@ define(
 				if (form.fields.quantity.getValue() === 0)
 					form.fields.quantity.setValue(1);
 				this.update();
-				this.$('.field-quantity input').focus();
+				form.fields.quantity.editor.focus(true);
 			},
 			
 			updatePriceOptions: function(item, form) {
@@ -68,8 +68,10 @@ define(
 			},
 			
 			onKeyPress: function(event) {
-				if (event.keyCode === 13) {
-					var errors = this.commitForm(event);
+				if (event.keyCode === 13 /* Enter */)  {
+					this.commitForm(event);
+					// Prevent enter press from interfering with HTML form controls
+					event.preventDefault();
 				}
 			},
 			
