@@ -1,5 +1,7 @@
 <%--@elvariable id="shiftReport" type="org.openmrs.module.jasperreport.JasperReport"--%>
+<%--@elvariable id="cashier" type="org.openmrs.Provider"--%>
 <%--@elvariable id="timesheet" type="org.openmrs.module.openhmis.cashier.api.model.Timesheet"--%>
+<%--@elvariable id="returnUrl" type="java.lang.String"--%>
 
 <%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
@@ -9,25 +11,33 @@
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/init.js" />
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/openhmis.js" />
 <script type="text/javascript">
-    var $ = jQuery;
-    $(function() {
-        $("#shiftDate").datepicker().change(findTimesheets);
+    //var $ = jQuery;
+    $j(function() {
+        $j("#shiftDate").datepicker().change(findTimesheets);
     });
 
     function dateTimeFormat(date) {
         var day = date.getDate();
+
+        // OpenMRS expects a date time to have the following format: mm/dd/yyyy hh:mm a
 
         // The javascript getMonth is zero-based
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
         var hour = date.getHours();
         var min = date.getMinutes();
+        var ampm = "AM";
 
         day = day < 10 ? "0" + day : day.toString();
         month = month < 10 ? "0" + month: month.toString();
         hour = hour < 10 ? "0" + hour : hour.toString();
         min = min < 10 ? "0" + min: min.toString();
-        return day + '/' + month + '/' + year + " " + hour + ":" + min;
+
+        if (hour > 12) {
+            ampm = "PM";
+            hour -= 12;
+        }
+        return month + '/' + day + '/' + year + " " + hour + ":" + min + " " + ampm;
     }
 
     function enterTime(elementId) {
@@ -80,6 +90,16 @@
     }
 </script>
 
+<spring:hasBindErrors name="timesheet">
+    <openmrs:message code="fix.error"/>
+    <div class="error">
+        <c:forEach items="${errors.allErrors}" var="error">
+            <openmrs:message code="${error.code}" text="${error.defaultMessage}"/><br/>
+        </c:forEach>
+    </div>
+    <br />
+</spring:hasBindErrors>
+
 <h2><spring:message code="openhmis.cashier.page.timesheet" /></h2>
 <form:form method="POST" modelAttribute="timesheet">
     <b class="boxHeader">Timesheet Entry</b>
@@ -100,7 +120,7 @@
                 </div>
             </li>
             <li class="bbf-field field-description">
-                <label for="clockIn">Clock In Date/Time</label>
+                <label for="clockIn">Clock In</label>
                 <div class="bbf-editor">
                     <spring:bind path="clockIn">
                         <input id="clockIn" name="${status.expression}" type="text" value="${status.value}" readonly="true" />
@@ -116,7 +136,7 @@
                     <label for="clockOut">Clock Out</label>
                     <div class="bbf-editor">
                         <spring:bind path="clockOut">
-                            <input id="clockOut" name="${status.expression}" type="text" value="${status.value}" readonly="true" />
+                            <input id="clockOut" name="${status.expression}" type="text" value="${status.value}" />
                             <input type="button" value="Clock Out" onclick="enterTime('clockOut');" />
                         </spring:bind>
                     </div>
