@@ -119,20 +119,7 @@ public class CashierController {
 		}
 
 		// load shift report (this must be refactored for the next version)
-		if (jasperService == null) {
-			jasperService = Context.getService(JasperReportService.class);
-		}
-		JasperReport shiftReport = null;
-		String shiftReportId = adminService.getGlobalProperty(CashierWebConstants.CASHIER_SHIFT_REPORT_ID_PROPERTY);
-		if (StringUtils.isNotEmpty(shiftReportId)) {
-			if (StringUtils.isNumeric(shiftReportId)) {
-				shiftReport = jasperService.getJasperReport(Integer.parseInt(shiftReportId));
-
-				if (shiftReport != null) {
-					modelMap.addAttribute("shiftReport", shiftReport);
-				}
-			}
-		}
+		loadShiftReport(modelMap);
 
 		addRenderAttributes(modelMap, timesheet, provider, returnUrl);
 	}
@@ -143,6 +130,7 @@ public class CashierController {
 
 		new TimesheetEntryValidator().validate(timesheet, errors);
 		if (errors.hasErrors()) {
+			loadShiftReport(modelMap);
 			addRenderAttributes(modelMap, timesheet, timesheet.getCashier(), returnUrl);
 
 			return null;
@@ -161,6 +149,23 @@ public class CashierController {
 	@ModelAttribute("cashPoints")
 	public List<CashPoint> getCashPoints() {
 		return cashPointService.getAll();
+	}
+
+	private void loadShiftReport(ModelMap modelMap) {
+		if (jasperService == null) {
+			jasperService = Context.getService(JasperReportService.class);
+		}
+		JasperReport shiftReport = null;
+		String shiftReportId = adminService.getGlobalProperty(CashierWebConstants.CASHIER_SHIFT_REPORT_ID_PROPERTY);
+		if (StringUtils.isNotEmpty(shiftReportId)) {
+			if (StringUtils.isNumeric(shiftReportId)) {
+				shiftReport = jasperService.getJasperReport(Integer.parseInt(shiftReportId));
+
+				if (shiftReport != null) {
+					modelMap.addAttribute("shiftReport", shiftReport);
+				}
+			}
+		}
 	}
 
 	private void addRenderAttributes(ModelMap modelMap, Timesheet timesheet, Provider cashier, String returnUrl) {
