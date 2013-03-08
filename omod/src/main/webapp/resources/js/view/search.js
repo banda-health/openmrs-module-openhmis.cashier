@@ -24,8 +24,7 @@ define(
 			 *     
 			 */
 			initialize: function(options) {
-				this.events['change #department_uuid'] = 'submitForm';
-				this.events['click #submit'] = 'submitForm';
+				this.events['change #department_uuid'] = 'onFormSubmit';
 				openhmis.BaseSearchView.prototype.initialize.call(this, options);
 				var departmentCollection = new openhmis.GenericCollection([], { model: openhmis.Department });
 				departmentCollection.on("reset", function(collection) {
@@ -50,13 +49,12 @@ define(
 			},
 			
 			/** Collect user input */
-			submitForm: function() {
+			commitForm: function() {
 				var filters = this.form.getValue();
 				if (!filters.department_uuid && !filters.q)
 					this.searchFilter = undefined;
 				else
 					this.searchFilter = filters;
-				this.fetch();
 			},
 			
 			/**
