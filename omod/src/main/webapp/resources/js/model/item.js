@@ -86,8 +86,14 @@ define(
 			_getDefaultPriceFromPricesIfAvailable: function(id) {
 				var prices = this.get("prices");
 				for (price in prices) {
-					if (prices[price].id === id) {
-						this.attributes["defaultPrice"] = prices[price];
+					if (prices[price].id !== undefined) {
+						if (prices[price].id === id) {
+							this.attributes["defaultPrice"] = new openhmis.ItemPrice(prices[price]);
+							break;
+						}
+					}
+					else if (prices[price].price && prices[price].price.toString() === id) {
+						this.attributes["defaultPrice"] = new openhmis.ItemPrice(prices[price]);
 						break;
 					}
 				}
