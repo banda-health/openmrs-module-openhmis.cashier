@@ -22,7 +22,8 @@ define(
                 amountFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
                 amountTendered: { type: 'BasicNumber' },
                 amountTenderedFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
-                paymentMode: { type: 'Text' }
+                paymentMode: { type: 'Text' },
+                paymentDetails: { type: 'Object', readOnly: true }
             },
             
             url: function() {
