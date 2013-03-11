@@ -16,6 +16,7 @@ package org.openmrs.module.openhmis.cashier.api.model;
 import org.openmrs.BaseOpenmrsData;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -51,6 +52,42 @@ public class Payment extends BaseOpenmrsData {
 
 	public void setAttributes(Set<PaymentAttribute> attributes) {
 		this.attributes = attributes;
+	}
+
+	public PaymentAttribute addAttribute(PaymentModeAttributeType type, String value) {
+		if (type == null) {
+			throw new NullPointerException("The payment mode attribute type must be defined.");
+		}
+		if (value == null) {
+			throw new NullPointerException(("The payment attribute value must be defined."));
+		}
+
+		PaymentAttribute attribute = new PaymentAttribute();
+		attribute.setPaymentModeAttributeType(type);
+		attribute.setPayment(this);
+		attribute.setValue(value);
+
+		addAttribute(attribute);
+
+		return attribute;
+	}
+
+	public void addAttribute(PaymentAttribute attribute) {
+		if (attribute == null) {
+			throw new NullPointerException("The payment attribute to add must be defined.");
+		}
+
+		if (this.attributes == null) {
+			this.attributes = new HashSet<PaymentAttribute>();
+		}
+
+		this.attributes.add(attribute);
+	}
+
+	public void removeAttribute(PaymentAttribute attribute) {
+		if (attribute != null && this.attributes != null) {
+			this.attributes.remove(attribute);
+		}
 	}
 
 	public BigDecimal getAmount() {
