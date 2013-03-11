@@ -19,6 +19,7 @@ curl(
 				'js!' + testBaseUrl + '/view/editors.js',
 				'js!' + testBaseUrl + '/view/bill.js',
 				'js!' + testBaseUrl + '/view/item.js',
+				'js!' + testBaseUrl + '/model/payment.js',
 				'js!' + testBaseUrl + '/lib/i18n.js'
 			],
 			function() {
