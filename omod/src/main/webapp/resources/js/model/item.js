@@ -71,8 +71,8 @@ define(
 					objRef: true
 				},
 				codes: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemCode },
-				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice, objRef: true },
-				defaultPrice: { type: 'ItemPriceSelect', options: [], objRef: true }
+				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice },
+				defaultPrice: { type: 'ItemPriceSelect', options: [] }
 			},
 			
 			initialize: function(attributes, options) {
@@ -154,7 +154,10 @@ define(
 					for (var price in this.attributes.prices)
 						delete this.attributes.prices[price].resourceVersion;
 				}
-				return openhmis.GenericModel.prototype.toJSON.call(this);
+				var json = openhmis.GenericModel.prototype.toJSON.call(this);
+				if (json.defaultPrice instanceof openhmis.ItemPrice)
+					json.defaultPrice = json.defaultPrice.get("price").toString();
+				return json;
 			},
 			
 			toString: function() {
