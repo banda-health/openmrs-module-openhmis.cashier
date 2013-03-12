@@ -22,8 +22,8 @@ define(
                 amountFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
                 amountTendered: { type: 'BasicNumber' },
                 amountTenderedFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
-                paymentMode: { type: 'Text' },
-                paymentDetails: { type: 'Object', readOnly: true }
+                paymentMode: { type: 'Object', objRef: true },
+                attributes: { type: 'Object' },
             },
             
             url: function() {
@@ -64,13 +64,21 @@ define(
             parse: function(resp) {
                 if (resp.paymentMode)
                     resp.paymentMode = new openhmis.PaymentMode(resp.paymentMode);
+                if (resp.attributes) {
+                    var attributes = resp.attributes;
+                    resp.attributes = [];
+                    for (attr in attributes){
+                        if (attributes[attr].order !== undefined)
+                            resp.attributes[attributes[attr].order] = attributes[attr];
+                        else
+                            resp.attributes.push(attributes[attr]);
+                    }
+                }
                 return resp;
             },
             
             toJSON: function() {
                 var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
-                if (attrs.paymentMode)
-                    attrs.paymentMode = attrs.paymentMode.id;
                 return attrs;
             }
         });

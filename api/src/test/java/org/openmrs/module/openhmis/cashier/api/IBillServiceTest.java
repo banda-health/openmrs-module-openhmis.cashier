@@ -36,6 +36,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 	private PatientService patientService;
 	private IItemService itemService;
 	private IPaymentModeService paymentModeService;
+	private IPaymentModeAttributeTypeService paymentModeAttributeTypeService;
 	private ICashPointService cashPointService;
 
 	@Override
@@ -46,6 +47,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 		patientService = Context.getPatientService();
 		itemService = Context.getService(IItemService.class);
 		paymentModeService = Context.getService(IPaymentModeService.class);
+		paymentModeAttributeTypeService = Context.getService(IPaymentModeAttributeTypeService.class);
 		cashPointService = Context.getService(ICashPointService.class);
 
 		executeDataSet(IItemServiceTest.ITEM_DATASET);
@@ -73,7 +75,10 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 		bill.addLineItem(item, item.getPrices().iterator().next(), 1);
 
 		PaymentMode mode = paymentModeService.getById(0);
-		bill.addPayment(mode, null, BigDecimal.valueOf(100), BigDecimal.valueOf(100));
+		Payment payment = bill.addPayment(mode, null, BigDecimal.valueOf(100), BigDecimal.valueOf(100));
+		payment.addAttribute(paymentModeAttributeTypeService.getById(0), "test");
+		payment.addAttribute(paymentModeAttributeTypeService.getById(1), "test2");
+		payment.addAttribute(paymentModeAttributeTypeService.getById(2), "test3");
 
 		mode = paymentModeService.getById(1);
 		bill.addPayment(mode, null, BigDecimal.valueOf(200), BigDecimal.valueOf(200));
@@ -145,30 +150,57 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 		Assert.assertEquals(expected.getReceiptNumber(), actual.getReceiptNumber());
 		Assert.assertEquals(expected.getStatus(), actual.getStatus());
 
-		Assert.assertEquals(expected.getLineItems().size(), actual.getLineItems().size());
-		BillLineItem[] expectedItems = new BillLineItem[expected.getLineItems().size()];
-		expected.getLineItems().toArray(expectedItems);
-		BillLineItem[] actualItems = new BillLineItem[actual.getLineItems().size()];
-		actual.getLineItems().toArray(actualItems);
-		for (int i = 0; i < expected.getLineItems().size(); i++) {
-			Assert.assertEquals(expectedItems[i].getId(), actualItems[i].getId());
-			Assert.assertEquals(expectedItems[i].getItem(), actualItems[i].getItem());
-			Assert.assertEquals(expectedItems[i].getPrice(), actualItems[i].getPrice());
-			Assert.assertEquals(expectedItems[i].getPriceName(), actualItems[i].getPriceName());
-			Assert.assertEquals(expectedItems[i].getQuantity(), actualItems[i].getQuantity());
-			Assert.assertEquals(expectedItems[i].getUuid(), actualItems[i].getUuid());
+		if (expected.getLineItems() == null) {
+			Assert.assertNull(actual.getLineItems());
+		} else {
+			Assert.assertEquals(expected.getLineItems().size(), actual.getLineItems().size());
+			BillLineItem[] expectedItems = new BillLineItem[expected.getLineItems().size()];
+			expected.getLineItems().toArray(expectedItems);
+			BillLineItem[] actualItems = new BillLineItem[actual.getLineItems().size()];
+			actual.getLineItems().toArray(actualItems);
+			for (int i = 0; i < expected.getLineItems().size(); i++) {
+				Assert.assertEquals(expectedItems[i].getId(), actualItems[i].getId());
+				Assert.assertEquals(expectedItems[i].getItem(), actualItems[i].getItem());
+				Assert.assertEquals(expectedItems[i].getPrice(), actualItems[i].getPrice());
+				Assert.assertEquals(expectedItems[i].getPriceName(), actualItems[i].getPriceName());
+				Assert.assertEquals(expectedItems[i].getQuantity(), actualItems[i].getQuantity());
+				Assert.assertEquals(expectedItems[i].getUuid(), actualItems[i].getUuid());
+			}
 		}
 
-		Assert.assertEquals(expected.getPayments().size(), actual.getPayments().size());
-		Payment[] expectedPayments = new Payment[expected.getPayments().size()];
-		expected.getPayments().toArray(expectedPayments);
-		Payment[] actualPayments = new Payment[actual.getPayments().size()];
-		actual.getPayments().toArray(actualPayments);
-		for (int i = 0; i < expected.getPayments().size(); i++) {
-			Assert.assertEquals(expectedPayments[i].getId(), actualPayments[i].getId());
-			Assert.assertEquals(expectedPayments[i].getPaymentMode(), actualPayments[i].getPaymentMode());
-			Assert.assertEquals(expectedPayments[i].getAmount(), actualPayments[i].getAmount());
-			Assert.assertEquals(expectedPayments[i].getUuid(), actualPayments[i].getUuid());
+		if (expected.getPayments() == null) {
+			Assert.assertNull(actual.getPayments());
+		} else {
+			Assert.assertEquals(expected.getPayments().size(), actual.getPayments().size());
+			Payment[] expectedPayments = new Payment[expected.getPayments().size()];
+			expected.getPayments().toArray(expectedPayments);
+			Payment[] actualPayments = new Payment[actual.getPayments().size()];
+			actual.getPayments().toArray(actualPayments);
+			for (int i = 0; i < expected.getPayments().size(); i++) {
+				Assert.assertEquals(expectedPayments[i].getId(), actualPayments[i].getId());
+				Assert.assertEquals(expectedPayments[i].getPaymentMode(), actualPayments[i].getPaymentMode());
+				Assert.assertEquals(expectedPayments[i].getAmount(), actualPayments[i].getAmount());
+				Assert.assertEquals(expectedPayments[i].getUuid(), actualPayments[i].getUuid());
+
+				if (expectedPayments[i].getAttributes() == null) {
+					Assert.assertNull(actualPayments[i].getAttributes());
+				} else {
+					Assert.assertEquals(expectedPayments[i].getAttributes().size(), actualPayments[i].getAttributes().size());
+					if (expectedPayments[i].getAttributes().size() > 0) {
+						PaymentAttribute[] expectedAttributes = new PaymentAttribute[expectedPayments[i].getAttributes().size()];
+						expectedPayments[i].getAttributes().toArray(expectedAttributes);
+						PaymentAttribute[] actualAttributes = new PaymentAttribute[actualPayments[i].getAttributes().size()];
+						actualPayments[i].getAttributes().toArray(actualAttributes);
+						for (int j = 0; j < expectedAttributes.length; j++) {
+							Assert.assertEquals(expectedAttributes[j].getId(), actualAttributes[j].getId());
+							Assert.assertEquals(expectedAttributes[j].getValue(), actualAttributes[j].getValue());
+							Assert.assertEquals(expectedAttributes[j].getPaymentModeAttributeType(),
+									actualAttributes[j].getPaymentModeAttributeType());
+							Assert.assertEquals(expectedAttributes[j].getUuid(), actualAttributes[j].getUuid());
+						}
+					}
+				}
+			}
 		}
 	}
 

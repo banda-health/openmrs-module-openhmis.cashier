@@ -14,7 +14,8 @@ curl(
 				'js!' + testBaseUrl + '/model/item.js',
 				'js!' + testBaseUrl + '/view/editors.js',
 				'js!' + testBaseUrl + '/view/bill.js',
-				'js!' + testBaseUrl + '/view/item.js'
+				'js!' + testBaseUrl + '/view/item.js',
+				'js!' + testBaseUrl + '/model/payment.js',
 			],
 			function() {
 				$(function() {
