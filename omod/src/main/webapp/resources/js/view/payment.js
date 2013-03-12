@@ -44,13 +44,14 @@ define(
 		});
 		
 		openhmis.PaymentListItemView = openhmis.GenericListItemView.extend({
-			onDetails: function(event) {
-				this.model.fetch({ success: this.displayDetailsModal });
-			},
-			
-			displayDetailsModal: function() {
-				var form = openhmis.GenericAddEdit.prototype.prepareModelForm(this.model);
-				form.$el.dialog();
+			render: function() {
+				openhmis.GenericListItemView.prototype.render.call(this);
+				var detailsTemplate = this.getTemplate(
+					openhmis.url.cashierBase + 'template/payment.html',
+					"#payment-attributes"
+				);
+				this.$("td.field-Details").html(detailsTemplate({ attributes: this.model.get("attributes") }));
+				return this;
 			}
 		});
 		
@@ -75,7 +76,7 @@ define(
 					itemView: openhmis.PaymentListItemView,
 					id: "paymentList",
 					className: "paymentList",
-					listFields: ['dateCreatedFmt', 'amountTenderedFmt', 'paymentMode'],
+					listFields: ['dateCreatedFmt', 'Details', 'amountTenderedFmt', 'paymentMode'],
 					//itemActions: ["details"],
 					showRetiredOption: false,
 					showPaging: false,

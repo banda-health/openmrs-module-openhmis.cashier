@@ -49,4 +49,5 @@ div.box, div.combineBoxes { margin-bottom: 1em; }
 #paymentList { font-size: inherit; }
 #paymentList b.boxHeader, #paymentList div.box { width: auto; }
 .paymentList .field-amountFmt, .paymentList .field-amountTenderedFmt,
-.paymentList .field-paymentMode { width: 13%; }
+.paymentList .field-paymentMode, .paymentList .field-dateCreatedFmt { width: 13%; }
+.paymentList td.field-Details { color: #777; }

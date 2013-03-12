@@ -64,6 +64,16 @@ define(
             parse: function(resp) {
                 if (resp.paymentMode)
                     resp.paymentMode = new openhmis.PaymentMode(resp.paymentMode);
+                if (resp.attributes) {
+                    var attributes = resp.attributes;
+                    resp.attributes = [];
+                    for (attr in attributes){
+                        if (attributes[attr].order !== undefined)
+                            resp.attributes[attributes[attr].order] = attributes[attr];
+                        else
+                            resp.attributes.push(attributes[attr]);
+                    }
+                }
                 return resp;
             },
             

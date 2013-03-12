@@ -48,12 +48,11 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 			Representation rep) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("uuid");
-		description.addProperty("uuid");
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
-			description.addProperty("paymentMode");
+			description.addProperty("paymentMode", Representation.REF);
 			description.addProperty("attributes");
 			description.addProperty("amount");
-			description.addProperty("amountTendered");		
+			description.addProperty("amountTendered");
 			description.addProperty("dateCreated");
 			description.addProperty("voided");
 		}
