@@ -59,6 +59,7 @@ define(
 			tmplFile: openhmis.url.cashierBase + 'template/payment.html',
 			tmplSelector: '#payment-view',
 			initialize: function(options) {
+				_.bindAll(this, "focus");
 				if (options) {
 					this.processCallback = options.processCallback;
 					if (options.paymentCollection)
@@ -103,6 +104,10 @@ define(
                 'change #paymentMode': 'paymentModeChange',
 				'click #processPayment': 'processPayment'
             },
+			
+			focus: function() {
+				this.form.focus();
+			},
 			
 			paymentModeChange: function(event) {
 				var paymentModeUuid = $(event.target).val();
@@ -156,9 +161,11 @@ define(
 			
 			displayErrors: function(errorMap) {
 				for(var item in errorMap) {
-					var $errorEl = this.$('#'+item).parent();
+					var $errorControl = this.$('#'+item);
+					var $errorEl = $errorControl.parent();
 					if ($errorEl.length > 0) {
 						openhmis.validationMessage($errorEl, errorMap[item]);
+						$errorControl.focus();
 					}
 				}
 			},

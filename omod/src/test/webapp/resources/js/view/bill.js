@@ -1,8 +1,6 @@
 describe("BillView", function() {
 	it("requires BillView", function() {
-		var required = {};
-		required[openhmis.url.cashierBase + "js/view/bill"] = null;
-		require(required);
+		require([openhmis.url.cashierBase + "js/view/bill"]);
 	});
 	it("should render with a blank line (new bill)", function() {
 		var billView = new openhmis.BillView();

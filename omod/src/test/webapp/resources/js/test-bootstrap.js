@@ -8,10 +8,18 @@ openhmis.url = {
 }
 
 // Global utility function for loading JS modules during a Jasmine spec
-var require = function(map, libs) {
+var require = function(toLoad, libs) {
 	libs = libs ? libs : {};
 	for (var lib in libs) { delete libs[lib]; }
 	var list = [];
+	if (toLoad instanceof Array) {
+		var map = {};
+		for (var l in toLoad)
+			map[toLoad[l]] = null;
+	}
+	else {
+		var map = toLoad;
+	}
 	for (var lib in map) { list.push(lib); }
 	curl({ baseUrl: openhmis.url.resources }, list, function(something, somethinelse) {
 		libList = {};

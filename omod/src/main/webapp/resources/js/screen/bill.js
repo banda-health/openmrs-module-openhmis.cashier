@@ -204,6 +204,8 @@ curl(
 			paymentView.setElement($('#payment'));
 			paymentView.render();
 			
+			this.billView.on("focusNext", paymentView.focus);
+			
 			window.onbeforeunload = function() {
 				if (self.billView.bill.isUnsaved())
 					return __("There are unsaved changes.");

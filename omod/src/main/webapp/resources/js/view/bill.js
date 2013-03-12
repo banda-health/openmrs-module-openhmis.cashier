@@ -75,6 +75,12 @@ define(
 				}
 			},
 			
+			commitForm: function(event) {
+				var errors = openhmis.GenericListItemView.prototype.commitForm.call(this, event);
+				if (errors === undefined)
+					this.trigger("focusNext", this);
+			},
+			
 			onModelChange: function(model) {
 				if (model.hasChanged() && model.isValid())
 					this.trigger("change", this);
@@ -85,6 +91,14 @@ define(
 				// this is not triggered by enter key, skip the error message
 				if (event && event.type !== "keypress" && this.model.collection && this.model.collection.length > 0)
 					return;
+				// If there is already an item in the collection and the event
+				// was triggered by the enter key, request that focus be moved
+				// to the next form item.
+				else if (event && event.type === "keypress" && event.keyCode === 13
+						&& this.model.collection && this.model.collection.length > 0) {
+					this.trigger("focusNext", this);
+					return;
+				}
 				
 				for(var item in errorMap) {
 					var $errorEl = this.$('.field-' + item + ' .editor');
@@ -110,6 +124,7 @@ define(
 				openhmis.GenericListItemView.prototype.render.call(this);
 				this.updatePriceOptions();
 				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
+				this.$('td.field-quantity').add('td.field-price').add('td.field-total').addClass("numeric");
 				return this;
 			},
 		});
@@ -156,13 +171,13 @@ define(
 			
 			addOne: function(model, schema) {
 				var view = openhmis.GenericListView.prototype.addOne.call(this, model, schema);
-				view.$('td.field-quantity').add('td.field-price').add('td.field-total').addClass("numeric");
 				if (this.newItem && view.model.cid === this.newItem.cid) {
 					this.selectedItem = view;
 					view.on("change", this.setupNewItem);
 				}
 				else
 					view.on("change remove", this.bill.setUnsaved);
+				view.on("focusNext", this.focusNextFormItem);
 				return view;
 			},
 			
@@ -172,10 +187,22 @@ define(
 			},
 
 			onItemRemoved: function(item) {
+				delete item.view;
 				openhmis.GenericListView.prototype.onItemRemoved.call(this, item);
-				if (item === this.newItem) {
+				if (item === this.newItem && !item.view) {
 					this.setupNewItem();
 				}
+			},
+			
+			focusNextFormItem: function(itemView) {
+				var index = this.model.indexOf(itemView.model);
+				var next = (index >= 0) ? this.model.at(index + 1) : undefined;
+				if (next !== undefined)
+					next.view.focus();
+				else if (itemView.model !== this.newItem)
+					this.newItem.view.focus();
+				else
+					this.trigger("focusNext", this);
 			},
 			
 			patientSelected: function(patient) {
@@ -183,6 +210,11 @@ define(
 				this.focus();
 			},
 			
+			/**
+			 * Set up an empty input item and line.  Can be called without
+			 * parameters, or by a lineItemView that is transitioning from being
+			 * a new item to a validated item.
+			 */
 			setupNewItem: function(lineItemView) {
 				var dept_uuid;
 				// Handle adding an item from the input line
@@ -199,6 +231,7 @@ define(
 				this.newItem = new openhmis.LineItem();
 				// Don't add the item to the collection, but give it a reference
 				this.newItem.collection = this.model;
+				// If the list is completely empty, we will rerender
 				if (this.$('p.empty').length > 0)
 					this.render();
 				else {

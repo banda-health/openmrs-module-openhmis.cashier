@@ -76,6 +76,8 @@ define(
 						self.$('.department').val(self.value.get("department").id);
 						self.$('label.over-apply').hide();
 					}
+					else
+						self.render();
 					self.trigger("blur", self);
 				}, 0);
 			},
