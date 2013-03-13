@@ -36,7 +36,28 @@ public class ItemServiceImpl
 		implements IItemService, IMetadataAuthorizationPrivileges {
 	@Override
 	protected void validate(Item entity) throws APIException {
-		return;
+		if (entity.getName() == null) {
+			throw new APIException("The item name must be defined.");
+		}
+
+		// Note: This check will only occur for new items which means that an existing item can be updated
+		//  have the same name as another item.  Given the additional complexity to support determining if the name
+		//  field has been changed, this is an acceptable trade-off for now.
+		validateUniqueName(entity);
+	}
+
+	protected void validateUniqueName(Item entity) {
+		if (entity.getId() == null) {
+			// Ensure that no items exist with the same name and department
+			String name = entity.getName().trim();
+			List<Item> results = findItems(entity.getDepartment(), name, true);
+			for (Item item : results) {
+				if (StringUtils.equalsIgnoreCase(name, item.getName().trim())) {
+					throw new APIException("An item with the name '" + name + "' already exists in the " +
+							entity.getDepartment().getName() + " department.");
+				}
+			}
+		}
 	}
 
 	@Override
