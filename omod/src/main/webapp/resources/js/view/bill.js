@@ -124,7 +124,10 @@ define(
 				openhmis.GenericListItemView.prototype.render.call(this);
 				this.updatePriceOptions();
 				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
-				this.$('td.field-quantity').add('td.field-price').add('td.field-total').addClass("numeric");
+				this.$('td.field-quantity')
+					.add(this.$('td.field-price'))
+					.add(this.$('td.field-total'))
+					.addClass("numeric");
 				return this;
 			},
 		});
