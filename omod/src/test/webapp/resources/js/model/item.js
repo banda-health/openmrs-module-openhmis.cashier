@@ -1,5 +1,18 @@
 describe('Item', function() {
 	var testItem = jQuery.parseJSON(openhmis.testData.JSON.item);
+	var refItem = jQuery.parseJSON(openhmis.testData.JSON.item);
+	
+	it("should should provide a correct serializable object", function() {
+		var item = new openhmis.Item(_.clone(testItem), { parse: true });
+		var attrs = item.toJSON();
+		// defaultPrice is special case; because of the way REST handles item
+		// prices, we have to send the default price as the price value, not a
+		// UUID.
+		expect(attrs.defaultPrice).toEqual(refItem.defaultPrice.price.toString());
+		delete attrs.defaultPrice;
+		
+		openhmis.test.modelToJson(attrs, refItem, expect, item.schema);
+	});
 
 	it("should set a list of price options in schema.defaultPrice", function() {
 		var price1 = testItem.prices[0];

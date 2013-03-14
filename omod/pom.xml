@@ -35,6 +35,14 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.backboneforms-omod</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>test-jar</type>
+			<scope>provided</scope>
+		</dependency>
 		
 		
 		<!-- Begin OpenMRS modules -->
@@ -218,6 +226,14 @@
 							<outputDirectory>${project.build.directory}/jasmine/backboneforms</outputDirectory>
 							<includes>web/module/resources/**</includes>
 						</artifactItem>
+						<artifactItem>
+							<groupId>${project.parent.groupId}</groupId>																	
+							<artifactId>openhmis.backboneforms-omod</artifactId>
+							<type>test-jar</type>
+							<overWrite>true</overWrite>
+							<outputDirectory>${project.build.directory}/jasmine/backboneforms/test</outputDirectory>
+							<includes>js/**</includes>
+						</artifactItem>
 					</artifactItems>
 				</configuration>				
 				<executions>
@@ -257,7 +273,8 @@
 		       		<jsTestSrcDir>${project.basedir}/src/test/webapp/resources/js</jsTestSrcDir>
 		       		<preloadSources>
 		         		<include>/target/jasmine/backboneforms/web/module/resources/js/curl.js</include>
-		         		<include>/src/test/webapp/resources/js/test-bootstrap.js</include>
+		         		<include>/src/test/webapp/resources/js/test-init.js</include>
+		         		<include>/target/jasmine/backboneforms/test/js/test-utils.js</include>
 		         		<include>/src/test/webapp/resources/js/test-data.js</include>
 		         		<include>/src/test/webapp/resources/js/start-tests.js</include>
 		       		</preloadSources>
