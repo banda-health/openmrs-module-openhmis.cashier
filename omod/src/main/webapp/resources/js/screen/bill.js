@@ -130,7 +130,7 @@ curl(
 				window.location = openhmis.url.getPage("cashierBase") + 'bill.form?billUuid=' + bill.id;
 			});
 			this.billView.on("saveAndPrint", function(bill) {
-				var url = openhmis.url.getPage("cashier") + 'bill.form?billUuid=' + bill.id;
+				var url = openhmis.url.getPage("cashierBase") + 'bill.form?billUuid=' + bill.id;
 				url = openhmis.addQueryStringParameter(url, "print=true");
 				window.location = url;
 			});
