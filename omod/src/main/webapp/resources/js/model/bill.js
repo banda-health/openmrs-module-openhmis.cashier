@@ -19,9 +19,9 @@ define(
 			schema: {
 				billAdjusted: { type: 'Object', objRef: true },
 				cashPoint: { type: 'Object', objRef: true },
-				lineItems: { type: 'Object'},
+				lineItems: { type: "List", itemType: "NestedModel", model: openhmis.LineItem },
 				patient: { type: 'Object', objRef: true },
-				payments: { type: 'Object'},
+				payments: { type: "List", itemType: "NestedModel", model: openhmis.Payment},
 				status: { type: 'Text' }
 			},
 						
@@ -108,9 +108,8 @@ define(
 				if (attrs.lineItems) {
 					attrs.lineItems = attrs.lineItems.toJSON();
 					for (var i in attrs.lineItems)
-						attrs.lineItems[i].lineItemOrder = i;
+						attrs.lineItems[i].lineItemOrder = parseInt(i);
 				}
-				if (attrs.payments) attrs.payments = attrs.payments.toJSON();
 				return attrs;
 			},
 			
@@ -144,5 +143,7 @@ define(
 				return str ? str : openhmis.GenericModel.prototype.toString.call(this);
 			}
 		});
+		
+		return openhmis;
 	}
 );

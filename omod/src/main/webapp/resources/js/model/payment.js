@@ -8,6 +8,20 @@ define(
         openhmis.url.backboneBase + 'js/model/fieldGenHandler'
     ],
     function(_, Backbone, openhmis, __) {
+        openhmis.PaymentAttribute = openhmis.GenericModel.extend({
+            schema: {
+                paymentModeAttributeType: { type: "Object", objRef: true },
+                value: { type: "Text" }
+            },
+            
+            parse: function(resp) {
+                if (resp.paymentModeAttributeType)
+                    resp.paymentModeAttributeType =
+                        new openhmis.PaymentModeAttributeType(resp.paymentModeAttributeType, { parse: true });
+                return resp;
+            }
+        });
+        
         openhmis.Payment = openhmis.GenericModel.extend({
             meta: {
                 name: "Payment",
@@ -23,7 +37,7 @@ define(
                 amountTendered: { type: 'BasicNumber' },
                 amountTenderedFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
                 paymentMode: { type: 'Object', objRef: true },
-                attributes: { type: 'Object' }
+                attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute }
             },
             
             url: function() {
@@ -67,19 +81,15 @@ define(
                 if (resp.attributes) {
                     var attributes = resp.attributes;
                     resp.attributes = [];
-                    for (attr in attributes){
+                    for (attr in attributes) {
+                        var paymentAttribute = new openhmis.PaymentAttribute(attributes[attr], { parse: true });
                         if (attributes[attr].order !== undefined)
-                            resp.attributes[attributes[attr].order] = attributes[attr];
+                            resp.attributes[attributes[attr].order] = paymentAttribute;
                         else
-                            resp.attributes.push(attributes[attr]);
+                            resp.attributes.push(paymentAttribute);
                     }
                 }
                 return resp;
-            },
-            
-            toJSON: function() {
-                var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
-                return attrs;
             }
         });
         

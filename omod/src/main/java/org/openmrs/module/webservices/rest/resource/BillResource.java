@@ -53,10 +53,10 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
 			description.addProperty("adjustedBy", Representation.REF);
 			description.addProperty("billAdjusted", Representation.REF);
-			description.addProperty("cashPoint");
+			description.addProperty("cashPoint", Representation.REF);
 			description.addProperty("cashier", Representation.REF);
 			description.addProperty("lineItems");
-			description.addProperty("patient");
+			description.addProperty("patient", Representation.REF);
 			description.addProperty("payments", Representation.FULL);
 			description.addProperty("receiptNumber");
 			description.addProperty("status");

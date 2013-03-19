@@ -135,10 +135,10 @@ define(
 						errors[attributeForm[i].name] = "This is a required field.";
 						break;
 					}
-					attributes[i] = {
+					attributes[i] = new openhmis.PaymentAttribute({
 						paymentModeAttributeType: attributeForm[i].name,
 						value: attributeForm[i].value
-					}
+					});
 				}
 				for (var e in errors) {
 					this.displayErrors(errors);

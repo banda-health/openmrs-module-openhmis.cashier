@@ -12,10 +12,11 @@ curl(
 		curl(
 			[
 				'js!' + testBaseUrl + '/model/item.js',
+				'js!' + testBaseUrl + '/model/payment.js',
+				'js!' + testBaseUrl + '/model/bill.js',
 				'js!' + testBaseUrl + '/view/editors.js',
 				'js!' + testBaseUrl + '/view/bill.js',
-				'js!' + testBaseUrl + '/view/item.js',
-				'js!' + testBaseUrl + '/model/payment.js',
+				'js!' + testBaseUrl + '/view/item.js'
 			],
 			function() {
 				$(function() {

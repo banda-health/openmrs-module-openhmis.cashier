@@ -17,9 +17,6 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>openhmis.commons-api</artifactId>
-			<type>jar</type>
-			<scope>provided</scope>
-			<version>1.5.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

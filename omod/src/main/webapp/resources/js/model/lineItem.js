@@ -12,7 +12,7 @@ define(
 				namePlural: 'Line Items'
 			},
 			schema: {
-				item: { type: 'NestedModel', model: openhmis.Item },
+				item: { type: 'NestedModel', model: openhmis.Item, objRef: true },
 				quantity: { type: 'BasicNumber' },
 				price: { type: 'BasicNumber', format: openhmis.ItemPrice.prototype.format },
 				total: { type: 'BasicNumber', readOnly: true, format: openhmis.ItemPrice.prototype.format }
@@ -73,8 +73,6 @@ define(
 			
 			toJSON: function() {
 				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
-				if (attrs.item)
-					attrs.item = attrs.item.id;
 				if (attrs.price)
 					attrs.price = parseFloat(attrs.price);
 				return attrs;
