@@ -53,6 +53,16 @@
 		<description>Fully qualified class name of the receipt number generator to be used.</description>
 	</globalProperty>
 	
+	<globalProperty>
+		<property>${project.parent.artifactId}.roundingItemId</property>
+		<description>ID of the item used to account for bill total rounding.</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.roundingDeptId</property>
+		<description>ID of the department of the rounding item.</description>
+	</globalProperty>
+	
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>

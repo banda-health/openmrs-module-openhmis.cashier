@@ -23,7 +23,15 @@ curl(
 		
 			var self = this;
 			options.fetch({ success: function(options, resp) {
-				self.createBillView.call(self, options, resp);
+				if (resp.exception) {
+					openhmis.error({
+						message: resp.exception.message,
+						code: resp.exception.cause,
+						detail: resp.exception.stackTrace
+					});
+				}
+				else
+					self.createBillView.call(self, options, resp);
 			}});
 		}
 		
