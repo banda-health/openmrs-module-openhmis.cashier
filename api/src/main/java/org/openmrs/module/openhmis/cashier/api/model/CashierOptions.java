@@ -15,10 +15,6 @@ package org.openmrs.module.openhmis.cashier.api.model;
 
 import java.math.BigDecimal;
 
-import org.openmrs.api.AdministrationService;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
-
 public class CashierOptions {
 	public enum RoundingMode {
 		FLOOR(1), MID(2), CEILING(3);
@@ -31,30 +27,20 @@ public class CashierOptions {
 		}
 	}
 	
-	private BigDecimal roundToNearest = new BigDecimal(1);
+	private BigDecimal roundToNearest = new BigDecimal(0); // default: no rounding
 	private RoundingMode roundingMode = RoundingMode.MID;
+	private String roundingItemUuid;
 	private int defaultReceiptReportId;
-	private boolean timesheetRequired;
+	private boolean timesheetRequired = false;
 	
-	public void loadFromGlobalOptions() {
-		AdministrationService service = Context.getAdministrationService();
-		try {
-			setDefaultReceiptReportId(Integer.parseInt(service.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY)));
-		} catch (NumberFormatException e) { /* Leave unset; must be handled, e.g. in ReceiptController */ }
-		try {
-			setRoundingMode(
-				CashierOptions.RoundingMode.valueOf(service.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY)));
-		} catch (NullPointerException e) { /* Use default if option is not set */ }
-		
-		try {
-			setRoundToNearest(
-				new BigDecimal(service.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY)));
-		} catch (NullPointerException e) { /* Use default */ }
-		
-		// Will default to false
-		setTimesheetRequired(Boolean.parseBoolean(service.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY)));
+	public String getRoundingItemUuid() {
+		return roundingItemUuid;
 	}
-	
+
+	public void setRoundingItemUuid(String roundingItemUuid) {
+		this.roundingItemUuid = roundingItemUuid;
+	}
+
 	// Getters & setters
 	public BigDecimal getRoundToNearest() {
 		return roundToNearest;

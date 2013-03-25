@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +27,8 @@ public class CashierOptionsController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public CashierOptions options() {
-		CashierOptions options = new CashierOptions();
-		options.loadFromGlobalOptions();
+		ICashierOptionsService service = Context.getService(ICashierOptionsService.class);
+		CashierOptions options = service.getOptions();
 		return options;
 	}
 }

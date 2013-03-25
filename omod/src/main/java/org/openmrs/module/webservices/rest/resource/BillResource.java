@@ -34,6 +34,7 @@ import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.api.util.RoundingUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -109,6 +110,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			instance.setStatus(status);
 		else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED)
 			instance.setStatus(status);
+		if (status == BillStatus.POSTED)
+			RoundingUtil.addRoundingLineItem(instance);
 	}
 
 	@Override

@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<global_property property="openhmis.cashier.roundToNearest" property_value=""/>
+	<global_property property="openhmis.cashier.roundingItemId" property_value="asd"/>
+</dataset>
