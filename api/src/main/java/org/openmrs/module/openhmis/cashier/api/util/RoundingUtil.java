@@ -104,11 +104,14 @@ public class RoundingUtil {
 		BigDecimal difference = bill.getTotal().subtract(RoundingUtil.round(bill.getTotal(), options.getRoundToNearest(), options.getRoundingMode()));
 		if (difference.equals(BigDecimal.ZERO))
 			return;
+		ItemPrice roundingPrice = roundingItem.addPrice("Rounding", difference.abs());
 		// This is a little weird, but order has to be set, and this is the best I can come up with right now
-		int itemOrder = bill.getLineItems().get(bill.getLineItems().size() - 1).getLineItemOrder() + 1;
+		int itemOrder;
+		try { itemOrder = bill.getLineItems().get(bill.getLineItems().size() - 1).getLineItemOrder() + 1; }
+		catch (NullPointerException e) { itemOrder = 0; }
 		BillLineItem lineItem = bill.addLineItem(
 			roundingItem,
-			new ItemPrice(difference.abs(), "Rounding"),
+			roundingPrice,
 			difference.compareTo(BigDecimal.ZERO) > 0 ? -1 : 1
 		);
 		lineItem.setLineItemOrder(itemOrder);
