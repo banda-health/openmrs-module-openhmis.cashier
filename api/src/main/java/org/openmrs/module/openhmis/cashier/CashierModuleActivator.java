@@ -17,6 +17,7 @@ package org.openmrs.module.openhmis.cashier;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.ModuleActivator;
+import org.openmrs.module.openhmis.cashier.api.util.RoundingUtil;
 
 /**
  * This class contains the logic that is run every time this module is either started or stopped.
@@ -50,6 +51,7 @@ public class CashierModuleActivator implements ModuleActivator {
 	 * @see ModuleActivator#started()
 	 */
 	public void started() {
+		RoundingUtil.setupRoundingDeptAndItem(log);
 		log.info("OpenHMIS Cashier Module Module started");
 	}
 	

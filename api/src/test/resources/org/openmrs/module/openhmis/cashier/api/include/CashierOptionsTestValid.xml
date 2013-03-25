@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<global_property property="openhmis.cashier.roundingMode" property_value="MID"/>
+	<global_property property="openhmis.cashier.roundToNearest" property_value="5"/>
+	<global_property property="openhmis.cashier.roundingItemId" property_value="2"/>
+	<global_property property="openhmis.cashier.defaultReceiptReportId" property_value="3"/>
+	<global_property property="openhmis.cashier.timesheetRequired" property_value="true"/>
+</dataset>
