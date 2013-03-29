@@ -142,6 +142,7 @@ define(
 				var bill = (options && options.bill) ? options.bill : new openhmis.Bill();
 				this.setBill(bill);
 				openhmis.GenericListEntryView.prototype.initialize.call(this, options);
+				options = options ? options : {};
 				this.options.roundToNearest = options.roundToNearest || 0;
 				this.options.roundingMode = options.roundingMode || "MID";
 				this.itemView = openhmis.BillLineItemView;

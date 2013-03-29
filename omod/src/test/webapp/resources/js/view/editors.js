@@ -1,12 +1,11 @@
 describe("Item Editor", function() {
+	it("requires Cashier editors", function() {
+		require([openhmis.url.cashierBase + 'js/view/editors']);
+	});
 	/**
 	 * @requires server response
 	 */
 	it("should return the proper data after a search", function() {
-		var required = {};
-		required[openhmis.url.cashierBase + 'js/view/editors'] = null;
-		require(required);
-
 		var response = jasmine.createSpy();
 
 		runs(function() {
