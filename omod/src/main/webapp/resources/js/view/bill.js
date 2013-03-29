@@ -136,16 +136,12 @@ define(
 		 * BillView
 		 * 
 		 */
-		openhmis.BillView = openhmis.GenericListView.extend({
+		openhmis.BillView = openhmis.GenericListEntryView.extend({
 			initialize: function(options) {
 				_.bindAll(this);
 				var bill = (options && options.bill) ? options.bill : new openhmis.Bill();
 				this.setBill(bill);
-				
-				var billOptions = { showRetiredOption: false, showPaging: false }
-				options = _.extend(billOptions, options);
-				
-				openhmis.GenericListView.prototype.initialize.call(this, options);
+				openhmis.GenericListEntryView.prototype.initialize.call(this, options);
 				this.options.roundToNearest = options.roundToNearest || 0;
 				this.options.roundingMode = options.roundingMode || "MID";
 				this.itemView = openhmis.BillLineItemView;
@@ -172,75 +168,26 @@ define(
 					this.options.itemActions = [];
 			},
 			
-			addOne: function(model, schema) {
-				var view = openhmis.GenericListView.prototype.addOne.call(this, model, schema);
-				if (this.newItem && view.model.cid === this.newItem.cid) {
-					this.selectedItem = view;
-					view.on("change", this.setupNewItem);
-				}
-				else
-					view.on("change remove", this.bill.setUnsaved);
-				view.on("focusNext", this.focusNextFormItem);
-				return view;
-			},
 			
 			onItemSelected: function(itemView) {
-				openhmis.GenericListView.prototype.onItemSelected.call(this, itemView);
+				openhmis.GenericListEntryView.prototype.onItemSelected.call(this, itemView);
 				this.updateTotals();
 			},
-
-			onItemRemoved: function(item) {
-				delete item.view;
-				openhmis.GenericListView.prototype.onItemRemoved.call(this, item);
-				if (item === this.newItem && !item.view) {
-					this.setupNewItem();
-				}
-			},
 			
-			focusNextFormItem: function(itemView) {
-				var index = this.model.indexOf(itemView.model);
-				var next = (index >= 0) ? this.model.at(index + 1) : undefined;
-				if (next !== undefined)
-					next.view.focus();
-				else if (itemView.model !== this.newItem)
-					this.newItem.view.focus();
-				else
-					this.trigger("focusNext", this);
-			},
-			
+			// TODO: This shouldn't be here... should be in screen setup
 			patientSelected: function(patient) {
 				this.bill.set("patient", patient);
 				this.focus();
 			},
 			
-			/**
-			 * Set up an empty input item and line.  Can be called without
-			 * parameters, or by a lineItemView that is transitioning from being
-			 * a new item to a validated item.
-			 */
 			setupNewItem: function(lineItemView) {
-				var dept_uuid;
 				// Handle adding an item from the input line
+				// TODO: Is this the best place to handle changes/setUnsaved()?
 				if (lineItemView !== undefined) {
-					// Prevent multiple change events causing duplicate views
-					if (this.model.getByCid(lineItemView.model.cid)) return;
-					lineItemView.off("change", this.setupNewItem);
-					this.model.add(lineItemView.model, { silent: true });
 					this.bill.setUnsaved();
 					lineItemView.on("change remove", this.bill.setUnsaved);
-					this._deselectAll();
-					dept_uuid = lineItemView.model.get("item").get("department").id;
 				}
-				this.newItem = new openhmis.LineItem();
-				// Don't add the item to the collection, but give it a reference
-				this.newItem.collection = this.model;
-				// If the list is completely empty, we will rerender
-				if (this.$('p.empty').length > 0)
-					this.render();
-				else {
-					var view = this.addOne(this.newItem);
-					view.focus();
-				}
+				openhmis.GenericListEntryView.prototype.setupNewItem.call(this, lineItemView);
 			},
 			
 			setupCashPointForm: function(el) {
@@ -409,11 +356,7 @@ define(
 			},
 			
 			render: function() {
-				if (this.newItem) this.model.add(this.newItem, { silent: true });
-				openhmis.GenericListView.prototype.render.call(this, {
-					listTitle: ""
-				});
-				if (this.newItem) this.model.remove(this.newItem, { silent: true });
+				openhmis.GenericListEntryView.prototype.render.call(this, { options: { listTitle: "" }});
 				this.$('table').addClass("bill");
 				this.$totals = $('<table class="totals"></table>');
 				this.$('div.box').append(this.$totals);
