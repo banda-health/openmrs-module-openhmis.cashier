@@ -21,7 +21,6 @@ import java.util.Set;
 
 import org.openmrs.Provider;
 import org.openmrs.User;
-import org.openmrs.annotation.Handler;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
@@ -36,6 +35,7 @@ import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.RoundingUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
@@ -44,8 +44,7 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.springframework.web.client.RestClientException;
 
-@Resource("bill")
-@Handler(supports = { Bill.class }, order = 0)
+@Resource(name=RestConstants.VERSION_2 + "/cashier/bill", supportedClass=Bill.class, supportedOpenmrsVersions={"1.9"})
 public class BillResource extends BaseRestDataResource<Bill> {
 	
 	@Override

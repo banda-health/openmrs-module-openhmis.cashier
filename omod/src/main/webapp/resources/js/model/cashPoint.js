@@ -10,7 +10,7 @@ define(
                 name: __("Cash Point"),
                 namePlural: __("Cash Points"),
                 openmrsType: 'metadata',
-                restUrl: 'cashPoint'
+                restUrl: 'v2/cashier/cashPoint'
             },
 
             schema: {

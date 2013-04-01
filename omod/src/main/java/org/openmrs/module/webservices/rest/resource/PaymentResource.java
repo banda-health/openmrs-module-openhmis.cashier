@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
@@ -39,8 +38,7 @@ import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@SubResource(parent = BillResource.class, path = "payment")
-@Handler(supports = Payment.class, order = 0)
+@SubResource(parent = BillResource.class, path = "payment", supportedClass=Payment.class, supportedOpenmrsVersions={"1.9"})
 public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillResource> {
 
 	@Override

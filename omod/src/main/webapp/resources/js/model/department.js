@@ -10,7 +10,7 @@ define(
 				name: __("Department"),
 				namePlural: __("Departments"),
 				openmrsType: 'metadata',
-				restUrl: 'department'
+				restUrl: 'v2/cashier/department'
 			},
 			
 			schema: {

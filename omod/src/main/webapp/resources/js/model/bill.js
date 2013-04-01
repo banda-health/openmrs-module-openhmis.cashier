@@ -13,7 +13,7 @@ define(
 				name: "Bill",
 				namePlural: "Bills",
 				openmrsType: 'data',
-				restUrl: "bill"
+				restUrl: "v2/cashier/bill"
 			},
 			
 			schema: {

@@ -13,14 +13,13 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import org.openmrs.annotation.Handler;
 import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
+import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
-@Resource("department")
-@Handler(supports = { Department.class }, order = 0)
+@Resource(name=RestConstants.VERSION_2 + "/cashier/department", supportedClass=Department.class, supportedOpenmrsVersions={"1.9"})
 public class DepartmentResource extends BaseRestMetadataResource<Department> {
 
 	@Override

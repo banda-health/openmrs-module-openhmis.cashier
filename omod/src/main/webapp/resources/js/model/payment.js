@@ -26,7 +26,7 @@ define(
             meta: {
                 name: "Payment",
                 namePlural: "Payments",
-                restUrl: "payment"
+                restUrl: "v2/cashier/payment"
             },
             
             schema: {
@@ -98,7 +98,7 @@ define(
                 name: "Attribute Type",
                 namePlural: "Attribute Types",
                 openmrsType: 'metadata',
-                restUrl: 'paymentMode'
+                restUrl: 'v2/cashier/paymentMode'
             },
 
             schema: {
@@ -125,7 +125,7 @@ define(
                 name: "Payment Mode",
                 namePlural: "Payment Modes",
                 openmrsType: 'metadata',
-                restUrl: 'paymentMode'
+                restUrl: 'v2/cashier/paymentMode'
             },
             
             schema: {

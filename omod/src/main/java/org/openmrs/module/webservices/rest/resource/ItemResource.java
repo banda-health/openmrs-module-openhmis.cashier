@@ -13,90 +13,25 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import org.openmrs.annotation.Handler;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
-import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
-import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.model.ItemCode;
 import org.openmrs.module.openhmis.cashier.api.model.ItemPrice;
-import org.openmrs.module.webservices.rest.SimpleObject;
-import org.openmrs.module.webservices.rest.web.RequestContext;
+import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
-import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
-import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
-import org.openmrs.module.webservices.rest.web.response.ResponseException;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Resource("item")
-@Handler(supports = { Item.class }, order = 0)
+@Resource(name=RestConstants.VERSION_2 + "/cashier/item", supportedClass=Item.class, supportedOpenmrsVersions={"1.9"})
 public class ItemResource extends BaseRestMetadataResource<Item> {
-
-	@Override
-	public SimpleObject search(String query, RequestContext context) throws ResponseException {
-		IItemService service = (IItemService) Context.getService(getServiceClass());
-		// Try searching by code
-		SimpleObject resultByCode = searchByCode(query, context, service);
-		if (resultByCode != null) return resultByCode;
-
-		// Do a name search
-		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
-		List<Item> items = service.findByName(query, context.getIncludeAll(), pagingInfo);
-		AlreadyPagedWithLength<Item> results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
-		return results.toSimpleObject();
-	}
- 
-	public SimpleObject search(String query, String department_uuid, RequestContext context) throws ResponseException {
-		IItemService service = (IItemService) Context.getService(getServiceClass());
-		IDepartmentService deptService = (IDepartmentService) Context.getService(IDepartmentService.class);
-		Department department = deptService.getByUuid(department_uuid);
-		
-		// Try searching by code
-		SimpleObject resultByCode = searchByCode(query, context, service);
-		if (resultByCode != null) return resultByCode;
-		
-		// Do a name + department search
-		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
-		List<Item> items = service.findItems(department, query, context.getIncludeAll(), pagingInfo);
-		PageableResult results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
-		return results.toSimpleObject();
-	}
-	
-	protected SimpleObject searchByCode(String query, RequestContext context, IItemService service) throws ResponseException {
-		if (service == null) service = (IItemService) Context.getService(getServiceClass());
-		Item itemByCode = service.getItemByCode(query);
-		if (itemByCode != null) {
-			List<Item> list = new ArrayList<Item>(1);
-			list.add(itemByCode);
-			return new AlreadyPaged<Item>(context, list, false).toSimpleObject();
-		}
-		return null;
-	}
-	
-	public SimpleObject searchByDepartment(String department_uuid, RequestContext context) throws ResponseException {
-		IItemService service = (IItemService) Context.getService(getServiceClass());
-		IDepartmentService deptService = (IDepartmentService) Context.getService(IDepartmentService.class);
-		Department department = deptService.getByUuid(department_uuid);
-		
-		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
-		List<Item> items = service.getItemsByDepartment(department, context.getIncludeAll(), pagingInfo);
-		PageableResult results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
-		return results.toSimpleObject();
-	}
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(
