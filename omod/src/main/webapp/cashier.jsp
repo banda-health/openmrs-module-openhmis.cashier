@@ -6,10 +6,8 @@
 <%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require privilege="Manage Cashier Timesheets" otherwise="/login.htm" redirect="/module/openhmis/cashier/timesheetEntry.form" />
-
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/init.js" />
-<openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/openhmis.js" />
+<%@ include file="template/localHeader.jsp" %>
 <script type="text/javascript">
     //var $ = jQuery;
     $j(function() {
@@ -63,7 +61,7 @@
         resultDiv.empty();
 
         // get timesheets from server
-        $j.getJSON(openhmis.url.rest + "timesheet?date=" + encodeURIComponent(element.val()), function(data) {
+        $j.getJSON(openhmis.url.rest + "/v2/cashier/timesheet?date=" + encodeURIComponent(element.val()), function(data) {
             if (data == null || data.length == 0) {
                 resultDiv.append("No timesheets found on " + dt.toDateString());
             }
@@ -76,7 +74,7 @@
 
     function printReport() {
         var reportId = $j("#reportId").val();
-        var timesheetId = $("input[name=timesheetId]:checked").val();
+        var timesheetId = $j("input[name=timesheetId]:checked").val();
 
         if (!timesheetId) {
             alert("You must select a timesheet to run the report.");

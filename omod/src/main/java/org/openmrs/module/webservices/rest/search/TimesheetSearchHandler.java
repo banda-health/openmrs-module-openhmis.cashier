@@ -38,7 +38,7 @@ public class TimesheetSearchHandler implements SearchHandler {
 		if (provider == null)
 			return null;
 		try {
-			date = SimpleDateFormat.getDateInstance().parse(context.getParameter("date"));
+			date = new SimpleDateFormat("MM/dd/yyyy").parse(context.getParameter("date"));
 		} catch (ParseException e) {
 			throw new APIException("Invalid date parameter: " + context.getParameter("date"));
 		}
