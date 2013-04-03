@@ -99,13 +99,7 @@ define(
 					this.trigger("focusNext", this);
 					return;
 				}
-				
-				for(var item in errorMap) {
-					var $errorEl = this.$('.field-' + item + ' .editor');
-					if ($errorEl.length > 0) {
-						openhmis.validationMessage($errorEl, errorMap[item]);
-					}
-				}
+				openhmis.GenericListItemView.prototype.displayErrors.call(this, errorMap, event);
 			},
 			
 			focus: function(form) {
