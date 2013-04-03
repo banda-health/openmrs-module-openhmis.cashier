@@ -58,7 +58,7 @@ define(
 				name: "Item",
 				namePlural: "Items",
 				openmrsType: 'metadata',
-				restUrl: 'item'
+				restUrl: 'v2/cashier/item'
 			},
 			schema: {
 				name: { type: 'Text' },

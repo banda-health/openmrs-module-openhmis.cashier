@@ -13,14 +13,13 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import org.openmrs.annotation.Handler;
 import org.openmrs.module.openhmis.cashier.api.ICashPointService;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
+import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
-@Resource("cashPoint")
-@Handler(supports = { CashPoint.class }, order = 0)
+@Resource(name=RestConstants.VERSION_2 + "/cashier/cashPoint", supportedClass=CashPoint.class, supportedOpenmrsVersions={"1.9"})
 public class CashPointResource extends BaseRestMetadataResource<CashPoint> {
 
 	@Override
