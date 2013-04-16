@@ -1,7 +1,5 @@
 package org.openmrs.module.openhmis.cashier.api.util;
 
-import java.math.BigDecimal;
-
 import org.apache.commons.logging.Log;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.APIException;
@@ -11,13 +9,10 @@ import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
-import org.openmrs.module.openhmis.cashier.api.model.Bill;
-import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
-import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
-import org.openmrs.module.openhmis.cashier.api.model.Department;
-import org.openmrs.module.openhmis.cashier.api.model.Item;
-import org.openmrs.module.openhmis.cashier.api.model.ItemPrice;
+import org.openmrs.module.openhmis.cashier.api.model.*;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+
+import java.math.BigDecimal;
 
 public class RoundingUtil {
 	public static BigDecimal round(BigDecimal value, BigDecimal nearest, CashierOptions.RoundingMode mode) {
@@ -48,16 +43,30 @@ public class RoundingUtil {
 		 * Automatically add rounding item & department
 		 */
 		AdministrationService adminService = Context.getService(AdministrationService.class);
+
 		String nearest = adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY);
 		if (nearest != null && !nearest.isEmpty() && nearest != "0") {
 			MessageSourceService msgService = Context.getMessageSourceService();
 			IDepartmentService deptService = Context.getService(IDepartmentService.class);
 			IItemService itemService = Context.getService(IItemService.class);
+
 			Integer itemId, deptId;
-			try { deptId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_DEPT_ID)); }
-			catch (NumberFormatException e) { deptId = null; }
-			try { itemId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID)); }
-			catch (NumberFormatException e) { itemId = null; }
+
+			// Try to parse the existing department and item id
+			try {
+				deptId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_DEPT_ID));
+			}
+			catch (NumberFormatException e) {
+				deptId = null;
+			}
+
+			try {
+				itemId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID));
+			}
+			catch (NumberFormatException e) {
+				itemId = null;
+			}
+
 			if (deptId == null && itemId == null) {
 				Department department = new Department();
 				String name = msgService.getMessage("openhmis.cashier.rounding.itemName");
@@ -74,8 +83,8 @@ public class RoundingUtil {
 				item.setName(name);
 				item.setDescription(description);
 				item.setDepartment(department);
-				ItemPrice price = new ItemPrice(new BigDecimal(0), name);
-				item.addPrice(price);
+
+				ItemPrice price = item.addPrice(name, new BigDecimal(0));
 				item.setDefaultPrice(price);
 				itemService.save(item);
 				log.info("Created item for rounding (ID = " + item.getId() + ")...");

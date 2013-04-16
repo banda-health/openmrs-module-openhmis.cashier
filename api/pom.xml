@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>1.5.0-SNAPSHOT</version>
+		<version>1.6.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>openhmis.cashier-api</artifactId>
@@ -24,7 +24,7 @@
 			<artifactId>openhmis.commons-api</artifactId>
 			<type>test-jar</type>
 			<scope>provided</scope>
-			<version>1.5.0-SNAPSHOT</version>
+			<version>1.6.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Begin OpenMRS core -->
