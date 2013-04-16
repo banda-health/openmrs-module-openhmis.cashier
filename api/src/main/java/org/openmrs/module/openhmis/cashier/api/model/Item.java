@@ -106,7 +106,6 @@ public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Cus
 		}
 
 		ItemPrice itemPrice = new ItemPrice(price, priceName);
-		itemPrice.setItem(this);
 
 		addPrice(itemPrice);
 
@@ -119,6 +118,7 @@ public class Item extends BaseCustomizableMetadata<ItemAttribute> implements Cus
 				prices = new HashSet<ItemPrice>();
 			}
 
+			price.setItem(this);
 			prices.add(price);
 		}
 	}
