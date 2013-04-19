@@ -42,10 +42,6 @@ table.totals td.label, table.totals td.total { padding: 3px 7px 3px 10px; font-w
 /* Exception for form style */
 li.bbf-field.field-cashPoint div.bbf-editor { margin-left: 7em; }
 
-
-div.box, div.combineBoxes { margin-bottom: 1em; }
-.combineBoxes div.box { margin-bottom: 0; }
-
 #paymentList { font-size: inherit; }
 #paymentList b.boxHeader, #paymentList div.box { width: auto; }
 .paymentList .field-amountFmt, .paymentList .field-amountTenderedFmt,
