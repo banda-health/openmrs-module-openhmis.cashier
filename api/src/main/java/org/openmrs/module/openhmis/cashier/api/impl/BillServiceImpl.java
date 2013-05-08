@@ -20,21 +20,25 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
-import org.openmrs.module.openhmis.cashier.api.security.IDataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
-import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
+import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataServiceImpl;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.security.AccessControlException;
 import java.util.List;
 @Transactional
 public class BillServiceImpl
-		extends BaseDataServiceImpl<Bill>
-		implements IDataAuthorizationPrivileges, IBillService {
+		extends BaseEntityDataServiceImpl<Bill>
+		implements IEntityAuthorizationPrivileges, IBillService {
 	@Override
-	protected IDataAuthorizationPrivileges getPrivileges() {
+	protected IEntityAuthorizationPrivileges getPrivileges() {
 		return this;
 	}
 
@@ -58,6 +62,13 @@ public class BillServiceImpl
 		if (bill == null) {
 			throw new NullPointerException("The bill must be defined.");
 		}
+		
+		/* Check for refund.
+		 * A refund is given when the total of the bill's line items is negative.
+		 */
+		if (bill.getTotal().compareTo(new BigDecimal(0)) < 0
+				&& !Context.hasPrivilege(CashierPrivilegeConstants.REFUND_MONEY))
+			throw new AccessControlException("Access denied to give a refund.");
 
 		if (StringUtils.isEmpty(bill.getReceiptNumber())) {
 			bill.setReceiptNumber(ReceiptNumberGeneratorFactory.getGenerator().generateNumber(bill));
@@ -77,10 +88,10 @@ public class BillServiceImpl
 			throw new IllegalArgumentException("The receipt number must be less than 256 characters.");
 		}
 
-		Criteria criteria = dao.createCriteria(getEntityClass());
+		Criteria criteria = repository.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("receiptNumber", receiptNumber));
 
-		return dao.selectSingle(getEntityClass(), criteria);
+		return repository.selectSingle(getEntityClass(), criteria);
 	}
 
 	@Override
@@ -89,10 +100,10 @@ public class BillServiceImpl
 			throw new NullPointerException("The patient must be defined.");
 		}
 
-		Criteria criteria = dao.createCriteria(getEntityClass());
+		Criteria criteria = repository.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("patient", patient));
 
-		return dao.select(getEntityClass(), criteria);
+		return repository.select(getEntityClass(), criteria);
 	}
 
 	@Override
@@ -101,10 +112,10 @@ public class BillServiceImpl
 			throw new IllegalArgumentException("The patient id must be a valid identifier.");
 		}
 
-		Criteria criteria = dao.createCriteria(getEntityClass());
+		Criteria criteria = repository.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("patient.id", patientId));
 
-		return dao.select(getEntityClass(), criteria);
+		return repository.select(getEntityClass(), criteria);
 	}
 
 	@Override

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>1.1.2</version>
+		<version>1.5.0</version>
 	</parent>
 
 	<artifactId>openhmis.cashier-api</artifactId>
@@ -15,12 +15,16 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.openhmis.commons</groupId>
-			<artifactId>openhmis-commons</artifactId>
-			<type>jar</type>
-			<scope>system</scope>
-			<version>1.0.0</version>
-			<systemPath>${project.basedir}/../lib/openhmis.commons-1.0.0.jar</systemPath>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.commons-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.commons-api</artifactId>
+			<type>test-jar</type>
+			<scope>provided</scope>
+			<version>1.5.0.0</version>
 		</dependency>
 
 		<!-- Begin OpenMRS core -->

@@ -1,9 +1,9 @@
 define(
 	[
-		'lib/underscore',
-		'model/generic',
-		'lib/i18n',
-		'model/department'
+		openhmis.url.backboneBase + 'js/lib/underscore',
+		openhmis.url.backboneBase + 'js/model/generic',
+		openhmis.url.backboneBase + 'js/lib/i18n',
+		openhmis.url.cashierBase + 'js/model/department'
 	],
 	function(_, openhmis, __) {
 		openhmis.ItemCode = openhmis.GenericModel.extend({
@@ -71,26 +71,32 @@ define(
 					objRef: true
 				},
 				codes: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemCode },
-				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice, objRef: true },
-				defaultPrice: { type: 'ItemPriceSelect', options: [], objRef: true }
+				prices: { type: 'List', itemType: 'NestedModel', model: openhmis.ItemPrice },
+				defaultPrice: { type: 'ItemPriceSelect', options: [] }
 			},
 			
 			initialize: function(attributes, options) {
 				openhmis.GenericModel.prototype.initialize.call(this, attributes, options);
+				this.on("change:defaultPrice", function(model, defaultPrice, options) {
+					this._getDefaultPriceFromPricesIfAvailable(defaultPrice.id || defaultPrice);
+				});
 				this.setPriceOptions();
 			},
 			
-		    set: function(key, value, options) {
-				if (typeof key === "string") {
-					switch (key) {
-						case "defaultPrice":
-							var price;
-							if (this.get("prices") && (price = this.get("prices").get(value)))
-								value = price;
+			_getDefaultPriceFromPricesIfAvailable: function(id) {
+				var prices = this.get("prices");
+				for (price in prices) {
+					if (prices[price].id !== undefined) {
+						if (prices[price].id === id) {
+							this.attributes["defaultPrice"] = new openhmis.ItemPrice(prices[price]);
 							break;
+						}
+					}
+					else if (prices[price].price && prices[price].price.toString() === id) {
+						this.attributes["defaultPrice"] = new openhmis.ItemPrice(prices[price]);
+						break;
 					}
 				}
-				return openhmis.GenericModel.prototype.set.call(this, key, value, options);
 			},
 			
 			fetch: function(options) {
@@ -123,7 +129,7 @@ define(
 					if (!(price instanceof openhmis.ItemPrice)) price = new openhmis.ItemPrice(price);
 					return {
 						val: price.id || price.price || price.get("price"),
-						label: openhmis.ItemPrice.prototype.format(price.get("price"))
+						label: price.toString()
 					}
 				});
 			},
@@ -154,7 +160,10 @@ define(
 					for (var price in this.attributes.prices)
 						delete this.attributes.prices[price].resourceVersion;
 				}
-				return openhmis.GenericModel.prototype.toJSON.call(this);
+				var json = openhmis.GenericModel.prototype.toJSON.call(this);
+				if (json.defaultPrice instanceof openhmis.ItemPrice)
+					json.defaultPrice = json.defaultPrice.get("price").toString();
+				return json;
 			},
 			
 			toString: function() {

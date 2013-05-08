@@ -1,14 +1,16 @@
 define(
 	[
-		'lib/jquery',
-		'lib/underscore',
-		'lib/backbone',
-		'view/generic',
-		'lib/i18n',
-		'lib/backbone-forms',
-		'view/editors',
-		'model/bill',
-		'model/cashPoint'
+		openhmis.url.backboneBase + 'js/lib/jquery',
+		openhmis.url.backboneBase + 'js/lib/underscore',
+		openhmis.url.backboneBase + 'js/lib/backbone',
+		openhmis.url.backboneBase + 'js/view/generic',
+		openhmis.url.backboneBase + 'js/lib/i18n',
+		openhmis.url.backboneBase + 'js/lib/backbone-forms',
+		openhmis.url.backboneBase + 'js/view/editors',
+		openhmis.url.cashierBase + 'js/view/editors',
+		openhmis.url.cashierBase + 'js/model/bill',
+		openhmis.url.cashierBase + 'js/model/cashPoint',
+		'link!' + openhmis.url.cashierBase + 'css/style.css'
 	],
 	function($, _, Backbone, openhmis, i18n) {
 		openhmis.BillLineItemView = openhmis.GenericListItemView.extend({
@@ -31,13 +33,12 @@ define(
 				if (form.fields.quantity.getValue() === 0)
 					form.fields.quantity.setValue(1);
 				this.update();
-				this.$('.field-quantity input').focus();
+				form.fields.quantity.editor.focus(true);
 			},
 			
 			updatePriceOptions: function(item, form) {
 				item = item ? item : this.model.get("item");
 				form = form ? form : this.form;
-				var price;
 				var defaultPrice = item ? item.get("defaultPrice") : undefined;
 				var price = this.model.get("price") || defaultPrice;
 				if (price !== undefined)
@@ -67,9 +68,17 @@ define(
 			},
 			
 			onKeyPress: function(event) {
-				if (event.keyCode === 13) {
-					var errors = this.commitForm(event);
+				if (event.keyCode === 13 /* Enter */)  {
+					this.commitForm(event);
+					// Prevent enter press from interfering with HTML form controls
+					event.preventDefault();
 				}
+			},
+			
+			commitForm: function(event) {
+				var errors = openhmis.GenericListItemView.prototype.commitForm.call(this, event);
+				if (errors === undefined && event && event.keyCode === 13)
+					this.trigger("focusNext", this);
 			},
 			
 			onModelChange: function(model) {
@@ -82,6 +91,14 @@ define(
 				// this is not triggered by enter key, skip the error message
 				if (event && event.type !== "keypress" && this.model.collection && this.model.collection.length > 0)
 					return;
+				// If there is already an item in the collection and the event
+				// was triggered by the enter key, request that focus be moved
+				// to the next form item.
+				else if (event && event.type === "keypress" && event.keyCode === 13
+						&& this.model.collection && this.model.collection.length > 0) {
+					this.trigger("focusNext", this);
+					return;
+				}
 				
 				for(var item in errorMap) {
 					var $errorEl = this.$('.field-' + item + ' .editor');
@@ -96,8 +113,9 @@ define(
 				if (!form)
 					this.$('.item-name').focus();
 			},
-						
-			removeModel: function() {
+			
+			// Maybe this should just be moved into generic.js			
+			_removeModel: function() {
 				if (this.model.collection)
 					this.model.collection.remove(this.model, { silent: true });
 			},
@@ -106,6 +124,10 @@ define(
 				openhmis.GenericListItemView.prototype.render.call(this);
 				this.updatePriceOptions();
 				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
+				this.$('td.field-quantity')
+					.add(this.$('td.field-price'))
+					.add(this.$('td.field-total'))
+					.addClass("numeric");
 				return this;
 			},
 		});
@@ -127,7 +149,7 @@ define(
 				this.options.roundToNearest = options.roundToNearest || 0;
 				this.options.roundingMode = options.roundingMode || "MID";
 				this.itemView = openhmis.BillLineItemView;
-				this.totalsTemplate = this.getTemplate("bill.html", '#bill-totals');
+				this.totalsTemplate = this.getTemplate(openhmis.url.cashierBase + "template/bill.html", '#bill-totals');
 			},
 			
 			schema: {
@@ -152,26 +174,38 @@ define(
 			
 			addOne: function(model, schema) {
 				var view = openhmis.GenericListView.prototype.addOne.call(this, model, schema);
-				view.$('td.field-quantity').add('td.field-price').add('td.field-total').addClass("numeric");
 				if (this.newItem && view.model.cid === this.newItem.cid) {
 					this.selectedItem = view;
 					view.on("change", this.setupNewItem);
 				}
 				else
 					view.on("change remove", this.bill.setUnsaved);
+				view.on("focusNext", this.focusNextFormItem);
 				return view;
 			},
 			
-			itemSelected: function(itemView) {
-				openhmis.GenericListView.prototype.itemSelected.call(this, itemView);
+			onItemSelected: function(itemView) {
+				openhmis.GenericListView.prototype.onItemSelected.call(this, itemView);
 				this.updateTotals();
 			},
 
-			itemRemoved: function(item) {
-				openhmis.GenericListView.prototype.itemRemoved.call(this, item);
-				if (item === this.newItem) {
+			onItemRemoved: function(item) {
+				delete item.view;
+				openhmis.GenericListView.prototype.onItemRemoved.call(this, item);
+				if (item === this.newItem && !item.view) {
 					this.setupNewItem();
 				}
+			},
+			
+			focusNextFormItem: function(itemView) {
+				var index = this.model.indexOf(itemView.model);
+				var next = (index >= 0) ? this.model.at(index + 1) : undefined;
+				if (next !== undefined)
+					next.view.focus();
+				else if (itemView.model !== this.newItem)
+					this.newItem.view.focus();
+				else
+					this.trigger("focusNext", this);
 			},
 			
 			patientSelected: function(patient) {
@@ -179,6 +213,11 @@ define(
 				this.focus();
 			},
 			
+			/**
+			 * Set up an empty input item and line.  Can be called without
+			 * parameters, or by a lineItemView that is transitioning from being
+			 * a new item to a validated item.
+			 */
 			setupNewItem: function(lineItemView) {
 				var dept_uuid;
 				// Handle adding an item from the input line
@@ -189,12 +228,13 @@ define(
 					this.model.add(lineItemView.model, { silent: true });
 					this.bill.setUnsaved();
 					lineItemView.on("change remove", this.bill.setUnsaved);
-					this.deselectAll();
+					this._deselectAll();
 					dept_uuid = lineItemView.model.get("item").get("department").id;
 				}
 				this.newItem = new openhmis.LineItem();
 				// Don't add the item to the collection, but give it a reference
 				this.newItem.collection = this.model;
+				// If the list is completely empty, we will rerender
 				if (this.$('p.empty').length > 0)
 					this.render();
 				else {
@@ -282,8 +322,13 @@ define(
 			},
 			
 			saveBill: function(options, post) {
-				options = options ? options : {};
-				if (!this.validate(post)) return false;
+				// Set up options, ignoring events
+				options = options !== undefined && options.srcElement === undefined ? options : {};
+				// If the bill is an adjustment, we will allow posting with zero
+				// line items
+				var billAdjusted = this.bill.get("billAdjusted");
+				var allowEmptyBill = (billAdjusted !== undefined && billAdjusted.id !== undefined);
+				if (!this.validate(allowEmptyBill)) return false;
 				if (this.cashPointForm !== undefined)
 					this.bill.set("cashPoint", this.cashPointForm.getValue("cashPoint"));
 				// Filter out any invalid lineItems (especially the bottom)
@@ -297,6 +342,8 @@ define(
 					&& this.bill.get("billAdjusted")
 					&& this.bill.get("status") === this.bill.BillStatus.PENDING)
 						this._postAdjustingBill(this.bill);
+				else if (post === true)
+					this.bill.set("status", this.bill.BillStatus.POSTED);
 				var print = options.print;
 				var success = options.success;
 				var error = options.error;
@@ -339,24 +386,26 @@ define(
 					// immediately set to PAID
 					adjustingBill.unset("status");
 					var view = this;
-					adjustingBill.save([], { success: function(model, resp) {
-						view.trigger("adjusted", model);
-					}});
+					adjustingBill.save([], {
+						success: function(model, resp) {
+							view.trigger("adjusted", model);
+						}, error: openhmis.error
+					});
 				}
 			},
 			
 			printReceipt: function(event) {
-				var url = openhmis.config.pageUrlRoot
+				var url = openhmis.url.getPage("cashierBase")
 					+ "receipt.form?receiptNumber=" + encodeURIComponent(this.bill.get("receiptNumber"));
-				if (event) {
-					if (this.bill.get("receiptNumber")) {
-						window.open(url, "pdfDownload");
-					}
-				}
-				else {
-					$iframe = $('<iframe id="receiptDownload" src="'+url+'" width="1" height="1"></iframe>');
-					$("body").append($iframe);
-				}
+				// Triggered by an event
+				//if (event) {}
+				// Print on page load (Post & Print)
+				//else {
+				// Remove if print has been clicked before?
+				$("#receiptDownload").remove();
+				$iframe = $('<iframe id="receiptDownload" src="'+url+'" width="1" height="1"></iframe>');
+				$iframe.load(function() { $(this).get(0).contentWindow.print(); });
+				$("body").append($iframe);
 			},
 			
 			render: function() {

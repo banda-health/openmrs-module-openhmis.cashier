@@ -17,21 +17,23 @@ package org.openmrs.module.openhmis.cashier.api;
 import liquibase.util.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.model.ItemCode;
 import org.openmrs.module.openhmis.cashier.api.model.ItemPrice;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataServiceTest;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
+public class IItemServiceTest extends IMetadataDataServiceTest<IItemService, Item> {
 	IDepartmentService departmentService;
 
-	public static final String ITEM_DATASET = BASE_DATASET_DIR + "ItemTest.xml";
+	public static final String ITEM_DATASET = TestConstants.BASE_DATASET_DIR + "ItemTest.xml";
 
 	@Override
 	public void before() throws Exception {
@@ -146,6 +148,47 @@ public class IItemServiceTest extends IMetadataServiceTest<IItemService, Item> {
 			Assert.assertEquals(expectedPrices[i].getName(), actualPrices[i].getName());
 			Assert.assertEquals(expectedPrices[i].getPrice(), actualPrices[i].getPrice());
 		}
+	}
+
+	@Test
+	public void save_shouldThrowAPIExceptionIfItemNameExistsInDepartment() {
+		Item item = createEntity(true);
+
+		service.save(item);
+		Context.flushSession();
+
+		// Create an item with the same name and department
+		Item item2 = createEntity(true);
+		Assert.assertEquals(item.getName(), item2.getName());
+		Assert.assertEquals(item.getDepartment(), item2.getDepartment());
+
+		// Try to save it.  Should throw an exception
+		APIException expectedException = null;
+		try {
+			service.save(item2);
+		} catch (APIException ex) {
+			expectedException = ex;
+		}
+		Assert.assertNotNull(expectedException);
+	}
+
+	@Test
+	public void save_shouldNotThrowAPIExceptionIfItemNameExistsForDifferentDepartment() {
+		Item item = createEntity(true);
+
+		service.save(item);
+		Context.flushSession();
+
+		// Create an item with the same name but for a different department
+		Item item2 = createEntity(true);
+		item2.setDepartment(departmentService.getById(1));
+
+		Assert.assertEquals(item.getName(), item2.getName());
+		Assert.assertFalse(item.getDepartment() == item2.getDepartment());
+
+		// Try to save.  It should succeed because the department is different
+		service.save(item2);
+		Context.flushSession();
 	}
 
 	/**

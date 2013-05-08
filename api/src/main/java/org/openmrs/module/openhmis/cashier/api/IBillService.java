@@ -19,13 +19,14 @@ import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
-import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional
-public interface IBillService extends IDataService<Bill> {
+public interface IBillService extends IEntityDataService<Bill> {
 	/**
 	 * Gets the {@link Bill} with the specified receipt number or {@code null} if not found.
 	 * @param receiptNumber The receipt number to search for.

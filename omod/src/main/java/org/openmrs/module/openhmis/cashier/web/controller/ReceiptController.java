@@ -20,6 +20,7 @@ import org.openmrs.module.jasperreport.JasperReportService;
 import org.openmrs.module.jasperreport.ReportGenerator;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,20 +35,22 @@ import java.util.HashMap;
 @RequestMapping(value = CashierWebConstants.RECEIPT)
 public class ReceiptController {
 	@RequestMapping(method=RequestMethod.GET)
-	public String get(@RequestParam(value = "receiptNumber", required = false) String receiptNumber, HttpServletResponse response) throws IOException {
+	public void get(@RequestParam(value = "receiptNumber", required = false) String receiptNumber, HttpServletResponse response) throws IOException {
 		if (receiptNumber != null) {
-			String fileName = receiptNumber.replaceAll("\\W", "") + ".pdf";
 			IBillService service = Context.getService(IBillService.class);
 			Bill bill = service.getBillByReceiptNumber(receiptNumber);
 			if (bill == null) {
-				response.sendError(404, "Could not find bill with receipt number \""+receiptNumber+"\""); return null;
+				response.sendError(404, "Could not find bill with receipt number \""+receiptNumber+"\""); return;
+			}
+			if (bill.isReceiptPrinted() && !Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT)) {
+				response.sendError(403, "You do not have permission to reprint receipt \""+receiptNumber+"\""); return;
 			}
 			AdministrationService adminService = Context.getAdministrationService();
 			Integer reportId;
 			try {
 				reportId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY));
 			} catch (Exception e) {
-				response.sendError(500, "Configuration error: need to specify global option for default report ID."); return null;
+				response.sendError(500, "Configuration error: need to specify global option for default report ID."); return;
 			}
 			JasperReportService reportService = Context.getService(JasperReportService.class);
 			JasperReport report = reportService.getJasperReport(reportId);
@@ -55,13 +58,15 @@ public class ReceiptController {
 			HashMap<String, Object> params = new HashMap<String, Object>();
 			params.put("billId", bill.getId());
 			try {
-				ReportGenerator.generate(report, params, false, true);
+				ReportGenerator.generateHtmlAndWriteToResponse(report, params, response);
 			} catch (IOException e) {
-				response.sendError(500, "Error generating report for receipt \""+receiptNumber+"\""); return null;
+				response.sendError(500, "Error generating report for receipt \""+receiptNumber+"\""); return;
 			}
-			return "redirect:" + CashierWebConstants.REPORT_DOWNLOAD_URL + "?reportName=" + fileName;
+			bill.setReceiptPrinted(true);
+			service.save(bill);
+			return;
+			//return "redirect:" + CashierWebConstants.REPORT_DOWNLOAD_URL + "?reportName=" + fileName;
 		}
 		response.sendError(404);
-		return null;
 	}
 }

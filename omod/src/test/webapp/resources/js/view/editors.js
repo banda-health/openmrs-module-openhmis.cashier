@@ -3,7 +3,9 @@ describe("Item Editor", function() {
 	 * @requires server response
 	 */
 	it("should return the proper data after a search", function() {
-		require({'view/editors': null});
+		var required = {};
+		required[openhmis.url.cashierBase + 'js/view/editors'] = null;
+		require(required);
 
 		var response = jasmine.createSpy();
 

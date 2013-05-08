@@ -1,9 +1,9 @@
 define(
 	[
-		'lib/backbone',
-		'model/generic',
-		'lib/i18n',
-		'model/item'
+		openhmis.url.backboneBase + 'js/lib/backbone',
+		openhmis.url.backboneBase + 'js/model/generic',
+		openhmis.url.backboneBase + 'js/lib/i18n',
+		openhmis.url.cashierBase + 'js/model/item'
 	],
 	function(Backbone, openhmis, __) {
 		openhmis.LineItem = openhmis.GenericModel.extend({
@@ -12,7 +12,7 @@ define(
 				namePlural: 'Line Items'
 			},
 			schema: {
-				item: { type: 'NestedModel', model: openhmis.Item },
+				item: { type: 'NestedModel', model: openhmis.Item, objRef: true },
 				quantity: { type: 'BasicNumber' },
 				price: { type: 'BasicNumber', format: openhmis.ItemPrice.prototype.format },
 				total: { type: 'BasicNumber', readOnly: true, format: openhmis.ItemPrice.prototype.format }
@@ -73,8 +73,6 @@ define(
 			
 			toJSON: function() {
 				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
-				if (attrs.item)
-					attrs.item = attrs.item.id;
 				if (attrs.price)
 					attrs.price = parseFloat(attrs.price);
 				return attrs;

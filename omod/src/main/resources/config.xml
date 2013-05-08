@@ -16,8 +16,9 @@
 	<!-- / Module Properties -->
 
 	<require_modules>
-		<require_module version="1.1">org.openmrs.module.webservices.rest</require_module>
-		<require_module version="1.5.3">org.openmrs.module.jasperreport</require_module>
+		<require_module version="1.0.0">org.openmrs.module.openhmis.backboneforms</require_module>
+		<require_module version="1.5.0.0">org.openmrs.module.openhmis.commons</require_module>
+		<require_module version="1.5.4">org.openmrs.module.jasperreport</require_module>
 	</require_modules>
 	
 	<!-- Module Activator -->
@@ -53,6 +54,16 @@
 		<description>Fully qualified class name of the receipt number generator to be used.</description>
 	</globalProperty>
 	
+	<globalProperty>
+		<property>${project.parent.artifactId}.roundingItemId</property>
+		<description>ID of the item used to account for bill total rounding.</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.roundingDeptId</property>
+		<description>ID of the department of the rounding item.</description>
+	</globalProperty>
+	
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
@@ -61,10 +72,6 @@
 	<extension>
 		<point>org.openmrs.gutter.tools</point>
 		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierMenuItem</class>
-	</extension>
-	<extension>
-		<point>org.openmrs.headerFullIncludeExt</point>
-		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierHeadIncludes</class>
 	</extension>
 	<extension>
 		<point>org.openmrs.patientDashboardTab</point>
@@ -85,6 +92,21 @@
 	<privilege>
 		<name>Manage Cashier Bills</name>
 		<description>Able to add/edit/delete bills</description>
+	</privilege>
+
+	<privilege>
+		<name>Adjust Cashier Bills</name>
+		<description>Able to adjust bills</description>
+	</privilege>
+
+	<privilege>
+		<name>Give Refund</name>
+		<description>Able to create/adjust a bill so that it refunds money.</description>
+	</privilege>
+
+	<privilege>
+		<name>Reprint Receipt</name>
+		<description>Able to print bill receipts more than once.</description>
 	</privilege>
 		
 	<privilege>

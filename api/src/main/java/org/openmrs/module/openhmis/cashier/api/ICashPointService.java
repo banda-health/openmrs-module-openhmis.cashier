@@ -14,8 +14,8 @@
 package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
-import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 
-public interface ICashPointService extends IMetadataService<CashPoint> {
+public interface ICashPointService extends IMetadataDataService<CashPoint> {
 }
 

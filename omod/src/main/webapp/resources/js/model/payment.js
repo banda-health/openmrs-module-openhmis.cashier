@@ -1,13 +1,27 @@
 define(
     [
-        'lib/underscore',
-        'lib/backbone',
-        'model/generic',
-        'lib/i18n',
-        'model/item',
-        'model/fieldGenHandler'
+        openhmis.url.backboneBase + 'js/lib/underscore',
+        openhmis.url.backboneBase + 'js/lib/backbone',
+        openhmis.url.backboneBase + 'js/model/generic',
+        openhmis.url.backboneBase + 'js/lib/i18n',
+        openhmis.url.cashierBase + 'js/model/item',
+        openhmis.url.backboneBase + 'js/model/fieldGenHandler'
     ],
     function(_, Backbone, openhmis, __) {
+        openhmis.PaymentAttribute = openhmis.GenericModel.extend({
+            schema: {
+                paymentModeAttributeType: { type: "Object", objRef: true },
+                value: { type: "Text" }
+            },
+            
+            parse: function(resp) {
+                if (resp.paymentModeAttributeType)
+                    resp.paymentModeAttributeType =
+                        new openhmis.PaymentModeAttributeType(resp.paymentModeAttributeType, { parse: true });
+                return resp;
+            }
+        });
+        
         openhmis.Payment = openhmis.GenericModel.extend({
             meta: {
                 name: "Payment",
@@ -23,7 +37,7 @@ define(
                 amountTendered: { type: 'BasicNumber' },
                 amountTenderedFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
                 paymentMode: { type: 'Object', objRef: true },
-                attributes: { type: 'Object' }
+                attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute }
             },
             
             url: function() {
@@ -46,17 +60,17 @@ define(
 				}
 			},
             
-            validate: function(final) {
+            validate: function(goAhead) {
    				// By default, backbone validates every time we try try to alter
 				// the model.  We don't want to be bothered with this until we
 				// care.
-                if (final !== true) return null;
+                if (goAhead !== true) return null;
                 
                 if (this.get("amount") === null || this.get("amount") === undefined)
                     return { amount: __("Amount is required.") }
                 if (isNaN(this.get("amount")))
                     return { amount: __("Amount needs to be a number") }
-                if (!this.get("paymentMode"))
+                if (!this.get("paymentMode") || !this.get("paymentMode").id)
                     return { paymentMode: __("Payment mode is required.") }
                 return null;
             },
@@ -64,11 +78,24 @@ define(
             parse: function(resp) {
                 if (resp.paymentMode)
                     resp.paymentMode = new openhmis.PaymentMode(resp.paymentMode);
+                if (resp.attributes) {
+                    var attributes = resp.attributes;
+                    resp.attributes = [];
+                    for (attr in attributes) {
+                        var paymentAttribute = new openhmis.PaymentAttribute(attributes[attr], { parse: true });
+                        if (attributes[attr].order !== undefined)
+                            resp.attributes[attributes[attr].order] = paymentAttribute;
+                        else
+                            resp.attributes.push(paymentAttribute);
+                    }
+                }
                 return resp;
             },
             
             toJSON: function() {
                 var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
+                if (attrs.paymentMode)
+                    attrs.paymentMode = attrs.paymentMode.id;
                 return attrs;
             }
         });

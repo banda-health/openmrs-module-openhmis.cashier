@@ -14,12 +14,14 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.annotation.Handler;
-import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
@@ -32,10 +34,9 @@ public class PaymentModeResource extends BaseRestMetadataResource<PaymentMode> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-
-		description.addProperty("name");
-		description.addProperty("attributeTypes");
-
+		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
+			description.addProperty("attributeTypes");
+		}
 		return description;
 	}
 
@@ -43,7 +44,6 @@ public class PaymentModeResource extends BaseRestMetadataResource<PaymentMode> {
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = super.getCreatableProperties();
 
-		description.addProperty("name");
 		description.addProperty("attributeTypes");
 
 		return description;
@@ -66,9 +66,8 @@ public class PaymentModeResource extends BaseRestMetadataResource<PaymentMode> {
 		return new PaymentMode();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends IMetadataService<PaymentMode>> getServiceClass() {
+	public Class<? extends IMetadataDataService<PaymentMode>> getServiceClass() {
 		return IPaymentModeService.class;
 	}
 }

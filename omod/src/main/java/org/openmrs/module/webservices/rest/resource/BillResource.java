@@ -26,7 +26,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
-import org.openmrs.module.openhmis.cashier.api.IDataService;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
@@ -34,6 +34,7 @@ import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.api.util.RoundingUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -53,11 +54,11 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
 			description.addProperty("adjustedBy", Representation.REF);
 			description.addProperty("billAdjusted", Representation.REF);
-			description.addProperty("cashPoint");
+			description.addProperty("cashPoint", Representation.REF);
 			description.addProperty("cashier", Representation.REF);
 			description.addProperty("lineItems");
-			description.addProperty("patient");
-			description.addProperty("payments");
+			description.addProperty("patient", Representation.REF);
+			description.addProperty("payments", Representation.FULL);
 			description.addProperty("receiptNumber");
 			description.addProperty("status");
 		}
@@ -109,6 +110,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			instance.setStatus(status);
 		else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED)
 			instance.setStatus(status);
+		if (status == BillStatus.POSTED)
+			RoundingUtil.addRoundingLineItem(instance);
 	}
 
 	@Override
@@ -160,8 +163,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IDataService<Bill>> getServiceClass() {
-		return (Class<IDataService<Bill>>)(Object)IBillService.class;
+	public Class<IEntityDataService<Bill>> getServiceClass() {
+		return (Class<IEntityDataService<Bill>>)(Object)IBillService.class;
 	}
 
 	public String getDisplayString(Bill instance) {

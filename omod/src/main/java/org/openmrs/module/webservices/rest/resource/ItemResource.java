@@ -17,12 +17,12 @@ import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
-import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.cashier.api.model.Department;
 import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.api.model.ItemCode;
 import org.openmrs.module.openhmis.cashier.api.model.ItemPrice;
-import org.openmrs.module.openhmis.cashier.api.util.PagingInfo;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
@@ -201,7 +201,7 @@ public class ItemResource extends BaseRestMetadataResource<Item> {
 	}
 	
 	@Override
-	public Class<? extends IMetadataService<Item>> getServiceClass() {
+	public Class<? extends IMetadataDataService<Item>> getServiceClass() {
 		return IItemService.class;
 	}
 }

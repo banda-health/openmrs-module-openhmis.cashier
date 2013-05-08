@@ -1,83 +1,9 @@
-/* General styles */
-h2 span.heading_annotation {
-	font-size: 10pt;
-	font-weight: normal;
-}
-div.clear { clear: both;}
-
-ul.floating { list-style: none; margin: 0; padding: 0; }
-ul.floating li {
-	display: block;
-	float: left;
-}
-
-/* General form styles */
-/* Table styles */
-table.form td { padding-right: 20px; }
-table.form td.end { padding-right: 0px; }
-table.form tbody th { font-weight: normal; }
-
-/* List styles */
-form.bbf-form fieldset { border: none; }
-form.bbf-form ul { padding: 0; margin: 0; }
-li.bbf-field, .bbf-list li { list-style: none; position: relative }
-li.bbf-field label { }
-li.bbf-field div.bbf-editor { position: relative; top: -1.3em; margin-left: 170px; }
-div.bbf-help, div.bbf-error {
-	position: absolute;
-	display: none;
-	top: 0;
-	left: 350px;
-	background-color: #c00;
-	color: #fff;
-	border-radius: 2px;
-	padding: 2px 4px;
-}
-.bbf-field.bbf-error div.bbf-help,
-.bbf-field.bbf-error div.bbf-error { display: block; }
-.bbf-form.inline li.bbf-field { display: inline-block; margin-right: 20px; }
-.bbf-form.inline li.bbf-field label { margin-right: .5em; }
-.bbf-form.inline li.bbf-field label:after { content: ':'; }
-.bbf-form.inline li.bbf-field div.bbf-editor { display: inline-block; top: auto; margin-left: auto; }
-
-/* Generic Add/Edit */
-input.reason { width: 25em; }
-.selectable { cursor: pointer; }
-
-/* List editor styles */
-.bbf-list li { display: block; clear: both; height: 2em; padding-left: 1px; margin-left: -2em; }
-.bbf-editor-container div div { margin-left: 2.5em; }
-.bbf-list button.bbf-remove { float: left; width: 1.9em; margin-top: -2px; }
-.bbf-list-modal { cursor: pointer; }
-.bbf-actions { clear: both; }
-
-.bbf-list .bbf-editor-container { margin-top: 3px; }
-.bbf-list .ui-sortable .bbf-editor-container div div { margin-left: 4.5em; }
-.bbf-list .ui-sortable button.bbf-remove { margin-top: 1px; }
-.bbf-list ul.ui-sortable li {
-	margin-bottom: 1px; border: 1px solid #bbb;
-	cursor: move;
-	background: #f9f9f9 url('../images/handle.png') 2.2em center no-repeat;
-}
-
 /* Item editor styles */
 .editor .item-name { position: relative; z-index: 1; }
 
 /* Input hint styles */
 span.label-hint { position: relative; }
 .label-hint label { position: absolute; bottom: 0px; left: 3px; font-style: italic; color: #999; cursor: text; z-index: 0; }
-
-/* Generic data table styles */
-table.display { width: 100%; border-spacing: 0; margin-bottom: 100px; }
-table.display tr.even.row_selected td, table.display tr.odd.row_selected td,
-table.display tr.row_selected
-{ background-color: #f0e68c !important; }
-
-td.item-actions input { visibility: hidden; }
-tr.row_selected td.item-actions input, tr:hover td.item-actions input
-{ visibility: visible; }
-
-div.paging-container { margin-top: .5em; }
 
 /* Bill styles */
 ul#bill-info { font-size: 10pt; }
@@ -105,9 +31,6 @@ table.bill td, table.bill th {
 }
 table.bill td.end, table.bill th.end { border-right: none; }
 
-td.numeric, td.numeric input {
-	text-align: right;
-}
 table.bill .field-item .editor .department-name { width: 31%; }
 table.bill .field-item .editor .item-name { width: 66%; }
 
@@ -126,16 +49,5 @@ div.box, div.combineBoxes { margin-bottom: 1em; }
 #paymentList { font-size: inherit; }
 #paymentList b.boxHeader, #paymentList div.box { width: auto; }
 .paymentList .field-amountFmt, .paymentList .field-amountTenderedFmt,
-.paymentList .field-paymentMode { width: 13%; }
-
-input.search { width: 250px; }
-
-/** Validation **/
-div.validation {
-	position: absolute;
-	top: -1.7em;
-	background-color: #b00;
-	color: #fff;
-	padding: 2px 4px;
-	z-index: 10;
-}
+.paymentList .field-paymentMode, .paymentList .field-dateCreatedFmt { width: 13%; }
+.paymentList td.field-Details { color: #777; }

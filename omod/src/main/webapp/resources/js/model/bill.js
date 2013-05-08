@@ -1,10 +1,10 @@
 define(
 	[
-		'model/generic',
-		'model/cashPoint',
-		'model/patient',
-		'model/payment',
-		'model/lineItem'
+		openhmis.url.backboneBase + 'js/model/generic',
+		openhmis.url.cashierBase + 'js/model/cashPoint',
+		openhmis.url.backboneBase + 'js/model/patient',
+		openhmis.url.cashierBase + 'js/model/payment',
+		openhmis.url.cashierBase + 'js/model/lineItem'
 	],
 	function(openhmis) {
 		openhmis.Bill = openhmis.GenericModel.extend({
@@ -19,9 +19,9 @@ define(
 			schema: {
 				billAdjusted: { type: 'Object', objRef: true },
 				cashPoint: { type: 'Object', objRef: true },
-				lineItems: { type: 'Object'},
+				lineItems: { type: "List", itemType: "NestedModel", model: openhmis.LineItem },
 				patient: { type: 'Object', objRef: true },
-				payments: { type: 'Object'},
+				payments: { type: "List", itemType: "NestedModel", model: openhmis.Payment},
 				status: { type: 'Text' }
 			},
 						
@@ -90,11 +90,11 @@ define(
 				return Math.min(total, totalPayments);
 			},
 			
-			validate: function(final) {
+			validate: function(goAhead) {
 				// By default, backbone validates every time we try try to alter
 				// the model.  We don't want to be bothered with this until we
 				// care.
-                if (final !== true) return null;
+                if (goAhead !== true) return null;
 				
 				if (this.get("patient") === undefined)
 					return { patient: "A bill needs to be associated with a patient." }
@@ -108,9 +108,8 @@ define(
 				if (attrs.lineItems) {
 					attrs.lineItems = attrs.lineItems.toJSON();
 					for (var i in attrs.lineItems)
-						attrs.lineItems[i].lineItemOrder = i;
+						attrs.lineItems[i].lineItemOrder = parseInt(i);
 				}
-				if (attrs.payments) attrs.payments = attrs.payments.toJSON();
 				return attrs;
 			},
 			
@@ -144,5 +143,7 @@ define(
 				return str ? str : openhmis.GenericModel.prototype.toString.call(this);
 			}
 		});
+		
+		return openhmis;
 	}
 );

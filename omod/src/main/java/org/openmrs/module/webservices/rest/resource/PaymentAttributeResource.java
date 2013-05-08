@@ -13,12 +13,51 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import org.openmrs.Concept;
 import org.openmrs.annotation.Handler;
-import org.openmrs.module.openhmis.cashier.api.IDataService;
+import org.openmrs.api.ConceptService;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
+import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
 @Handler(supports = {PaymentAttribute.class}, order = 0)
 public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttribute> {
+
+	@Override
+	public DelegatingResourceDescription getRepresentationDescription(
+			Representation rep) {
+		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
+			description.addProperty("paymentModeAttributeType", Representation.REF);
+			description.addProperty("value");
+			description.addProperty("valueName", findMethod("getValueName"));
+			description.addProperty("order", findMethod("getAttributeOrder"));
+		}
+		return description;
+	}
+	
+	@Override
+	public String getDisplayString(PaymentAttribute instance) {
+		return instance.getPaymentModeAttributeType().getName() + ": " + instance.getValue();
+	}
+	
+	public String getValueName(PaymentAttribute instance) {
+		if (instance.getPaymentModeAttributeType().getFormat().indexOf("Concept") != -1) {
+			ConceptService service = Context.getService(ConceptService.class);
+			Concept concept = service.getConcept(instance.getValue());
+			return concept.getDisplayString();
+		}		
+		
+		else return instance.getValue(); 	
+	}
+
+	public Integer getAttributeOrder(PaymentAttribute instance) {
+		return instance.getPaymentModeAttributeType().getAttributeOrder();
+	}
 
 	@Override
 	public PaymentAttribute newDelegate() {
@@ -26,7 +65,7 @@ public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttrib
 	}
 
 	@Override
-	public Class<IDataService<PaymentAttribute>> getServiceClass() {
+	public Class<IEntityDataService<PaymentAttribute>> getServiceClass() {
 		throw new RuntimeException("No service class implemented for " + getClass().getSimpleName());
 	}
 }

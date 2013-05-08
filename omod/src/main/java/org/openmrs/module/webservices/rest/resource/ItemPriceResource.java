@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 
 import org.openmrs.annotation.Handler;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
-import org.openmrs.module.openhmis.cashier.api.IMetadataService;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.cashier.api.model.ItemPrice;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
@@ -25,7 +25,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.response.ConversionException;
 
 @Handler(supports = ItemPrice.class, order = 0)
-public class ItemPriceResource extends BaseRestMetadataResource<ItemPrice> implements IMetadataServiceResource<ItemPrice> {
+public class ItemPriceResource extends BaseRestMetadataResource<ItemPrice> implements IMetadataDataServiceResource<ItemPrice> {
 
 	@PropertySetter(value = "price")
 	public void setPrice(ItemPrice instance, Object price) throws ConversionException {
@@ -58,8 +58,8 @@ public class ItemPriceResource extends BaseRestMetadataResource<ItemPrice> imple
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataService<ItemPrice>> getServiceClass() {
-		return (Class<IMetadataService<ItemPrice>>)(Object)IItemService.class;
+	public Class<IMetadataDataService<ItemPrice>> getServiceClass() {
+		return (Class<IMetadataDataService<ItemPrice>>)(Object)IItemService.class;
 	}
 
 	@Override

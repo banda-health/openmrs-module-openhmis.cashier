@@ -20,14 +20,15 @@ import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.GroupSequence;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
+import org.openmrs.module.openhmis.commons.api.entity.IObjectDataServiceTest;
 
 import java.util.List;
 import java.util.Properties;
 
 public class ISequentialReceiptNumberGeneratorServiceTest
-		extends IEntityServiceTest<ISequentialReceiptNumberGeneratorService, SequentialReceiptNumberGeneratorModel> {
+		extends IObjectDataServiceTest<ISequentialReceiptNumberGeneratorService, SequentialReceiptNumberGeneratorModel> {
 	public static final String SEQUENTIAL_RECEIPT_NUMBER_GENERATOR_DATASET =
-			BASE_DATASET_DIR + "SequentialReceiptNumberGenerator.xml";
+			TestConstants.BASE_DATASET_DIR + "SequentialReceiptNumberGenerator.xml";
 
 	@Override
 	public Properties getRuntimeProperties() {

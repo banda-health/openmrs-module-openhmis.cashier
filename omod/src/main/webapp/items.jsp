@@ -7,5 +7,3 @@
 <h2>
 	<spring:message code="openhmis.cashier.admin.items" />
 </h2>
-
-<%@ include file="template/genericAddEdit.jsp"%>

@@ -14,8 +14,9 @@
 package org.openmrs.module.openhmis.cashier.api.security;
 
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.commons.api.entity.security.IObjectAuthorizationPrivileges;
 
-public class BasicEntityAuthorizationPrivileges implements IEntityAuthorizationPrivileges {
+public class BasicEntityAuthorizationPrivileges implements IObjectAuthorizationPrivileges {
 	@Override
 	public String getSavePrivilege() {
 		return CashierPrivilegeConstants.MANAGE_METADATA;

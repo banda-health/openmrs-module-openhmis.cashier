@@ -16,8 +16,11 @@ package org.openmrs.module.openhmis.cashier.api.model;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 
 import java.math.BigDecimal;
+import java.security.AccessControlException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +40,16 @@ public class Bill extends BaseOpenmrsData {
 	private List<BillLineItem> lineItems;
 	private Set<Payment> payments;
 	private Set<Bill> adjustedBy;
+	private Boolean receiptPrinted = false;
 	
+	public Boolean isReceiptPrinted() {
+		return receiptPrinted;
+	}
+
+	public void setReceiptPrinted(Boolean receiptPrinted) {
+		this.receiptPrinted = receiptPrinted;
+	}
+
 	public BigDecimal getTotal() {
 		if (lineItems == null) return new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
@@ -253,6 +265,7 @@ public class Bill extends BaseOpenmrsData {
 	}
 
 	public void addAdjustedBy(Bill adjustedBill) {
+		checkAuthorizedToAdjust();
 		if (adjustedBill == null) {
 			throw new NullPointerException("The adjusted bill to add must be defined.");
 		}
@@ -269,6 +282,11 @@ public class Bill extends BaseOpenmrsData {
 		if (adjustedBill != null && this.adjustedBy != null) {
 			this.adjustedBy.remove(adjustedBill);
 		}
+	}
+	
+	private void checkAuthorizedToAdjust() {
+		if (!Context.hasPrivilege(CashierPrivilegeConstants.ADJUST_BILLS))
+			throw new AccessControlException("Access denied to adjust bill.");
 	}
 }
 

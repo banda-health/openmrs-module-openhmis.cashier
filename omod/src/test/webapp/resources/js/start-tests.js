@@ -1,26 +1,22 @@
 (function() {
 curl(
 	{
-		baseUrl: openhmis.config.wwwUrlRoot + "js"
+		baseUrl: openhmis.url.resources
 	},
 	[
-		'lib/jquery',
-		'model/item'
+		openhmis.url.backboneBase + 'js/lib/jquery',
+		openhmis.url.cashierBase + 'js/model/item'
 	],
 	function($, openhmis) {
 		var testBaseUrl = '/src/test/webapp/resources/js';
 		curl(
 			[
-				'js!' + testBaseUrl + '/openhmis.js',
-				'js!' + testBaseUrl + '/model/generic.js',
 				'js!' + testBaseUrl + '/model/item.js',
-				'js!' + testBaseUrl + '/view/generic.js',
-				'js!' + testBaseUrl + '/view/paginate.js',
+				'js!' + testBaseUrl + '/model/payment.js',
+				'js!' + testBaseUrl + '/model/bill.js',
 				'js!' + testBaseUrl + '/view/editors.js',
 				'js!' + testBaseUrl + '/view/bill.js',
-				'js!' + testBaseUrl + '/view/item.js',
-				'js!' + testBaseUrl + '/model/payment.js',
-				'js!' + testBaseUrl + '/lib/i18n.js'
+				'js!' + testBaseUrl + '/view/item.js'
 			],
 			function() {
 				$(function() {

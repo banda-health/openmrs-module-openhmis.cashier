@@ -1,12 +1,12 @@
 define(
 	[
-		'lib/jquery',
-		'lib/backbone',
-		'model/payment',
-		'lib/i18n',
-		'model/bill',
-		'lib/backbone-forms',
-		'view/generic'
+		openhmis.url.backboneBase + 'js/lib/jquery',
+		openhmis.url.backboneBase + 'js/lib/backbone',
+		openhmis.url.cashierBase + 'js/model/payment',
+		openhmis.url.backboneBase + 'js/lib/i18n',
+		openhmis.url.cashierBase + 'js/model/bill',
+		openhmis.url.backboneBase + 'js/lib/backbone-forms',
+		openhmis.url.backboneBase + 'js/view/generic'
 	],
 	function($, Backbone, openhmis, i18n) {
 		openhmis.PaymentModeAddEditView = openhmis.GenericAddEditView.extend({
@@ -32,7 +32,7 @@ define(
 					var getValue = items[id].getValue;
 					var newGetValue = function() {
 						var order = $(this.el).attr("id");
-						var order = parseInt(order.substring(order.lastIndexOf('-') + 1));
+						order = parseInt(order.substring(order.lastIndexOf('-') + 1));
 						var value = getValue.call(this);
 						value.attributeOrder = order;
 						return value;
@@ -43,10 +43,23 @@ define(
 			}
 		});
 		
+		openhmis.PaymentListItemView = openhmis.GenericListItemView.extend({
+			render: function() {
+				openhmis.GenericListItemView.prototype.render.call(this);
+				var detailsTemplate = this.getTemplate(
+					openhmis.url.cashierBase + 'template/payment.html',
+					"#payment-attributes"
+				);
+				this.$("td.field-Details").html(detailsTemplate({ attributes: this.model.get("attributes") }));
+				return this;
+			}
+		});
+		
 		openhmis.PaymentView = Backbone.View.extend({
-			tmplFile: 'payment.html',
+			tmplFile: openhmis.url.cashierBase + 'template/payment.html',
 			tmplSelector: '#payment-view',
 			initialize: function(options) {
+				_.bindAll(this, "focus");
 				if (options) {
 					this.processCallback = options.processCallback;
 					if (options.paymentCollection)
@@ -61,10 +74,11 @@ define(
 				this.paymentCollection.sort();
 				this.paymentListView = new openhmis.GenericListView({
 					model: this.paymentCollection,
+					itemView: openhmis.PaymentListItemView,
 					id: "paymentList",
 					className: "paymentList",
-					listFields: ['dateCreatedFmt', 'amountTenderedFmt', 'paymentMode'],
-					//itemActions: this.readOnly ? [] : ["remove"],
+					listFields: ['dateCreatedFmt', 'Details', 'amountTenderedFmt', 'paymentMode'],
+					//itemActions: ["details"],
 					showRetiredOption: false,
 					showPaging: false,
 					hideIfEmpty: true
@@ -91,11 +105,15 @@ define(
 				'click #processPayment': 'processPayment'
             },
 			
+			focus: function() {
+				this.form.focus();
+			},
+			
 			paymentModeChange: function(event) {
 				var paymentModeUuid = $(event.target).val();
 				var self = this;
 				// Load payment mode form HTML fragment from server
-				this.$attributes.load(openhmis.config.pageUrlRoot + "paymentModeFragment.form?uuid=" + paymentModeUuid,
+				this.$attributes.load(openhmis.url.getPage("cashierBase") + "paymentModeFragment.form?uuid=" + paymentModeUuid,
 					function(content) {
 						if ($(self.$attributes).find('#openmrs_dwr_error').length > 0 && content.indexOf("ContextAuthenticationException") !== -1) {
 							$(self.$attributes).html("");
@@ -117,10 +135,10 @@ define(
 						errors[attributeForm[i].name] = "This is a required field.";
 						break;
 					}
-					attributes[i] = {
+					attributes[i] = new openhmis.PaymentAttribute({
 						paymentModeAttributeType: attributeForm[i].name,
 						value: attributeForm[i].value
-					}
+					});
 				}
 				for (var e in errors) {
 					this.displayErrors(errors);
@@ -133,7 +151,7 @@ define(
 					name: this.form.fields["paymentMode"].editor.$('option:selected').text()
 				}));
 				this.model.set("dateCreated", new Date().getTime());
-				var errors = this.model.validate(true);
+				errors = this.model.validate(true);
 				if (errors) {
 					this.displayErrors(errors);
 					return false;
@@ -143,14 +161,16 @@ define(
 			
 			displayErrors: function(errorMap) {
 				for(var item in errorMap) {
-					var $errorEl = this.$('#'+item).parent();
+					var $errorControl = this.$('#'+item);
+					var $errorEl = $errorControl.parent();
 					if ($errorEl.length > 0) {
 						openhmis.validationMessage($errorEl, errorMap[item]);
+						$errorControl.focus();
 					}
 				}
 			},
 			
-			processPayment: function(event, something) {
+			processPayment: function(event) {
 				if (!this.commitForm()) return;
 				if (confirm(i18n("Are you sure you want to process a %s payment of %s?",
 							   this.model.get("paymentMode"), this.model.get("amountFmt")))) {

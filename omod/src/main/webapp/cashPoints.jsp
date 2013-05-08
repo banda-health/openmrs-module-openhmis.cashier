@@ -6,5 +6,3 @@
 <h2>
     <spring:message code="openhmis.cashier.admin.cashPoints" />
 </h2>
-
-<%@ include file="template/genericAddEdit.jsp"%>
