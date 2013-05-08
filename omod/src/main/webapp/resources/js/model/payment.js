@@ -94,8 +94,6 @@ define(
             
             toJSON: function() {
                 var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
-                if (attrs.paymentMode)
-                    attrs.paymentMode = attrs.paymentMode.id;
                 return attrs;
             }
         });
