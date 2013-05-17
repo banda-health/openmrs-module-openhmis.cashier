@@ -116,8 +116,9 @@ public class RoundingUtil {
 		ItemPrice roundingPrice = roundingItem.addPrice("Rounding", difference.abs());
 		// This is a little weird, but order has to be set, and this is the best I can come up with right now
 		int itemOrder;
-		// Try to set line item order to one greater than the order of the last item in the list
-		try { itemOrder = bill.getLineItems().get(bill.getLineItems().size() - 1).getLineItemOrder() + 1; }
+		// This should set the order to the last in the list, since the other
+		// items should be ordered starting from zero
+		try { itemOrder = bill.getLineItems().size(); }
 		catch (NullPointerException e) { itemOrder = 0; }
 		BillLineItem lineItem = bill.addLineItem(
 			roundingItem,

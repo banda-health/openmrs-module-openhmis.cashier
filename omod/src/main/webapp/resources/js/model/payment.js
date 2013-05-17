@@ -90,6 +90,11 @@ define(
                     }
                 }
                 return resp;
+            },
+            
+            toJSON: function() {
+                var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
+                return attrs;
             }
         });
         

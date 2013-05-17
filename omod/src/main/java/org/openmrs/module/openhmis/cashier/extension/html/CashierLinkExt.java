@@ -79,7 +79,7 @@ public class CashierLinkExt extends LinkExt {
 
 	@Override
 	public String getUrl() {
-		return "/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
+		return CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
 	}
 
 	@Override

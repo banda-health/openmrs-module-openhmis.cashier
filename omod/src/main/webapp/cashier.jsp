@@ -3,11 +3,14 @@
 <%--@elvariable id="timesheet" type="org.openmrs.module.openhmis.cashier.api.model.Timesheet"--%>
 <%--@elvariable id="returnUrl" type="java.lang.String"--%>
 
-<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require privilege="Manage Cashier Timesheets" otherwise="/login.htm" redirect="/module/openhmis/cashier/timesheetEntry.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp" %>
+<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
+<openmrs:htmlInclude file="/openmrs/ws/module/openhmis/backboneforms/init.js" />
+<openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/init.js" />
+
 <script type="text/javascript">
     //var $ = jQuery;
     $j(function() {
@@ -74,7 +77,7 @@
 
     function printReport() {
         var reportId = $j("#reportId").val();
-        var timesheetId = $j("input[name=timesheetId]:checked").val();
+        var timesheetId = jQuery("input[name=timesheetId]:checked").val();
 
         if (!timesheetId) {
             alert("You must select a timesheet to run the report.");
