@@ -23,6 +23,7 @@ import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.patient.impl.LuhnIdentifierValidator;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator {
@@ -162,17 +163,19 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 
 		int sequenceNumber = service.reserveNextSequence(groupingWithoutSep);
 
+		// Any changes to the date/time generation must be also applied to the unit tests that mock the date generation
 		SimpleDateFormat format;
+		Calendar cal = Calendar.getInstance();
 		String sequence = String.format("%0" + model.getSequencePadding() + "d", sequenceNumber);
 		switch (model.getSequenceType()) {
 			case DATE_COUNTER:
 				format = new SimpleDateFormat("yyMMdd");
-				sequence = format.format(new Date()) + sequence;
+				sequence = format.format(new Date(cal.getTimeInMillis())) + sequence;
 
 				break;
 			case DATE_TIME_COUNTER:
 				format = new SimpleDateFormat("yyMMddHHmmss");
-				sequence = format.format(new Date()) + sequence;
+				sequence = format.format(new Date(cal.getTimeInMillis())) + sequence;
 
 				break;
 		}

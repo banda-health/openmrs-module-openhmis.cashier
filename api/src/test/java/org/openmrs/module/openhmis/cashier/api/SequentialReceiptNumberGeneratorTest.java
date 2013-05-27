@@ -34,7 +34,7 @@ import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Context.class, Calendar.class})
+@PrepareForTest({Context.class, SequentialReceiptNumberGenerator.class})
 public class SequentialReceiptNumberGeneratorTest {
 	private ISequentialReceiptNumberGeneratorService service;
 	private SequentialReceiptNumberGenerator generator;
@@ -48,9 +48,8 @@ public class SequentialReceiptNumberGeneratorTest {
 				.thenReturn(service);
 
 		mockStatic(Calendar.class);
-		Calendar calendar = mock(Calendar.class);
-		when(Calendar.getInstance())
-				.thenReturn(calendar);
+		calendar = mock(Calendar.class);
+		when(Calendar.getInstance()).thenReturn(calendar);
 
 		generator = new SequentialReceiptNumberGenerator();
 	}
@@ -137,9 +136,9 @@ public class SequentialReceiptNumberGeneratorTest {
 		generator.load();
 		when(service.reserveNextSequence("")).thenReturn(52013);
 
-		Date date = new Date();
+		Date date = new Date(125, 0, 1, 13, 14, 15);
 		SimpleDateFormat format = new SimpleDateFormat("yyMMdd");
-		when(calendar.getTime()).thenReturn(date);
+		when(calendar.getTimeInMillis()).thenReturn(date.getTime());
 
 		number = generator.generateNumber(bill);
 		Assert.assertNotNull(number);
@@ -185,9 +184,9 @@ public class SequentialReceiptNumberGeneratorTest {
 		generator.load();
 		when(service.reserveNextSequence("P1CP3")).thenReturn(52013);
 
-		Date date = new Date();
+		Date date = new Date(125, 0, 1, 13, 14, 15);
 		SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
-		when(calendar.getTime()).thenReturn(date);
+		when(calendar.getTimeInMillis()).thenReturn(date.getTime());
 
 		number = generator.generateNumber(bill);
 		Assert.assertNotNull(number);
