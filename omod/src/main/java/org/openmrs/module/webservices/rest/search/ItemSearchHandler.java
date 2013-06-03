@@ -1,9 +1,5 @@
 package org.openmrs.module.webservices.rest.search;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
 import org.openmrs.module.openhmis.cashier.api.IItemService;
@@ -12,7 +8,7 @@ import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.resource.AlreadyPagedWithLength;
-import org.openmrs.module.webservices.rest.resource.MetadataSearcher;
+import org.openmrs.module.webservices.rest.resource.PagingUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
@@ -22,6 +18,10 @@ import org.openmrs.module.webservices.rest.web.resource.api.SearchQuery;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class ItemSearchHandler implements SearchHandler {
@@ -47,7 +47,7 @@ public class ItemSearchHandler implements SearchHandler {
 
 		if (department_uuid == null) {
 			// Do a name search
-			PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
+			PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 			List<Item> items = service.findByName(query, context.getIncludeAll(), pagingInfo);
 			AlreadyPagedWithLength<Item> results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
 			return results;
@@ -59,7 +59,7 @@ public class ItemSearchHandler implements SearchHandler {
 			if (query == null)
 				return searchByDepartment(department_uuid, context);
 			// Do a name + department search
-			PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
+			PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 			List<Item> items = service.findItems(department, query, context.getIncludeAll(), pagingInfo);
 			PageableResult results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
 			return results;
@@ -83,7 +83,7 @@ public class ItemSearchHandler implements SearchHandler {
 		IDepartmentService deptService = (IDepartmentService) Context.getService(IDepartmentService.class);
 		Department department = deptService.getByUuid(department_uuid);
 		
-		PagingInfo pagingInfo = MetadataSearcher.getPagingInfoFromContext(context);
+		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 		List<Item> items = service.getItemsByDepartment(department, context.getIncludeAll(), pagingInfo);
 		PageableResult results = new AlreadyPagedWithLength<Item>(context, items, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
 		return results;
