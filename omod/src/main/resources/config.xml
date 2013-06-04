@@ -114,22 +114,6 @@
 		<description>Able to purge bills</description>
 	</privilege>
 	
-	<!--  Items  -->
-	<privilege>
-		<name>View Cashier Items</name>
-		<description>Able to view billing items</description>
-	</privilege>
-	
-	<privilege>
-		<name>Manage Cashier Items</name>
-		<description>Able to add/edit/delete billing items</description>
-	</privilege>
-
-	<privilege>
-		<name>Purge Cashier Items</name>
-		<description>Able to purge billing items</description>
-	</privilege>
-
 	<!--  Metadata  -->
 	<privilege>
 		<name>View Cashier Metadata</name>
