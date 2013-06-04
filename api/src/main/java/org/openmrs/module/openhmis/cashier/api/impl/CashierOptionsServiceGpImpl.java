@@ -1,15 +1,15 @@
 package org.openmrs.module.openhmis.cashier.api.impl;
 
-import java.math.BigDecimal;
-
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
-import org.openmrs.module.openhmis.cashier.api.IItemService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
-import org.openmrs.module.openhmis.cashier.api.model.Item;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
+
+import java.math.BigDecimal;
 
 /**
  * Service to load CashierOptions from global options
@@ -34,7 +34,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 		} catch (NumberFormatException e) { /* Use default */ }
 		try {
 			Integer itemId = Integer.parseInt(service.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID));
-			IItemService itemService = Context.getService(IItemService.class);
+			IItemDataService itemService = Context.getService(IItemDataService.class);
 			Item roundingItem = itemService.getById(itemId);
 			options.setRoundingItemUuid(roundingItem.getUuid());
 		} catch (NumberFormatException e) {

@@ -14,6 +14,7 @@
 package org.openmrs.module.openhmis.cashier.api.model;
 
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
 
 import java.math.BigDecimal;
 

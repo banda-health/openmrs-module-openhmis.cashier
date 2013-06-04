@@ -25,6 +25,11 @@
 			<type>test-jar</type>
 		</dependency>
 
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.inventory-api</artifactId>
+		</dependency>
+
 		<!-- Begin OpenMRS core -->
 		
 		<dependency>

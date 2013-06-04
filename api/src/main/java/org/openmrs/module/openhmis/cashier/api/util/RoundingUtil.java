@@ -7,10 +7,15 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
-import org.openmrs.module.openhmis.cashier.api.IDepartmentService;
-import org.openmrs.module.openhmis.cashier.api.IItemService;
-import org.openmrs.module.openhmis.cashier.api.model.*;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
+import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
 
 import java.math.BigDecimal;
 
@@ -47,8 +52,8 @@ public class RoundingUtil {
 		String nearest = adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY);
 		if (nearest != null && !nearest.isEmpty() && nearest != "0") {
 			MessageSourceService msgService = Context.getMessageSourceService();
-			IDepartmentService deptService = Context.getService(IDepartmentService.class);
-			IItemService itemService = Context.getService(IItemService.class);
+			IDepartmentDataService deptService = Context.getService(IDepartmentDataService.class);
+			IItemDataService itemService = Context.getService(IItemDataService.class);
 
 			Integer itemId, deptId;
 
@@ -107,7 +112,7 @@ public class RoundingUtil {
 		if (options.getRoundingItemUuid() == null)
 			throw new APIException("No rounding item specified in options. This must be set in order to use rounding for bill totals.");
 		// Get rounding item
-		IItemService itemService = Context.getService(IItemService.class);
+		IItemDataService itemService = Context.getService(IItemDataService.class);
 		Item roundingItem = itemService.getByUuid(options.getRoundingItemUuid());
 		// Create rounding line item
 		BigDecimal difference = bill.getTotal().subtract(RoundingUtil.round(bill.getTotal(), options.getRoundToNearest(), options.getRoundingMode()));
