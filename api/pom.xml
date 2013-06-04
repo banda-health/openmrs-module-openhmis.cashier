@@ -30,6 +30,12 @@
 			<artifactId>openhmis.inventory-api</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.inventory-api</artifactId>
+			<type>test-jar</type>
+		</dependency>
+
 		<!-- Begin OpenMRS core -->
 		
 		<dependency>
