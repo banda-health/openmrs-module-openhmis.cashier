@@ -571,7 +571,7 @@
 		</addColumn>
 	</changeSet>
 	<changeSet id="openhmis.cashier-v2.0-0" author="ibewes">
-		<preConditions>
+		<preConditions onFail="MARK_RAN">
 			<and>
 				<tableExists tableName="inv_item" />
 				<sqlCheck expectedResult="0">
