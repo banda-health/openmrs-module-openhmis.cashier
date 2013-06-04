@@ -1,20 +1,20 @@
 package org.openmrs.module.openhmis.cashier.api.util;
 
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsServiceTest;
-import org.openmrs.module.openhmis.cashier.api.IItemServiceTest;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
+import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	private ICashierOptionsService cashOptService;
@@ -24,7 +24,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 		cashOptService = Context.getService(ICashierOptionsService.class);
 		
 		executeDataSet(ICashierOptionsServiceTest.OPTIONS_DATASET_VALID);
-		executeDataSet(IItemServiceTest.ITEM_DATASET);
+		executeDataSet(IItemDataServiceTest.ITEM_DATASET);
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	}
 
 	/**
-	 * @see RoundingUtil#roundBillTotal(Bill)
+	 * @see RoundingUtil#round(java.math.BigDecimal, java.math.BigDecimal, CashierOptions.RoundingMode)
 	 * @verifies round to nearest
 	 */
 	@Test
@@ -93,7 +93,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	}
 
 	/**
-	 * @see RoundingUtil#roundBillTotal(Bill)
+	 * @see RoundingUtil#round(java.math.BigDecimal, java.math.BigDecimal, CashierOptions.RoundingMode)
 	 * @verifies round to nearest ceiling
 	 */
 	@Test
@@ -106,7 +106,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	}
 
 	/**
-	 * @see RoundingUtil#roundBillTotal(Bill)
+	 * @see RoundingUtil#round(java.math.BigDecimal, java.math.BigDecimal, CashierOptions.RoundingMode)
 	 * @verifies round to nearest floor
 	 */
 	@Test

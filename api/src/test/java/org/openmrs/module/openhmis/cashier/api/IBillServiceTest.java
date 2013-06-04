@@ -20,9 +20,11 @@ import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.TestConstants;
 import org.openmrs.module.openhmis.cashier.api.model.*;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataServiceTest;
+import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
@@ -34,7 +36,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	private ProviderService providerService;
 	private PatientService patientService;
-	private IItemService itemService;
+	private IItemDataService itemService;
 	private IPaymentModeService paymentModeService;
 	private IPaymentModeAttributeTypeService paymentModeAttributeTypeService;
 	private ICashPointService cashPointService;
@@ -45,12 +47,12 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 		providerService = Context.getProviderService();
 		patientService = Context.getPatientService();
-		itemService = Context.getService(IItemService.class);
+		itemService = Context.getService(IItemDataService.class);
 		paymentModeService = Context.getService(IPaymentModeService.class);
 		paymentModeAttributeTypeService = Context.getService(IPaymentModeAttributeTypeService.class);
 		cashPointService = Context.getService(ICashPointService.class);
 
-		executeDataSet(IItemServiceTest.ITEM_DATASET);
+		executeDataSet(IItemDataServiceTest.ITEM_DATASET);
 		executeDataSet(IPaymentModeServiceTest.PAYMENT_MODE_DATASET);
 		executeDataSet(ICashPointServiceTest.CASH_POINT_DATASET);
 		executeDataSet(TestConstants.CORE_DATASET);
@@ -286,7 +288,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies throw NullPointerException if patient is null
-	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test(expected = NullPointerException.class)
 	public void findPatientBills_shouldThrowNullPointerExceptionIfPatientIsNull() throws Exception {
@@ -295,7 +297,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies return all bills for the specified patient
-	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
 	public void findPatientBills_shouldReturnAllBillsForTheSpecifiedPatient() throws Exception {
@@ -315,7 +317,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies return an empty list if the specified patient has no bills
-	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
 	public void findPatientBills_shouldReturnAnEmptyListIfTheSpecifiedPatientHasNoBills() throws Exception {
@@ -332,7 +334,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies throw IllegalArgumentException if the patientId is less than zero
-	 * @see IBillService#findPatientBills(int, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 * @see IBillService#findPatientBills(int, org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void findPatientBills_shouldThrowIllegalArgumentExceptionIfThePatientIdIsLessThanZero() throws Exception {
