@@ -17,14 +17,6 @@ package org.openmrs.module.openhmis.cashier.api.util;
 import org.openmrs.annotation.AddOnStartup;
 
 public class CashierPrivilegeConstants {
-	@AddOnStartup(description = "Able to add/edit/delete billing items")
-	public static final String MANAGE_ITEMS = "Manage Cashier Items";
-
-	@AddOnStartup(description = "Able to view billing items")
-	public static final String VIEW_ITEMS = "View Cashier Items";
-
-	public static final String PURGE_ITEMS = "Purge Cashier Items";
-
 	@AddOnStartup(description = "Able to add and edit bills")
 	public static final String MANAGE_BILLS = "Manage Cashier Bills";
 
