@@ -164,8 +164,6 @@
 	
 	<!-- Maps hibernate files, if present -->
 	<mappingFiles>
-		Department.hbm.xml
-		Item.hbm.xml
 		Bill.hbm.xml
 		Cashier.hbm.xml
 		SequentialReceiptNumberGenerator.hbm.xml

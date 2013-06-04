@@ -21,22 +21,6 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list merge="true">
-				<value>org.openmrs.module.openhmis.cashier.api.IItemService</value>
-				<ref bean="cashierItemService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.cashier.api.IDepartmentService</value>
-				<ref bean="cashierDepartmentService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
 				<value>org.openmrs.module.openhmis.cashier.api.IBillService</value>
 				<ref bean="cashierBillService" />
 			</list>
@@ -92,26 +76,6 @@
 	</bean>
 
 	<!-- Service Bean Definitions -->
-	<bean id="cashierItemService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.cashier.api.impl.ItemServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="cashierDepartmentService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.cashier.api.impl.DepartmentServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
 	<bean id="cashierBillService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">
