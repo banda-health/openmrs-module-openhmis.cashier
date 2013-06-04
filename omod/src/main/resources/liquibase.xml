@@ -570,4 +570,58 @@
 			</column>
 		</addColumn>
 	</changeSet>
+	<changeSet id="openhmis.cashier-v2.0-0" author="ibewes">
+		<preConditions>
+			<and>
+				<tableExists tableName="inv_item" />
+				<sqlCheck expectedResult="0">
+					SELECT COUNT(*) FROM inv_item
+				</sqlCheck>
+			</and>
+		</preConditions>
+		<comment>
+			This script copies the previously defined cashier departments and items (with associated child tables)
+			into the appropriate inventory module tables.  This script will only be run if the inventory module has been
+			installed but no items have been created.
+		</comment>
+		<sql>
+			INSERT INTO inv_department (department_id, name, description,
+			creator, date_created, changed_by, date_changed, retired, retired_by, date_retired,
+			retire_reason, uuid)
+			SELECT department_id, name, description,
+			creator, date_created, changed_by, date_changed, retired, retired_by, date_retired,
+			retire_reason, uuid
+			FROM cashier_department;
+
+			INSERT INTO inv_item (item_id, name, description, department_id, default_price_id,
+			creator, date_created, changed_by, date_changed, retired, retired_by, date_retired,
+			retire_reason, uuid)
+			SELECT item_id, name, description, department_id, default_price_id,
+			creator, date_created, changed_by, date_changed, retired, retired_by, date_retired,
+			retire_reason, uuid
+			FROM cashier_item;
+
+			INSERT INTO inv_item_code (item_code_id, item_id, code, name, description,
+			creator, date_created, changed_by, date_changed, retired, retired_by, date_retired,
+			retire_reason, uuid)
+			SELECT item_code_id, item_id, code, name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired,
+			retire_reason, uuid
+			FROM cashier_item_code;
+
+			INSERT INTO inv_item_price (item_price_id, item_id, price, name, description,
+			creator, date_created, changed_by, date_changed, retired, retired_by, date_retired,
+			retire_reason, uuid)
+			SELECT item_price_id, item_id, price, name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired,
+			retire_reason, uuid
+			FROM cashier_item_price;
+
+			ALTER TABLE cashier_bill_line_item DROP FOREIGN KEY cashier_bill_line_item_item_id_fk;
+			ALTER TABLE cashier_bill_line_item
+			ADD CONSTRAINT cashier_bill_line_item_item_id_fk
+			FOREIGN KEY (item_id)
+			REFERENCES inv_item (item_id)
+			ON DELETE RESTRICT
+			ON UPDATE RESTRICT;
+		</sql>
+	</changeSet>
 </databaseChangeLog>
