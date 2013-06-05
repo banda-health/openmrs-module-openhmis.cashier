@@ -12,8 +12,6 @@
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
 
-	  <mapping resource="Item.hbm.xml" />
-	  <mapping resource="Department.hbm.xml" />
 	  <mapping resource="Bill.hbm.xml" />
 	  <mapping resource="Cashier.hbm.xml" />
 	  <mapping resource="SequentialReceiptNumberGenerator.hbm.xml" />
