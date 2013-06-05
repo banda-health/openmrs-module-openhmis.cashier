@@ -4,7 +4,7 @@ define(
         openhmis.url.backboneBase + 'js/lib/backbone',
         openhmis.url.backboneBase + 'js/model/generic',
         openhmis.url.backboneBase + 'js/lib/i18n',
-        openhmis.url.cashierBase + 'js/model/item',
+        openhmis.url.inventoryBase + 'js/model/item',
         openhmis.url.backboneBase + 'js/model/fieldGenHandler'
     ],
     function(_, Backbone, openhmis, __) {
