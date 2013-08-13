@@ -32,6 +32,7 @@ import org.openmrs.module.openhmis.cashier.web.propertyeditor.EntityPropertyEdit
 import org.openmrs.module.openhmis.cashier.web.propertyeditor.ProviderPropertyEditor;
 import org.openmrs.module.openhmis.commons.api.ProviderHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -42,8 +43,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -71,6 +74,13 @@ public class CashierController {
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(CashPoint.class, new EntityPropertyEditor<CashPoint>(ICashPointService.class));
 		binder.registerCustomEditor(Provider.class, new ProviderPropertyEditor());
+		//Date-Time Formatting Fix
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		dateFormat.setLenient(false);
+		
+		//True passed to CustomDateEditor constructor means convert empty String to null
+		//Set system-wide date/time format for cashier module
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
