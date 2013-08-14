@@ -62,10 +62,10 @@
 <div id="bill"></div>
 <div id="payment" class="box"></div>
 
-<input type="submit" id="saveBill" value="Save Bill" />
-<input type="button" id="postBill" value="Post Bill" style="display: none;" />
+<input type="submit" id="saveBill" value="<spring:message code="openhmis.cashier.bill.saveBill" />" />
+<input type="button" id="postBill" value="<spring:message code="openhmis.cashier.bill.postBill" />" style="display: none;" />
 <c:if test="${!empty showPrint && showPrint == true}">
-	<input type="button" id="printReceipt" value="Print Receipt" style="display: none;" />
+	<input type="button" id="printReceipt" value="<spring:message code="openhmis.cashier.bill.printReceipt" />" style="display: none;" />
 </c:if>
 <br />
 
