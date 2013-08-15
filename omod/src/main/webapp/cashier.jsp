@@ -34,11 +34,13 @@
         hour = hour < 10 ? "0" + hour : hour.toString();
         min = min < 10 ? "0" + min: min.toString();
 
+        /*
         if (hour > 12) {
             ampm = "PM";
             hour -= 12;
         }
-        return month + '/' + day + '/' + year + " " + hour + ":" + min + " " + ampm;
+        */
+        return month + '/' + day + '/' + year + " " + hour + ":" + min;
     }
 
     function enterTime(elementId) {
