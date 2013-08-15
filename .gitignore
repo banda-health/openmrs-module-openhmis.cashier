@@ -42,6 +42,7 @@ pom.xml.releaseBackup
 
 ## generic files to ignore
 *~
+*.txt
 *.lock
 *.DS_Store
 *.swp
