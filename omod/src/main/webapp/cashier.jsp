@@ -103,11 +103,11 @@
 
 <h2><spring:message code="openhmis.cashier.page.timesheet" /></h2>
 <form:form method="POST" modelAttribute="timesheet">
-    <b class="boxHeader">Timesheet Entry</b>
+    <b class="boxHeader"><spring:message code="openhmis.cashier.page.timesheet.box.title" /></b>
     <div class="box">
         <ul>
             <li class="bbf-field field-name">
-                <label for="cashPoint">Cash Point</label>
+                <label for="cashPoint"><spring:message code="openhmis.cashier.page.timesheet.box.cash.point" /></label>
                 <div class="bbf-editor">
                     <spring:bind path="cashPoint">
                         <select id="cashPoint" name="${status.expression}">
@@ -121,24 +121,26 @@
                 </div>
             </li>
             <li class="bbf-field field-description">
-                <label for="clockIn">Clock In</label>
+                <label for="clockIn"><spring:message code="openhmis.cashier.page.timesheet.box.clock.in" /></label>
                 <div class="bbf-editor">
                     <spring:bind path="clockIn">
                         <input id="clockIn" name="${status.expression}" type="text" value="${status.value}" readonly="true" />
 
                         <c:if test="${timesheet.id == null}">
-                            <input type="button" value="Clock In" onclick="enterTime('clockIn');" />
+                            <input type="button" value="<spring:message code="openhmis.cashier.page.timesheet.box.button.clock.in" />" 
+                            	onclick="enterTime('clockIn');" />
                         </c:if>
                     </spring:bind>
                 </div>
             </li>
             <c:if test="${timesheet.id != null}">
                 <li class="bbf-field field-description">
-                    <label for="clockOut">Clock Out</label>
+                    <label for="clockOut"><spring:message code="openhmis.cashier.page.timesheet.box.clock.out" /></label>
                     <div class="bbf-editor">
                         <spring:bind path="clockOut">
                             <input id="clockOut" name="${status.expression}" type="text" value="${status.value}" />
-                            <input type="button" value="Clock Out" onclick="enterTime('clockOut');" />
+                            <input type="button" value="<spring:message code="openhmis.cashier.page.timesheet.box.button.clock.out" />" 
+                            	onclick="enterTime('clockOut');" />
                         </spring:bind>
                     </div>
                 </li>
@@ -149,25 +151,25 @@
         <input type="hidden" id="timesheetUuid" name="uuid" value="${timesheet.uuid}">
         <input type="hidden" id="cashier" name="cashier" value="${cashier.id}">
         <input type="hidden" id="returnUrl" name="returnUrl" value="${returnUrl}">
-        <input type="submit" value="Save">
+        <input type="submit" value="<spring:message code="openhmis.cashier.page.timesheet.box.button.save" />" >
     </div>
 </form:form>
 
 <c:if test="${shiftReport != null}">
 <form:form onsubmit="return false;">
     <h2><spring:message code="openhmis.cashier.page.reports" /></h2>
-    <b class="boxHeader">Reports</b>
+    <b class="boxHeader"><spring:message code="openhmis.cashier.page.reports.box.title" /></b>
     <div class="box">
         <ul>
             <li class="bbf-field field-description">
                 <h3>${shiftReport.name}</h3>
-                <label for="shiftDate">Select Shift Date:</label>
+                <label for="shiftDate"><spring:message code="openhmis.cashier.page.reports.box.select.shift.date" /></label>
                 <div class="bbf-editor">
                     <div style="float: left;">
                         <input id="shiftDate" type="text" /><br />
                     </div>
                     <div style="float: left; padding-left: 8px;">
-                        <label for="shiftSearchResults">Timesheets on Shift Date:</label>
+                        <label for="shiftSearchResults"><spring:message code="openhmis.cashier.page.reports.box.timesheets.shift.date" /></label>
                         <div id="shiftSearchResults"></div>
                     </div>
                     <div style="clear: both;"></div>
@@ -175,7 +177,7 @@
             </li>
         </ul>
         <input type="hidden" id="reportId" name="reportId" value="${shiftReport.reportId}">
-        <input type="submit" value="Generate Report" onclick="printReport()">
+        <input type="submit" value="<spring:message code="openhmis.cashier.page.reports.box.generate.report" />" onclick="printReport()">
     </div>
 </form:form>
 </c:if>
