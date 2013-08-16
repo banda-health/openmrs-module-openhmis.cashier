@@ -2,9 +2,9 @@
 <%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
 <%--@elvariable id="currentGenerator" type="org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator"--%>
 <%--@elvariable id="generators" type="java.util.List"--%>
-
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="../template/linksHeader.jsp"%>
 
 <openmrs:require privilege="Manage Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/admin/receiptNumberGenerator.form" />
 

@@ -21,21 +21,29 @@ public class CashierRoleController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void submit(String selectedRole, String newRoleName) {
-		//send role to the server
-		Role role = Context.getUserService().getRoleByUuid(selectedRole);
-
-		if (role == null) {
-			//log a message
-			throw new RuntimeException("Selected role does not exist");
-		}
-
-		for (Privilege priv : getCashierPrivileges()) {
-			if (!role.hasPrivilege(priv.getName())) {
-				role.addPrivilege(priv);
+	public void submit(String selectedRole, String newRole, String newRoleName) {
+		
+		if (selectedRole != null) {
+			//send role to the server
+			Role role = Context.getUserService().getRoleByUuid(selectedRole);
+	
+			if (role == null) {
+				//log a message
+				throw new RuntimeException("Selected role does not exist");
 			}
+	
+			for (Privilege priv : getCashierPrivileges()) {
+				if (!role.hasPrivilege(priv.getName())) {
+					role.addPrivilege(priv);
+				}
+			}
+			return;
 		}
-
+		if (newRole != null) {
+			
+			Role inheritedRole = Context.getUserService().getRoleByUuid(newRole);
+			inheritedRole.setName(newRoleName);
+		}
 
 		//server checks for privileges available in the role if any
 		//Using the privileges extracted from the role received, the server updates the database table storing privileges for the cashier
