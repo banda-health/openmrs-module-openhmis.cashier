@@ -11,7 +11,6 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.apache.commons.lang.StringUtils;
