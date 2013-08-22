@@ -1,8 +1,6 @@
 package org.openmrs.module.openhmis.cashier.model;
 
-import org.openmrs.BaseOpenmrsData;
-
-public class CashierRole extends BaseOpenmrsData{
+public class CashierRole {
 
 	private String privAdded; 
 	private String privRemoved; 
@@ -39,17 +37,5 @@ public class CashierRole extends BaseOpenmrsData{
 	
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	@Override
-	public Integer getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		// TODO Auto-generated method stub
-		
 	}
 }

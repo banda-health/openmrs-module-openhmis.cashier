@@ -8,36 +8,34 @@
 <script type="text/javascript">
 
 	function enableDisable() {
-		var radioAdd = document.getElementById('addCashierPriv');
-		var radioRemove = document.getElementById('removeCashierPriv');
-		var radioNew = document.getElementById('newRole');
-		var add = document.getElementById('privAdded');
-		var remove = document.getElementById('privRemoved');
-		var newRole = document.getElementById('newCashierRole');
+		var radioAdd = $j('#addCashierPriv');
+		var radioRemove = $j('#removeCashierPriv');
+		var radioNew = $j('#newRole');
+		var add = $j('#privAdded');
+		var remove = $j('#privRemoved');
+		var newRole = $j('#newCashierRole');
 		
 		if(radioAdd.checked) {
 			add.disabled=false;
 			remove.disabled=true;
 			newRole.value='';
 			newRole.disabled=true;
-			return;
+			
 		}
-		
-		if(radioRemove.checked) {
+		else if(radioRemove.checked) {
 			add.disabled=true;
 			remove.disabled=false;
 			newRole.value='';
 			newRole.disabled=true;
-			return;
+			
 		}
-		
-		if(radioNew.checked) {
+		else if(radioNew.checked) {
 			add.disabled=true;
 			remove.disabled=true;
 			newRole.disabled=false;
-			return;
+			
 		}
-		return;
+		else {}
 	}
 
 </script>
@@ -46,15 +44,6 @@
  th { text-align: left; }
 </style>
 
-<h2>
-	<spring:message code="openhmis.cashier.admin.role" />
-</h2>
-
-<p>
-Please select a role or add a new one:
-</p>
-
-<!-- error name cashier_role has been made up, not sure if we need to declare it elsewhere-->
 <spring:hasBindErrors name="cashierRole">
     <openmrs:message code="fix.error"/>
     <div class="error">
@@ -65,11 +54,19 @@ Please select a role or add a new one:
     <br />
 </spring:hasBindErrors>
 
+<h2>
+	<spring:message code="openhmis.cashier.admin.role" />
+</h2>
+
+<p>
+<spring:message code="openhmis.cashier.roleCreation.page.instruction" />
+</p>
+
 <form method="post" >
 	<table>
 		<tr>
 			<td><input id="addCashierPriv" type="radio" value="add" name="role" onClick="enableDisable();" /></td>
-			<th>Add Cashier Privileges</th>
+			<th><spring:message code="openhmis.cashier.roleCreation.page.label.add" /></th>
 			<td>
 				<select id="privAdded" name="privAdded">
 					<c:forEach items="${roles}" var="role">
@@ -80,7 +77,7 @@ Please select a role or add a new one:
 		</tr>
 		<tr>
 			<td><input id="removeCashierPriv" type="radio" value="remove" name="role" onClick="enableDisable();" /></td>
-			<th>Remove Cashier Privileges</th>
+			<th><spring:message code="openhmis.cashier.roleCreation.page.label.remove" /></th>
 			<td>
 				<select id="privRemoved" name="privRemoved">
 					<c:forEach items="${roles}" var="role">
@@ -91,7 +88,7 @@ Please select a role or add a new one:
 		</tr>
 		<tr>
 			<td><input id="newRole" type="radio" value="new" name="role" checked onClick="enableDisable();" /></td>
-			<th>Create New Role</th>
+			<th><spring:message code="openhmis.cashier.roleCreation.page.label.new" /></th>
 			<td>
 				<input id="newCashierRole" name="newCashierRole" type="text" /> 
 			</td>
