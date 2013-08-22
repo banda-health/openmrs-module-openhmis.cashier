@@ -6,7 +6,6 @@
 <%@ include file="template/linksHeader.jsp"%>
 
 <script type="text/javascript">
-
 	function enableDisable() {
 		var radioAdd = $j('#addCashierPriv');
 		var radioRemove = $j('#removeCashierPriv');
@@ -15,34 +14,23 @@
 		var remove = $j('#privRemoved');
 		var newRole = $j('#newCashierRole');
 		
-		if(radioAdd.checked) {
+		if (radioAdd.checked) {
 			add.disabled=false;
 			remove.disabled=true;
 			newRole.value='';
 			newRole.disabled=true;
-			
-		}
-		else if(radioRemove.checked) {
+		} else if (radioRemove.checked) {
 			add.disabled=true;
 			remove.disabled=false;
 			newRole.value='';
 			newRole.disabled=true;
-			
-		}
-		else if(radioNew.checked) {
+		} else if (radioNew.checked) {
 			add.disabled=true;
 			remove.disabled=true;
 			newRole.disabled=false;
-			
 		}
-		else {}
 	}
-
 </script>
-
-<style>
- th { text-align: left; }
-</style>
 
 <spring:hasBindErrors name="cashierRole">
     <openmrs:message code="fix.error"/>
@@ -62,11 +50,13 @@
 <spring:message code="openhmis.cashier.roleCreation.page.instruction" />
 </p>
 
-<form method="post" >
+<form method="post">
 	<table>
 		<tr>
-			<td><input id="addCashierPriv" type="radio" value="add" name="role" onClick="enableDisable();" /></td>
-			<th><spring:message code="openhmis.cashier.roleCreation.page.label.add" /></th>
+			<td>
+				<input id="addCashierPriv" type="radio" value="add" name="role" onClick="enableDisable();" />
+				<label for="addCashierPriv"><spring:message code="openhmis.cashier.roleCreation.page.label.add" /></label>
+			</td>
 			<td>
 				<select id="privAdded" name="privAdded">
 					<c:forEach items="${roles}" var="role">
@@ -76,8 +66,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input id="removeCashierPriv" type="radio" value="remove" name="role" onClick="enableDisable();" /></td>
-			<th><spring:message code="openhmis.cashier.roleCreation.page.label.remove" /></th>
+			<td>
+				<input id="removeCashierPriv" type="radio" value="remove" name="role" onClick="enableDisable();" />
+				<label for="removeCashierPriv"><spring:message code="openhmis.cashier.roleCreation.page.label.remove" /></label>
+			</td>
 			<td>
 				<select id="privRemoved" name="privRemoved">
 					<c:forEach items="${roles}" var="role">
@@ -87,8 +79,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input id="newRole" type="radio" value="new" name="role" checked onClick="enableDisable();" /></td>
-			<th><spring:message code="openhmis.cashier.roleCreation.page.label.new" /></th>
+			<td>
+				<input id="newRole" type="radio" value="new" name="role" checked onClick="enableDisable();" />
+				<label for="newRole"><spring:message code="openhmis.cashier.roleCreation.page.label.new" /></label>
+			</td>
 			<td>
 				<input id="newCashierRole" name="newCashierRole" type="text" /> 
 			</td>
