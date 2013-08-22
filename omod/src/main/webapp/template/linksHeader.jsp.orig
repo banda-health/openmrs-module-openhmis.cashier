@@ -6,7 +6,11 @@
 	</li>
 	<openmrs:hasPrivilege privilege="Manage Roles">
 		<li <c:if test='<%= request.getRequestURI().contains("cashier/role") %>'>class="active"</c:if>>
+<<<<<<< HEAD
+			<a href="${pageContext.request.contextPath}/module/openhmis/cashier/role.form">
+=======
 			<a href="${pageContext.request.contextPath}/module/openhmis/cashier/cashierRole.form">
+>>>>>>> cashier_role
 				<spring:message code="openhmis.cashier.admin.role"/>
 			</a>
 		</li>
