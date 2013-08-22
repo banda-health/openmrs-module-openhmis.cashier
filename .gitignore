@@ -26,6 +26,7 @@
 .idea/*datasources.*
 .idea/encodings.xml
 .idea/dictionaries/*
+.idea/ant.xml
 
 # building
 target
