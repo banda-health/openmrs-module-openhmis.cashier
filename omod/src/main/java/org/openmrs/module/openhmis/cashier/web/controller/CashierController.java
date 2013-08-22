@@ -74,12 +74,10 @@ public class CashierController {
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(CashPoint.class, new EntityPropertyEditor<CashPoint>(ICashPointService.class));
 		binder.registerCustomEditor(Provider.class, new ProviderPropertyEditor());
-		//Date-Time Formatting Fix
+
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 		dateFormat.setLenient(false);
 		
-		//True passed to CustomDateEditor constructor means convert empty String to null
-		//Set system-wide date/time format for cashier module
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 

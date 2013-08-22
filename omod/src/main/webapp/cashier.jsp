@@ -20,7 +20,7 @@
     function dateTimeFormat(date) {
         var day = date.getDate();
 
-        // OpenMRS expects a date time to have the following format: mm/dd/yyyy hh:mm a
+        // The controller expects a date time to have the following format: mm/dd/yyyy hh:mm
 
         // The javascript getMonth is zero-based
         var month = date.getMonth() + 1;
