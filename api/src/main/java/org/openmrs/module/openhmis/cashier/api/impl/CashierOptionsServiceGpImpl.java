@@ -82,8 +82,8 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 		}
 
 		if (options.getRoundingItemUuid() == null || options.getRoundingItemUuid().isEmpty()) {
-			options.setRoundingMode(null);
-			options.setRoundToNearest(null);
+			options.setRoundingMode(CashierOptions.RoundingMode.MID);
+			options.setRoundToNearest(new BigDecimal(0));
 		}
 
 		temp = adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY);
