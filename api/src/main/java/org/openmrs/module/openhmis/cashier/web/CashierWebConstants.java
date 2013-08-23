@@ -22,6 +22,7 @@ public class CashierWebConstants {
 	public static final String CASHIER_PAGE = MODULE_ROOT + "cashier";
 	public static final String CASHIER_SHIFT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultShiftReportId";
 	public static final String JASPER_REPORT_PAGE = MODULE_ROOT + "jasperReport";
+	public static final String CASHIER_ROLE_PAGE = MODULE_ROOT + "cashierRole";
 
 	public static final String BILL_PAGE = MODULE_ROOT + "bill";
 	public static final String TIMESHEET_REQUIRED_PROPERTY = "openhmis.cashier.timesheetRequired";

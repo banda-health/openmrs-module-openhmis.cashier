@@ -2,7 +2,9 @@ openhmis.cashier.title=OpenHMIS Cashier Module
 
 # Admin
 openhmis.cashier.admin.role=Cashier Role Creation
+openhmis.cashier.admin.departments=Manage Departments
 openhmis.cashier.admin.paymentModes=Manage Payment Modes
+openhmis.cashier.admin.items=Manage Items
 openhmis.cashier.admin.cashPoints=Manage Cash Points
 openhmis.cashier.admin.receiptNumberGenerator=Manage Receipt Number Generator
 openhmis.cashier.admin.seqReceiptNumberGenerator=Configure Sequential Receipt Number Generator
@@ -55,6 +57,9 @@ ${project.parent.artifactId}.rounding.itemDescription=DO NOT REMOVE. Used to adj
 openhmis.cashier.cashier.name=Cashier
 
 # Role Creation
+<<<<<<< HEAD
+openhmis.cashier.admin.role=Cashier Role Creation
+=======
 openhmis.cashier.roleCreation.page.feedback.add=Cashier Privileges Added
 openhmis.cashier.roleCreation.page.feedback.remove=Cashier Privileges Withdrawn
 openhmis.cashier.roleCreation.page.feedback.new=New Role Created with Cashier privileges
@@ -66,6 +71,7 @@ openhmis.cashier.roleCreation.page.label.new=Create New Role
 # Error
 openhmis.cashier.roleCreation.page.feedback.error.blankRole=Please Enter a Role Name
 openhmis.cashier.roleCreation.page.feedback.error.existingRole=Role Already Exists 
+>>>>>>> cashier_role
 
 # Patient Dashboard
 openhmis.cashier.patient.bill.history=Bills

@@ -11,10 +11,11 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-
 package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
@@ -22,6 +23,7 @@ import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
+import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
@@ -37,6 +39,8 @@ import java.util.List;
 public class BillServiceImpl
 		extends BaseEntityDataServiceImpl<Bill>
 		implements IEntityAuthorizationPrivileges, IBillService {
+	private static final Log log = LogFactory.getLog(BillServiceImpl.class);
+
 	@Override
 	protected IEntityAuthorizationPrivileges getPrivileges() {
 		return this;
@@ -70,8 +74,13 @@ public class BillServiceImpl
 				&& !Context.hasPrivilege(CashierPrivilegeConstants.REFUND_MONEY))
 			throw new AccessControlException("Access denied to give a refund.");
 
-		if (StringUtils.isEmpty(bill.getReceiptNumber())) {
-			bill.setReceiptNumber(ReceiptNumberGeneratorFactory.getGenerator().generateNumber(bill));
+		IReceiptNumberGenerator generator = ReceiptNumberGeneratorFactory.getGenerator();
+		if (generator == null) {
+			log.warn("No receipt number generator has been defined.  Bills will not be given a receipt number until one is defined.");
+		} else {
+			if (StringUtils.isEmpty(bill.getReceiptNumber())) {
+				bill.setReceiptNumber(generator.generateNumber(bill));
+			}
 		}
 
 		return super.save(bill);
