@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>1.6.0</version>
+		<version>1.6.1</version>
 	</parent>
 
 	<artifactId>openhmis.cashier-omod</artifactId>
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>openhmis.backboneforms-omod</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>openhmis.backboneforms-omod</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1 </version>
 			<type>test-jar</type>
 			<scope>provided</scope>
 		</dependency>
