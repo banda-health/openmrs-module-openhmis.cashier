@@ -163,7 +163,12 @@ curl(
 			switch (this.billView.bill.get("status")) {
 				case BillStatus.PENDING:
 					$saveButton.val(__("Save Bill"));
-					$saveButton.click(this.billView.saveBill);
+
+					var inst = this;
+					$saveButton.click(function() {
+						inst.billView.saveBill();
+					});
+					
 					var confirmMsg = __("Are you sure you want to post this bill?");
 					$postButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill() }});
 					$postButton.show();

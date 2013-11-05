@@ -157,11 +157,22 @@ public class Bill extends BaseOpenmrsData {
 			throw new NullPointerException("The item price must be defined.");
 		}
 
+		return addLineItem(item, price.getPrice(), price.getName(), quantity);
+	}
+
+	public BillLineItem addLineItem(Item item, BigDecimal price, String priceName, int quantity) {
+		if (item == null) {
+			throw new IllegalArgumentException("The item to add must be defined.");
+		}
+		if (price == null) {
+			throw new IllegalArgumentException("The item price must be defined.");
+		}
+
 		BillLineItem lineItem = new BillLineItem();
 		lineItem.setBill(this);
 		lineItem.setItem(item);
-		lineItem.setPrice(price.getPrice());
-		lineItem.setPriceName(price.getName());
+		lineItem.setPrice(price);
+		lineItem.setPriceName(priceName);
 		lineItem.setQuantity(quantity);
 
 		addLineItem(lineItem);

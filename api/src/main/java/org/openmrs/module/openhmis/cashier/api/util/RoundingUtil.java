@@ -1,16 +1,3 @@
-/*
- * The contents of this file are subject to the OpenMRS Public License
- * Version 2.0 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://license.openmrs.org
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
- *
- * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
- */
 package org.openmrs.module.openhmis.cashier.api.util;
 
 import org.apache.commons.logging.Log;
@@ -120,29 +107,25 @@ public class RoundingUtil {
 	public static void addRoundingLineItem(Bill bill) {
 		ICashierOptionsService cashOptService = Context.getService(ICashierOptionsService.class);
 		CashierOptions options = cashOptService.getOptions();
-		if (options.getRoundToNearest().equals(BigDecimal.ZERO))
+		if (options.getRoundToNearest().equals(BigDecimal.ZERO)) {
 			return;
-		if (options.getRoundingItemUuid() == null)
+		}
+
+		if (options.getRoundingItemUuid() == null) {
 			throw new APIException("No rounding item specified in options. This must be set in order to use rounding for bill totals.");
-		// Get rounding item
-		IItemDataService itemService = Context.getService(IItemDataService.class);
-		Item roundingItem = itemService.getByUuid(options.getRoundingItemUuid());
-		// Create rounding line item
+		}
+
 		BigDecimal difference = bill.getTotal().subtract(RoundingUtil.round(bill.getTotal(), options.getRoundToNearest(), options.getRoundingMode()));
-		if (difference.equals(BigDecimal.ZERO))
-			return;
-		ItemPrice roundingPrice = roundingItem.addPrice("Rounding", difference.abs());
-		// This is a little weird, but order has to be set, and this is the best I can come up with right now
-		int itemOrder;
-		// This should set the order to the last in the list, since the other
-		// items should be ordered starting from zero
-		try { itemOrder = bill.getLineItems().size(); }
-		catch (NullPointerException e) { itemOrder = 0; }
-		BillLineItem lineItem = bill.addLineItem(
-			roundingItem,
-			roundingPrice,
-			difference.compareTo(BigDecimal.ZERO) > 0 ? -1 : 1
-		);
-		lineItem.setLineItemOrder(itemOrder);
+		if (!difference.equals(BigDecimal.ZERO)) {
+			// Get rounding item
+			IItemDataService itemService = Context.getService(IItemDataService.class);
+			Item roundingItem = itemService.getByUuid(options.getRoundingItemUuid());
+
+			// Create line item for rounding item and the required amount
+			BillLineItem lineItem = bill.addLineItem(roundingItem, difference.abs(), "", difference.compareTo(BigDecimal.ZERO) > 0 ? -1 : 1);
+
+			// Put the rounding line item at the end of the order
+			lineItem.setLineItemOrder(bill.getLineItems() == null ? 0 : bill.getLineItems().size());
+		}
 	}
 }
