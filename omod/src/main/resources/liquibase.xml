@@ -570,4 +570,34 @@
 			</column>
 		</addColumn>
 	</changeSet>
+	<changeSet id="openhmis.cashier-v1.7.0-1" author="ibewes">
+		<comment>Remove all the rounding item prices</comment>
+		<sql>
+			DELETE cp.*
+			FROM cashier_item_price cp INNER JOIN cashier_item i ON
+					cp.item_id = i.item_id
+				INNER JOIN cashier_department d ON
+					i.department_id = d.department_id
+			WHERE i.name = 'Rounding' AND d.name = 'Rounding'
+		</sql>
+
+		<comment>Create a single rounding item price</comment>
+		<sql>
+			INSERT INTO cashier_item_price (item_id, price, name, description, creator, date_created, uuid)
+			SELECT i.item_id, 0.0, '', '', 1, NOW(), UUID()
+			FROM cashier_item i INNER JOIN cashier_department d ON
+			i.department_id = d.department_id
+			WHERE i.name = 'Rounding' AND d.name = 'Rounding'
+		</sql>
+
+		<comment>Update the default price id on the rounding item</comment>
+		<sql>
+			UPDATE cashier_item i INNER JOIN cashier_department d ON
+			i.department_id = d.department_id
+			INNER JOIN cashier_item_price cp ON
+			i.item_id = cp.item_id
+			SET i.default_price_id = cp.item_price_id
+			WHERE i.name = 'Rounding' AND d.name = 'Rounding'
+		</sql>
+	</changeSet>
 </databaseChangeLog>
