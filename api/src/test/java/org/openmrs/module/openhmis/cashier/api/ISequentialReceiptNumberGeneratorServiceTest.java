@@ -13,8 +13,8 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
-import junit.framework.Assert;
 import org.hibernate.cfg.Environment;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
