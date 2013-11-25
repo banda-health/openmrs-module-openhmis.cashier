@@ -77,7 +77,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 
 							options.setRoundingItemUuid(roundingItem.getUuid());
 						} catch (Exception ex) {
-							throw new APIException("Rounding item ID set in options but item not found", ex);
+							throw new APIException("Rounding item ID set in options but item not found. Maybe your user doesn't have the required rights or the item is not existent in the database.", ex);
 						}
 					} else {
 						// Check to see if rounding has been enabled and throw exception if it has as a rounding item must be set
