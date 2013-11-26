@@ -284,7 +284,7 @@
                   </execution>
               </executions>        
               <configuration>
-                  <verbose>true</verbose>
+                  <!-- <verbose>true</verbose> -->
                   <nosuffix>true</nosuffix>
                   <excludes>
                       <exclude>**/*.min.js</exclude>
