@@ -644,14 +644,16 @@
 			SELECT item_price_id, item_id, price, name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired,
 			retire_reason, uuid
 			FROM cashier_item_price;
-
-			ALTER TABLE cashier_bill_line_item DROP FOREIGN KEY cashier_bill_line_item_item_id_fk;
-			ALTER TABLE cashier_bill_line_item
-			ADD CONSTRAINT cashier_bill_line_item_item_id_fk
-			FOREIGN KEY (item_id)
-			REFERENCES inv_item (item_id)
-			ON DELETE RESTRICT
-			ON UPDATE RESTRICT;
 		</sql>
+	</changeSet>
+	<changeSet id="openhmis.cashier-v2.0-1" author="ibewes">
+		<preConditions onFail="MARK_RAN">
+			<foreignKeyConstraintExists foreignKeyName="cashier_bill_line_item_item_id_fk" />
+		</preConditions>
+
+		<dropForeignKeyConstraint baseTableName="cashier_bill_line_item" constraintName="cashier_bill_line_item_item_id_fk" />
+		<addForeignKeyConstraint constraintName="cashier_bill_line_item_item_id_fk"
+				baseTableName="cashier_bill_line_item" baseColumnNames="item_id"
+				referencedTableName="inv_item" referencedColumnNames="item_id" />
 	</changeSet>
 </databaseChangeLog>
