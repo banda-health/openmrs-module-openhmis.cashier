@@ -52,7 +52,9 @@ define(
 				var lineItems = this.get("lineItems");
 				if (lineItems && lineItems.length > 0) {
 					lineItems.each(function(item) {
-						if (item.isClean()) total += item.getTotal();
+						if (item !== null && item.isClean()) {
+							total += item.getTotal();
+						}
 					});
 				}
 				return total;
@@ -76,8 +78,9 @@ define(
 				var payments = this.get("payments");
 				if (payments && payments.length > 0) {
 					payments.each(function(payment) {
-						if (payment.get("voided") !== true)
+						if (payment !== null && payment.get("voided") !== true) {
 							total += payment.get("amountTendered");
+						}
 					});
 				}
 				return total;

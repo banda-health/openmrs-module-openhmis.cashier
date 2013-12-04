@@ -26,15 +26,16 @@ import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
-import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
-import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
+import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataServiceImpl;
+import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.security.AccessControlException;
 import java.util.List;
+
 @Transactional
 public class BillServiceImpl
 		extends BaseEntityDataServiceImpl<Bill>
@@ -100,7 +101,9 @@ public class BillServiceImpl
 		Criteria criteria = repository.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("receiptNumber", receiptNumber));
 
-		return repository.selectSingle(getEntityClass(), criteria);
+		Bill bill = repository.selectSingle(getEntityClass(), criteria);
+		removeNullLineItems(bill);
+		return bill;
 	}
 
 	@Override
@@ -109,10 +112,7 @@ public class BillServiceImpl
 			throw new NullPointerException("The patient must be defined.");
 		}
 
-		Criteria criteria = repository.createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("patient", patient));
-
-		return repository.select(getEntityClass(), criteria);
+		return findPatientBills(patient.getId(), paging);
 	}
 
 	@Override
@@ -124,7 +124,65 @@ public class BillServiceImpl
 		Criteria criteria = repository.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("patient.id", patientId));
 
-		return repository.select(getEntityClass(), criteria);
+		List<Bill> results = repository.select(getEntityClass(), criteria);
+		removeNullLineItems(results);
+		return results;
+	}
+
+	/*
+		These methods are overridden to ensure that any null line items (created as part of a bug in 1.7.0) are removed
+		from the results before being returned to the caller.
+	 */
+	@Override
+	public List<Bill> getAll(boolean includeVoided, PagingInfo pagingInfo) throws APIException {
+		List<Bill> results = super.getAll(includeVoided, pagingInfo);
+		removeNullLineItems(results);
+		return results;
+	}
+
+	@Override
+	public Bill getById(int entityId) throws APIException {
+		Bill bill = super.getById(entityId);
+		removeNullLineItems(bill);
+		return bill;
+	}
+
+	@Override
+	public Bill getByUuid(String uuid) throws APIException {
+		Bill bill = super.getByUuid(uuid);
+		removeNullLineItems(bill);
+		return bill;
+	}
+
+	@Override
+	public List<Bill> getAll() throws APIException {
+		List<Bill> results =super.getAll();
+		removeNullLineItems(results);
+		return results;
+	}
+
+	private void removeNullLineItems(List<Bill> bills) {
+		if (bills == null || bills.size() == 0) {
+			return;
+		}
+
+		for (Bill bill : bills) {
+			removeNullLineItems(bill);
+		}
+	}
+
+	private void removeNullLineItems(Bill bill) {
+		if (bill == null) {
+			return;
+		}
+
+		// Search for any null line items (due to a bug in 1.7.0) and remove them from the line items
+		int index = bill.getLineItems().indexOf(null);
+		while (index >= 0) {
+			bill.getLineItems().remove(index);
+
+			index = bill.getLineItems().indexOf(null);
+		}
 	}
 
 	@Override

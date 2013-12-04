@@ -120,7 +120,7 @@ public class RoundingUtil {
 			BillLineItem lineItem = bill.addLineItem(roundingItem, difference.abs(), "", difference.compareTo(BigDecimal.ZERO) > 0 ? -1 : 1);
 
 			// Put the rounding line item at the end of the order
-			lineItem.setLineItemOrder(bill.getLineItems() == null ? 0 : bill.getLineItems().size());
+			lineItem.setLineItemOrder(bill.getLineItems() == null ? 0 : bill.getLineItems().size() - 1);
 		}
 	}
 }
