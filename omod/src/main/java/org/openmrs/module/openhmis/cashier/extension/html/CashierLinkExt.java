@@ -41,21 +41,21 @@ public class CashierLinkExt extends LinkExt {
 		super.initialize(parameterMap);
 
 		try {
-		this.timesheetService = Context.getService(ITimesheetService.class);
-		this.providerService = Context.getProviderService();
+			this.timesheetService = Context.getService(ITimesheetService.class);
+			this.providerService = Context.getProviderService();
 
-		isProviderUser = false;
-		if (Context.isAuthenticated()) {
-			Provider provider = ProviderHelper.getCurrentProvider(providerService);
-			if (provider != null) {
-				isProviderUser = true;
-				try {
-					currentTimesheet = timesheetService.getCurrentTimesheet(provider);
-				} catch (Exception e) {
-					currentTimesheet = null;
+			isProviderUser = false;
+			if (Context.isAuthenticated()) {
+				Provider provider = ProviderHelper.getCurrentProvider(providerService);
+				if (provider != null) {
+					isProviderUser = true;
+					try {
+						currentTimesheet = timesheetService.getCurrentTimesheet(provider);
+					} catch (Exception e) {
+						currentTimesheet = null;
+					}
 				}
 			}
-		}
 		} catch (Exception ex) {
 			LOG.error("An error occurred while attempting to load the cashier extension point", ex);
 
