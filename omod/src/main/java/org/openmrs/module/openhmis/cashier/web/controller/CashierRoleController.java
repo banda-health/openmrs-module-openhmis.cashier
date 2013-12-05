@@ -39,7 +39,8 @@ import java.util.Set;
 @Controller
 @RequestMapping(CashierWebConstants.CASHIER_ROLE_PAGE)
 public class CashierRoleController {
-	protected final Log log = LogFactory.getLog(getClass());
+	
+	private static final Log LOG = LogFactory.getLog(CashierRoleController.class);
 
 	private UserService userService;
 	
@@ -61,27 +62,32 @@ public class CashierRoleController {
 
 		if (param.equals("add")) {
 			addCashierPrivileges(cashierRole.getPrivAdded());
-
 			session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.add");
 		} else if (param.equals("remove")) {
 			removeCashierPrivileges(cashierRole.getPrivRemoved());
 
 			session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.remove");
-		} else if (param.equals("new")) {
-			// Validate that role name is defined and does not already exist
-			if (cashierRole.getNewCashierRole() == "") {
-				errors.rejectValue("role", "openhmis.cashier.roleCreation.page.feedback.error.blankRole");
-			} else if (checkForDuplicateRole(cashierRole.getNewCashierRole())) {
-				errors.rejectValue("role", "openhmis.cashier.roleCreation.page.feedback.error.existingRole");
-			} else {
-				// We're good, create the role
-				createNewRole(cashierRole.getNewCashierRole());
-
-				session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.new");
-			}
+		} else if (param.equals("new") && newRoleValidated(cashierRole, errors)) {
+			createRole(cashierRole, session);
 		}
 
 		render(model);
+	}
+
+	private boolean newRoleValidated(CashierRole cashierRole, Errors errors) throws Exception {
+		if (cashierRole.getNewCashierRole() == "") {
+			errors.rejectValue("role", "openhmis.cashier.roleCreation.page.feedback.error.blankRole");
+			return false;
+		} else if (checkForDuplicateRole(cashierRole.getNewCashierRole())) {
+			errors.rejectValue("role", "openhmis.cashier.roleCreation.page.feedback.error.existingRole");
+			return false;
+		}
+		return true;
+	}
+
+	private void createRole(CashierRole cashierRole, HttpSession session) throws Exception {
+		createNewRole(cashierRole.getNewCashierRole());
+		session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.new");
 	}
 	
 	private Boolean checkForDuplicateRole(String role) {
@@ -163,8 +169,7 @@ public class CashierRoleController {
 		try {
 			userService.saveRole(role);
 		} catch(Exception e) {
-			log.error("The role '" + role.getName() + "' could not be saved.", e);
-
+			LOG.error("The role '" + role.getName() + "' could not be saved.", e);
 			throw e;
 		}
 	}

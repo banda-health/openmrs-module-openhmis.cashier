@@ -30,7 +30,7 @@ import java.util.List;
 public class ReceiptNumberGeneratorFactory {
 	public static final String SYSTEM_RECEIPT_NUMBER_GENERATOR = "openhmis.cashier.systemReceiptNumberGenerator";
 
-	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
+	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
 	private static volatile IReceiptNumberGenerator generator;
 
 	/**
@@ -45,11 +45,11 @@ public class ReceiptNumberGeneratorFactory {
 
 			String propertyValue = Context.getAdministrationService().getGlobalProperty(SYSTEM_RECEIPT_NUMBER_GENERATOR);
 			if (!StringUtils.isEmpty(propertyValue)) {
-				log.debug("Loading receipt number generator '" + propertyValue + "'...");
+				LOG.debug("Loading receipt number generator '" + propertyValue + "'...");
 				result = (Class<? super IReceiptNumberGenerator>) Class.forName(propertyValue);
-				log.debug("Receipt number generator loaded.");
+				LOG.debug("Receipt number generator loaded.");
 			} else {
-				log.warn("Request for receipt number generator when none has been defined.");
+				LOG.warn("Request for receipt number generator when none has been defined.");
 			}
 
 			return result;
@@ -84,7 +84,7 @@ public class ReceiptNumberGeneratorFactory {
 
 				generator = (IReceiptNumberGenerator) cls.newInstance();
 			} catch (ClassNotFoundException classEx) {
-				log.warn("Attempt to load unknown receipt number generator type", classEx);
+				LOG.warn("Attempt to load unknown receipt number generator type", classEx);
 
 				throw new APIException("Could not locate receipt number generator class.", classEx);
 			} catch (InstantiationException instantiationEx) {
@@ -147,7 +147,7 @@ public class ReceiptNumberGeneratorFactory {
 					instances.add(cls.newInstance());
 				} catch (Exception ex) {
 					// We don't care about specific exceptions here.  Just log and ignore the class
-					log.warn("Could not instantiate the '" + cls.getName() + "' class.  It will be ignored.");
+					LOG.warn("Could not instantiate the '" + cls.getName() + "' class.  It will be ignored.");
 				}
 			}
 		}

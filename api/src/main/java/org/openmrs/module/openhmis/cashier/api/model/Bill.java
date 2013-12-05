@@ -71,8 +71,9 @@ public class Bill extends BaseOpenmrsData {
 
 		if (payments != null) {
 			for (Payment payment : payments) {
-				if (payment != null && !payment.getVoided())
+				if (payment != null && !payment.getVoided()) {
 					total = total.add(payment.getAmount());
+				}
 			}
 		}
 
@@ -262,9 +263,9 @@ public class Bill extends BaseOpenmrsData {
 				if (getTotalPayments().compareTo(getTotal()) >= 0) {
 					this.setStatus(BillStatus.PAID);
 					return true;					
-				}
-				else if (this.status == BillStatus.PENDING)
+				} else if (this.status == BillStatus.PENDING) {
 					this.status = BillStatus.POSTED;
+				}
 			}
 		}
 		return false;
@@ -305,8 +306,9 @@ public class Bill extends BaseOpenmrsData {
 	}
 	
 	private void checkAuthorizedToAdjust() {
-		if (!Context.hasPrivilege(CashierPrivilegeConstants.ADJUST_BILLS))
+		if (!Context.hasPrivilege(CashierPrivilegeConstants.ADJUST_BILLS)) {
 			throw new AccessControlException("Access denied to adjust bill.");
+		}
 	}
 }
 

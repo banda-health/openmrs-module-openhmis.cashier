@@ -27,7 +27,7 @@ public class CashierOptions {
 		}
 	}
 	
-	private BigDecimal roundToNearest = new BigDecimal(0); // default: no rounding
+	private BigDecimal roundToNearest = BigDecimal.ZERO; // default: no rounding
 	private RoundingMode roundingMode = RoundingMode.MID;
 	private String roundingItemUuid;
 	private int defaultReceiptReportId;

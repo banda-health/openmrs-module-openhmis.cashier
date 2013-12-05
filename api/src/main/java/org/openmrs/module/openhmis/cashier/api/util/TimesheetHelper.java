@@ -37,13 +37,15 @@ public class TimesheetHelper {
 		try {
 			timesheet = tsService.getCurrentTimesheet(provider);
 		} catch (Exception e) {
-			if (TimesheetHelper.isTimesheetRequired())
-				throw new TimesheetRequiredException();
-			else
+			if (TimesheetHelper.isTimesheetRequired()) {
+				throw new TimesheetRequiredException(e);
+			} else {
 				return null;
+			}
 		}
-		if (TimesheetHelper.isTimesheetRequired() && timesheet == null)
+		if (TimesheetHelper.isTimesheetRequired() && timesheet == null) {
 			throw new TimesheetRequiredException();
+		}
 		return timesheet;
 	}
 	

@@ -28,7 +28,6 @@ public class CashierOptionsController {
 	@ResponseBody
 	public CashierOptions options() {
 		ICashierOptionsService service = Context.getService(ICashierOptionsService.class);
-		CashierOptions options = service.getOptions();
-		return options;
+		return service.getOptions();
 	}
 }

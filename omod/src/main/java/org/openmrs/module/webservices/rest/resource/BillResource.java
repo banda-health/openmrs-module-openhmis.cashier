@@ -127,9 +127,13 @@ public class BillResource extends BaseRestDataResource<Bill> {
 				User currentUser = Context.getAuthenticatedUser();
 				ProviderService service = Context.getProviderService();
 				Collection<Provider> providers = service.getProvidersByPerson(currentUser.getPerson());
-				for (Provider provider : providers) { delegate.setCashier(provider); break; }
-				if (delegate.getCashier() == null)
+				for (Provider provider : providers) {
+					delegate.setCashier(provider);
+					break;
+				}
+				if (delegate.getCashier() == null) {
 					throw new RestClientException("Couldn't find Provider for the current user (" + currentUser.getName() + ")");
+				}
 			}
 			if (delegate.getCashPoint() == null) {
 				ITimesheetService service = Context.getService(ITimesheetService.class);

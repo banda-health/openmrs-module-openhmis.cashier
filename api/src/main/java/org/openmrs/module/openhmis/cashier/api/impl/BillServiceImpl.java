@@ -37,10 +37,9 @@ import java.security.AccessControlException;
 import java.util.List;
 
 @Transactional
-public class BillServiceImpl
-		extends BaseEntityDataServiceImpl<Bill>
-		implements IEntityAuthorizationPrivileges, IBillService {
-	private static final Log log = LogFactory.getLog(BillServiceImpl.class);
+public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements IEntityAuthorizationPrivileges, IBillService {
+	
+	private static final Log LOG = LogFactory.getLog(BillServiceImpl.class);
 
 	@Override
 	protected IEntityAuthorizationPrivileges getPrivileges() {
@@ -71,13 +70,12 @@ public class BillServiceImpl
 		/* Check for refund.
 		 * A refund is given when the total of the bill's line items is negative.
 		 */
-		if (bill.getTotal().compareTo(new BigDecimal(0)) < 0
-				&& !Context.hasPrivilege(CashierPrivilegeConstants.REFUND_MONEY))
+		if (bill.getTotal().compareTo(BigDecimal.ZERO) < 0 && !Context.hasPrivilege(CashierPrivilegeConstants.REFUND_MONEY)) {
 			throw new AccessControlException("Access denied to give a refund.");
-
+		}
 		IReceiptNumberGenerator generator = ReceiptNumberGeneratorFactory.getGenerator();
 		if (generator == null) {
-			log.warn("No receipt number generator has been defined.  Bills will not be given a receipt number until one is defined.");
+			LOG.warn("No receipt number generator has been defined.  Bills will not be given a receipt number until one is defined.");
 		} else {
 			if (StringUtils.isEmpty(bill.getReceiptNumber())) {
 				bill.setReceiptNumber(generator.generateNumber(bill));

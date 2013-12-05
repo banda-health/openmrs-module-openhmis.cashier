@@ -28,7 +28,7 @@ import org.openmrs.module.web.extension.LinkExt;
 import java.util.Map;
 
 public class CashierLinkExt extends LinkExt {
-	protected Log log = LogFactory.getLog(getClass());
+	private static Log LOG = LogFactory.getLog(CashierLinkExt.class);
 
 	private ITimesheetService timesheetService;
 	private ProviderService providerService;
@@ -57,7 +57,7 @@ public class CashierLinkExt extends LinkExt {
 			}
 		}
 		} catch (Exception ex) {
-			log.error("An error occurred while attempting to load the cashier extension point", ex);
+			LOG.error("An error occurred while attempting to load the cashier extension point", ex);
 
 			isProviderUser = false;
 			currentTimesheet = null;

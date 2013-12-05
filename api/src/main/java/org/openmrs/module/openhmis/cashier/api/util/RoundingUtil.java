@@ -21,8 +21,10 @@ import java.math.BigDecimal;
 
 public class RoundingUtil {
 	public static BigDecimal round(BigDecimal value, BigDecimal nearest, CashierOptions.RoundingMode mode) {
-		if (nearest.equals(new BigDecimal(0))) return value;
-		BigDecimal factor = new BigDecimal(1).divide(nearest);
+		if (nearest.equals(BigDecimal.ZERO)) {
+			return value;
+		}
+		BigDecimal factor = BigDecimal.ONE.divide(nearest);
 		int scale = nearest.scale();
 		switch (mode) {
 			case FLOOR:
@@ -50,27 +52,16 @@ public class RoundingUtil {
 		AdministrationService adminService = Context.getService(AdministrationService.class);
 
 		String nearest = adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY);
-		if (nearest != null && !nearest.isEmpty() && nearest != "0") {
+		if (nearest != null && !nearest.isEmpty() && !nearest.equals("0")) {
 			MessageSourceService msgService = Context.getMessageSourceService();
 			IDepartmentDataService deptService = Context.getService(IDepartmentDataService.class);
 			IItemDataService itemService = Context.getService(IItemDataService.class);
 
-			Integer itemId, deptId;
+			Integer itemId; 
+			Integer deptId;
 
-			// Try to parse the existing department and item id
-			try {
-				deptId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_DEPT_ID));
-			}
-			catch (NumberFormatException e) {
-				deptId = null;
-			}
-
-			try {
-				itemId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID));
-			}
-			catch (NumberFormatException e) {
-				itemId = null;
-			}
+			deptId = parseDepartmentId(adminService);
+			itemId = parseItemId(adminService);
 
 			if (deptId == null && itemId == null) {
 				Department department = new Department();
@@ -89,7 +80,7 @@ public class RoundingUtil {
 				item.setDescription(description);
 				item.setDepartment(department);
 
-				ItemPrice price = item.addPrice(name, new BigDecimal(0));
+				ItemPrice price = item.addPrice(name, BigDecimal.ZERO);
 				item.setDefaultPrice(price);
 				itemService.save(item);
 				log.info("Created item for rounding (ID = " + item.getId() + ")...");
@@ -127,5 +118,27 @@ public class RoundingUtil {
 			// Put the rounding line item at the end of the order
 			lineItem.setLineItemOrder(bill.getLineItems() == null ? 0 : bill.getLineItems().size() - 1);
 		}
+	}
+
+	private static Integer parseItemId(AdministrationService adminService) {
+		Integer itemId;
+		try {
+			itemId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID));
+		}
+		catch (NumberFormatException e) {
+			itemId = null;
+		}
+		return itemId;
+	}
+
+	private static Integer parseDepartmentId(AdministrationService adminService) {
+		Integer deptId;
+		try {
+			deptId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_DEPT_ID));
+		}
+		catch (NumberFormatException e) {
+			deptId = null;
+		}
+		return deptId;
 	}
 }

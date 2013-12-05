@@ -90,8 +90,6 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	
 	@PropertyGetter("dateCreated")
 	public Long getPaymentDate(Payment instance) {
-//		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-//		return format.format(instance.getDateCreated());
 		return instance.getDateCreated().getTime();
 	}
 
@@ -116,7 +114,9 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 			payment.setVoidedBy(Context.getAuthenticatedUser());
 			service.save(bill);
 		}
-		catch (Exception e) { throw new ObjectNotFoundException(); }
+		catch (Exception e) {
+			throw new ObjectNotFoundException();
+		}
 	}
 	
 	@Override

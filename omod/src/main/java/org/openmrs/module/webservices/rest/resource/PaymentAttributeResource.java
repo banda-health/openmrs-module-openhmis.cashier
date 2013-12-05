@@ -29,8 +29,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttribute> {
 
 	@Override
-	public DelegatingResourceDescription getRepresentationDescription(
-			Representation rep) {
+	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
 			description.addProperty("paymentModeAttributeType", Representation.REF);
@@ -51,9 +50,9 @@ public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttrib
 			ConceptService service = Context.getService(ConceptService.class);
 			Concept concept = service.getConcept(instance.getValue());
 			return concept.getDisplayString();
-		}		
-		
-		else return instance.getValue(); 	
+		} else {
+			return instance.getValue(); 	
+		}
 	}
 
 	public Integer getAttributeOrder(PaymentAttribute instance) {

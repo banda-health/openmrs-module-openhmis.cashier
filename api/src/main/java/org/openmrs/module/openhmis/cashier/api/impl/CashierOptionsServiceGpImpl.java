@@ -30,6 +30,7 @@ import java.math.BigDecimal;
  *
  */
 public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
+	
 	private AdministrationService adminService;
 	private IItemDataService itemService;
 
@@ -96,7 +97,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 
 		if (options.getRoundingItemUuid() == null || options.getRoundingItemUuid().isEmpty()) {
 			options.setRoundingMode(CashierOptions.RoundingMode.MID);
-			options.setRoundToNearest(new BigDecimal(0));
+			options.setRoundToNearest(BigDecimal.ZERO);
 		}
 
 		temp = adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY);

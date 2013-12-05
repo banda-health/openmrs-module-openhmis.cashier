@@ -52,7 +52,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 		}
 	}
 
-	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
+	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
 
 	private ISequentialReceiptNumberGeneratorService service;
 	private SequentialReceiptNumberGeneratorModel model;
@@ -110,13 +110,13 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 			throw new NullPointerException("The bill must be defined.");
 		}
 
-		log.debug("Generating receipt number for bill " + bill.getUuid() + "...");
+		LOG.debug("Generating receipt number for bill " + bill.getUuid() + "...");
 
 		String grouping = createGrouping(bill);
 		String sequence = getSequence(grouping);
 
 		String number = buildReceiptNumber(grouping, sequence);
-		log.debug("Generated receipt number '" + number + "' for bill " + bill.getUuid() + ".");
+		LOG.debug("Generated receipt number '" + number + "' for bill " + bill.getUuid() + ".");
 
 		return number;
 	}
