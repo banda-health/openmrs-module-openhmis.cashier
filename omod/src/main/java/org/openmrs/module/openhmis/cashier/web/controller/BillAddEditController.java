@@ -46,7 +46,9 @@ public class BillAddEditController {
 			HttpServletRequest request) throws UnsupportedEncodingException {
 		Patient patient = null;
 		Timesheet timesheet = null;
-		try { timesheet = TimesheetHelper.getCurrentTimesheet(); }
+		try {
+			timesheet = TimesheetHelper.getCurrentTimesheet(); 
+		}
 		catch (TimesheetRequiredException e) {
 			return "redirect:/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE)
 				+ "?returnUrl=" + CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE)
@@ -69,9 +71,9 @@ public class BillAddEditController {
 			model.addAttribute("adjustedBy", bill.getAdjustedBy());
 			model.addAttribute("patient", patient);
 			model.addAttribute("cashPoint", bill.getCashPoint());
-			if (!bill.isReceiptPrinted()
-					|| (bill.isReceiptPrinted() && Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT)))
+			if (!bill.isReceiptPrinted() || (bill.isReceiptPrinted() && Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT))) {
 				model.addAttribute("showPrint", true);
+			}
 			return CashierWebConstants.BILL_PAGE;
 		}
 		else {
@@ -80,9 +82,11 @@ public class BillAddEditController {
 				PatientService service = Context.getPatientService();
 				patient = service.getPatientByUuid(patientUuid);
 				Set<PatientIdentifier> identifiers = patient.getIdentifiers();
-				for (PatientIdentifier id : identifiers)
-					if (id.getPreferred()) patientIdentifier = id.getIdentifier();
-
+				for (PatientIdentifier id : identifiers) {
+					if (id.getPreferred()) {
+						patientIdentifier = id.getIdentifier();
+					}
+				}
 				model.addAttribute("patient", patient);
 				model.addAttribute("patientIdentifier", patientIdentifier);
 			}

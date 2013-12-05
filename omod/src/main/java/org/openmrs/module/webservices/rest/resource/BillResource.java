@@ -81,20 +81,24 @@ public class BillResource extends BaseRestDataResource<Bill> {
 
 	@PropertySetter("lineItems")
 	public void setBillLineItems(Bill instance, List<BillLineItem> lineItems) {
-		if (instance.getLineItems() == null)
+		if (instance.getLineItems() == null) {
 			instance.setLineItems(new ArrayList<BillLineItem>(lineItems.size()));
-		BaseRestDataResource.updateCollection(instance.getLineItems(), lineItems);
-		for (BillLineItem item: instance.getLineItems())
+		}
+		BaseRestDataResource.syncCollection(instance.getLineItems(), lineItems);
+		for (BillLineItem item: instance.getLineItems()) {
 			item.setBill(instance);
+		}
 	}
 
 	@PropertySetter("payments")
 	public void setBillPayments(Bill instance, Set<Payment> payments) {
-		if (instance.getPayments() == null)
+		if (instance.getPayments() == null) {
 			instance.setPayments(new HashSet<Payment>(payments.size()));
-		BaseRestDataResource.updateCollection(instance.getPayments(), payments);
-		for (Payment payment: instance.getPayments())
+		}
+		BaseRestDataResource.syncCollection(instance.getPayments(), payments);
+		for (Payment payment: instance.getPayments()) {
 			instance.addPayment(payment);
+		}
 	}
 	
 	@PropertySetter("billAdjusted")
@@ -105,12 +109,14 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	
 	@PropertySetter("status")
 	public void setBillStatus(Bill instance, BillStatus status) {
-		if (instance.getStatus() == null)
+		if (instance.getStatus() == null) {
 			instance.setStatus(status);
-		else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED)
+		} else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED) {
 			instance.setStatus(status);
-		if (status == BillStatus.POSTED)
+		}
+		if (status == BillStatus.POSTED) {
 			RoundingUtil.addRoundingLineItem(instance);
+		}
 	}
 
 	@Override
@@ -136,26 +142,28 @@ public class BillResource extends BaseRestDataResource<Bill> {
 					} catch (Exception e) {
 						timesheetRequired = false;
 					}
-					if (timesheetRequired)
+					if (timesheetRequired) {
 						throw new RestClientException("A current timesheet does not exist for cashier " + delegate.getCashier());
-					// If this is an adjusting bill, copy cash point from billAdjusted
-					else if (delegate.getBillAdjusted() != null)
+					} else if (delegate.getBillAdjusted() != null) {
+						// If this is an adjusting bill, copy cash point from billAdjusted
 						delegate.setCashPoint(delegate.getBillAdjusted().getCashPoint());
-					else
+					} else {
 						throw new RestClientException("Cash point cannot be null!");
-				}
-				else {
+					}
+				} else {
 					CashPoint cashPoint = timesheet.getCashPoint();
-					if (cashPoint == null)
+					if (cashPoint == null) {
 						throw new RestClientException("No cash points defined for the current timesheet!");
+					}
 					delegate.setCashPoint(cashPoint);					
 				}
 			}
 			// Now that all all attributes have been set (i.e., payments and
 			// bill status) we can check to see if the bill is fully paid.
 			delegate.checkPaidAndUpdateStatus();
-			if (delegate.getStatus() == null)
+			if (delegate.getStatus() == null) {
 				delegate.setStatus(BillStatus.PENDING);
+			}
 		}
 		return super.save(delegate);
 	}
