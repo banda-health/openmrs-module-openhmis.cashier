@@ -16,6 +16,8 @@ package org.openmrs.module.openhmis.cashier.api.model;
 import java.math.BigDecimal;
 
 public class CashierOptions {
+	private static final BigDecimal DEFAULT_NO_ROUNDING = BigDecimal.ZERO;
+	
 	public enum RoundingMode {
 		FLOOR(1), MID(2), CEILING(3);
 		
@@ -27,7 +29,7 @@ public class CashierOptions {
 		}
 	}
 	
-	private BigDecimal roundToNearest = BigDecimal.ZERO; // default: no rounding
+	private BigDecimal roundToNearest = DEFAULT_NO_ROUNDING;
 	private RoundingMode roundingMode = RoundingMode.MID;
 	private String roundingItemUuid;
 	private int defaultReceiptReportId;

@@ -39,7 +39,8 @@ import java.util.List;
 @Transactional
 public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements IEntityAuthorizationPrivileges, IBillService {
 	
-	private static final Log LOG = LogFactory.getLog(BillServiceImpl.class);
+	private static final int MAX_LENGTH_RECEIPT_NUMBER = 255;
+    private static final Log LOG = LogFactory.getLog(BillServiceImpl.class);
 
 	@Override
 	protected IEntityAuthorizationPrivileges getPrivileges() {
@@ -92,7 +93,7 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 		if (StringUtils.isEmpty(receiptNumber)) {
 			throw new IllegalArgumentException("The receipt number must be defined.");
 		}
-		if (receiptNumber.length() > 255) {
+		if (receiptNumber.length() > MAX_LENGTH_RECEIPT_NUMBER) {
 			throw new IllegalArgumentException("The receipt number must be less than 256 characters.");
 		}
 
