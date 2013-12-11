@@ -34,6 +34,9 @@ public class TimesheetServiceImpl
 		extends BaseEntityDataServiceImpl<Timesheet>
 		implements ITimesheetService, IEntityAuthorizationPrivileges {
 
+	private static final String CLOCK_IN = "clockIn";
+	private static final String CLOCK_OUT = "clockOut";
+
 	@Override
 	protected IEntityAuthorizationPrivileges getPrivileges() {
 		return this;
@@ -68,9 +71,9 @@ public class TimesheetServiceImpl
 		Criteria criteria = repository.createCriteria(Timesheet.class);
 		criteria.add(Restrictions.and(
 				Restrictions.eq("cashier", cashier),
-				Restrictions.isNull("clockOut"))
+				Restrictions.isNull(CLOCK_OUT))
 		);
-		criteria.addOrder(Order.desc("clockIn"));
+		criteria.addOrder(Order.desc(CLOCK_IN));
 
 		return repository.selectSingle(Timesheet.class, criteria);
 	}
@@ -95,25 +98,25 @@ public class TimesheetServiceImpl
 				Restrictions.or(
 					// Start or end on date
 					Restrictions.or(
-						Restrictions.between("clockIn", startDate, endDate),
-						Restrictions.between("clockOut", startDate, endDate)
+						Restrictions.between(CLOCK_IN, startDate, endDate),
+						Restrictions.between(CLOCK_OUT, startDate, endDate)
 					),
 					Restrictions.or(
 						// Start on or before date and have not ended
 						Restrictions.and(
-							Restrictions.le("clockIn", endDate),
-							Restrictions.isNull("clockOut")
+							Restrictions.le(CLOCK_IN, endDate),
+							Restrictions.isNull(CLOCK_OUT)
 						),
 						// Start before and end after date
 						Restrictions.and(
-							Restrictions.le("clockIn", startDate),
-							Restrictions.ge("clockOut", endDate)
+							Restrictions.le(CLOCK_IN, startDate),
+							Restrictions.ge(CLOCK_OUT, endDate)
 						)
 					)
 				)
 			)
 		);
-		criteria.addOrder(Order.desc("clockIn"));
+		criteria.addOrder(Order.desc(CLOCK_IN));
 
 		return repository.select(Timesheet.class, criteria);
 	}

@@ -37,19 +37,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TimesheetSearchHandler implements SearchHandler {
+	
 	private final SearchConfig searchConfig = new SearchConfig("default", RestConstants.VERSION_2 + "/cashier/timesheet", Arrays.asList("1.9.*"),
 			new SearchQuery.Builder("Find a timesheet by date")
 				.withRequiredParameters("date").build()
 	);
 
 	@Override
-	public PageableResult search(RequestContext context)
-			throws ResponseException {
+	public PageableResult search(RequestContext context) throws ResponseException {
 		ITimesheetService service = Context.getService(ITimesheetService.class);
 		Provider provider = ProviderHelper.getCurrentProvider();
 		Date date;
-		if (provider == null)
+		if (provider == null) {
 			return null;
+		}
 		try {
 			date = new SimpleDateFormat("MM/dd/yyyy").parse(context.getParameter("date"));
 		} catch (ParseException e) {

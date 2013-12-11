@@ -69,11 +69,13 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	
 	@PropertySetter("attributes")
 	public void setPaymentAttributes(Payment instance, Set<PaymentAttribute> attributes) {
-		if (instance.getAttributes() == null)
+		if (instance.getAttributes() == null) {
 			instance.setAttributes(new HashSet<PaymentAttribute>());
-		BaseRestDataResource.updateCollection(instance.getAttributes(), attributes);
-		for (PaymentAttribute attr: instance.getAttributes())
+		}
+		BaseRestDataResource.syncCollection(instance.getAttributes(), attributes);
+		for (PaymentAttribute attr: instance.getAttributes()) {
 			attr.setPayment(instance);
+		}
 	}
 
 	@PropertySetter("amount")
@@ -88,8 +90,6 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	
 	@PropertyGetter("dateCreated")
 	public Long getPaymentDate(Payment instance) {
-//		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-//		return format.format(instance.getDateCreated());
 		return instance.getDateCreated().getTime();
 	}
 
@@ -114,7 +114,9 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 			payment.setVoidedBy(Context.getAuthenticatedUser());
 			service.save(bill);
 		}
-		catch (Exception e) { throw new ObjectNotFoundException(); }
+		catch (Exception e) {
+			throw new ObjectNotFoundException();
+		}
 	}
 	
 	@Override
@@ -132,7 +134,9 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 			bill.removePayment(payment);
 			service.save(bill);
 		}
-		catch (Exception e) { throw new ObjectNotFoundException(); }
+		catch (Exception e) { 
+			throw new ObjectNotFoundException(); 
+		}
 	}
 	
 	@Override
@@ -142,8 +146,7 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	
 	//TODO: Fix improper paging
 	@Override
-	public PageableResult doGetAll(Bill parent, RequestContext context)
-			throws ResponseException {
+	public PageableResult doGetAll(Bill parent, RequestContext context) throws ResponseException {
 		AlreadyPaged<Payment> results = new AlreadyPaged<Payment>(context, new ArrayList<Payment>(parent.getPayments()), false);
 		return results;
 	}

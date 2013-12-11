@@ -14,22 +14,22 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.Concept;
-import org.openmrs.annotation.Handler;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
+import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
-@Handler(supports = {PaymentAttribute.class}, order = 0)
+@Resource(name=RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass=PaymentAttribute.class, supportedOpenmrsVersions={"1.9"})
 public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttribute> {
 
 	@Override
-	public DelegatingResourceDescription getRepresentationDescription(
-			Representation rep) {
+	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
 			description.addProperty("paymentModeAttributeType", Representation.REF);
@@ -50,9 +50,9 @@ public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttrib
 			ConceptService service = Context.getService(ConceptService.class);
 			Concept concept = service.getConcept(instance.getValue());
 			return concept.getDisplayString();
-		}		
-		
-		else return instance.getValue(); 	
+		} else {
+			return instance.getValue(); 	
+		}
 	}
 
 	public Integer getAttributeOrder(PaymentAttribute instance) {

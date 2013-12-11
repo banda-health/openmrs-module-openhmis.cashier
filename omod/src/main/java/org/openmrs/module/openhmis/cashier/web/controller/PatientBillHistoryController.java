@@ -29,9 +29,10 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/module/openhmis/cashier/portlets/patientBillHistory")
 public class PatientBillHistoryController {
-	protected final Logger log = Logger.getLogger(getClass());
-
+	
+	private static final Logger LOG = Logger.getLogger(PatientBillHistoryController.class);
 	private IBillService billService;
+	
 	@Autowired
 	public PatientBillHistoryController(IBillService billServce, PatientService patientService) {
 		this.billService = billServce;
@@ -39,12 +40,8 @@ public class PatientBillHistoryController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public void billHistory(ModelMap model, @RequestParam(value = "patientId", required = true) int patientId) {
-		log.warn("In bill history controller");
-
+		LOG.warn("In bill history controller");
 		List<Bill> bills = billService.findPatientBills(patientId, null);
-
 		model.addAttribute("bills", bills);
-
-		//return "module/openhmis/cashier/portlet/patientBillHistory";
 	}
 }

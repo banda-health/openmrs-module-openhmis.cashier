@@ -34,39 +34,45 @@ import java.util.HashMap;
 @Controller
 @RequestMapping(value = CashierWebConstants.RECEIPT)
 public class ReceiptController {
+	
 	@RequestMapping(method=RequestMethod.GET)
 	public void get(@RequestParam(value = "receiptNumber", required = false) String receiptNumber, HttpServletResponse response) throws IOException {
-		if (receiptNumber != null) {
-			IBillService service = Context.getService(IBillService.class);
-			Bill bill = service.getBillByReceiptNumber(receiptNumber);
-			if (bill == null) {
-				response.sendError(404, "Could not find bill with receipt number \""+receiptNumber+"\""); return;
-			}
-			if (bill.isReceiptPrinted() && !Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT)) {
-				response.sendError(403, "You do not have permission to reprint receipt \""+receiptNumber+"\""); return;
-			}
-			AdministrationService adminService = Context.getAdministrationService();
-			Integer reportId;
-			try {
-				reportId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY));
-			} catch (Exception e) {
-				response.sendError(500, "Configuration error: need to specify global option for default report ID."); return;
-			}
-			JasperReportService reportService = Context.getService(JasperReportService.class);
-			JasperReport report = reportService.getJasperReport(reportId);
-			report.setName(receiptNumber);
-			HashMap<String, Object> params = new HashMap<String, Object>();
-			params.put("billId", bill.getId());
-			try {
-				ReportGenerator.generateHtmlAndWriteToResponse(report, params, response);
-			} catch (IOException e) {
-				response.sendError(500, "Error generating report for receipt \""+receiptNumber+"\""); return;
-			}
-			bill.setReceiptPrinted(true);
-			service.save(bill);
+		
+		if (receiptNumber == null) {
+			response.sendError(404);
 			return;
-			//return "redirect:" + CashierWebConstants.REPORT_DOWNLOAD_URL + "?reportName=" + fileName;
 		}
-		response.sendError(404);
+		
+		IBillService service = Context.getService(IBillService.class);
+		Bill bill = service.getBillByReceiptNumber(receiptNumber);
+		if (bill == null) {
+			response.sendError(404, "Could not find bill with receipt number \""+receiptNumber+"\"");
+			return;
+		}
+		if (bill.isReceiptPrinted() && !Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT)) {
+			response.sendError(403, "You do not have permission to reprint receipt \""+receiptNumber+"\"");
+			return;
+		}
+		AdministrationService adminService = Context.getAdministrationService();
+		Integer reportId;
+		try {
+			reportId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY));
+		} catch (Exception e) {
+			response.sendError(500, "Configuration error: need to specify global option for default report ID."); 
+			return;
+		}
+		JasperReportService reportService = Context.getService(JasperReportService.class);
+		JasperReport report = reportService.getJasperReport(reportId);
+		report.setName(receiptNumber);
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("billId", bill.getId());
+		try {
+			ReportGenerator.generateHtmlAndWriteToResponse(report, params, response);
+		} catch (IOException e) {
+			response.sendError(500, "Error generating report for receipt \""+receiptNumber+"\""); 
+			return;
+		}
+		bill.setReceiptPrinted(true);
+		service.save(bill);
 	}
 }

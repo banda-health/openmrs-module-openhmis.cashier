@@ -30,6 +30,7 @@ import java.math.BigDecimal;
  *
  */
 public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
+	
 	private AdministrationService adminService;
 	private IItemDataService itemService;
 
@@ -77,7 +78,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 
 							options.setRoundingItemUuid(roundingItem.getUuid());
 						} catch (Exception ex) {
-							throw new APIException("Rounding item ID set in options but item not found", ex);
+							throw new APIException("Rounding item ID set in options but item not found. Maybe your user doesn't have the required rights or the item is not existent in the database.", ex);
 						}
 					} else {
 						// Check to see if rounding has been enabled and throw exception if it has as a rounding item must be set
@@ -96,7 +97,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 
 		if (options.getRoundingItemUuid() == null || options.getRoundingItemUuid().isEmpty()) {
 			options.setRoundingMode(CashierOptions.RoundingMode.MID);
-			options.setRoundToNearest(new BigDecimal(0));
+			options.setRoundToNearest(BigDecimal.ZERO);
 		}
 
 		temp = adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY);

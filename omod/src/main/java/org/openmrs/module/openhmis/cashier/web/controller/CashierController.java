@@ -53,7 +53,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = CashierWebConstants.CASHIER_PAGE)
 public class CashierController {
-	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorController.class);
+	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorController.class);
 
 	private ITimesheetService timesheetService;
 	private ICashPointService cashPointService;
@@ -111,7 +111,7 @@ public class CashierController {
 						returnUrl = returnUrl.substring(req.getContextPath().length());
 					}
 				} catch (MalformedURLException e) {
-					log.warn("Could not parse referrer url '" + returnUrl + "'");
+					LOG.warn("Could not parse referrer url '" + returnUrl + "'");
 
 					returnUrl = "";
 				}
