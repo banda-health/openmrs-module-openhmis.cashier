@@ -198,6 +198,7 @@ public class Bill extends BaseOpenmrsData {
 		}
 
 		this.lineItems.add(item);
+		item.setBill(this);
 	}
 
 	public void removeLineItem(BillLineItem item) {
