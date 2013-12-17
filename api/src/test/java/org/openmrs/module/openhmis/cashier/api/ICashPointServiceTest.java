@@ -27,7 +27,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 	}
 
 	@Override
-	protected CashPoint createEntity(boolean valid) {
+	public CashPoint createEntity(boolean valid) {
 		CashPoint cashPoint = new CashPoint();
 
 		if (valid) {

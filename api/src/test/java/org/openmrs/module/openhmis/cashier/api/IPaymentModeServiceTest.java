@@ -31,7 +31,7 @@ public class IPaymentModeServiceTest extends IMetadataDataServiceTest<IPaymentMo
 	}
 
 	@Override
-	protected PaymentMode createEntity(boolean valid) {
+	public PaymentMode createEntity(boolean valid) {
 		PaymentMode mode = new PaymentMode();
 
 		if (valid) {

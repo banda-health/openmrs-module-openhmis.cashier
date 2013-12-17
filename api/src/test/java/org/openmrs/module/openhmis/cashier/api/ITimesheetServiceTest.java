@@ -44,7 +44,7 @@ public class ITimesheetServiceTest extends IEntityDataServiceTest<ITimesheetServ
 	}
 
 	@Override
-	protected Timesheet createEntity(boolean valid) {
+	public Timesheet createEntity(boolean valid) {
 		Timesheet timesheet = new Timesheet();
 
 		if (valid) {

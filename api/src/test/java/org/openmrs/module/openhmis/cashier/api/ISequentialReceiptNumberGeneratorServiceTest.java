@@ -48,7 +48,7 @@ public class ISequentialReceiptNumberGeneratorServiceTest
 	}
 
 	@Override
-	protected SequentialReceiptNumberGeneratorModel createEntity(boolean valid) {
+	public SequentialReceiptNumberGeneratorModel createEntity(boolean valid) {
 		SequentialReceiptNumberGeneratorModel model = new SequentialReceiptNumberGeneratorModel();
 		model.setGroupingType(SequentialReceiptNumberGenerator.GroupingType.NONE);
 		model.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.COUNTER);

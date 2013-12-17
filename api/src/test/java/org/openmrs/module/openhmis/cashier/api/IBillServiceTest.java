@@ -60,7 +60,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 	}
 
 	@Override
-	protected Bill createEntity(boolean valid) {
+	public Bill createEntity(boolean valid) {
 		Bill bill = new Bill();
 
 		if (valid) {
