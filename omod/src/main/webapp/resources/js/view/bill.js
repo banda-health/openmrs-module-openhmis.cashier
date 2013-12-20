@@ -176,6 +176,10 @@ define(
 					this.options.itemActions = [];
 			},
 			
+			onItemRemoved: function(itemView) {
+				openhmis.GenericListEntryView.prototype.onItemRemoved.call(this, itemView);
+				this.updateTotals();
+			},
 			
 			onItemSelected: function(itemView) {
 				openhmis.GenericListEntryView.prototype.onItemSelected.call(this, itemView);
