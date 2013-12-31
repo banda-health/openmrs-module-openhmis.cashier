@@ -55,7 +55,8 @@ define(
             
             url: function() {
                 if (this.meta.parentRestUrl)
-                    this.urlRoot = this.meta.parentRestUrl + this.meta.restUrl;
+                    this.urlRoot = this.meta.parentRestUrl +
+                    	this.meta.restUrl.substring(this.meta.restUrl.lastIndexOf('/') + 1);
                 return openhmis.GenericModel.prototype.url.call(this);
             },
             
