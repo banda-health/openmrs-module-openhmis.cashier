@@ -13,8 +13,11 @@
  */
 describe("Payment", function() {
 	
-	it("requires Payment", function() {
-		require([openhmis.url.cashierBase + "js/model/payment"]);
+	it("requires Payment and Bill", function() {
+		requires = {};
+		requires[openhmis.url.cashierBase + "js/model/payment"] = null;
+		requires[openhmis.url.cashierBase + "js/model/bill"] = null;
+		require(requires);
 	});
 	
 	it("should provide a correct serializable object", function() {
@@ -22,5 +25,20 @@ describe("Payment", function() {
 		var refPayment  = jQuery.parseJSON(openhmis.testData.JSON.payment);
 		var payment = new openhmis.Payment(paymentData);
 		openhmis.test.modelToJson(payment, refPayment, expect);
+	});
+	
+	it("should provide a correct REST url", function() {
+		var paymentData = jQuery.parseJSON(openhmis.testData.JSON.payment);
+		var payment = new openhmis.Payment(paymentData);
+		expect(payment.url()).toEqual(openhmis.url.rest + "v2/cashier/payment");
+	});
+
+	it("should provide a correct REST url when added to a bill", function() {
+		var paymentData = jQuery.parseJSON(openhmis.testData.JSON.payment);
+		var payment = new openhmis.Payment(paymentData);
+		var billId = "1234";
+		var bill = new openhmis.Bill({ uuid: billId });
+		bill.addPayment(payment);
+		expect(payment.url()).toEqual(bill.url() + "/payment");
 	});
 });

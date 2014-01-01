@@ -225,6 +225,13 @@
 							<outputDirectory>${project.build.directory}/jasmine/backboneforms/test</outputDirectory>
 							<includes>js/**</includes>
 						</artifactItem>
+						<artifactItem>
+							<groupId>${project.parent.groupId}</groupId>																	
+							<artifactId>openhmis.inventory-omod</artifactId>
+							<overWrite>true</overWrite>
+							<outputDirectory>${project.build.directory}/jasmine/inventory</outputDirectory>
+							<includes>web/module/resources/**</includes>
+						</artifactItem>
 					</artifactItems>
 				</configuration>				
 				<executions>
