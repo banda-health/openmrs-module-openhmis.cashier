@@ -102,29 +102,25 @@ public class RoundingUtil {
 	public static void addRoundingLineItem(Bill bill) {
 		ICashierOptionsService cashOptService = Context.getService(ICashierOptionsService.class);
 		CashierOptions options = cashOptService.getOptions();
-		if (options.getRoundToNearest().equals(BigDecimal.ZERO))
+		if (options.getRoundToNearest().equals(BigDecimal.ZERO)) {
 			return;
-		if (options.getRoundingItemUuid() == null)
+		}
+
+		if (options.getRoundingItemUuid() == null) {
 			throw new APIException("No rounding item specified in options. This must be set in order to use rounding for bill totals.");
-		// Get rounding item
-		IItemService itemService = Context.getService(IItemService.class);
-		Item roundingItem = itemService.getByUuid(options.getRoundingItemUuid());
-		// Create rounding line item
+		}
+
 		BigDecimal difference = bill.getTotal().subtract(RoundingUtil.round(bill.getTotal(), options.getRoundToNearest(), options.getRoundingMode()));
-		if (difference.equals(BigDecimal.ZERO))
-			return;
-		ItemPrice roundingPrice = roundingItem.addPrice("Rounding", difference.abs());
-		// This is a little weird, but order has to be set, and this is the best I can come up with right now
-		int itemOrder;
-		// This should set the order to the last in the list, since the other
-		// items should be ordered starting from zero
-		try { itemOrder = bill.getLineItems().size(); }
-		catch (NullPointerException e) { itemOrder = 0; }
-		BillLineItem lineItem = bill.addLineItem(
-			roundingItem,
-			roundingPrice,
-			difference.compareTo(BigDecimal.ZERO) > 0 ? -1 : 1
-		);
-		lineItem.setLineItemOrder(itemOrder);
+		if (!difference.equals(BigDecimal.ZERO)) {
+			// Get rounding item
+			IItemService itemService = Context.getService(IItemService.class);
+			Item roundingItem = itemService.getByUuid(options.getRoundingItemUuid());
+
+			// Create line item for rounding item and the required amount
+			BillLineItem lineItem = bill.addLineItem(roundingItem, difference.abs(), "", difference.compareTo(BigDecimal.ZERO) > 0 ? -1 : 1);
+
+			// Put the rounding line item at the end of the order
+			lineItem.setLineItemOrder(bill.getLineItems() == null ? 0 : bill.getLineItems().size() - 1);
+		}
 	}
 }

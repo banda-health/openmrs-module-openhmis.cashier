@@ -4,7 +4,11 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>openhmis.cashier</artifactId>
-	<version>1.7.2-SNAPSHOT</version>
+<<<<<<< HEAD
+	<version>1.6.2-SNAPSHOT</version>
+=======
+	<version>1.7.2</version>
+>>>>>>> master
 	<packaging>pom</packaging>
 	<name>OpenHMIS Cashier Module</name>
 	<description>Module to provide basic cashier functionality</description>
@@ -33,6 +37,11 @@
 		<connection>scm:git:git@github.com:OpenHMIS/openmrs-module-openhmis.cashier.git</connection>
 		<developerConnection>scm:git:git@github.com:OpenHMIS/openmrs-module-openhmis.cashier.git</developerConnection>
 		<url>scm:git:git@github.com:OpenHMIS/openmrs-module-openhmis.cashier.git</url>
+<<<<<<< HEAD
+    <tag>HEAD</tag>
+=======
+    <tag>v1.7.2</tag>
+>>>>>>> master
   </scm>
 
 	<modules>

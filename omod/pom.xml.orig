@@ -4,7 +4,11 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>1.7.3-SNAPSHOT</version>
+<<<<<<< HEAD
+		<version>1.6.2-SNAPSHOT</version>
+=======
+		<version>1.7.2</version>
+>>>>>>> master
 	</parent>
 
 	<artifactId>openhmis.cashier-omod</artifactId>

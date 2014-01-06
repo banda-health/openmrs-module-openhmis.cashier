@@ -51,22 +51,29 @@ public class Bill extends BaseOpenmrsData {
 	}
 
 	public BigDecimal getTotal() {
-		if (lineItems == null) return new BigDecimal(0);
-		BigDecimal total = new BigDecimal(0);
-		for (BillLineItem line : lineItems) {
-			if (!line.getVoided())
-				total = total.add(line.getTotal());
+		BigDecimal total = BigDecimal.ZERO;
+
+		if (lineItems != null) {
+			for (BillLineItem line : lineItems) {
+				if (line != null && !line.getVoided()) {
+					total = total.add(line.getTotal());
+				}
+			}
 		}
+
 		return total;
 	}
 	
 	public BigDecimal getTotalPayments() {
-		if (payments == null) return new BigDecimal(0);
-		BigDecimal total = new BigDecimal(0);
-		for (Payment payment : payments) {
-			if (!payment.getVoided())
-				total = total.add(payment.getAmount());
+		BigDecimal total = BigDecimal.ZERO;
+
+		if (payments != null) {
+			for (Payment payment : payments) {
+				if (payment != null && !payment.getVoided())
+					total = total.add(payment.getAmount());
+			}
 		}
+
 		return total;
 	}
 
@@ -155,11 +162,22 @@ public class Bill extends BaseOpenmrsData {
 			throw new NullPointerException("The item price must be defined.");
 		}
 
+		return addLineItem(item, price.getPrice(), price.getName(), quantity);
+	}
+
+	public BillLineItem addLineItem(Item item, BigDecimal price, String priceName, int quantity) {
+		if (item == null) {
+			throw new IllegalArgumentException("The item to add must be defined.");
+		}
+		if (price == null) {
+			throw new IllegalArgumentException("The item price must be defined.");
+		}
+
 		BillLineItem lineItem = new BillLineItem();
 		lineItem.setBill(this);
 		lineItem.setItem(item);
-		lineItem.setPrice(price.getPrice());
-		lineItem.setPriceName(price.getName());
+		lineItem.setPrice(price);
+		lineItem.setPriceName(priceName);
 		lineItem.setQuantity(quantity);
 
 		addLineItem(lineItem);
