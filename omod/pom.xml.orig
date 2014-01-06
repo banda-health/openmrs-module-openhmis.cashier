@@ -4,7 +4,11 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
+<<<<<<< HEAD
 		<version>2.0.0-icchange</version>
+=======
+		<version>1.7.2</version>
+>>>>>>> v1.7.2
 	</parent>
 
 	<artifactId>openhmis.cashier-omod</artifactId>
@@ -26,7 +30,7 @@
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>openhmis.commons-api</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>openhmis.backboneforms-omod</artifactId>
