@@ -18,6 +18,7 @@ import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.search.BillSearch;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
@@ -64,6 +65,35 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should return an empty list if the specified patient has no bills
 	 */
 	List<Bill> findPatientBills(int patientId, PagingInfo paging);
+
+	/**
+	 * Finds all bills using the specified {@link BillSearch} settings.
+	 * @param billSearch The bill search settings.
+	 * @return The bills found or an empty list if no bills were found.
+	 */
+	@Transactional(readOnly = true)
+	@Authorized( {CashierPrivilegeConstants.VIEW_BILLS})
+	List<Bill> findBills(BillSearch billSearch);
+	
+	/**
+	 * Finds all bills using the specified {@link BillSearch} settings.
+	 * @param billSearch The bill search settings.
+	 * @param pagingInfo The paging information.
+	 * @return The bills found or an empty list if no bills were found.
+	 * @should throw NullPointerException if bill search is null
+	 * @should throw NullPointerException if bill search template object is null
+	 * @should return an empty list if no bills are found via the search
+	 * @should return bills filtered by cashier
+	 * @should return bills filtered by cash point
+	 * @should return bills filtered by patient
+	 * @should return bills filtered by status
+	 * @should return all bills if paging is null
+	 * @should return paged bills if paging is specified
+	 * @should not return retired bills from search unless specified
+	 */
+	@Transactional(readOnly = true)
+	@Authorized( {CashierPrivilegeConstants.VIEW_BILLS})
+	List<Bill> findBills(BillSearch BillSearch, PagingInfo pagingInfo);
 	
 	@Override
 	@Authorized(CashierPrivilegeConstants.VIEW_BILLS)

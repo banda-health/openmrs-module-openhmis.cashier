@@ -14,6 +14,7 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -79,6 +80,11 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		return description;
 	}
 
+	@Override
+	public List<String> getPropertiesToExposeAsSubResources() {
+		return Arrays.asList("payments");
+	}
+	
 	@PropertySetter("lineItems")
 	public void setBillLineItems(Bill instance, List<BillLineItem> lineItems) {
 		if (instance.getLineItems() == null) {

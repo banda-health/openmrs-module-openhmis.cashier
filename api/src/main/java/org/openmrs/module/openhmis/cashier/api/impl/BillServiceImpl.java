@@ -26,10 +26,12 @@ import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.search.BillSearch;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -126,6 +128,27 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 		List<Bill> results = repository.select(getEntityClass(), criteria);
 		removeNullLineItems(results);
 		return results;
+	}
+	
+	@Override
+	public List<Bill> findBills(final BillSearch billSearch) {
+		return findBills(billSearch, null);
+	}
+	
+	@Override
+	public List<Bill> findBills(final BillSearch billSearch, PagingInfo pagingInfo) {
+		if (billSearch == null) {
+			throw new NullPointerException("The bill search must be defined.");
+		} else if (billSearch.getTemplate() == null) {
+			throw new NullPointerException("The bill search template must be defined.");
+		}
+
+		return executeCriteria(Bill.class, pagingInfo, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+				billSearch.updateCriteria(criteria);
+			}
+		});
 	}
 
 	/*
