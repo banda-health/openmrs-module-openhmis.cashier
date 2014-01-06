@@ -46,11 +46,11 @@ public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttrib
 	}
 	
 	public String getValueName(PaymentAttribute instance) {
-		if (instance.getPaymentModeAttributeType().getFormat().indexOf("Concept") != -1) {
+		if (instance.getPaymentModeAttributeType().getFormat().contains("Concept")) {
 			ConceptService service = Context.getService(ConceptService.class);
 			Concept concept = service.getConcept(instance.getValue());
-			return concept.getDisplayString();
-		}		
+			return concept == null ? "" : concept.getDisplayString();
+		}
 		
 		else return instance.getValue(); 	
 	}
