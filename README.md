@@ -13,3 +13,5 @@ This repository follows the [git flow] [3] branching model.  The current release
 [1]: http://openmrs.openhmisafrica.org
 [2]: http://youtrack.openhmisafrica.org
 [3]: https://github.com/nvie/gitflow
+
+[![Analytics](https://ga-beacon.appspot.com/UA-46919671-1/openmrs-module-openhmis.cashier/readme)](https://github.com/igrigorik/ga-beacon)
