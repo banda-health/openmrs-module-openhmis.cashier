@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Provider;
 import org.openmrs.User;
-import org.openmrs.api.APIException;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
@@ -28,7 +27,8 @@ import org.springframework.stereotype.Component;
 public class CashierLogoutFilter implements Filter {
 
     private static final Log LOG = LogFactory.getLog(CashierLogoutFilter.class);
-    private static final String PROVIDER_ERROR_MESSAGE = "Could not locate the Provider";
+    private static final String PROVIDER_ERROR_LOG_MESSAGE = "Could not locate the Provider";
+    private static final Object TIMESHEET_ERROR_LOG_MESSAGE = "Could not locate Timesheet";
 
     @Autowired private ProviderService providerService;
     @Autowired private ITimesheetService timesheetService;
@@ -42,16 +42,15 @@ public class CashierLogoutFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        LOG.debug("initCashierLogoutFilter");
+
     }
 
     @Override
     public void destroy() {
-        LOG.debug("destroyCashierLogoutFilter");
+
     }
 
     private void clockOutCashier() {
-
         if (userIsNotCashier()) {
             return;
         }
@@ -59,11 +58,17 @@ public class CashierLogoutFilter implements Filter {
         Provider provider = ProviderHelper.getCurrentProvider(providerService);
 
         if (provider == null) {
-            LOG.error(PROVIDER_ERROR_MESSAGE);
-            throw new APIException(PROVIDER_ERROR_MESSAGE);
+            LOG.error(PROVIDER_ERROR_LOG_MESSAGE);
+            return;
         }
 
         Timesheet timesheet = timesheetService.getCurrentTimesheet(provider);
+        
+        if (timesheet == null) {
+            LOG.error(TIMESHEET_ERROR_LOG_MESSAGE);
+            return;
+        }
+        
         if (cashierIsClockedIn(timesheet)) {
             timesheet.setClockOut(new Date());
             timesheetService.save(timesheet);
