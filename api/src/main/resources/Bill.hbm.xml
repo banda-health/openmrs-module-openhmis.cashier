@@ -101,7 +101,7 @@
 		<discriminator column="bill_payment_id" insert="false" />
 
 		<many-to-one name="bill" class="Bill" column="bill_id" not-null="true" />
-		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
+		<many-to-one name="instanceType" class="PaymentMode" column="payment_mode_id" not-null="true" />
 
 		<property name="amount" type="java.math.BigDecimal" column="amount" not-null="true" />
 		<property name="amountTendered" type="java.math.BigDecimal" column="amount_tendered" not-null="true" />
@@ -133,8 +133,8 @@
 		</id>
 		<discriminator column="bill_payment_attribute_id" insert="false" />
 
-		<many-to-one name="payment" class="Payment" column="bill_payment_id" not-null="true" />
-		<many-to-one name="paymentModeAttributeType" class="PaymentModeAttributeType" column="payment_mode_attribute_type_id" not-null="true" />
+		<many-to-one name="owner" class="Payment" column="bill_payment_id" not-null="true" />
+		<many-to-one name="attributeType" class="PaymentModeAttributeType" column="payment_mode_attribute_type_id" not-null="true" />
 		<property name="value" type="text" access="field" column="value_reference" length="65535" />
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
@@ -181,7 +181,7 @@
 		</id>
 		<discriminator column="payment_mode_attribute_type_id" insert="false" />
 
-		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
+		<many-to-one name="owner" class="PaymentMode" column="payment_mode_id" not-null="true" />
 
 		<property name="attributeOrder" type="int" column="attribute_order" />
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />

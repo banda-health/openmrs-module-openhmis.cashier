@@ -16,37 +16,39 @@ package org.openmrs.module.webservices.rest.resource;
 import org.openmrs.Concept;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
 @Resource(name=RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass=PaymentAttribute.class, supportedOpenmrsVersions={"1.9"})
-public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttribute> {
+public class PaymentAttributeResource
+		extends BaseRestInstanceAttributeDataResource<PaymentAttribute, Payment, PaymentMode, PaymentModeAttributeType> {
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
-			description.addProperty("paymentModeAttributeType", Representation.REF);
-			description.addProperty("value");
+
+		if (!(rep instanceof RefRepresentation)) {
 			description.addProperty("valueName", findMethod("getValueName"));
-			description.addProperty("order", findMethod("getAttributeOrder"));
 		}
+
 		return description;
 	}
-	
+
 	@Override
 	public String getDisplayString(PaymentAttribute instance) {
-		return instance.getPaymentModeAttributeType().getName() + ": " + instance.getValue();
+		return instance.getAttributeType().getName() + ": " + instance.getValue();
 	}
 	
 	public String getValueName(PaymentAttribute instance) {
-		if (instance.getPaymentModeAttributeType().getFormat().indexOf("Concept") != -1) {
+		if (instance.getAttributeType().getFormat().contains("Concept")) {
 			ConceptService service = Context.getService(ConceptService.class);
 			Concept concept = service.getConcept(instance.getValue());
 			return concept == null ? "" : concept.getDisplayString();
@@ -55,17 +57,13 @@ public class PaymentAttributeResource extends BaseRestDataResource<PaymentAttrib
 		}
 	}
 
-	public Integer getAttributeOrder(PaymentAttribute instance) {
-		return instance.getPaymentModeAttributeType().getAttributeOrder();
-	}
-
 	@Override
 	public PaymentAttribute newDelegate() {
 		return new PaymentAttribute();
 	}
 
 	@Override
-	public Class<IEntityDataService<PaymentAttribute>> getServiceClass() {
+	public Class<? extends IEntityDataService<PaymentAttribute>> getServiceClass() {
 		throw new RuntimeException("No service class implemented for " + getClass().getSimpleName());
 	}
 }

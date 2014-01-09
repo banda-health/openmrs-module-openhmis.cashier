@@ -13,45 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.BaseOpenmrsData;
+import org.openmrs.module.openhmis.commons.api.entity.model.BaseInstanceAttributeData;
 
 /**
  * Model class that represents a payment mode attribute for a particular {@link Payment}.
  */
-public class PaymentAttribute extends BaseOpenmrsData {
-	private Integer paymentAttributeId;
-	private Payment payment;
-	private PaymentModeAttributeType paymentModeAttributeType;
-	private String value;
-
-	public Integer getId() {
-		return paymentAttributeId;
-	}
-	public void setId(Integer id) {
-		paymentAttributeId = id;
-	}
-
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
-	}
-
-	public PaymentModeAttributeType getPaymentModeAttributeType() {
-		return paymentModeAttributeType;
-	}
-
-	public void setPaymentModeAttributeType(PaymentModeAttributeType paymentModeAttributeType) {
-		this.paymentModeAttributeType = paymentModeAttributeType;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
+public class PaymentAttribute extends BaseInstanceAttributeData<Payment, PaymentModeAttributeType> {
+	private static final long serialVersionUID = 0L;
 }

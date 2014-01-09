@@ -13,53 +13,18 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
+import org.openmrs.module.openhmis.cashier.api.model.Payment;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
-import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.Representation;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Resource(name=RestConstants.VERSION_2 + "/cashier/paymentMode", supportedClass=PaymentMode.class, supportedOpenmrsVersions={"1.9"})
-public class PaymentModeResource extends BaseRestMetadataResource<PaymentMode> {
-	@Override
-	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
-		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
-			description.addProperty("attributeTypes");
-		}
-		return description;
-	}
-
-	@Override
-	public DelegatingResourceDescription getCreatableProperties() {
-		DelegatingResourceDescription description = super.getCreatableProperties();
-
-		description.addProperty("attributeTypes");
-
-		return description;
-	}
-
-	@PropertySetter(value="attributeTypes")
-	public void setAttributeTypes(PaymentMode instance, List<PaymentModeAttributeType> attributeTypes) {
-		if (instance.getAttributeTypes() == null) {
-			instance.setAttributeTypes(new ArrayList<PaymentModeAttributeType>());
-		}
-
-		BaseRestDataResource.updateCollection(instance.getAttributeTypes(), attributeTypes);
-		for (PaymentModeAttributeType attributeType : instance.getAttributeTypes()) {
-			attributeType.setPaymentMode(instance);
-		}
-	}
-
+public class PaymentModeResource
+		extends BaseRestInstanceTypeResource<PaymentMode, Payment, PaymentModeAttributeType, PaymentAttribute> {
 	@Override
 	public PaymentMode newDelegate() {
 		return new PaymentMode();

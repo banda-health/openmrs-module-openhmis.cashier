@@ -13,20 +13,18 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.BaseOpenmrsData;
+import org.openmrs.module.openhmis.commons.api.entity.model.BaseCustomizableInstanceData;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Model class that represents the {@link Bill} payment information.
  */
-public class Payment extends BaseOpenmrsData {
+public class Payment extends BaseCustomizableInstanceData<PaymentMode, PaymentAttribute> {
+	private static final long serialVersionUID = 0L;
+
 	private Integer paymentId;
 	private Bill bill;
-	private PaymentMode paymentMode;
-	private Set<PaymentAttribute> attributes;
 	private BigDecimal amount;
 	private BigDecimal amountTendered;
 
@@ -38,22 +36,6 @@ public class Payment extends BaseOpenmrsData {
 		paymentId = id;
 	}
 
-		public PaymentMode getPaymentMode() {
-		return paymentMode;
-	}
-
-	public void setPaymentMode(PaymentMode mode) {
-		this.paymentMode = mode;
-	}
-
-	public Set<PaymentAttribute> getAttributes() {
-		return attributes;
-	}
-
-	public void setAttributes(Set<PaymentAttribute> attributes) {
-		this.attributes = attributes;
-	}
-
 	public PaymentAttribute addAttribute(PaymentModeAttributeType type, String value) {
 		if (type == null) {
 			throw new NullPointerException("The payment mode attribute type must be defined.");
@@ -63,31 +45,12 @@ public class Payment extends BaseOpenmrsData {
 		}
 
 		PaymentAttribute attribute = new PaymentAttribute();
-		attribute.setPaymentModeAttributeType(type);
-		attribute.setPayment(this);
+		attribute.setAttributeType(type);
 		attribute.setValue(value);
 
 		addAttribute(attribute);
 
 		return attribute;
-	}
-
-	public void addAttribute(PaymentAttribute attribute) {
-		if (attribute == null) {
-			throw new NullPointerException("The payment attribute to add must be defined.");
-		}
-
-		if (this.attributes == null) {
-			this.attributes = new HashSet<PaymentAttribute>();
-		}
-
-		this.attributes.add(attribute);
-	}
-
-	public void removeAttribute(PaymentAttribute attribute) {
-		if (attribute != null && this.attributes != null) {
-			this.attributes.remove(attribute);
-		}
 	}
 
 	public BigDecimal getAmount() {

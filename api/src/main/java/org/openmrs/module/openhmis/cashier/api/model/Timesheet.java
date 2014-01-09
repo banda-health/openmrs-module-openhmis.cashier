@@ -22,6 +22,8 @@ import java.util.Date;
  * Model class to represent a cashier timesheet entry.
  */
 public class Timesheet extends BaseOpenmrsData {
+	private static final long serialVersionUID = 0L;
+
 	private Integer timesheetId;
 	private Provider cashier;
 	private CashPoint cashPoint;

@@ -23,15 +23,14 @@ import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
 
 import java.math.BigDecimal;
 import java.security.AccessControlException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Model class that represents a list of {@link BillLineItem}s and {@link Payment}s created by a cashier for a patient.
  */
 public class Bill extends BaseOpenmrsData {
+	private static final long serialVersionUID = 0L;
+
 	private Integer billId;
 	private String receiptNumber;
 	private Provider cashier;
@@ -194,7 +193,7 @@ public class Bill extends BaseOpenmrsData {
 		}
 
 		if (this.lineItems == null) {
-			this.lineItems = new Vector<BillLineItem>();
+			this.lineItems = new ArrayList<BillLineItem>();
 		}
 
 		this.lineItems.add(item);
@@ -226,7 +225,7 @@ public class Bill extends BaseOpenmrsData {
 		}
 
 		Payment payment = new Payment();
-		payment.setPaymentMode(mode);
+		payment.setInstanceType(mode);
 		payment.setAmount(amount);
 		payment.setAmountTendered(amountTendered);
 
@@ -234,7 +233,7 @@ public class Bill extends BaseOpenmrsData {
 			payment.setAttributes(attributes);
 
 			for (PaymentAttribute attribute : attributes) {
-				attribute.setPayment(payment);
+				attribute.setOwner(payment);
 			}
 		}
 

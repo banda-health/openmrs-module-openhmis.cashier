@@ -13,37 +13,27 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
-import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
-import org.openmrs.module.openhmis.cashier.api.model.Bill;
-import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
-import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
-import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
-import org.openmrs.module.openhmis.cashier.api.model.Payment;
-import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.api.model.*;
 import org.openmrs.module.openhmis.cashier.api.util.RoundingUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.springframework.web.client.RestClientException;
+
+import java.util.*;
 
 @Resource(name=RestConstants.VERSION_2 + "/cashier/bill", supportedClass=Bill.class, supportedOpenmrsVersions={"1.9"})
 public class BillResource extends BaseRestDataResource<Bill> {
@@ -51,7 +41,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
+		if (!(rep instanceof RefRepresentation)) {
 			description.addProperty("adjustedBy", Representation.REF);
 			description.addProperty("billAdjusted", Representation.REF);
 			description.addProperty("cashPoint", Representation.REF);
@@ -62,22 +52,14 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			description.addProperty("receiptNumber");
 			description.addProperty("status");
 		}
+
 		return description;
 	}
 
 	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
-		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("adjustedBy");
-		description.addProperty("billAdjusted");
-		description.addProperty("cashPoint");		
-		description.addProperty("lineItems");
-		description.addProperty("patient");
-		description.addProperty("payments");
-		description.addProperty("receiptNumber");
-		description.addProperty("status");		
-		return description;
+		return getRepresentationDescription(new DefaultRepresentation());
 	}
 
 	@Override

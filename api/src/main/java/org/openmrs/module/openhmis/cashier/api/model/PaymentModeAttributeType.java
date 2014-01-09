@@ -13,82 +13,12 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.module.openhmis.commons.api.entity.model.BaseInstanceAttributeType;
 
 /**
  * Model class to describe an attribute of a payment mode.  For example, a credit card mode of payment may require
  * a transaction number as an attribute.
  */
-public class PaymentModeAttributeType extends BaseOpenmrsMetadata {
-	/**
-	 * Note that this type can not use the org.openmrs.attribute.BaseAttributeType class because these attributes vary
-	 * per payment mode, rather than being defined for all payment modes.  In the future we might want to use a
-	 * similar design as BaseAttributeType or even extend it to support instance-based attribute types.
-	 */
-
-	private Integer paymentModeAttributeTypeId;
-	private PaymentMode paymentMode;
-	private Integer attributeOrder;
-
-	private String format;
-	private Integer foreignKey;
-
-	private String regExp;
-	private Boolean required = false;
-
-	public Integer getId() {
-		return paymentModeAttributeTypeId;
-	}
-
-	public void setId(Integer id) {
-		paymentModeAttributeTypeId = id;
-	}
-
-	public PaymentMode getPaymentMode() {
-		return paymentMode;
-	}
-
-	public void setPaymentMode(PaymentMode paymentMode) {
-		this.paymentMode = paymentMode;
-	}
-
-	public Integer getAttributeOrder() {
-		return attributeOrder;
-	}
-
-	public void setAttributeOrder(Integer attributeOrder) {
-		this.attributeOrder = attributeOrder;
-	}
-
-	public String getFormat() {
-		return format;
-	}
-
-	public void setFormat(String format) {
-		this.format = format;
-	}
-
-	public Integer getForeignKey() {
-		return foreignKey;
-	}
-
-	public void setForeignKey(Integer foreignKey) {
-		this.foreignKey = foreignKey;
-	}
-
-	public String getRegExp() {
-		return regExp;
-	}
-
-	public void setRegExp(String regExp) {
-		this.regExp = regExp;
-	}
-
-	public Boolean getRequired() {
-		return required;
-	}
-
-	public void setRequired(Boolean required) {
-		this.required = required;
-	}
+public class PaymentModeAttributeType extends BaseInstanceAttributeType<PaymentMode> {
+	private static final long serialVersionUID = 0L;
 }

@@ -21,15 +21,13 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
 @Resource(name=RestConstants.VERSION_2 + "/cashier/cashPoint", supportedClass=CashPoint.class, supportedOpenmrsVersions={"1.9"})
 public class CashPointResource extends BaseRestMetadataResource<CashPoint> {
-
 	@Override
 	public CashPoint newDelegate() {
 		return new CashPoint();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<IMetadataDataService<CashPoint>> getServiceClass() {
-		return (Class<IMetadataDataService<CashPoint>>)(Object)ICashPointService.class;
+	public Class<? extends IMetadataDataService<CashPoint>> getServiceClass() {
+		return ICashPointService.class;
 	}
 }

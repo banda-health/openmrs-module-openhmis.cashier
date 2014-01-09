@@ -182,7 +182,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 			actual.getPayments().toArray(actualPayments);
 			for (int i = 0; i < expected.getPayments().size(); i++) {
 				Assert.assertEquals(expectedPayments[i].getId(), actualPayments[i].getId());
-				Assert.assertEquals(expectedPayments[i].getPaymentMode(), actualPayments[i].getPaymentMode());
+				Assert.assertEquals(expectedPayments[i].getInstanceType(), actualPayments[i].getInstanceType());
 				Assert.assertEquals(expectedPayments[i].getAmount(), actualPayments[i].getAmount());
 				Assert.assertEquals(expectedPayments[i].getUuid(), actualPayments[i].getUuid());
 
@@ -198,8 +198,8 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 						for (int j = 0; j < expectedAttributes.length; j++) {
 							Assert.assertEquals(expectedAttributes[j].getId(), actualAttributes[j].getId());
 							Assert.assertEquals(expectedAttributes[j].getValue(), actualAttributes[j].getValue());
-							Assert.assertEquals(expectedAttributes[j].getPaymentModeAttributeType(),
-									actualAttributes[j].getPaymentModeAttributeType());
+							Assert.assertEquals(expectedAttributes[j].getAttributeType(),
+									actualAttributes[j].getAttributeType());
 							Assert.assertEquals(expectedAttributes[j].getUuid(), actualAttributes[j].getUuid());
 						}
 					}

@@ -16,6 +16,7 @@ package org.openmrs.module.openhmis.cashier.api.model;
 import java.math.BigDecimal;
 
 public class CashierOptions {
+	private static final long serialVersionUID = 0L;
 	private static final BigDecimal DEFAULT_NO_ROUNDING = BigDecimal.ZERO;
 	
 	public enum RoundingMode {

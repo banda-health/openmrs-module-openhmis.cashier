@@ -13,11 +13,8 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
@@ -38,14 +35,18 @@ import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 @SubResource(parent = BillResource.class, path = "payment", supportedClass=Payment.class, supportedOpenmrsVersions={"1.9"})
 public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillResource> {
-
 	@Override
-	public DelegatingResourceDescription getRepresentationDescription(
-			Representation rep) {
+	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("uuid");
+
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
 			description.addProperty("paymentMode", Representation.REF);
 			description.addProperty("attributes");
@@ -54,6 +55,7 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 			description.addProperty("dateCreated");
 			description.addProperty("voided");
 		}
+
 		return description;
 	}
 	
@@ -63,7 +65,8 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 		description.addProperty("paymentMode");
 		description.addProperty("attributes");
 		description.addProperty("amount");		
-		description.addProperty("amountTendered");		
+		description.addProperty("amountTendered");
+
 		return description;
 	}
 	
@@ -72,9 +75,10 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 		if (instance.getAttributes() == null) {
 			instance.setAttributes(new HashSet<PaymentAttribute>());
 		}
+
 		BaseRestDataResource.syncCollection(instance.getAttributes(), attributes);
 		for (PaymentAttribute attr: instance.getAttributes()) {
-			attr.setPayment(instance);
+			attr.setOwner(instance);
 		}
 	}
 
@@ -99,56 +103,46 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 		Bill bill = delegate.getBill();
 		bill.addPayment(delegate);
 		service.save(bill);
+
 		return delegate;
 	}
 
-	@Override
-	public void delete(String parentUniqueId, String uuid, String reason, RequestContext context) throws ResponseException {
-		IBillService service = Context.getService(IBillService.class);
-		Bill bill = service.getByUuid(parentUniqueId);
-		try {
-			Map<String, Payment> map = BaseRestDataResource.mapUuidToObject(bill.getPayments());
-			Payment payment = map.get(uuid);
-			payment.setVoided(true);
-			payment.setVoidReason(reason);
-			payment.setVoidedBy(Context.getAuthenticatedUser());
-			service.save(bill);
-		}
-		catch (Exception e) {
-			throw new ObjectNotFoundException();
-		}
-	}
-	
 	@Override
 	protected void delete(Payment delegate, String reason, RequestContext context) throws ResponseException {
 		delete(delegate.getBill().getUuid(), delegate.getUuid(), reason, context);
 	}
 
 	@Override
-	public void purge(String parentUniqueId, String uuid, RequestContext context) throws ResponseException {
+	public void delete(String parentUniqueId, final String uuid, String reason, RequestContext context) throws ResponseException {
 		IBillService service = Context.getService(IBillService.class);
-		Bill bill = service.getByUuid(parentUniqueId);
-		try {
-			Map<String, Payment> map = BaseRestDataResource.mapUuidToObject(bill.getPayments());
-			Payment payment = map.get(uuid);
-			bill.removePayment(payment);
-			service.save(bill);
-		}
-		catch (Exception e) { 
-			throw new ObjectNotFoundException(); 
-		}
+		Bill bill = findBill(service, parentUniqueId);
+		Payment payment = findPayment(bill, uuid);
+
+		payment.setVoided(true);
+		payment.setVoidReason(reason);
+		payment.setVoidedBy(Context.getAuthenticatedUser());
+
+		service.save(bill);
 	}
-	
+
 	@Override
 	public void purge(Payment delegate, RequestContext context) throws ResponseException {
 		purge(delegate.getBill().getUuid(), delegate.getUuid(), context);
 	}
+
+	@Override
+	public void purge(String parentUniqueId, String uuid, RequestContext context) throws ResponseException {
+		IBillService service = Context.getService(IBillService.class);
+		Bill bill = findBill(service, parentUniqueId);
+		Payment payment = findPayment(bill, uuid);
+
+		bill.removePayment(payment);
+		service.save(bill);
+	}
 	
-	//TODO: Fix improper paging
 	@Override
 	public PageableResult doGetAll(Bill parent, RequestContext context) throws ResponseException {
-		AlreadyPaged<Payment> results = new AlreadyPaged<Payment>(context, new ArrayList<Payment>(parent.getPayments()), false);
-		return results;
+		return new AlreadyPaged<Payment>(context, new ArrayList<Payment>(parent.getPayments()), false);
 	}
 
 	@Override
@@ -169,5 +163,29 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	@Override
 	public Payment newDelegate() {
 		return new Payment();
+	}
+
+	private Bill findBill(IBillService service, String billUUID) {
+		Bill bill = service.getByUuid(billUUID);
+		if (bill == null) {
+			throw new ObjectNotFoundException();
+		}
+
+		return bill;
+	}
+
+	private Payment findPayment(Bill bill, final String paymentUUID) {
+		Payment payment = Iterators.tryFind(bill.getPayments().iterator(), new Predicate<Payment>() {
+			@Override
+			public boolean apply(@Nullable Payment input) {
+				return input != null && input.getUuid().equals(paymentUUID);
+			}
+		}).orNull();
+
+		if (payment == null) {
+			throw new ObjectNotFoundException();
+		}
+
+		return payment;
 	}
 }

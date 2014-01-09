@@ -23,6 +23,8 @@ import java.math.BigDecimal;
  * of a particular {@link Item}.
  */
 public class BillLineItem extends BaseOpenmrsData {
+	private static final long serialVersionUID = 0L;
+
 	private int billLineItemId;
 	private Bill bill;
 	private Item item;

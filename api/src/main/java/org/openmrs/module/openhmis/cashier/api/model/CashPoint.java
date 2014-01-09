@@ -19,6 +19,8 @@ import org.openmrs.BaseOpenmrsMetadata;
  * Model class that represents a location where {@link Bill}'s can be created and paid for.
  */
 public class CashPoint extends BaseOpenmrsMetadata {
+	private static final long serialVersionUID = 0L;
+
 	private Integer cashPointId;
 
 	@Override

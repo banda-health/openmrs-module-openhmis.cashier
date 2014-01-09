@@ -20,6 +20,8 @@ import org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator;
  * Model class that represents the settings for the {@link SequentialReceiptNumberGenerator}.
  */
 public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
+	private static final long serialVersionUID = 0L;
+
 	public static final String DEFAULT_SEPARATOR = "-";
 	public static final String DEFAULT_CASHIER_PREFIX = "P";
 	public static final String DEFAULT_CASH_POINT_PREFIX = "CP";
