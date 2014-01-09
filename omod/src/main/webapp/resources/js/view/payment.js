@@ -75,8 +75,9 @@ define(
 				_.bindAll(this, "focus");
 				if (options) {
 					this.processCallback = options.processCallback;
-					if (options.paymentCollection)
+					if (options.paymentCollection) {
 						this.paymentCollection = options.paymentCollection;
+					}
 					this.readOnly = options.readOnly;
 				}
 				this.paymentCollection = this.paymentCollection ? this.paymentCollection
@@ -98,7 +99,9 @@ define(
 				});
 				this.template = this.getTemplate();
 				if (!this.readOnly) {
-					if (this.model === undefined) this.model = new openhmis.Payment();
+					if (this.model === undefined) {
+						this.model = new openhmis.Payment();
+					}
 					this.form = new Backbone.Form({
 						schema: {
 							paymentMode: {
@@ -184,18 +187,12 @@ define(
 			},
 			
 			processPayment: function(event) {
-				if (!this.commitForm()) return;
-				if (confirm(i18n("Are you sure you want to process a %s payment of %s?",
-							   this.model.get("paymentMode"), this.model.get("amountFmt")))) {
+				if (!this.commitForm()) {
+					return;
+				}
+				if (confirm(i18n("Are you sure you want to process a %s payment of %s?", this.model.get("paymentMode"), this.model.get("amountFmt")))) {
 					var self = this;
 					this.processCallback(this.model, { success: function(model, resp) {
-						if (model instanceof openhmis.Bill) {
-							// Entire bill was saved, so we expect the page to be
-							// refreshed soon
-						} else {
-							// Payment has been saved, so it will be automatically
-							// added to the payment collection, triggering rendering
-						}
 						// Set up new empty Payment
 						self.model = new openhmis.Payment();
 						self.form.fields["amount"].setValue("");

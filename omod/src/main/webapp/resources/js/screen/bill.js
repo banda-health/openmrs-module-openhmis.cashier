@@ -42,9 +42,9 @@ curl(
 						code: resp.exception.cause,
 						detail: resp.exception.stackTrace
 					});
-				}
-				else
+				} else {
 					self.createBillView.call(self, options, resp);
+				}
 			}});
 		}
 		
@@ -82,8 +82,7 @@ curl(
 						self.setupBillViewWithPatient.call(self, patient, resp);
 					}
 				});
-			}
-			else {
+			} else {
 				this.displayBillView.call(this);
 			}
 		}
@@ -105,9 +104,9 @@ curl(
 						self.displayBillView();
 					}
 				});
-			}
-			else
+			} else {
 				this.displayBillView();
+			}
 			this.patientView.selectPatient(this.patientView.model, {silent:true});			
 		}
 		
@@ -142,8 +141,9 @@ curl(
 			}
 			
 			// Patient View
-			if (this.billView.bill.get("status") !== BillStatus.PENDING)
+			if (this.billView.bill.get("status") !== BillStatus.PENDING) {
 				this.patientView.readOnly = true;
+			}
 			this.patientView.setElement($('#patient-view'));
 			this.patientView.render();
 			
@@ -188,8 +188,9 @@ curl(
 					
 					// Provide cash point select, if this option is enabled
 					var $cashPointLi = $("li.cashPoint");
-					if (!$cashPointLi.hasClass("timesheet") && !this.billView.bill.get("billAdjusted"))
+					if (!$cashPointLi.hasClass("timesheet") && !this.billView.bill.get("billAdjusted")) {
 						this.billView.setupCashPointForm($("li.cashPoint"));
+					}
 					break;
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
@@ -209,8 +210,9 @@ curl(
 
 			this.billView.render();
 			
-			if (this.billView.bill.get("status") === BillStatus.PENDING)
+			if (this.billView.bill.get("status") === BillStatus.PENDING) {
 				this.billView.setupNewItem();
+			}
 			
 			this.patientView.on('selected', this.billView.patientSelected);
 			this.patientView.on('editing', this.billView.blur);
@@ -233,20 +235,23 @@ curl(
 			this.billView.on("focusNext", paymentView.focus);
 			
 			window.onbeforeunload = function() {
-				if (self.billView.bill.isUnsaved())
+				if (self.billView.bill.isUnsaved()) {
 					return __("There are unsaved changes.");
+				}
 				return null;
 			}
 			
-			if (this.billView.bill.get("patient"))
+			if (this.billView.bill.get("patient")) {
 				this.billView.focus();
-			else
+			} else {
 				$('#inputNode').focus();
+			}
 		}
 		
 		$(document).ready(function() {
-			if ($("#bill").length > 0)
+			if ($("#bill").length > 0) {
 				var screen = new Screen();
+			}
 		});
 		
 		return Screen;

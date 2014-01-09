@@ -41,15 +41,23 @@ define(
 			},
 			
 			validate: function(attrs, options) {
-				if (!attrs.item || !attrs.item.id) return { item: __("Please choose an item") };
-				if (!attrs.item.get('department')) return { item: __("Item must belong to a department") };
-				if (!attrs.quantity || isNaN(attrs.quantity)) return { quantity: __("Please enter a quantity") }
+				if (!attrs.item || !attrs.item.id) {
+					return { item: __("Please choose an item") };
+				}
+				if (!attrs.item.get('department')) {
+					return { item: __("Item must belong to a department") };
+				}
+				if (!attrs.quantity || isNaN(attrs.quantity)) {
+					return { quantity: __("Please enter a quantity") }
+				}
 				return null;
 			},
 			
 			_validate: function(attrs, options) {
 				var valid = openhmis.GenericModel.prototype._validate.call(this, attrs, options);
-				if (valid) this.clean = true;
+				if (valid) {
+					this.clean = true;
+				}
 				return valid;
 			},
 			
@@ -71,23 +79,27 @@ define(
 			},
 			
 			getTotal: function() {
-				if (this.get('quantity') === undefined
-					|| this.get('price') === undefined)
+				if (this.get('quantity') === undefined || this.get('price') === undefined) {
 					return undefined;
+				}
 				return this.get('price') * this.get('quantity');
 			},
 			
 			parse: function(resp) {
-				if (resp.item)
+				if (resp.item) {
 					resp.item = new openhmis.Item(resp.item, { parse: true });
-				if (resp.quantity && resp.price) resp.total = resp.price * resp.quantity;
+				}
+				if (resp.quantity && resp.price) {
+					resp.total = resp.price * resp.quantity;
+				}
 				return resp;
 			},
 			
 			toJSON: function() {
 				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
-				if (attrs.price)
+				if (attrs.price) {
 					attrs.price = parseFloat(attrs.price);
+				}
 				return attrs;
 			}
 		});

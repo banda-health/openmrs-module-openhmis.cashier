@@ -28,9 +28,10 @@ define(
             },
             
             parse: function(resp) {
-                if (resp.paymentModeAttributeType)
+                if (resp.paymentModeAttributeType) {
                     resp.paymentModeAttributeType =
                         new openhmis.PaymentModeAttributeType(resp.paymentModeAttributeType, { parse: true });
+                }
                 return resp;
             }
         });
@@ -54,9 +55,10 @@ define(
             },
             
             url: function() {
-                if (this.meta.parentRestUrl)
+                if (this.meta.parentRestUrl) {
                     this.urlRoot = this.meta.parentRestUrl +
                     	this.meta.restUrl.substring(this.meta.restUrl.lastIndexOf('/') + 1);
+                }
                 return openhmis.GenericModel.prototype.url.call(this);
             },
             
@@ -78,29 +80,36 @@ define(
    				// By default, backbone validates every time we try try to alter
 				// the model.  We don't want to be bothered with this until we
 				// care.
-                if (goAhead !== true) return null;
+                if (goAhead !== true) {
+                	return null;
+                }
                 
-                if (this.get("amount") === null || this.get("amount") === undefined)
-                    return { amount: __("Amount is required.") }
-                if (isNaN(this.get("amount")))
+                if (this.get("amount") === null || this.get("amount") === undefined) {
+                	return { amount: __("Amount is required.") }
+                }
+                if (isNaN(this.get("amount"))) {
                     return { amount: __("Amount needs to be a number") }
-                if (!this.get("paymentMode") || !this.get("paymentMode").id)
+                }
+                if (!this.get("paymentMode") || !this.get("paymentMode").id) {
                     return { paymentMode: __("Payment mode is required.") }
+                }
                 return null;
             },
             
             parse: function(resp) {
-                if (resp.paymentMode)
+                if (resp.paymentMode) {
                     resp.paymentMode = new openhmis.PaymentMode(resp.paymentMode);
+                }
                 if (resp.attributes) {
                     var attributes = resp.attributes;
                     resp.attributes = [];
                     for (attr in attributes) {
                         var paymentAttribute = new openhmis.PaymentAttribute(attributes[attr], { parse: true });
-                        if (attributes[attr].order !== undefined)
+                        if (attributes[attr].order !== undefined) {
                             resp.attributes[attributes[attr].order] = paymentAttribute;
-                        else
+                        } else {
                             resp.attributes.push(paymentAttribute);
+                        }
                     }
                 }
                 return resp;
@@ -132,7 +141,9 @@ define(
             },
             
             validate: function(attrs, options) {
-   				if (!attrs.name) return { name: __("A name is required") }
+   				if (!attrs.name) {
+   					return { name: __("A name is required") }
+   				}
                 return null;
             },
             
@@ -154,15 +165,18 @@ define(
             },
             
             validate: function(attrs, options) {
-   				if (!attrs.name) return { name: __("A name is required") }
+   				if (!attrs.name) {
+   					return { name: __("A name is required") }
+   				}
                 return null;
             },
 
             toJSON: function() {
                 if (this.attributes.attributeTypes !== undefined) {
                     // Can't set these, so need to remove them from JSON
-                    for (var attributeType in this.attributes.attributeTypes)
+                    for (var attributeType in this.attributes.attributeTypes) {
                         delete this.attributes.attributeTypes[attributeType].resourceVersion;
+                    }
                 }
                 return openhmis.GenericModel.prototype.toJSON.call(this);
             },

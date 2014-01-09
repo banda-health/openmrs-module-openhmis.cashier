@@ -43,8 +43,9 @@ define(
 			updateItem: function(form, itemEditor) {
 				var item = itemEditor.getValue();
 				this.updatePriceOptions(item, form);
-				if (form.fields.quantity.getValue() === 0)
+				if (form.fields.quantity.getValue() === 0) {
 					form.fields.quantity.setValue(1);
+				}
 				this.update();
 				form.fields.quantity.editor.focus(true);
 			},
@@ -54,23 +55,28 @@ define(
 				form = form ? form : this.form;
 				var defaultPrice = item ? item.get("defaultPrice") : undefined;
 				var price = this.model.get("price") || defaultPrice;
-				if (price !== undefined)
+				if (price !== undefined) {
 					price = price.id;
+				}
 				var options = new openhmis.GenericCollection([], { model: openhmis.ItemPrice });
-				if (item)
+				if (item) {
 					options.reset(item.get("prices"));
-				else
+				} else {
 					options.add(0);
+				}
 				if (form) {
 					form.fields.price.editor.options.options = options;
 					form.fields.price.editor.render();
-					if (price)
+					if (price) {
 						form.fields.price.setValue(price);
+					}
 				}
 			},
 			
 			update: function() {
-				if (this.updateTimeout !== undefined) clearTimeout(this.updateTimeout);
+				if (this.updateTimeout !== undefined) {
+					clearTimeout(this.updateTimeout);
+				}
 				var view = this;
 				var update = function() {
 					var price = view.form.getValue("price");
@@ -90,20 +96,23 @@ define(
 			
 			commitForm: function(event) {
 				var errors = openhmis.GenericListItemView.prototype.commitForm.call(this, event);
-				if (errors === undefined && event && event.keyCode === 13)
+				if (errors === undefined && event && event.keyCode === 13) {
 					this.trigger("focusNext", this);
+				}
 			},
 			
 			onModelChange: function(model) {
-				if (model.hasChanged() && model.isValid())
+				if (model.hasChanged() && model.isValid()) {
 					this.trigger("change", this);
+				}
 			},
 			
 			displayErrors: function(errorMap, event) {
 				// If there is already another item in the collection and
 				// this is not triggered by enter key, skip the error message
-				if (event && event.type !== "keypress" && this.model.collection && this.model.collection.length > 0)
+				if (event && event.type !== "keypress" && this.model.collection && this.model.collection.length > 0) {
 					return;
+				}
 				// If there is already an item in the collection and the event
 				// was triggered by the enter key, request that focus be moved
 				// to the next form item.
@@ -117,14 +126,16 @@ define(
 			
 			focus: function(form) {
 				openhmis.GenericListItemView.prototype.focus.call(this, form);
-				if (!form)
+				if (!form) {
 					this.$('.item-name').focus();
+				}
 			},
 			
 			// Maybe this should just be moved into generic.js			
 			_removeModel: function() {
-				if (this.model.collection)
+				if (this.model.collection) {
 					this.model.collection.remove(this.model, { silent: true });
+				}
 			},
 			
 			render: function() {
@@ -170,10 +181,11 @@ define(
 				this.bill = bill;
 				this.model = bill.get("lineItems");
 				this.model.on("all", this.updateTotals);
-				if (bill.get("status") === bill.BillStatus.PENDING)
+				if (bill.get("status") === bill.BillStatus.PENDING) {
 					this.options.itemActions = ["remove", "inlineEdit"];
-				else
+				} else {
 					this.options.itemActions = [];
+				}
 			},
 			
 			onItemRemoved: function(itemView) {
@@ -244,22 +256,26 @@ define(
 				var success = options.success;
 				var self = this;
 				options.success = function(model, resp) {
-					if (self.bill.getTotalPayments() >= self.bill.getTotal())
+					if (self.bill.getTotalPayments() >= self.bill.getTotal()) {
 						self.trigger("paid", self.bill);
+					}
 					self.updateTotals();
-					if (success) success(model, resp);
+					if (success) {
+						success(model, resp);
+					}
 				}
 				payment.set("amountTendered", payment.get("amount"));
 				var paymentChange = (this.bill.getTotalPayments() + payment.get("amount")) - this.bill.getAdjustedTotal();
-				if (paymentChange > 0)
+				if (paymentChange > 0) {
 					payment.set("amount", payment.get("amountTendered") - paymentChange);
+				}
 				this.bill.addPayment(payment);
 				if (this.bill.get("status") === this.bill.BillStatus.PENDING) {
 					if (!this.postBill(options));
 						this.bill.get("payments").remove(payment);
-				}
-				else
+				} else {
 					payment.save([], options);
+				}
 			},
 			
 			validate: function(allowEmptyBill) {
@@ -270,11 +286,13 @@ define(
 				}
 				if (allowEmptyBill === true
 					&& errors
-					&& errors.lineItems !== undefined)
+					&& errors.lineItems !== undefined) {
 						delete errors.lineItems;
+				}
 				if (errors && _.size(errors) > 0) {
-					for (var e in errors)
+					for (var e in errors) {
 						openhmis.validationMessage(elMap[e][0], errors[e], elMap[e][1]);
+					}
 					return false;
 				}
 				return true;
@@ -287,9 +305,12 @@ define(
 				// line items
 				var billAdjusted = this.bill.get("billAdjusted");
 				var allowEmptyBill = (billAdjusted !== undefined && billAdjusted.id !== undefined);
-				if (!this.validate(allowEmptyBill)) return false;
-				if (this.cashPointForm !== undefined)
+				if (!this.validate(allowEmptyBill)) {
+					return false;
+				}
+				if (this.cashPointForm !== undefined) {
 					this.bill.set("cashPoint", this.cashPointForm.getValue("cashPoint"));
+				}
 				// Filter out any invalid lineItems (especially the bottom)
 				// entry cursor
 				this.bill.get("lineItems").reset(
@@ -299,21 +320,26 @@ define(
 
 				if (post === true
 					&& this.bill.get("billAdjusted")
-					&& this.bill.get("status") === this.bill.BillStatus.PENDING)
+					&& this.bill.get("status") === this.bill.BillStatus.PENDING) {
 						this._postAdjustingBill(this.bill);
-				else if (post === true)
+				} else if (post === true) {
 					this.bill.set("status", this.bill.BillStatus.POSTED);
+				}
 				var print = options.print;
 				var success = options.success;
 				var error = options.error;
 				var self = this;
 				options.success = function(model, resp) {
 					self.trigger(print ? "saveAndPrint" : "save", model);
-					if (success) success(model, resp);
+					if (success) {
+						success(model, resp);
+					}
 				}
 				options.error = function(model, resp) {
 					openhmis.error(resp);
-					if (error) error(model, resp);
+					if (error) {
+						error(model, resp);
+					}
 				}
 				this.bill.save([], options);
 				return true;
@@ -356,10 +382,6 @@ define(
 			printReceipt: function(event) {
 				var url = openhmis.url.getPage("cashierBase")
 					+ "receipt.form?receiptNumber=" + encodeURIComponent(this.bill.get("receiptNumber"));
-				// Triggered by an event
-				//if (event) {}
-				// Print on page load (Post & Print)
-				//else {
 				// Remove if print has been clicked before?
 				$("#receiptDownload").remove();
 				$iframe = $('<iframe id="receiptDownload" src="'+url+'" width="1" height="1"></iframe>');
