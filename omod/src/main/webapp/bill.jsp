@@ -73,7 +73,7 @@
 </div>
 
 <div id="bill"></div>
-<div id="payment" class="box"></div>
+<div id="payment"></div>
 
 <input type="submit" id="saveBill" value="<spring:message code="openhmis.cashier.bill.saveBill" />" />
 <input type="button" id="postBill" value="<spring:message code="openhmis.cashier.bill.postBill" />" style="display: none;" />
