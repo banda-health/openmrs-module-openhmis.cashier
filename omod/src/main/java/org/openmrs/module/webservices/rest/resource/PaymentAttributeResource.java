@@ -16,16 +16,19 @@ package org.openmrs.module.webservices.rest.resource;
 import org.openmrs.Concept;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.IPaymentModeAttributeTypeService;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 
 @Resource(name=RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass=PaymentAttribute.class, supportedOpenmrsVersions={"1.9"})
 public class PaymentAttributeResource
@@ -51,10 +54,24 @@ public class PaymentAttributeResource
 		if (instance.getAttributeType().getFormat().contains("Concept")) {
 			ConceptService service = Context.getService(ConceptService.class);
 			Concept concept = service.getConcept(instance.getValue());
+
 			return concept == null ? "" : concept.getDisplayString();
 		} else {		
 			return instance.getValue(); 	
 		}
+	}
+
+	// Work around TypeVariable issue on base generic property (BaseCustomizableInstanceData.getInstanceType)
+	@PropertySetter("attributeType")
+	public void setAttributeType(PaymentAttribute instance, String uuid) {
+		IPaymentModeAttributeTypeService service = Context.getService(IPaymentModeAttributeTypeService.class);
+
+		PaymentModeAttributeType type = service.getByUuid(uuid);
+		if (type == null) {
+			throw new ObjectNotFoundException();
+		}
+
+		instance.setAttributeType(type);
 	}
 
 	@Override

@@ -23,14 +23,14 @@ define(
     function(_, Backbone, openhmis, __) {
         openhmis.PaymentAttribute = openhmis.GenericModel.extend({
             schema: {
-                paymentModeAttributeType: { type: "Object", objRef: true },
+                attributeType: { type: "Object", objRef: true },
                 value: { type: "Text" }
             },
             
             parse: function(resp) {
-                if (resp.paymentModeAttributeType) {
-                    resp.paymentModeAttributeType =
-                        new openhmis.PaymentModeAttributeType(resp.paymentModeAttributeType, { parse: true });
+                if (resp.attributeType) {
+                    resp.attributeType =
+                        new openhmis.PaymentModeAttributeType(resp.attributeType, { parse: true });
                 }
                 return resp;
             }
@@ -50,7 +50,7 @@ define(
                 amountFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
                 amountTendered: { type: 'BasicNumber' },
                 amountTenderedFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
-                paymentMode: { type: 'Object', objRef: true },
+                instanceType: { type: 'Object', objRef: true },
                 attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute }
             },
             
@@ -90,15 +90,15 @@ define(
                 if (isNaN(this.get("amount"))) {
                     return { amount: __("Amount needs to be a number") }
                 }
-                if (!this.get("paymentMode") || !this.get("paymentMode").id) {
-                    return { paymentMode: __("Payment mode is required.") }
+                if (!this.get("instanceType") || !this.get("instanceType").id) {
+                    return { instanceType: __("Payment mode is required.") }
                 }
                 return null;
             },
             
             parse: function(resp) {
-                if (resp.paymentMode) {
-                    resp.paymentMode = new openhmis.PaymentMode(resp.paymentMode);
+                if (resp.instanceType) {
+                    resp.instanceType = new openhmis.PaymentMode(resp.instanceType);
                 }
                 if (resp.attributes) {
                     var attributes = resp.attributes;

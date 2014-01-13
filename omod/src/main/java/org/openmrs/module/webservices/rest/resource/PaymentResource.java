@@ -17,9 +17,11 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
+import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
@@ -48,7 +50,7 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 		description.addProperty("uuid");
 
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
-			description.addProperty("paymentMode", Representation.REF);
+			description.addProperty("instanceType", Representation.REF);
 			description.addProperty("attributes");
 			description.addProperty("amount");
 			description.addProperty("amountTendered");
@@ -62,14 +64,27 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("paymentMode");
+		description.addProperty("instanceType");
 		description.addProperty("attributes");
 		description.addProperty("amount");		
 		description.addProperty("amountTendered");
 
 		return description;
 	}
-	
+
+	// Work around TypeVariable issue on base generic property (BaseCustomizableInstanceData.getInstanceType)
+	@PropertySetter("instanceType")
+	public void setPaymentMode(Payment instance, String uuid) {
+		IPaymentModeService service = Context.getService(IPaymentModeService.class);
+
+		PaymentMode mode = service.getByUuid(uuid);
+		if (mode == null) {
+			throw new ObjectNotFoundException();
+		}
+
+		instance.setInstanceType(mode);
+	}
+
 	@PropertySetter("attributes")
 	public void setPaymentAttributes(Payment instance, Set<PaymentAttribute> attributes) {
 		if (instance.getAttributes() == null) {

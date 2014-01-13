@@ -91,7 +91,7 @@ define(
 					itemView: openhmis.PaymentListItemView,
 					id: "paymentList",
 					className: "paymentList",
-					listFields: ['dateCreatedFmt', 'Details', 'amountTenderedFmt', 'paymentMode'],
+					listFields: ['dateCreatedFmt', 'Details', 'amountTenderedFmt', 'instanceType'],
 					//itemActions: ["details"],
 					showRetiredOption: false,
 					showPaging: false,
@@ -152,7 +152,7 @@ define(
 						break;
 					}
 					attributes[i] = new openhmis.PaymentAttribute({
-						paymentModeAttributeType: attributeForm[i].name,
+						attributeType: attributeForm[i].name,
 						value: attributeForm[i].value
 					});
 				}
@@ -162,7 +162,7 @@ define(
 				}
 				this.model.set("attributes", attributes);
 				this.model.set("amount", this.form.getValue("amount"));
-				this.model.set("paymentMode", new openhmis.PaymentMode({
+				this.model.set("instanceType", new openhmis.PaymentMode({
 					uuid: this.form.getValue("paymentMode"),
 					name: this.form.fields["paymentMode"].editor.$('option:selected').text()
 				}));
@@ -190,7 +190,7 @@ define(
 				if (!this.commitForm()) {
 					return;
 				}
-				if (confirm(i18n("Are you sure you want to process a %s payment of %s?", this.model.get("paymentMode"), this.model.get("amountFmt")))) {
+				if (confirm(i18n("Are you sure you want to process a %s payment of %s?", this.model.get("instanceType"), this.model.get("amountFmt")))) {
 					var self = this;
 					this.processCallback(this.model, { success: function(model, resp) {
 						// Set up new empty Payment
