@@ -113,6 +113,9 @@ define(
 							}
 						}
 					});
+					$('#payment').addClass("box");
+				} else {
+					$('#payment').removeClass("box")
 				}
 			},
 			
