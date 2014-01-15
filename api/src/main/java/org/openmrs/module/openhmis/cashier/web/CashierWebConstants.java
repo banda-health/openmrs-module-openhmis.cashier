@@ -35,6 +35,8 @@ public class CashierWebConstants {
 	public static final String ROUND_TO_NEAREST_PROPERTY = "openhmis.cashier.roundToNearest";
 	public static final String ROUNDING_ITEM_ID = "openhmis.cashier.roundingItemId";
 	public static final String ROUNDING_DEPT_ID = "openhmis.cashier.roundingDeptId";
+	
+	public static final String OPENHMIS_CASHIER_MODULE_ID = "openhmis.cashier";
 
 	public static final String REPORT_DOWNLOAD_URL = "/moduleServlet/jasperreport/jreportDownload";
 
