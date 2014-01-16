@@ -61,11 +61,6 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	public DelegatingResourceDescription getCreatableProperties() {
 		return getRepresentationDescription(new DefaultRepresentation());
 	}
-
-	@Override
-	public List<String> getPropertiesToExposeAsSubResources() {
-		return Arrays.asList("payments");
-	}
 	
 	@PropertySetter("lineItems")
 	public void setBillLineItems(Bill instance, List<BillLineItem> lineItems) {
