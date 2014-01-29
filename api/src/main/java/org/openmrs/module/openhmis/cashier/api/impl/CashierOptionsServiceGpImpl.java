@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
@@ -30,7 +31,7 @@ import java.math.BigDecimal;
  *
  */
 public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
-	
+
 	private AdministrationService adminService;
 	private IItemDataService itemService;
 
@@ -52,26 +53,19 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 	public CashierOptions getOptions() {
 		CashierOptions options = new CashierOptions();
 
-		String temp = adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY);
-		if (temp != null && !temp.isEmpty()) {
-			try {
-				options.setDefaultReceiptReportId(Integer.parseInt(temp));
-			} catch (NumberFormatException e) {
-				/* Leave unset; must be handled, e.g. in ReceiptController */
-			}
-		}
+		setDefaultReceiptReportId(options);
 
-		temp = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY);
-		if (temp != null && !temp.isEmpty()) {
+		String temp = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY);
+		if (StringUtils.isNotEmpty(temp)) {
 			try {
 				options.setRoundingMode(CashierOptions.RoundingMode.valueOf(temp));
 
 				temp = adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY);
-				if (temp != null && !temp.isEmpty()) {
+				if (StringUtils.isNotEmpty(temp)) {
 					options.setRoundToNearest(new BigDecimal(temp));
 
 					temp = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID);
-					if (temp != null && !temp.isEmpty()) {
+					if (StringUtils.isNotEmpty(temp)) {
 						try {
 							Integer itemId = Integer.parseInt(temp);
 							Item roundingItem = itemService.getById(itemId);
@@ -95,22 +89,40 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 			}
 		}
 
+		setRoundingOptions(options);
+		setTimesheetOptions(options);
+
+		return options;
+	}
+
+	private void setDefaultReceiptReportId(CashierOptions options) {
+		String receiptReportIdProperty = adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY);
+		if (StringUtils.isNotEmpty(receiptReportIdProperty)) {
+			try {
+				options.setDefaultReceiptReportId(Integer.parseInt(receiptReportIdProperty));
+			} catch (NumberFormatException e) {
+				/* Leave unset; must be handled, e.g. in ReceiptController */
+			}
+		}
+	}
+
+	private void setRoundingOptions(CashierOptions options) {
 		if (options.getRoundingItemUuid() == null || options.getRoundingItemUuid().isEmpty()) {
 			options.setRoundingMode(CashierOptions.RoundingMode.MID);
 			options.setRoundToNearest(BigDecimal.ZERO);
 		}
+	}
 
-		temp = adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY);
-		if (temp != null && !temp.isEmpty()) {
+	private void setTimesheetOptions(CashierOptions options) {
+		String timesheetRequiredProperty = adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY);
+		if (StringUtils.isNotBlank(timesheetRequiredProperty)) {
 			try {
-				options.setTimesheetRequired(Boolean.parseBoolean(temp));
+				options.setTimesheetRequired(Boolean.parseBoolean(timesheetRequiredProperty));
 			} catch (Exception ex) {
 				options.setTimesheetRequired(false);
 			}
 		} else {
 			options.setTimesheetRequired(false);
 		}
-
-		return options;
 	}
 }
