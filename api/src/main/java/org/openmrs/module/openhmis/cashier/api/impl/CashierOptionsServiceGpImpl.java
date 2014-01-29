@@ -54,20 +54,29 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 		CashierOptions options = new CashierOptions();
 
 		setDefaultReceiptReportId(options);
+		setRoundingOptions(options);
+		if (StringUtils.isEmpty(options.getRoundingItemUuid())) {
+			setRoundingOptionsForEmptyUuid(options);
+		}
+		setTimesheetOptions(options);
 
-		String temp = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY);
-		if (StringUtils.isNotEmpty(temp)) {
+		return options;
+	}
+
+	private void setRoundingOptions(CashierOptions options) {
+		String roundingModeProperty = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY);
+		if (StringUtils.isNotEmpty(roundingModeProperty)) {
 			try {
-				options.setRoundingMode(CashierOptions.RoundingMode.valueOf(temp));
+				options.setRoundingMode(CashierOptions.RoundingMode.valueOf(roundingModeProperty));
 
-				temp = adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY);
-				if (StringUtils.isNotEmpty(temp)) {
-					options.setRoundToNearest(new BigDecimal(temp));
+				String roundToNearestProperty = adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY);
+				if (StringUtils.isNotEmpty(roundToNearestProperty)) {
+					options.setRoundToNearest(new BigDecimal(roundToNearestProperty));
 
-					temp = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID);
-					if (StringUtils.isNotEmpty(temp)) {
+					String roundingItemId = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID);
+					if (StringUtils.isNotEmpty(roundingItemId)) {
 						try {
-							Integer itemId = Integer.parseInt(temp);
+							Integer itemId = Integer.parseInt(roundingItemId);
 							Item roundingItem = itemService.getById(itemId);
 
 							options.setRoundingItemUuid(roundingItem.getUuid());
@@ -88,11 +97,6 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 				/* Use default if option is not set */
 			}
 		}
-
-		setRoundingOptions(options);
-		setTimesheetOptions(options);
-
-		return options;
 	}
 
 	private void setDefaultReceiptReportId(CashierOptions options) {
@@ -106,11 +110,9 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 		}
 	}
 
-	private void setRoundingOptions(CashierOptions options) {
-		if (options.getRoundingItemUuid() == null || options.getRoundingItemUuid().isEmpty()) {
+	private void setRoundingOptionsForEmptyUuid(CashierOptions options) {
 			options.setRoundingMode(CashierOptions.RoundingMode.MID);
 			options.setRoundToNearest(BigDecimal.ZERO);
-		}
 	}
 
 	private void setTimesheetOptions(CashierOptions options) {
