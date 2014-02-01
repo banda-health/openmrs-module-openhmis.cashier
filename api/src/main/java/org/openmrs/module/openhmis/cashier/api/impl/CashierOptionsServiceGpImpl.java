@@ -13,8 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import java.math.BigDecimal;
+
 import org.apache.commons.lang.StringUtils;
-import org.openmrs.api.APIException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
@@ -23,14 +26,14 @@ import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
-
 /**
  * Service to load CashierOptions from global options
  * @author daniel
  *
  */
 public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
+
+	private static final Log LOG = LogFactory.getLog(CashierOptionsServiceGpImpl.class);
 
 	private AdministrationService adminService;
 	private IItemDataService itemService;
@@ -75,26 +78,26 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 
 					String roundingItemId = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID);
 					if (StringUtils.isNotEmpty(roundingItemId)) {
+						Item roundingItem = null;
 						try {
 							Integer itemId = Integer.parseInt(roundingItemId);
-							Item roundingItem = itemService.getById(itemId);
-
-							options.setRoundingItemUuid(roundingItem.getUuid());
-						} catch (Exception ex) {
-							throw new APIException("Rounding item ID set in options but item not found. Maybe your user doesn't have the required rights or the item is not existent in the database.", ex);
+							roundingItem = itemService.getById(itemId);
+						} catch (Exception e) {
+							LOG.error("Did not find rounding item by ID with ID <" + roundingItemId + ">", e);
 						}
-					} else {
-						// Check to see if rounding has been enabled and throw exception if it has as a rounding item must be set
-						if (options.getRoundToNearest() != null && !options.getRoundToNearest().equals(BigDecimal.ZERO)) {
-							throw new APIException("Rounding enabled (nearest " + options.getRoundToNearest().toPlainString() +
-									") but no rounding item ID specified in options.");
+						if (roundingItem != null) {
+							options.setRoundingItemUuid(roundingItem.getUuid());
+						} else {
+							LOG.error("Rounding item is NULL. Check your ID");
 						}
 					}
 				}
 			} catch (IllegalArgumentException iae) {
 				/* Use default if option is not set */
+				LOG.error("IllegalArgumentException occured", iae);
 			} catch (NullPointerException e) {
 				/* Use default if option is not set */
+				LOG.error("NullPointerException occured", e);
 			}
 		}
 	}
@@ -106,6 +109,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 				options.setDefaultReceiptReportId(Integer.parseInt(receiptReportIdProperty));
 			} catch (NumberFormatException e) {
 				/* Leave unset; must be handled, e.g. in ReceiptController */
+				LOG.error("Error parsing ReceiptReportId <" + receiptReportIdProperty + ">", e);
 			}
 		}
 	}

@@ -1,21 +1,28 @@
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.when;
+
+import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
+
+import org.apache.log4j.Appender;
+import org.apache.log4j.Layout;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
+import org.apache.log4j.WriterAppender;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
-import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
-import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.math.BigDecimal;
-
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 public class CashierOptionsServiceGpImplTest {
@@ -60,26 +67,6 @@ public class CashierOptionsServiceGpImplTest {
 		Assert.assertEquals(new BigDecimal(5), options.getRoundToNearest());
 		Assert.assertEquals(item.getUuid(), options.getRoundingItemUuid());
 		Assert.assertEquals(true, options.isTimesheetRequired());
-	}
-
-	/**
-	 * @verifies throw APIException if rounding is set but rounding item is not
-	 * @see CashierOptionsServiceGpImpl#getOptions()
-	 */
-	@Test(expected = APIException.class)
-	public void getOptions_shouldThrowAPIExceptionIfRoundingIsSetButRoundingItemIsNot() throws Exception {
-		when(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY))
-				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY))
-				.thenReturn(CashierOptions.RoundingMode.FLOOR.toString());
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY))
-				.thenReturn("5");
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID))
-				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY))
-				.thenReturn(null);
-
-		optionsService.getOptions();
 	}
 
 	/**
@@ -128,11 +115,12 @@ public class CashierOptionsServiceGpImplTest {
 	}
 
 	/**
-	 * @verifies throw APIException if rounding is set but rounding item cannot be found
+	 * @verifies log Error if Exception due to non-parsable rounding item id
 	 * @see CashierOptionsServiceGpImpl#getOptions()
 	 */
-	@Test(expected = APIException.class)
-	public void getOptions_shouldThrowAPIExceptionIfRoundingIsSetButRoundingItemCannotBeFound() throws Exception {
+	@Test
+	public void getOptions_shouldLogErrorIfRoundingItemIdCannotBeParsed() throws Exception {
+
 		when(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY))
 				.thenReturn(null);
 		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY))
@@ -140,13 +128,58 @@ public class CashierOptionsServiceGpImplTest {
 		when(adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY))
 				.thenReturn("5");
 		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID))
-				.thenReturn("5");
-		when(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY))
-				.thenReturn(null);
+				.thenReturn("HELP");
 
-		when(itemService.getById(5))
-				.thenReturn(null);
+		Logger logger = Logger.getLogger(CashierOptionsServiceGpImpl.class);
 
-		optionsService.getOptions();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Layout layout = new SimpleLayout();
+        Appender appender = new WriterAppender(layout, out);
+        logger.addAppender(appender);
+
+        try {
+        	optionsService.getOptions();
+            String logMsg = out.toString();
+            assertNotNull(logMsg);
+            assertFalse((logMsg.trim()).equals(""));
+        } finally {
+            logger.removeAppender(appender);
+        }
 	}
+
+	/**
+	 * @verifies log error if rouding item id is set but item cannot be found (and hence is null)
+	 * @see CashierOptionsServiceGpImpl#getOptions()
+	 */
+	@Test
+	public void getOptions_shouldLogErrorIfRoundingItemIsNullDespiteIdGiven() throws Exception {
+
+		when(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY))
+			.thenReturn(null);
+		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY))
+			.thenReturn(CashierOptions.RoundingMode.FLOOR.toString());
+		when(adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY))
+			.thenReturn("5");
+		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID))
+			.thenReturn("273423");
+		when(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY))
+			.thenReturn(null);
+
+		Logger logger = Logger.getLogger(CashierOptionsServiceGpImpl.class);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Layout layout = new SimpleLayout();
+        Appender appender = new WriterAppender(layout, out);
+        logger.addAppender(appender);
+
+        try {
+        	optionsService.getOptions();
+            String logMsg = out.toString();
+            assertNotNull(logMsg);
+            assertFalse((logMsg.trim()).equals(""));
+        } finally {
+            logger.removeAppender(appender);
+        }
+	}
+
 }

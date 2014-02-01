@@ -17,12 +17,12 @@ public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
 	public static final String OPTIONS_DATASET_INVALID = TestConstants.BASE_DATASET_DIR + "CashierOptionsTestInvalid.xml";
 
 	private ICashierOptionsService cashierOptionsService;
-	
+
 	@Before
 	public void before() {
 		cashierOptionsService = Context.getService(ICashierOptionsService.class);
 	}
-	
+
 	/**
 	 * @see ICashierOptionsService#getOptions()
 	 * @verifies Load options
@@ -56,14 +56,4 @@ public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
 		Assert.assertEquals(reference.isTimesheetRequired(), options.isTimesheetRequired());
 	}
 
-	/**
-	 * @see ICashierOptionsService#getOptions()
-	 * @verifies throw APIException if a rounding item ID is specified but the item cannot be retrieved
-	 */
-	@Test(expected = APIException.class)
-	public void getOptions_shouldThrowAPIExceptionIfARoundingItemIDIsSpecifiedButTheItemCannotBeRetrieved()
-			throws Exception {
-		executeDataSet(OPTIONS_DATASET_VALID);		
-		cashierOptionsService.getOptions();
-	}
 }
