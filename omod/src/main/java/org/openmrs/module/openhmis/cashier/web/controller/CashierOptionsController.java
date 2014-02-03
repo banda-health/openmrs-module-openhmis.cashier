@@ -36,8 +36,8 @@ public class CashierOptionsController {
 
     @Autowired
     public CashierOptionsController(AdministrationService adminService, ICashierOptionsService cashierOptionsService) {
-    	this.adminService = adminService;
-    	this.cashierOptionsService = cashierOptionsService;
+        this.adminService = adminService;
+        this.cashierOptionsService = cashierOptionsService;
     }
 
     @RequestMapping(method = RequestMethod.GET)

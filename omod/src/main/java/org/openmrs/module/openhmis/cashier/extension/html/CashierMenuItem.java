@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.openhmis.cashier.extension.html;
 
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.web.extension.LinkExt;
 
 public class CashierMenuItem extends LinkExt {
@@ -29,7 +30,7 @@ public class CashierMenuItem extends LinkExt {
 
 	@Override
 	public String getRequiredPrivilege() {
-		return "Manage Cashier Bills";
+		return CashierPrivilegeConstants.MANAGE_BILLS;
 	}
 
 	@Override
