@@ -97,7 +97,7 @@ public class CashierController {
 		}
 
 		if (provider == null) {
-			throw new APIException("ERROR: Could not locate the provider. Please make sure the user is listed as provider");
+			throw new APIException("ERROR: Could not locate the provider. Please make sure the user is listed as provider (Admin -> Manage providers)");
 		}
 
 		if (StringUtils.isEmpty(returnUrl)) {
