@@ -13,6 +13,14 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,23 +45,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 @Controller
 @RequestMapping(value = CashierWebConstants.CASHIER_PAGE)
 public class CashierController {
-	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorController.class);
+	private static final Log LOG = LogFactory.getLog(CashierController.class);
 
 	private ITimesheetService timesheetService;
 	private ICashPointService cashPointService;
@@ -77,7 +81,7 @@ public class CashierController {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 		dateFormat.setLenient(false);
-		
+
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
@@ -93,7 +97,7 @@ public class CashierController {
 		}
 
 		if (provider == null) {
-			throw new APIException("Could not locate the provider.");
+			throw new APIException("ERROR: Could not locate the provider. Please make sure the user is listed as provider");
 		}
 
 		if (StringUtils.isEmpty(returnUrl)) {
@@ -104,7 +108,6 @@ public class CashierController {
 				try {
 					URL url = new URL(returnUrl);
 
-
 					returnUrl = url.getPath();
 					if (StringUtils.startsWith(returnUrl, req.getContextPath())) {
 
@@ -112,7 +115,6 @@ public class CashierController {
 					}
 				} catch (MalformedURLException e) {
 					LOG.warn("Could not parse referrer url '" + returnUrl + "'");
-
 					returnUrl = "";
 				}
 			}
