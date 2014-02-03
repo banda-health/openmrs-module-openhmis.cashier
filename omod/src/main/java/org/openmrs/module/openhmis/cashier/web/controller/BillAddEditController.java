@@ -13,8 +13,16 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
+import org.openmrs.api.APIException;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
@@ -31,61 +39,47 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.util.Set;
-
 @Controller
 @RequestMapping(value = CashierWebConstants.BILL_PAGE)
 public class BillAddEditController {
-	
+
+    private static final Log LOG = LogFactory.getLog(BillAddEditController.class);
+
 	@RequestMapping(method = RequestMethod.GET)
 	public String bill(ModelMap model,
 			@RequestParam(value = "billUuid", required = false) String billUuid,
 			@RequestParam(value = "patientUuid", required = false) String patientUuid,
-			HttpServletRequest request) throws UnsupportedEncodingException {
-		Patient patient = null;
-		Timesheet timesheet = null;
-		try {
-			timesheet = TimesheetHelper.getCurrentTimesheet(); 
-		}
-		catch (TimesheetRequiredException e) {
-			return "redirect:/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE)
-				+ "?returnUrl=" + CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE)
-				+ (request.getQueryString() != null ? UriUtils.encodeQuery("?" + request.getQueryString(), "UTF-8") : "");
-		} catch (Exception e) {
-			// Catch other exceptions, like session timeout
-		}
-		model.addAttribute("timesheet", timesheet);
+			HttpServletRequest request) {
 
+	    Timesheet timesheet = null;
+		try {
+			timesheet = TimesheetHelper.getCurrentTimesheet();
+		} catch (TimesheetRequiredException e) {
+		    LOG.error("TimesheetRequired exception when trying to get current timesheet: ", e);
+			return buildRedirectUrl(request);
+		} catch (Exception e) {
+			LOG.error("An exception occured: ", e);
+			timesheet = null;
+		}
+
+		model.addAttribute("timesheet", timesheet);
 		model.addAttribute("user", Context.getAuthenticatedUser());
-		model.addAttribute("url", CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE)
-			+ ( (request.getQueryString() != null) ? "?" + request.getQueryString() : ""));
+		model.addAttribute("url", buildUrlModelAttribute(request));
+
 		if (billUuid != null) {
-			Bill bill = null;
-			IBillService service = Context.getService(IBillService.class);
-			bill = service.getByUuid(billUuid);
-			patient = bill.getPatient();
-			model.addAttribute("bill", bill);
-			model.addAttribute("billAdjusted", bill.getBillAdjusted());
-			model.addAttribute("adjustedBy", bill.getAdjustedBy());
-			model.addAttribute("patient", patient);
-			model.addAttribute("cashPoint", bill.getCashPoint());
-			if (!bill.isReceiptPrinted() || (bill.isReceiptPrinted() && Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT))) {
-				model.addAttribute("showPrint", true);
+			Bill bill = getBillFromService(billUuid);
+			if (bill != null) {
+			    Patient patient = bill.getPatient();
+			    addBillAttributes(model, bill, patient);
 			}
 			return CashierWebConstants.BILL_PAGE;
-		}
-		else {
+		} else {
 			if (patientUuid != null) {
+				Patient patient = getPatientFromService(patientUuid);
+
 				String patientIdentifier = null;
-				PatientService service = Context.getPatientService();
-				patient = service.getPatientByUuid(patientUuid);
-				Set<PatientIdentifier> identifiers = patient.getIdentifiers();
-				for (PatientIdentifier id : identifiers) {
-					if (id.getPreferred()) {
-						patientIdentifier = id.getIdentifier();
-					}
+				if (patient != null) {
+				    patientIdentifier = getPreferedPatientIdentifier(patient);
 				}
 				model.addAttribute("patient", patient);
 				model.addAttribute("patientIdentifier", patientIdentifier);
@@ -95,4 +89,75 @@ public class BillAddEditController {
 			return CashierWebConstants.BILL_PAGE;
 		}
 	}
+
+    private String getPreferedPatientIdentifier(Patient patient) {
+        String patientIdentifier = null;
+        Set<PatientIdentifier> identifiers = patient.getIdentifiers();
+        for (PatientIdentifier id : identifiers) {
+            if (id.getPreferred()) {
+                patientIdentifier = id.getIdentifier();
+            }
+        }
+        return patientIdentifier;
+    }
+
+    private Patient getPatientFromService(String patientUuid) {
+        PatientService service = Context.getPatientService();
+        Patient patient = null;
+        try {
+            patient = service.getPatientByUuid(patientUuid);
+        } catch (APIException e) {
+            LOG.error("Error when trying to get Patient with ID <" + patientUuid + ">", e);
+            throw new APIException("Error when trying to get Patient with ID <" + patientUuid + ">");
+        }
+        return patient;
+    }
+
+    private void addBillAttributes(ModelMap model, Bill bill, Patient patient) {
+        model.addAttribute("bill", bill);
+        model.addAttribute("billAdjusted", bill.getBillAdjusted());
+        model.addAttribute("adjustedBy", bill.getAdjustedBy());
+        model.addAttribute("patient", patient);
+        model.addAttribute("cashPoint", bill.getCashPoint());
+        if (!bill.isReceiptPrinted() || (bill.isReceiptPrinted() && Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT))) {
+            model.addAttribute("showPrint", true);
+        }
+    }
+
+    private Bill getBillFromService(String billUuid) {
+        IBillService service = Context.getService(IBillService.class);
+        Bill bill = null;
+        try {
+            bill = service.getByUuid(billUuid);
+        } catch (APIException e) {
+            LOG.error("Error when trying to get bill with ID <" + billUuid + ">", e);
+            throw new APIException("Error when trying to get bill with ID <" + billUuid + ">");
+        }
+        return bill;
+    }
+
+    private String buildUrlModelAttribute(HttpServletRequest request) {
+        return CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE)
+                + ( (request.getQueryString() != null) ? "?" + request.getQueryString() : "");
+    }
+
+    private String buildRedirectUrl(HttpServletRequest request) {
+        String redirectUrl = "redirect:/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
+        String returnUrlParam = "?returnUrl=" + CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE);
+        String requestQueryParam = "";
+        if (request.getQueryString() != null) {
+            requestQueryParam = encodeRequestQuery(request);
+        }
+        return redirectUrl + returnUrlParam + requestQueryParam;
+    }
+
+    private String encodeRequestQuery(HttpServletRequest request) {
+        String requestQueryParam = "";
+        try {
+            requestQueryParam = UriUtils.encodeQuery("?" + request.getQueryString(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOG.error("UnsupportedEncodingException occured when trying to encode request query", e);
+        }
+        return requestQueryParam;
+    }
 }
