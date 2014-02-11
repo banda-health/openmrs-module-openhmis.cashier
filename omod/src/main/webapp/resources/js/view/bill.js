@@ -76,6 +76,7 @@ define(
 			update: function() {
 				if (this.updateTimeout !== undefined) {
 					clearTimeout(this.updateTimeout);
+					this.form.model.set(this.form.getValue());
 				}
 				var view = this;
 				var update = function() {
@@ -83,6 +84,7 @@ define(
 					var quantity = view.form.getValue("quantity");
 					view.form.setValue({ total: price * quantity });
 				}
+				this.form.model.set(this.form.getValue());
 				this.updateTimeout = setTimeout(update, 200);
 			},
 
@@ -123,6 +125,7 @@ define(
 			},
 
 			displayErrors: function(errorMap, event) {
+				console.log("display error function");
 				// If there is already another item in the collection and
 				// this is not triggered by enter key, skip the error message
 				if (event && event.type !== "keypress" && this.model.collection && this.model.collection.length > 0) {
@@ -132,7 +135,7 @@ define(
 				// was triggered by the enter key, request that focus be moved
 				// to the next form item.
 				else if (event && event.type === "keypress" && event.keyCode === 13
-						&& this.model.collection && this.model.collection.length > 0) {
+						&& this.model.collection && this.model.collection.length > 1) {
 					this.trigger("focusNext", this);
 					return;
 				}
@@ -207,6 +210,7 @@ define(
 			},
 
 			onItemRemoved: function(itemView) {
+				this.setupNewItem();
 				openhmis.GenericListEntryView.prototype.onItemRemoved.call(this, itemView);
 				this.updateTotals();
 			},
@@ -233,13 +237,23 @@ define(
 			},
 
 			onKeyPress: function(event) {
-				if ($('input[name=quantity]').is(':focus')) {
-					if(event.keyCode === 38 /*arrow up*/) {
-						this.updateTotals();
-					}
-					if(event.keyCode === 40 /*arrow down*/) {
-
-						this.updateTotals();
+				if (event.keyCode === 13 /* Enter */)  {
+					var lineItems = this.bill.get("lineItems");
+					if (lineItems && lineItems.length > 0) {
+						lineItems.each(function(item) {
+							var errors = item._validate(item.attributes, '');
+							if (errors) {
+								console.log("errors detected");
+								return errors;
+							} else {
+								console.log("no errors detected");
+							}
+						});
+						//if (errors === null) {
+					//		this.setupNewItem();
+						//} else {
+							//return errors;
+						//}
 					}
 				}
 			},
@@ -426,6 +440,15 @@ define(
 				this.$('div.box').append(this.$totals);
 				this.updateTotals();
 				return this;
+			},
+			
+			_addItemFromInputLine: function(inputLineView) {
+				// Prevent multiple change events causing duplicate views
+				if (this.model.getByCid(inputLineView.model.cid)) return;
+				inputLineView.off("change", this._addItemFromInputLine);
+				this.model.add(inputLineView.model, { silent: true });
+				this._deselectAll();
+				
 			}
 		});
 
