@@ -47,7 +47,7 @@ define(
 				if (!attrs.item.get('department')) {
 					return { item: __("Item must belong to a department") };
 				}
-				if (!attrs.quantity || isNaN(attrs.quantity)) {
+				if (!attrs.quantity || isNaN(attrs.quantity) || attrs.quantity === 0) {
 					return { quantity: __("Please enter a quantity") }
 				}
 				return null;
@@ -76,6 +76,71 @@ define(
 					default:
 						return openhmis.GenericModel.prototype.get.call(this, attr);
 				}
+			},
+			
+			set: function(key, value, options) {
+				if (key.quantity === 0) {
+					return this.setQuantity(key, value, options)
+				} else {
+					return openhmis.GenericModel.prototype.set.call(this, key, value, options);
+				}
+			},
+			
+			setQuantity: function (key, value, options) {
+				var attrs, attr, val;
+
+				// Handle both `"key", value` and `{key: value}` -style arguments.
+				attrs = key;
+				options = value;
+
+				// Extract attributes and options.
+				options || (options = {});
+				
+				if (attrs instanceof Backbone.Model) {
+					attrs = attrs.attributes;
+				}
+				
+				// Run validation.
+				var validationResult = this._validate(attrs, options);
+
+				var changes = options.changes = {};
+				var now = this.attributes;
+				var escaped = this._escapedAttributes;
+				var prev = this._previousAttributes || {};
+
+				// For each `set` attribute...
+				for (attr in attrs) {
+					if (attr === "quantity") {
+						val = attrs[attr];
+						// If the new and current value differ, record the change.
+						if (!_.isEqual(now[attr], val) || (options.unset && _.has(now, attr))) {
+							delete escaped[attr];
+							(options.silent ? this._silent : changes)[attr] = true;
+						}
+						
+	
+						// Update or delete the current value.
+						options.unset ? delete now[attr] : now[attr] = val;
+	
+						// If the new and previous value differ, record the change.  If not,
+						// then remove changes for this attribute.
+						if (!_.isEqual(prev[attr], val) || (_.has(now, attr) != _.has(prev, attr))) {
+							this.changed[attr] = val;
+							if (!options.silent) this._pending[attr] = true;
+						} else {
+							delete this.changed[attr];
+							delete this._pending[attr];
+						}
+					}
+				}
+				
+				if(!validationResult) {
+					return false
+				}
+
+				// Fire the `"change"` events.
+				if (!options.silent) this.change(options);
+					return this;
 			},
 			
 			getTotal: function() {

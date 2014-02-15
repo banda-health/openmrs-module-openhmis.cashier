@@ -77,15 +77,15 @@ define(
 				if (this.updateTimeout !== undefined) {
 					clearTimeout(this.updateTimeout);
 					this.form.model.set(this.form.getValue());
-				}
+				} 
 				var view = this;
 				var update = function() {
 					var price = view.form.getValue("price");
 					var quantity = view.form.getValue("quantity");
 					view.form.setValue({ total: price * quantity });
 				}
-				this.form.model.set(this.form.getValue());
 				this.updateTimeout = setTimeout(update, 200);
+				this.form.model.set(this.form.getValue());
 			},
 
 			onKeyPress: function(event) {
@@ -105,6 +105,8 @@ define(
 				}
 
 				if (event.keyCode === 13 /* Enter */)  {
+					this.update;
+					this.trigger("change", this);
 					this.commitForm(event);
 					// Prevent enter press from interfering with HTML form controls
 					event.preventDefault();
@@ -125,7 +127,6 @@ define(
 			},
 
 			displayErrors: function(errorMap, event) {
-				console.log("display error function");
 				// If there is already another item in the collection and
 				// this is not triggered by enter key, skip the error message
 				if (event && event.type !== "keypress" && this.model.collection && this.model.collection.length > 0) {
@@ -240,20 +241,16 @@ define(
 				if (event.keyCode === 13 /* Enter */)  {
 					var lineItems = this.bill.get("lineItems");
 					if (lineItems && lineItems.length > 0) {
+						var errors = null;
 						lineItems.each(function(item) {
-							var errors = item._validate(item.attributes, '');
-							if (errors) {
-								console.log("errors detected");
+							errors = item.validate(item.attributes, '');
+							if (errors != null) {
 								return errors;
-							} else {
-								console.log("no errors detected");
 							}
 						});
-						//if (errors === null) {
-					//		this.setupNewItem();
-						//} else {
-							//return errors;
-						//}
+						if (errors == null) {
+							this.setupNewItem();
+						}
 					}
 				}
 			},
