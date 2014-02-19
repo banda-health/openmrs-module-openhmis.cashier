@@ -165,8 +165,18 @@ define(
 					.add(this.$('td.field-price'))
 					.add(this.$('td.field-total'))
 					.addClass("numeric");
+				this.$('input[type=number]').stepper({
+					allowArrows: false,
+					onStep: this.stepCallback
+				});
 				return this;
 			},
+			
+			stepCallback: function(val, up) {
+				this.update();
+			},
+			
+			
 		});
 
 		/**

@@ -23,6 +23,11 @@ table.bill td input[type="text"], table.bill td input[type="number"] {
 	background-color: transparent;
 }
 
+table.bill td input[name="quantity"] {
+    width: 50%;
+    background-color: transparent;
+}
+
 table.bill td input, table.bill td select {
 	border: 1px solid transparent;
 	background-color: transparent;
