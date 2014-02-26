@@ -31,7 +31,6 @@ public class CashierPrivilegeConstants {
 
 	@AddOnStartup(description = "Able to view bills")
 	public static final String VIEW_BILLS = "View Cashier Bills";
-
 	public static final String PURGE_BILLS = "Purge Cashier Bills";
 
 	@AddOnStartup(description = "Able to add/edit/delete cashier module metadata")
@@ -39,7 +38,6 @@ public class CashierPrivilegeConstants {
 
 	@AddOnStartup(description = "Able to view cashier module metadata")
 	public static final String VIEW_METADATA = "View Cashier Metadata";
-
 	public static final String PURGE_METADATA = "Purge Cashier Metadata";
 
 	@AddOnStartup(description = "Able to add/edit/delete timesheets")
@@ -47,6 +45,11 @@ public class CashierPrivilegeConstants {
 
 	@AddOnStartup(description = "Able to view timesheets")
 	public static final String VIEW_TIMESHEETS = "View Cashier Timesheets";
-
 	public static final String PURGE_TIMESHEETS = "Purge Cashier Timesheets";
+	public static final String GIVE_REFUND = "Give Refund";
+
+	public static final String VIEW_CASHIER_ITEMS = "View Cashier Items";
+	public static final String MANAGE_CASHIER_ITEMS = "Manage Cashier Items";
+	public static final String PURGE_CASHIER_ITEMS = "Purge Cashier Items";
+
 }
