@@ -15,6 +15,7 @@ package org.openmrs.module.webservices.rest.resource;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
@@ -22,6 +23,7 @@ import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
+import org.openmrs.module.webservices.rest.helper.Converter;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
@@ -38,6 +40,7 @@ import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -99,12 +102,12 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 
 	@PropertySetter("amount")
 	public void setPaymentAmount(Payment instance, Object price) throws ConversionException {
-		instance.setAmount(ItemPriceResource.objectToBigDecimal(price));
+		instance.setAmount(Converter.objectToBigDecimal(price));
 	}
 
 	@PropertySetter("amountTendered")
 	public void setPaymentAmountTendered(Payment instance, Object price) throws ConversionException {
-		instance.setAmountTendered(ItemPriceResource.objectToBigDecimal(price));
+		instance.setAmountTendered(Converter.objectToBigDecimal(price));
 	}
 	
 	@PropertyGetter("dateCreated")

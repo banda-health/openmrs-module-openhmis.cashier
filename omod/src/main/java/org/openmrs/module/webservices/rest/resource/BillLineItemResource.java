@@ -15,6 +15,7 @@ package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
+import org.openmrs.module.webservices.rest.helper.Converter;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -41,7 +42,7 @@ public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
 	
 	@PropertySetter(value = "price")
 	public void setPrice(BillLineItem instance, Object price) throws ConversionException {
-		instance.setPrice(ItemPriceResource.objectToBigDecimal(price));
+		instance.setPrice(Converter.objectToBigDecimal(price));
 	}
 
 	@Override
