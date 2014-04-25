@@ -66,11 +66,7 @@ public class CashierLinkExt extends LinkExt {
 
 	@Override
 	public String getLabel() {
-		if (isProviderUser) {
-			return "openhmis.cashier.page";
-		}
-
-		return null;
+        return isProviderUser ? "openhmis.cashier.page" : null;
 	}
 
 	public String getPortletUrl() {
@@ -79,7 +75,7 @@ public class CashierLinkExt extends LinkExt {
 
 	@Override
 	public String getUrl() {
-		return CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
+        return isProviderUser ? CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE) : null;
 	}
 
 	@Override
