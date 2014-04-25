@@ -330,10 +330,10 @@
 
 			<column name="sequence_group" type="varchar(50)"><constraints nullable="false" unique="true"/></column>
 			<column name="sequence_value" type="int"><constraints nullable="false"/></column>
-			
+
 			<column name="uuid" type="char(38)"><constraints nullable="false" unique="true" /></column>
 		</createTable>
-		
+
 		<createIndex indexName="cashier_item_name_idx" tableName="cashier_item" unique="false">
 			<column name="name"/>
 			<column name="retired" />
@@ -358,7 +358,7 @@
 		<createIndex indexName="cashier_seq_group_sequence_sequence_group_idx" tableName="cashier_seq_group_sequence">
 			<column name="sequence_group" />
 		</createIndex>
-		
+
 		<addForeignKeyConstraint constraintName="cashier_item_creator_fk"
 		                         baseTableName="cashier_item" baseColumnNames="creator"
 		                         referencedTableName="users" referencedColumnNames="user_id"
@@ -600,4 +600,66 @@
 			WHERE i.name = 'Rounding' AND d.name = 'Rounding'
 		</sql>
 	</changeSet>
+        <changeSet id="openhmis.cashier-v1.7.3-1" author="aderkey">
+            <comment>Changing enums to varchar instead of int</comment>
+            <comment>cashier_bill.status</comment>
+            <addColumn tableName="cashier_bill">
+                <column name="_status" type="varchar(10)"/>
+            </addColumn>
+            <sql>
+                UPDATE cashier_bill SET _status = 'PENDING' where status = 0
+            </sql>
+            <sql>
+                UPDATE cashier_bill SET _status = 'POSTED' where status = 1
+            </sql>
+            <sql>
+                UPDATE cashier_bill SET _status = 'PAID' where status = 2
+            </sql>
+            <sql>
+                UPDATE cashier_bill SET _status = 'CANCELLED' where status = 3
+            </sql>
+            <sql>
+                UPDATE cashier_bill SET _status = 'ADJUSTED' where status = 4
+            </sql>
+            <dropColumn tableName="cashier_bill" columnName="status"/>
+            <renameColumn tableName="cashier_bill" oldColumnName="_status" newColumnName="status" columnDataType="varchar(10)"/>
+            <addNotNullConstraint tableName="cashier_bill" columnName="status" columnDataType="varchar(10)"/>
+
+            <comment>cashier_seq_receipt_number_generator.sequence_type</comment>
+            <addColumn tableName="cashier_seq_receipt_number_generator">
+                <column name="_sequence_type" type="varchar(20)"/>
+            </addColumn>
+            <sql>
+                UPDATE cashier_seq_receipt_number_generator SET _sequence_type = 'COUNTER' where sequence_type = 0
+            </sql>
+            <sql>
+                UPDATE cashier_seq_receipt_number_generator SET _sequence_type = 'DATE_COUNTER' where sequence_type = 1
+            </sql>
+            <sql>
+                UPDATE cashier_seq_receipt_number_generator SET _sequence_type = 'DATE_TIME_COUNTER' where sequence_type = 2
+            </sql>
+            <dropColumn tableName="cashier_seq_receipt_number_generator" columnName="sequence_type"/>
+            <renameColumn tableName="cashier_seq_receipt_number_generator" oldColumnName="_sequence_type" newColumnName="sequence_type" columnDataType="varchar(20)"/>
+            <addNotNullConstraint tableName="cashier_seq_receipt_number_generator" columnName="sequence_type" columnDataType="varchar(20)"/>
+
+            <comment>cashier_seq_receipt_number_generator.grouping_type</comment>
+            <addColumn tableName="cashier_seq_receipt_number_generator">
+                <column name="_grouping_type" type="varchar(25)"/>
+            </addColumn>
+            <sql>
+                UPDATE cashier_seq_receipt_number_generator SET _grouping_type = 'NONE' where grouping_type = 0
+            </sql>
+            <sql>
+                UPDATE cashier_seq_receipt_number_generator SET _grouping_type = 'CASHIER' where grouping_type = 1
+            </sql>
+            <sql>
+                UPDATE cashier_seq_receipt_number_generator SET _grouping_type = 'CASH_POINT' where grouping_type = 2
+            </sql>
+            <sql>
+                UPDATE cashier_seq_receipt_number_generator SET _grouping_type = 'CASHIER_AND_CASH_POINT' where grouping_type = 3
+            </sql>
+            <dropColumn tableName="cashier_seq_receipt_number_generator" columnName="grouping_type"/>
+            <renameColumn tableName="cashier_seq_receipt_number_generator" oldColumnName="_grouping_type" newColumnName="grouping_type" columnDataType="varchar(25)"/>
+            <addNotNullConstraint tableName="cashier_seq_receipt_number_generator" columnName="grouping_type" columnDataType="varchar(25)"/>
+        </changeSet>
 </databaseChangeLog>

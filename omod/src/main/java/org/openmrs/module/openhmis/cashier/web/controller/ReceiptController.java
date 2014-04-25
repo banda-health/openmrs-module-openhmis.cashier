@@ -54,7 +54,7 @@ public class ReceiptController {
 			}
 			JasperReportService reportService = Context.getService(JasperReportService.class);
 			JasperReport report = reportService.getJasperReport(reportId);
-			report.setName(receiptNumber);
+
 			HashMap<String, Object> params = new HashMap<String, Object>();
 			params.put("billId", bill.getId());
 			try {
