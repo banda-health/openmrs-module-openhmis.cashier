@@ -16,11 +16,13 @@
 		<property name="groupingType" column="grouping_type" not-null="true">
 			<type name="org.hibernate.type.EnumType">
 				<param name="enumClass">org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator$GroupingType</param>
+                                <param name="type">12</param>
 			</type>
 		</property>
 		<property name="sequenceType" column="sequence_type" not-null="true">
 			<type name="org.hibernate.type.EnumType">
 				<param name="enumClass">org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator$SequenceType</param>
+                                <param name="type">12</param>
 			</type>
 		</property>
 
