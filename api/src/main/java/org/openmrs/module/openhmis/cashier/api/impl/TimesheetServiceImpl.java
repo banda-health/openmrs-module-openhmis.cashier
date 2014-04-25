@@ -13,11 +13,14 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Provider;
+import org.openmrs.VisitType;
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
@@ -74,6 +77,32 @@ public class TimesheetServiceImpl
 
 		return repository.selectSingle(Timesheet.class, criteria);
 	}
+
+    @Override
+    public void  closeOpenTimesheets() {
+        Criteria criteria = repository.createCriteria(Timesheet.class);
+        criteria.add(
+                Restrictions.isNull("clockOut")
+        );
+        criteria.addOrder(Order.desc("clockIn"));
+
+        List<Timesheet> timesheets =  repository.select(Timesheet.class, criteria);
+
+        Date clockOutDate = new Date();
+
+        int counter = 0;
+        for (Timesheet timesheet : timesheets) {
+
+            timesheet.setClockOut(clockOutDate);
+
+            if (counter++ > 50) {
+                //ensure changes are persisted to DB before reclaiming memory
+                Context.flushSession();
+                Context.clearSession();
+                counter = 0;
+            }
+        }
+    }
 
 	@Override
 	public List<Timesheet> getTimesheetsByDate(Provider cashier, Date date) {

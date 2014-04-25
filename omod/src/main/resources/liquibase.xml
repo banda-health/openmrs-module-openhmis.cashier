@@ -600,4 +600,25 @@
 			WHERE i.name = 'Rounding' AND d.name = 'Rounding'
 		</sql>
 	</changeSet>
+    <changeSet id="openhmis.cashier-v1.7.3-2" author="pochu" dbms="mysql">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM scheduler_task_config
+                WHERE schedulable_class = 'org.openmrs.module.openhmis.cashier.api.scheduledtasks.AutoCloseTimesheetsTask'
+                And name = 'Auto Close Open Timesheets Task'
+            </sqlCheck>
+        </preConditions>
+        <comment>Inserting Auto Close Open Timesheets Task into 'schedule_task_config' table</comment>
+        <insert tableName="scheduler_task_config">
+            <column name="name" value="Auto Close Open Timesheets Task" />
+            <column name="description" value="Stops all active visits that match the visit type(s) specified by the value of the global property 'autoCloseVisits.visitType'" />
+            <column name="schedulable_class" value="org.openmrs.module.openhmis.cashier.api.scheduledtasks.AutoCloseTimesheetsTask" />
+            <column name="start_time_pattern" value="MM/dd/yyyy HH:mm:ss" />
+            <column name="start_time" valueDate="2011-11-28T23:49:59" />
+            <column name="repeat_interval" value="86400" />
+            <column name="date_created" valueDate="CURRENT_TIMESTAMP" />
+            <column name="created_by" value="1" />
+            <column name="uuid" value="d02004f7-594b-464a-9f89-6d54a887ceaf" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>
