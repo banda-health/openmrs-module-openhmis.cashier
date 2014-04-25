@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>1.7.2</version>
+		<version>1.7.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>openhmis.cashier-omod</artifactId>
@@ -289,7 +289,6 @@
                   </execution>
               </executions>        
               <configuration>
-                  <verbose>true</verbose>
                   <nosuffix>true</nosuffix>
                   <excludes>
                       <exclude>**/*.min.js</exclude>
