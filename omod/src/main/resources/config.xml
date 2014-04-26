@@ -81,6 +81,10 @@
 		<point>org.openmrs.headerFull.userBar</point>
 		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierLinkExt</class>
 	</extension>
+    <extension>
+        <point>org.openmrs.headerFullIncludeExt</point>
+        <class>org.openmrs.module.openhmis.cashier.extension.html.CashierHeaderFullIncludeExt</class>
+    </extension>
 	
 	<!-- Privileges -->
 	<!--  Bills  -->
