@@ -13,9 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
+import com.google.common.collect.Sets;
 import org.openmrs.BaseOpenmrsMetadata;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -24,6 +26,7 @@ import java.util.Vector;
 public class PaymentMode extends BaseOpenmrsMetadata {
 	private Integer paymentModeId;
 	private List<PaymentModeAttributeType> attributeTypes;
+        private Set<PaymentModeRole> paymentModeRoles;
 
 	// Getters & setters
 	@Override
@@ -80,4 +83,35 @@ public class PaymentMode extends BaseOpenmrsMetadata {
 	public void setAttributeTypes(List<PaymentModeAttributeType> attributeTypes) {
 		this.attributeTypes = attributeTypes;
 	}
+
+        public void addPaymentModeRole(PaymentModeRole paymentModeRole) {
+            if(paymentModeRole == null) {
+                throw new NullPointerException("The payment mode role to add must be defined.");
+            }
+
+            if(paymentModeRole.getPaymentMode() != this) {
+                paymentModeRole.setPaymentMode(this);
+            }
+
+            if(this.paymentModeRoles == null) {
+                this.paymentModeRoles = Sets.newHashSet();
+            }
+
+            this.paymentModeRoles.add(paymentModeRole);
+        }
+
+        public void removeAttributeType(PaymentModeRole paymentModeRole) {
+            if(paymentModeRole != null && this.paymentModeRoles != null) {
+                this.paymentModeRoles.remove(paymentModeRole);
+            }
+        }
+
+        public Set<PaymentModeRole> getPaymentModeRoles() {
+            return paymentModeRoles;
+        }
+
+        public void setPaymentModeRoles(Set<PaymentModeRole> paymentModeRoles) {
+            this.paymentModeRoles = paymentModeRoles;
+        }
+
 }

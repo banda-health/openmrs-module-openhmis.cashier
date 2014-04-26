@@ -5,6 +5,7 @@ define(
         openhmis.url.backboneBase + 'js/model/generic',
         openhmis.url.backboneBase + 'js/lib/i18n',
         openhmis.url.cashierBase + 'js/model/item',
+        openhmis.url.cashierBase + 'js/model/role',
         openhmis.url.backboneBase + 'js/model/fieldGenHandler'
     ],
     function(_, Backbone, openhmis, __) {
@@ -13,7 +14,7 @@ define(
                 paymentModeAttributeType: { type: "Object", objRef: true },
                 value: { type: "Text" }
             },
-            
+
             parse: function(resp) {
                 if (resp.paymentModeAttributeType)
                     resp.paymentModeAttributeType =
@@ -21,14 +22,14 @@ define(
                 return resp;
             }
         });
-        
+
         openhmis.Payment = openhmis.GenericModel.extend({
             meta: {
                 name: "Payment",
                 namePlural: "Payments",
                 restUrl: "payment"
             },
-            
+
             schema: {
                 dateCreated: { type: 'Text', readOnly: true },
                 dateCreatedFmt: { type: 'Text', title: __("Date"), readOnly: true },
@@ -39,13 +40,13 @@ define(
                 paymentMode: { type: 'Object', objRef: true },
                 attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute }
             },
-            
+
             url: function() {
                 if (this.meta.parentRestUrl)
                     this.urlRoot = this.meta.parentRestUrl + this.meta.restUrl;
                 return openhmis.GenericModel.prototype.url.call(this);
             },
-            
+
    			get: function(attr) {
 				switch (attr) {
 					case 'dateCreatedFmt':
@@ -59,13 +60,13 @@ define(
 						return openhmis.GenericModel.prototype.get.call(this, attr);
 				}
 			},
-            
+
             validate: function(goAhead) {
    				// By default, backbone validates every time we try try to alter
 				// the model.  We don't want to be bothered with this until we
 				// care.
                 if (goAhead !== true) return null;
-                
+
                 if (this.get("amount") === null || this.get("amount") === undefined)
                     return { amount: __("Amount is required.") }
                 if (isNaN(this.get("amount")))
@@ -74,7 +75,7 @@ define(
                     return { paymentMode: __("Payment mode is required.") }
                 return null;
             },
-            
+
             parse: function(resp) {
                 if (resp.paymentMode)
                     resp.paymentMode = new openhmis.PaymentMode(resp.paymentMode);
@@ -91,13 +92,13 @@ define(
                 }
                 return resp;
             },
-            
+
             toJSON: function() {
                 var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
                 return attrs;
             }
         });
-        
+
         openhmis.PaymentModeAttributeType = openhmis.GenericModel.extend({
             meta: {
                 name: "Attribute Type",
@@ -116,12 +117,39 @@ define(
                 regExp: { type: 'Text' },
                 required: { type: 'Checkbox' }
             },
-            
+
             validate: function(attrs, options) {
    				if (!attrs.name) return { name: __("A name is required") }
                 return null;
             },
-            
+
+            toString: function() { return this.get('name'); }
+        });
+
+        openhmis.PaymentModeRole = openhmis.GenericModel.extend({
+            meta: {
+                name: "Role",
+                namePlural: "Roles",
+                openmrsType: 'metadata',
+                restUrl: 'paymentMode'
+            },
+
+            schema: {
+                role: {
+                    type: 'RoleSelect',
+                    options: new openhmis.GenericCollection(null, {
+                        model: openhmis.Role,
+                        url: 'v1/role'
+                    }),
+                    objRef: true
+                }
+            },
+
+            validate: function(attrs, options) {
+   				if (!attrs.role) return { name: __("A role is required") }
+                return null;
+            },
+
             toString: function() { return this.get('name'); }
         });
 
@@ -132,13 +160,28 @@ define(
                 openmrsType: 'metadata',
                 restUrl: 'paymentMode'
             },
-            
+
             schema: {
                 name: { type: 'Text' },
                 description: { type: 'Text' },
-                attributeTypes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentModeAttributeType }
+                attributeTypes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentModeAttributeType },
+                paymentModeRoles: {type: 'List', itemType: 'NestedModel', model: openhmis.PaymentModeRole }
             },
-            
+
+//            getPaymentModeRolesList: function(list) {
+//                var paymentModeRoles, schema;
+//                if (list !== undefined) {
+//                    paymentModeRoles = list;
+//                    schema = {
+//                        model: openhmis.Role
+//                    }
+//                } else {
+//                    paymentModeRoles = this.get("paymentModeRoles");
+//                    schema = this.schema.paymentModeRoles
+//                }
+//                return openhmis.GenericCollection.prototype.toString.call(paymentModeRoles, schema);
+//            },
+
             validate: function(attrs, options) {
    				if (!attrs.name) return { name: __("A name is required") }
                 return null;
@@ -150,9 +193,14 @@ define(
                     for (var attributeType in this.attributes.attributeTypes)
                         delete this.attributes.attributeTypes[attributeType].resourceVersion;
                 }
+                if (this.attributes.paymentModeRoles !== undefined) {
+                    // Can't set these, so need to remove them from JSON
+                    for (var paymentModeRole in this.attributes.paymentModeRoles)
+                        delete this.attributes.paymentModeRoles[paymentModeRole].resourceVersion;
+                }
                 return openhmis.GenericModel.prototype.toJSON.call(this);
             },
-            
+
             toString: function() {
                 return this.get('name');
             }

@@ -16,12 +16,12 @@ define(
 				this.makeTypesSortable(form);
 				return form;
 			},
-			
+
 			makeTypesSortable: function(form) {
 				form = form ? form : this.modelForm;
 				form.$('.bbf-list ul').sortable();
 			},
-			
+
 			save: function() {
 				var attributes = this.$('.bbf-list ul').sortable("widget").children();
 				$(attributes).each(function() {
@@ -42,7 +42,7 @@ define(
 				openhmis.GenericAddEditView.prototype.save.call(this);
 			}
 		});
-		
+
 		openhmis.PaymentListItemView = openhmis.GenericListItemView.extend({
 			render: function() {
 				openhmis.GenericListItemView.prototype.render.call(this);
@@ -54,7 +54,7 @@ define(
 				return this;
 			}
 		});
-		
+
 		openhmis.PaymentView = Backbone.View.extend({
 			tmplFile: openhmis.url.cashierBase + 'template/payment.html',
 			tmplSelector: '#payment-view',
@@ -99,16 +99,16 @@ define(
 					});
 				}
 			},
-			
+
             events: {
                 'change #paymentMode': 'paymentModeChange',
 				'click #processPayment': 'processPayment'
             },
-			
+
 			focus: function() {
 				this.form.focus();
 			},
-			
+
 			paymentModeChange: function(event) {
 				var paymentModeUuid = $(event.target).val();
 				var self = this;
@@ -122,7 +122,7 @@ define(
 					}
 				)
 			},
-			
+
 			commitForm: function() {
 				var attributeForm = this.$attributes.serializeArray();
 				var attributes = [];
@@ -158,7 +158,7 @@ define(
 				}
 				return true;
 			},
-			
+
 			displayErrors: function(errorMap) {
 				for(var item in errorMap) {
 					var $errorControl = this.$('#'+item);
@@ -169,7 +169,7 @@ define(
 					}
 				}
 			},
-			
+
 			processPayment: function(event) {
 				if (!this.commitForm()) return;
 				if (confirm(i18n("Are you sure you want to process a %s payment of %s?",
@@ -190,7 +190,7 @@ define(
 					}});
 				}
 			},
-			
+
 			render: function() {
 				this.$el.html(this.template({ __: i18n, readOnly: this.readOnly }));
 				if (!this.readOnly)
@@ -212,7 +212,7 @@ define(
 				return this;
 			}
 		});
-		
+
 		return openhmis;
 	}
 );

@@ -160,6 +160,11 @@
 			<one-to-many class="PaymentModeAttributeType" />
 		</list>
 
+                <set name="paymentModeRoles" inverse="true" lazy="true" cascade="all-delete-orphan">
+                    <key column="payment_mode_id" not-null="true"/>
+                    <one-to-many class="PaymentModeRole" />
+                </set>
+
 		<!-- BaseOpenmrsMetadata fields -->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
 		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
@@ -191,6 +196,31 @@
 		<property name="format" type="java.lang.String" column="format" length="255" />
 		<property name="regExp" type="java.lang.String" column="reg_exp" length="255" />
 		<property name="required" type="boolean" column="required" length="1" not-null="true" />
+
+		<!-- BaseOpenmrsMetadata fields -->
+		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
+		<many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" />
+		<property name="dateRetired" type="java.util.Date" column="date_retired" length="19" />
+		<property name="retireReason" type="java.lang.String" column="retire_reason" length="255" />
+		<property name="retired" type="boolean" column="retired" length="1" not-null="true" />
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+	</class>
+
+        <class name="PaymentModeRole" table="cashier_payment_mode_role">
+		<cache usage="read-write"/>
+
+		<id name="id" type="int" column="payment_mode_role_id">
+			<generator class="native">
+				<param name="sequence">cashier_payment_mode_role_payment_mode_role_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="payment_mode_role_id" insert="false" />
+
+		<many-to-one name="paymentMode" class="PaymentMode" not-null="true" column="payment_mode_id" />
+                <many-to-one name="role" class="org.openmrs.Role" not-null="true" column="role_id" />
 
 		<!-- BaseOpenmrsMetadata fields -->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
