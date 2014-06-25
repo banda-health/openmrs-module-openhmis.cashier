@@ -149,9 +149,9 @@ public class CashierController {
 		timesheetService.save(timesheet);
 
 		if (StringUtils.isEmpty(returnUrl)) {
-			returnUrl = "redirect:/";
+			returnUrl = "redirect:";
 		} else {
-			returnUrl = "redirect:/" + returnUrl;
+			returnUrl = "redirect:" + returnUrl;
 		}
 		return returnUrl;
 	}

@@ -142,7 +142,7 @@ public class BillAddEditController {
     }
 
     private String buildRedirectUrl(HttpServletRequest request) {
-        String redirectUrl = "redirect:/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
+        String redirectUrl = "redirect:" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
         String returnUrlParam = "?returnUrl=" + CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE);
         String requestQueryParam = "";
         if (request.getQueryString() != null) {
