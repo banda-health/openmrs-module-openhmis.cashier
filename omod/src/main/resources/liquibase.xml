@@ -656,4 +656,63 @@
 				baseTableName="cashier_bill_line_item" baseColumnNames="item_id"
 				referencedTableName="inv_item" referencedColumnNames="item_id" />
 	</changeSet>
+    <!--created to handle entries for cash-100 issue-->
+    <!--created to handle entries for cash-100 issue-->
+    <changeSet id="openhmis.cashier-v2.0-2" author="AlexKimani">
+        <comment>Add Adjustment reason column on Cashier_Bill table</comment>
+        <addColumn tableName="cashier_bill">
+            <column name="adjustment_reason" type="varchar(500)"><constraints nullable="false"/></column>
+        </addColumn>
+
+    </changeSet>
+    <changeSet id="openmis.cashier-v2.0-3" author="AlexKimani">
+        <comment>Edit column adjustment_reason to allow null in table Cashier_bill</comment>
+        <sql>
+            ALTER TABLE `openmrs`.`cashier_bill`
+            CHANGE COLUMN `adjustment_reason` `adjustment_reason` VARCHAR(500) NULL ;
+        </sql>
+    </changeSet>
+
+    <changeSet id="openhmis.cashier-v2.0-4" author="AlexKimani">
+        <comment>Adds the Cashier_adjust_reason table and populates it</comment>
+        <!--Created table cashier_adjust_reason-->
+        <createTable tableName="cashier_adjust_reason">
+            <column name="adjust_reason_id" type="int(11)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/></column>
+            <column name="name" type="varchar(255)" ><constraints nullable="false"/> </column>
+            <column name="description" type="varchar(1024)"><constraints nullable="true"/> </column>
+            <column name="creator" type="int(11)" ><constraints nullable="false"/> </column>
+            <column name="date_created" type="datetime"><constraints nullable="false" /></column>
+            <column name="changed_by" type="int(11)"><constraints nullable="true"/> </column>
+            <column name="date_changed" type="datetime"><constraints nullable="true"/> </column>
+            <column name="retired" type="tinyint(1)" defaultValueBoolean="false">
+                <constraints nullable="true"/> </column>
+            <column name="retired_by" type="int(11)"><constraints nullable="true" /></column>
+            <column name="date_retired" type="datetime"><constraints nullable="true"/> </column>
+            <column name="retire_reason" type="varchar(255)"><constraints nullable="true"/></column>
+            <column name="uuid" type="char(38)"><constraints nullable="false" unique="true"/> </column>
+        </createTable>
+
+        <!--Adds the required foreign keys for the respective fields in the table-->
+        <addForeignKeyConstraint constraintName="adjust_reason_creator_fk"
+                                 baseTableName="cashier_adjust_reason" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"
+                                 deferrable="false" initiallyDeferred="false" />
+        <addForeignKeyConstraint constraintName="adjust_reason_changed_by_fk"
+                                 baseTableName="cashier_adjust_reason" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"
+                                 deferrable="false" initiallyDeferred="false" />
+        <addForeignKeyConstraint constraintName="adjust_reason_retired_by_fk"
+                                 baseTableName="cashier_adjust_reason" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"
+                                 deferrable="false" initiallyDeferred="false" />
+
+        <!--Adds the data to the fields in the table-->
+        <sql>
+            INSERT INTO `openmrs`.`cashier_adjust_reason` (`adjust_reason_id`, `name`, `description`, `creator`, `date_created`, `changed_by`, `date_changed`, `retired`, `retired_by`, `date_retired`, `retire_reason`, `uuid`) VALUES
+            (NULL, 'Data Entry Error', 'adding data leading to errors', '4', '2014-06-02 00:00:00', NULL, NULL, '0', NULL, NULL, NULL, 'c7c90e5a-fb9d-11e3-8409-fbf85e5331cd'),
+            (NULL, 'Drug Quantity Change', 'Due to change in prescription amount', '3', '2014-06-11 00:00:00', NULL, NULL, '0', NULL, NULL, NULL, 'c97e1efc-fb9d-11e3-b8c0-0b6590128ea7'),
+            (NULL, 'Other Reason', 'Any other reason whatsover', '4', '2014-06-09 00:00:00', NULL, NULL, '0', NULL, NULL, NULL, '48d7451c-fba2-11e3-ae95-5311bfd7ab98');
+        </sql>
+    </changeSet>
 </databaseChangeLog>
