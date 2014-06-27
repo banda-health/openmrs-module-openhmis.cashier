@@ -413,22 +413,23 @@ define(
 
 			adjustBill: function() {
 				var __ = i18n;
-				if (confirm(__("Are you sure you want to adjust this bill?"))) {
-					var adjustingBill = new openhmis.Bill({
-						billAdjusted: this.bill.id,
-						patient: this.bill.get("patient").id
-					});
-					// Unset status to avoid the adjusted bill from being
-					// immediately set to PAID
-					adjustingBill.unset("status");
-					var view = this;
-					adjustingBill.save([], {
-						success: function(model, resp) {
-							view.trigger("adjusted", model);
-						}, error: openhmis.error
-					});
-				}
+                if (confirm(__("Are you sure you want to adjust this bill?"))) {
+                    var adjustingBill = new openhmis.Bill({
+                        billAdjusted: this.bill.id,
+                        patient: this.bill.get("patient").id
+                    });
+                    // Unset status to avoid the adjusted bill from being
+                    // immediately set to PAID
+                    adjustingBill.unset("status");
+                    var view = this;
+                    adjustingBill.save([], {success: function(model,resp) {view.trigger("adjusted", model);
+                    },
+                        error: openhmis.error
+                    });
+                }
 			},
+
+
 
 			printReceipt: function(event) {
 				var url = openhmis.url.getPage("cashierBase")

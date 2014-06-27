@@ -656,4 +656,17 @@
 				baseTableName="cashier_bill_line_item" baseColumnNames="item_id"
 				referencedTableName="inv_item" referencedColumnNames="item_id" />
 	</changeSet>
+    <changeSet id="openhmis.cashier-v2.0-2" author="Benjamin Mwalimu">
+        <comment></comment>
+        <addColumn tableName="cashier_bill">
+            <column name="adjustment_reason" type="varchar(500)"><constraints nullable="false"/></column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="openhmis.cashier-v2.0.3" author="Benjamin Mwalimu">
+        <comment></comment>
+        <sql>
+            ALTER TABLE `openmrs`.`cashier_bill`
+            CHANGE COLUMN `adjustment_reason` `adjustment_reason` VARCHAR(500) NULL ;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

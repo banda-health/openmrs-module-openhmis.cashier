@@ -51,6 +51,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			description.addProperty("payments", Representation.FULL);
 			description.addProperty("receiptNumber");
 			description.addProperty("status");
+            description.addProperty("adjustReason");
 		}
 
 		return description;
@@ -73,6 +74,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		}
 	}
 
+
+
 	@PropertySetter("payments")
 	public void setBillPayments(Bill instance, Set<Payment> payments) {
 		if (instance.getPayments() == null) {
@@ -89,6 +92,11 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		billAdjusted.addAdjustedBy(instance);
 		instance.setBillAdjusted(billAdjusted);
 	}
+    @PropertySetter("adjustReason")
+    public void setBillAdjustReason(Bill adjust, String adjustReason){
+        adjust.setAdjustReason(adjustReason);
+    }
+
 	
 	@PropertySetter("status")
 	public void setBillStatus(Bill instance, BillStatus status) {

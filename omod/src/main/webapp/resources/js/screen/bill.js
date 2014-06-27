@@ -47,7 +47,7 @@ curl(
 				}
 			}});
 		}
-		
+
 		/**
 		 * createBillView
 		 *
@@ -122,7 +122,7 @@ curl(
 			this.patientView.model = patient;
 			this.displayBillView();
 		}
-		
+
 		/*
 		 * displayBillView
 		 *
@@ -155,8 +155,10 @@ curl(
 				url = openhmis.addQueryStringParameter(url, "print=true");
 				window.location = url;
 			});
+
+            $adjustcheckdiv = $('#adjustcheckdiv');
+            $adjustflddiv = $('#adjust_reason');
 			this.billView.setElement($('#bill'));
-			
 			$saveButton = $('#saveBill');
 			$postButton = $('#postBill');
 			$printButton = $("#printReceipt");
@@ -168,7 +170,6 @@ curl(
 					$saveButton.click(function() {
 						inst.billView.saveBill();
 					});
-					
 					var confirmMsg = __("Are you sure you want to post this bill?");
 					$postButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill() }});
 					$postButton.show();
@@ -194,20 +195,34 @@ curl(
 					break;
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
-					$saveButton.val(__("Adjust Bill"));
-					$saveButton.click(this.billView.adjustBill);
-					$printButton.val(__("Print Receipt"));
-					$printButton.click(function(event) {
-						self.billView.printReceipt(event);
-						$(this).attr("disabled", "disabled");
-					});
-					$printButton.show();
+                    $adjustcheckdiv.show(); //show the check box wen bill is posted/ paid
+                    document.getElementById("saveBill").disabled = true;
+                    $saveButton.val(__("Adjust Bill"));
+                    $saveButton.click(this.billView.adjustBill);
+                    /*bring up the adjustment reason field after the checkbox is checked*/
+                    $adjustcheckdiv.click(function() {
+                        $adjustflddiv.toggle(this.checked);
+                        $('#adjustReason').keyup(function () {
+                            if ($(this).val() == '') { //Check to see if there is any text entered
+                                //If there is no text within the input ten disable the button
+                                document.getElementById("saveBill").disabled = true;
+
+                            } else {
+                                //If there is text in the input, then enable the button
+                                document.getElementById("saveBill").disabled = false;
+                            }
+                        });
+                    });
+                    $printButton.val(__("Print Receipt"));
+                    $printButton.click(function(event) {self.billView.printReceipt(event);
+                        $(this).attr("disabled", "disabled");
+                    });
+                    $printButton.show();
 					break;
 				case BillStatus.ADJUSTED:
-					$saveButton.remove();
+					$saveButton.remove();s
 					break;
 			}
-
 			this.billView.render();
 			
 			if (this.billView.bill.get("status") === BillStatus.PENDING) {

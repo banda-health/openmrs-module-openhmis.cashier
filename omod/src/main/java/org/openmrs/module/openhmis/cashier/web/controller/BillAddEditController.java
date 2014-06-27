@@ -119,6 +119,7 @@ public class BillAddEditController {
         model.addAttribute("adjustedBy", bill.getAdjustedBy());
         model.addAttribute("patient", patient);
         model.addAttribute("cashPoint", bill.getCashPoint());
+        model.addAttribute("adjustReason", bill.getAdjustReason());
         if (!bill.isReceiptPrinted() || (bill.isReceiptPrinted() && Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT))) {
             model.addAttribute("showPrint", true);
         }
