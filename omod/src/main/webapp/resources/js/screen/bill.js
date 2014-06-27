@@ -220,7 +220,7 @@ curl(
                     $printButton.show();
 					break;
 				case BillStatus.ADJUSTED:
-					$saveButton.remove();s
+					$saveButton.remove();
 					break;
 			}
 			this.billView.render();
