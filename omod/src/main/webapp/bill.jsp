@@ -17,6 +17,10 @@
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
 
+<div id="spinner" class="spinner" style="display:none;">
+    <img id="img-spinner" src="/resources/images/spinner.gif" alt="Loading"/>
+</div>
+
 <h2>
 	<c:choose>
 		<c:when test="${empty bill}">

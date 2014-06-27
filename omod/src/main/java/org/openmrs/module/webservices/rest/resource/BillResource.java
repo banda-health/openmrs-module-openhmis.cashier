@@ -51,6 +51,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			description.addProperty("payments", Representation.FULL);
 			description.addProperty("receiptNumber");
 			description.addProperty("status");
+            description.addProperty("adjustReason");
 		}
 
 		return description;
@@ -101,6 +102,11 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			RoundingUtil.addRoundingLineItem(instance);
 		}
 	}
+    @PropertySetter("adjustReason")
+    public void setAdjustReason(Bill instance, String adjustReason){
+        instance.setAdjustReason(adjustReason);
+        System.out.println("######"+adjustReason+"#####");
+    }
 
 	@Override
 	public Bill save (Bill delegate) {

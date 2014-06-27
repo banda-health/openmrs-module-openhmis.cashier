@@ -22,6 +22,21 @@ curl(
 		openhmis.url.cashierBase + 'js/model/lineItem'
 	],
 	function($, openhmis, __) {
+
+
+        $(document).ready(function(){
+
+            $("#spinner").bind("ajaxSend", function() {
+                $(this).show();
+            }).bind("ajaxStop", function() {
+                $(this).hide();
+            }).bind("ajaxError", function() {
+                $(this).hide();
+            });
+
+        });
+
+
 		var Screen = function() {
 			this.billUuid = openhmis.getQueryStringParameter("billUuid");
 			this.patientUuid = openhmis.getQueryStringParameter("patientUuid");
