@@ -175,8 +175,7 @@ define(
 			stepCallback: function(val, up) {
 				this.update();
 			},
-			
-			
+
 		});
 
 		/**
@@ -422,14 +421,14 @@ define(
                     // immediately set to PAID
                     adjustingBill.unset("status");
                     var view = this;
-                    adjustingBill.save([], {success: function(model,resp) {view.trigger("adjusted", model);
+                    adjustingBill.save([], {
+                        success: function(model,resp) {
+                            view.trigger("adjusted", model);
                     },
                         error: openhmis.error
                     });
                 }
 			},
-
-
 
 			printReceipt: function(event) {
 				var url = openhmis.url.getPage("cashierBase")
@@ -456,7 +455,6 @@ define(
 				inputLineView.off("change", this._addItemFromInputLine);
 				this.model.add(inputLineView.model, { silent: true });
 				this._deselectAll();
-				
 			}
 		});
 
@@ -487,7 +485,6 @@ define(
 				return this;
 			}
 		});
-
 		return openhmis;
 	}
 );

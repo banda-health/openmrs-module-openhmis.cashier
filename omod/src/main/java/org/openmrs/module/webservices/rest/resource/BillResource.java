@@ -53,9 +53,8 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			description.addProperty("status");
             description.addProperty("adjustReason");
 		}
-
 		return description;
-	}
+    }
 
 	
 	@Override
@@ -92,6 +91,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		billAdjusted.addAdjustedBy(instance);
 		instance.setBillAdjusted(billAdjusted);
 	}
+
     @PropertySetter("adjustReason")
     public void setBillAdjustReason(Bill adjust, String adjustReason){
         adjust.setAdjustReason(adjustReason);

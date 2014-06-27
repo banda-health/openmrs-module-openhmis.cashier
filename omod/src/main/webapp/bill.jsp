@@ -76,7 +76,7 @@
 <div id="payment"></div>
 <br/>
 <div id="adjustcheckdiv" class="hide" >
-    <label><input type="checkbox" id="adjustcheck" name="adjustcheck" value="billadjustcheck" />Check to adjust bill</label>
+    <label><input type="checkbox" id="adjustcheck" name="adjustcheck" value="billadjustcheck"/>Check to adjust bill</label>
 </div>
 <br/>
 <div id="adjust_reason" class="hide">
@@ -84,7 +84,7 @@
         <fieldset>
             <legend>Adjustement Reason</legend>
             <label class="margins">Reason :</label>
-            <input type="text" id="adjustReason" name="adjustReason" class="adjustinput margins" />
+            <input type="text" id="adjustReason" name="adjustReason" class="adjustinput margins"/>
         </fieldset>
     </form>
 </div>
