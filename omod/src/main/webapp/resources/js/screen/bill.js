@@ -156,8 +156,6 @@ curl(
 				window.location = url;
 			});
 
-            $adjustCheckDiv = $('#adjustcheckdiv');
-            $adjustFldDiv = $('#adjust_reason');
 			this.billView.setElement($('#bill'));
 			$saveButton = $('#saveBill');
 			$postButton = $('#postBill');
@@ -195,24 +193,8 @@ curl(
 					break;
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
-                    $adjustCheckDiv.show(); //show the check box wen bill is posted/ paid
-                    document.getElementById("saveBill").disabled = true;
                     $saveButton.val(__("Adjust Bill"));
                     $saveButton.click(this.billView.adjustBill);
-                    /*bring up the adjustment reason field after the checkbox is checked*/
-                    $adjustCheckDiv.click(function(){
-                        $adjustFldDiv.toggle(this.checked);
-                        $('#adjustReason').keyup(function(){
-                            if ($(this).val() == '') {
-                                document.getElementById("saveBill").disabled = true;
-
-                            } else {
-                                //If there is text in the input, then enable the button
-                                document.getElementById("saveBill").disabled = false;
-                            }
-                        });
-                    });
-
                     $printButton.val(__("Print Receipt"));
                     $printButton.click(function(event) {self.billView.printReceipt(event);
                         $(this).attr("disabled", "disabled");
@@ -220,7 +202,7 @@ curl(
                     $printButton.show();
 					break;
 				case BillStatus.ADJUSTED:
-					$saveButton.remove();ss
+					$saveButton.remove();
 					break;
 			}
 			this.billView.render();

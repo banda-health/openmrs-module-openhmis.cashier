@@ -77,7 +77,7 @@ define(
 				if (this.updateTimeout !== undefined) {
 					clearTimeout(this.updateTimeout);
 					this.form.model.set(this.form.getValue());
-				} 
+				}
 				var view = this;
 				var update = function() {
 					var price = view.form.getValue("price");
@@ -171,7 +171,7 @@ define(
 				});
 				return this;
 			},
-			
+
 			stepCallback: function(val, up) {
 				this.update();
 			},
@@ -400,31 +400,35 @@ define(
 			},
 
 			_postAdjustingBill: function(bill) {
-				bill.get("billAdjusted").get("payments").each(function(payment) {
-					payment.set("amountTendered", payment.get("amount"));
-				});
-				bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
-				var adjustingItems = bill.get("lineItems");
-				bill.set("lineItems", bill.get("billAdjusted").get("lineItems"));
-				bill.get("lineItems").add(adjustingItems.models);
-				bill.set("status", bill.BillStatus.POSTED);
-			},
+                bill.get("billAdjusted").get("payments").each(function (payment) {
+                    payment.set("amountTendered", payment.get("amount"));
+                });
+                bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
+                var adjustingItems = bill.get("lineItems");
+                bill.set("lineItems", bill.get("billAdjusted").get("lineItems"));
+                bill.get("lineItems").add(adjustingItems.models);
+                bill.set("status", bill.BillStatus.POSTED);
+            },
 
 			adjustBill: function() {
 				var __ = i18n;
-                if (confirm(__("Are you sure you want to adjust this bill?"))) {
-                    var adjustingBill = new openhmis.Bill({
-                        billAdjusted: this.bill.id,
-                        patient: this.bill.get("patient").id
+                 $adjustReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
+                if ($adjustReason == null || $adjustReason == "") {
+                    alert ("Please specify your bill adjustment reason");
+                }
+                else{
+                     var adjustingBill = new openhmis.Bill({
+                     adjustReason: $adjustReason,
+                     billAdjusted: this.bill.id,
+                     patient: this.bill.get("patient").id
                     });
-                    // Unset status to avoid the adjusted bill from being
-                    // immediately set to PAID
+                    /**/
                     adjustingBill.unset("status");
                     var view = this;
                     adjustingBill.save([], {
                         success: function(model,resp) {
                             view.trigger("adjusted", model);
-                    },
+                        },
                         error: openhmis.error
                     });
                 }
@@ -448,7 +452,7 @@ define(
 				this.updateTotals();
 				return this;
 			},
-			
+
 			_addItemFromInputLine: function(inputLineView) {
 				// Prevent multiple change events causing duplicate views
 				if (this.model.getByCid(inputLineView.model.cid)) return;

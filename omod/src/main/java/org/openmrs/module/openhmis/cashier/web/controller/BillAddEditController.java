@@ -32,6 +32,7 @@ import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetHelper;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetRequiredException;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.webservices.rest.resource.AdjustReasonResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -119,7 +120,7 @@ public class BillAddEditController {
         model.addAttribute("adjustedBy", bill.getAdjustedBy());
         model.addAttribute("patient", patient);
         model.addAttribute("cashPoint", bill.getCashPoint());
-        model.addAttribute("adjustReason", bill.getAdjustReason());
+        model.addAttribute("adjustReason",bill.getAdjustReason());
         if (!bill.isReceiptPrinted() || (bill.isReceiptPrinted() && Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT))) {
             model.addAttribute("showPrint", true);
         }

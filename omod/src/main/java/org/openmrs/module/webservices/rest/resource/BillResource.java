@@ -56,7 +56,6 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		return description;
     }
 
-	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		return getRepresentationDescription(new DefaultRepresentation());
@@ -72,8 +71,6 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			item.setBill(instance);
 		}
 	}
-
-
 
 	@PropertySetter("payments")
 	public void setBillPayments(Bill instance, Set<Payment> payments) {
@@ -92,23 +89,25 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		instance.setBillAdjusted(billAdjusted);
 	}
 
-    @PropertySetter("adjustReason")
-    public void setBillAdjustReason(Bill adjust, String adjustReason){
-        adjust.setAdjustReason(adjustReason);
-    }
-
-	
 	@PropertySetter("status")
 	public void setBillStatus(Bill instance, BillStatus status) {
 		if (instance.getStatus() == null) {
 			instance.setStatus(status);
-		} else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED) {
+		}
+        else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED) {
 			instance.setStatus(status);
 		}
 		if (status == BillStatus.POSTED) {
 			RoundingUtil.addRoundingLineItem(instance);
 		}
 	}
+
+    @PropertySetter("adjustReason")
+    public void setAdjustReason(Bill instance, String adjustReason){
+        if (instance.getBillAdjusted().getUuid() != null){
+            instance.getBillAdjusted().setAdjustReason(adjustReason);
+        }
+    }
 
 	@Override
 	public Bill save (Bill delegate) {
@@ -156,10 +155,10 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			// Now that all all attributes have been set (i.e., payments and
 			// bill status) we can check to see if the bill is fully paid.
 			delegate.checkPaidAndUpdateStatus();
-			if (delegate.getStatus() == null) {
+			if (delegate.getStatus() == null){
 				delegate.setStatus(BillStatus.PENDING);
 			}
-		}
+        }
 		return super.save(delegate);
 	}
 	

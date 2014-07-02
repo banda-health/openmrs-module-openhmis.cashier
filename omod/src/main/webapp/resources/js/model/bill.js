@@ -35,7 +35,8 @@ define(
 				lineItems: { type: "List", itemType: "NestedModel", model: openhmis.LineItem },
 				patient: { type: 'Object', objRef: true },
 				payments: { type: "List", itemType: "NestedModel", model: openhmis.Payment},
-				status: { type: 'Text' }
+				status: { type: 'Text' },
+                adjustReason: {type: 'Text'}
 			},
 						
 			BillStatus: {
@@ -101,7 +102,7 @@ define(
 				}
 				return total;
 			},
-			
+
 			getAmountPaid: function() {
 				var total = this.getTotal();
 				var totalPayments = this.getTotalPayments();

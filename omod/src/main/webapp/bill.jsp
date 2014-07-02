@@ -74,21 +74,6 @@
 
 <div id="bill"></div>
 <div id="payment"></div>
-<br/>
-<div id="adjustcheckdiv" class="hide" >
-    <label><input type="checkbox" id="adjustcheck" name="adjustcheck" value="billadjustcheck"/>Check to adjust bill</label>
-</div>
-<br/>
-<div id="adjust_reason" class="hide">
-    <form name="myForm">
-        <fieldset>
-            <legend>Adjustement Reason</legend>
-            <label class="margins">Reason :</label>
-            <input type="text" id="adjustReason" name="adjustReason" class="adjustinput margins"/>
-        </fieldset>
-    </form>
-</div>
-<br/>
 
 <input type="submit" id="saveBill" value="<spring:message code="openhmis.cashier.bill.saveBill" />" />
 <input type="button" id="postBill" value="<spring:message code="openhmis.cashier.bill.postBill" />" style="display: none;" />

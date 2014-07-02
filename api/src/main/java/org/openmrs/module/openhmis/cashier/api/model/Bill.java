@@ -42,7 +42,16 @@ public class Bill extends BaseOpenmrsData {
 	private Set<Payment> payments;
 	private Set<Bill> adjustedBy;
 	private Boolean receiptPrinted = false;
-	
+    private String adjustReason;
+
+    public String getAdjustReason(){
+        return adjustReason;
+    }
+
+    public void setAdjustReason(String adjustReason){
+            this.adjustReason = adjustReason;
+    }
+
 	public Boolean isReceiptPrinted() {
 		return receiptPrinted;
 	}

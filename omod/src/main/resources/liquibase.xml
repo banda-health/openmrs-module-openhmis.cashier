@@ -656,7 +656,7 @@
 				baseTableName="cashier_bill_line_item" baseColumnNames="item_id"
 				referencedTableName="inv_item" referencedColumnNames="item_id" />
 	</changeSet>
-    <changeSet id="openhmis.cashier-v2.0-2" author="Benjamin Mwalimu">
+    <changeSet id="openhmis.cashier-v2.0.0-2" author="Benjamin Mwalimu">
         <comment>Adding the column "adjustment_reason" to the table cashier_bill </comment>
         <addColumn tableName="cashier_bill">
             <column name="adjustment_reason" type="varchar(500)"><constraints nullable="true"/></column>
