@@ -476,7 +476,7 @@ define(
 					model: this.model.get("payments"),
 					className: "paymentList",
 					listTitle: "Previous Payments",
-					listFields: ["dateCreatedFmt", "paymentMode", "amountFmt"],
+					listFields: ["dateCreatedFmt", "instanceType", "amountFmt"],
 					showPaging: false,
 					showRetiredOption: false
 				});
