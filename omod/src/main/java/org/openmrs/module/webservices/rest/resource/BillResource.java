@@ -51,7 +51,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			description.addProperty("payments", Representation.FULL);
 			description.addProperty("receiptNumber");
 			description.addProperty("status");
-            description.addProperty("adjustReason");
+            description.addProperty("adjustmentReason");
 		}
 		return description;
     }
@@ -93,8 +93,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	public void setBillStatus(Bill instance, BillStatus status) {
 		if (instance.getStatus() == null) {
 			instance.setStatus(status);
-		}
-        else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED) {
+		}else if (instance.getStatus() == BillStatus.PENDING && status == BillStatus.POSTED) {
 			instance.setStatus(status);
 		}
 		if (status == BillStatus.POSTED) {
@@ -102,10 +101,10 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		}
 	}
 
-    @PropertySetter("adjustReason")
+    @PropertySetter("adjustmentReason")
     public void setAdjustReason(Bill instance, String adjustReason){
         if (instance.getBillAdjusted().getUuid() != null){
-            instance.getBillAdjusted().setAdjustReason(adjustReason);
+            instance.getBillAdjusted().setAdjustmentReason(adjustReason);
         }
     }
 
@@ -155,7 +154,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			// Now that all all attributes have been set (i.e., payments and
 			// bill status) we can check to see if the bill is fully paid.
 			delegate.checkPaidAndUpdateStatus();
-			if (delegate.getStatus() == null){
+			if (delegate.getStatus() == null) {
 				delegate.setStatus(BillStatus.PENDING);
 			}
         }

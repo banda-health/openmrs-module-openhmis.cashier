@@ -36,7 +36,7 @@ define(
 				patient: { type: 'Object', objRef: true },
 				payments: { type: "List", itemType: "NestedModel", model: openhmis.Payment},
 				status: { type: 'Text' },
-                adjustReason: {type: 'Text'}
+                adjustmentReason: {type: 'Text'}
 			},
 						
 			BillStatus: {

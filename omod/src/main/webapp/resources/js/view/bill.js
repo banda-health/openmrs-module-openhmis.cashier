@@ -412,13 +412,12 @@ define(
 
 			adjustBill: function() {
 				var __ = i18n;
-                 $adjustReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
-                if ($adjustReason == null || $adjustReason == "") {
+                 $adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
+                if ($adjustmentReason == null || $adjustmentReason == "") {
                     alert ("Please specify your bill adjustment reason");
-                }
-                else{
+                }else{
                      var adjustingBill = new openhmis.Bill({
-                     adjustReason: $adjustReason,
+                     adjustmentReason: $adjustmentReason,
                      billAdjusted: this.bill.id,
                      patient: this.bill.get("patient").id
                     });
@@ -489,6 +488,7 @@ define(
 				return this;
 			}
 		});
+
 		return openhmis;
 	}
 );

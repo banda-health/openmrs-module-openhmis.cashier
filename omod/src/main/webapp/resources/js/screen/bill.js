@@ -168,6 +168,7 @@ curl(
 					$saveButton.click(function() {
 						inst.billView.saveBill();
 					});
+
 					var confirmMsg = __("Are you sure you want to post this bill?");
 					$postButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill() }});
 					$postButton.show();
@@ -205,6 +206,7 @@ curl(
 					$saveButton.remove();
 					break;
 			}
+
 			this.billView.render();
 			
 			if (this.billView.bill.get("status") === BillStatus.PENDING) {
