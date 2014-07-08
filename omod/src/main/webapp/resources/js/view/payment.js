@@ -22,7 +22,7 @@ define(
 		openhmis.url.backboneBase + 'js/view/generic'
 	],
 	function($, Backbone, openhmis, i18n) {
-		openhmis.PaymentModeAddEditView = openhmis.GenericAddEditView.extend({
+		/*openhmis.PaymentModeAddEditView = openhmis.GenericAddEditView.extend({
 			prepareModelForm: function(model, options) {
 				var form = openhmis.GenericAddEditView.prototype.prepareModelForm.call(this, model, options);
 				form.on('attributeTypes:change', this.makeTypesSortable);
@@ -36,10 +36,12 @@ define(
 			},
 			
 			save: function() {
+                // Sets the ID of each attribute type to the order within the list
 				var attributes = this.$('.bbf-list ul').sortable("widget").children();
 				$(attributes).each(function() {
 					$(this).attr("id", "attr-" + $(attributes).index(this));
 				});
+
 				var items = this.modelForm.fields['attributeTypes'].editor.items;
 				for (var id in items) {
 					var getValue = items[id].getValue;
@@ -47,7 +49,14 @@ define(
 						var order = $(this.el).attr("id");
 						order = parseInt(order.substring(order.lastIndexOf('-') + 1));
 						var value = getValue.call(this);
-						value.attributeOrder = order;
+
+                        // Set the proper field based on whether this is a backbone model or a new object
+                        if (value.attributes != undefined) {
+                            value.set('attributeOrder', order);
+                        } else {
+                            value.attributeOrder = order;
+                        }
+
 						return value;
 					}
 					items[id].getValue = newGetValue;
@@ -55,7 +64,7 @@ define(
 				openhmis.GenericAddEditView.prototype.save.call(this);
 			}
 		});
-		
+		*/
 		openhmis.PaymentListItemView = openhmis.GenericListItemView.extend({
 			render: function() {
 				openhmis.GenericListItemView.prototype.render.call(this);

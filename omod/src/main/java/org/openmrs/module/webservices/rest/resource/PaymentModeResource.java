@@ -19,8 +19,13 @@ import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
+import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperationAttributeType;
 import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+
+import java.util.List;
 
 @Resource(name=RestConstants.VERSION_2 + "/cashier/paymentMode", supportedClass=PaymentMode.class, supportedOpenmrsVersions={"1.9"})
 public class PaymentModeResource
@@ -33,5 +38,11 @@ public class PaymentModeResource
 	@Override
 	public Class<? extends IMetadataDataService<PaymentMode>> getServiceClass() {
 		return IPaymentModeService.class;
+	}
+
+	// Workaround to fix the TypeVariable issue on base generic property
+	@PropertySetter("attributeTypes")
+	public void setAttributeTypes(PaymentMode instance, List<PaymentModeAttributeType> attributeTypes) {
+		super.setAttributeTypes(instance, attributeTypes);
 	}
 }
