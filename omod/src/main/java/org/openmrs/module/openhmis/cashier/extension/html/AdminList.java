@@ -52,7 +52,7 @@ public class AdminList extends AdministrationSectionExt {
             map.put("/module/openhmis/cashier/cashierRole.form", "openhmis.cashier.admin.role");
         }
 
-        if((authenticatedUser.hasPrivilege(CashierPrivilegeConstants.VIEW_METADATA)) &&(authenticatedUser.hasPrivilege(CashierPrivilegeConstants.MANAGE_METADATA))) {
+        if((authenticatedUser.hasPrivilege(CashierPrivilegeConstants.VIEW_METADATA)) && (authenticatedUser.hasPrivilege(CashierPrivilegeConstants.MANAGE_METADATA))) {
             map.put("/module/openhmis/cashier/cashPoints.form", "openhmis.cashier.admin.cashPoints");
             map.put("/module/openhmis/cashier/paymentModes.form", "openhmis.cashier.admin.paymentModes");
         }
