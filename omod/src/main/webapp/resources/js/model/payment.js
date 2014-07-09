@@ -140,6 +140,10 @@ define(
             schema: {
                 name: { type: 'Text' },
                 description: { type: 'Text' }
+            },
+
+            toString: function() {
+                return this.get('name');
             }
         });
 
