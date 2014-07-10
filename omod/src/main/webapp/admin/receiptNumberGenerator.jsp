@@ -20,7 +20,7 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="../template/linksHeader.jsp"%>
 
-<openmrs:require privilege="Manage Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/admin/receiptNumberGenerator.form" />
+<openmrs:require privilege="<%=CashierPrivilegeConstants.MANAGE_BILLS %>" otherwise="/login.htm" redirect="/module/openhmis/cashier/admin/receiptNumberGenerator.form" />
 
 <h2>
     <spring:message code="openhmis.cashier.admin.receiptNumberGenerator" />
