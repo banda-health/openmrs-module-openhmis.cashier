@@ -51,7 +51,7 @@ define(
                 amountTendered: { type: 'BasicNumber' },
                 amountTenderedFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
                 instanceType: { type: 'Object', objRef: true, title: __("Payment Mode")},
-                attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute }
+                attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute , title: __("Details") }
             },
             
             url: function() {

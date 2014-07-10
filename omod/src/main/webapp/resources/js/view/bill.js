@@ -309,6 +309,7 @@ define(
 					if (self.bill.getTotalPayments() >= self.bill.getTotal()) {
 						self.trigger("paid", self.bill);
 					}
+                    self.bill.addPayment(payment);
 					self.updateTotals();
 					if (success) {
 						success(model, resp);
@@ -319,14 +320,15 @@ define(
 				if (paymentChange > 0) {
 					payment.set("amount", payment.get("amountTendered") - paymentChange);
 				}
-				this.bill.addPayment(payment);
+
 				if (this.bill.get("status") === this.bill.BillStatus.PENDING) {
 					if (!this.postBill(options));
 						this.bill.get("payments").remove(payment);
 				} else {
+                    payment.meta.parentRestUrl = this.bill.url() + '/';
 					payment.save([], options);
 				}
-			},
+             },
 
 			validate: function(allowEmptyBill) {
 				var errors = this.bill.validate(true);

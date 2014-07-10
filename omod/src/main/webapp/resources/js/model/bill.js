@@ -60,7 +60,6 @@ define(
 			},
 			
 			addPayment: function(payment) {
-				payment.meta.parentRestUrl = this.url() + '/';
 				this.get("payments").add(payment);
 			},
 			
