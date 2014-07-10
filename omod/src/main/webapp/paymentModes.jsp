@@ -13,7 +13,7 @@
   ~
   ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
   --%>
-<openmrs:require allPrivileges="<%=CashierPrivilegeConstants.MANAGE_METADATA %>, <%=CashierPrivilegeConstants.VIEW_METADATA %>" otherwise="/login.htm" redirect="/module/openhmis/cashier/paymentModes.form" />
+<openmrs:require allPrivileges="<%=CashierPrivilegeConstants.MANAGE_VIEW_METADATA%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/paymentModes.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <%@ include file="template/linksHeader.jsp"%>
