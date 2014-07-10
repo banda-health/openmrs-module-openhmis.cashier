@@ -1,3 +1,4 @@
+<%@ page import="org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
@@ -12,7 +13,7 @@
   ~
   ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
   --%>
-<openmrs:require allPrivileges="Manage Cashier Bills, View Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
+<openmrs:require allPrivileges="<%=CashierPrivilegeConstants.MANAGE_VIEW_METADATA%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />

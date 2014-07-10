@@ -119,6 +119,7 @@ public class BillAddEditController {
         model.addAttribute("adjustedBy", bill.getAdjustedBy());
         model.addAttribute("patient", patient);
         model.addAttribute("cashPoint", bill.getCashPoint());
+        model.addAttribute("adjustmentReason",bill.getAdjustmentReason());
         if (!bill.isReceiptPrinted() || (bill.isReceiptPrinted() && Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT))) {
             model.addAttribute("showPrint", true);
         }
@@ -142,7 +143,7 @@ public class BillAddEditController {
     }
 
     private String buildRedirectUrl(HttpServletRequest request) {
-        String redirectUrl = "redirect:/" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
+        String redirectUrl = "redirect:" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
         String returnUrlParam = "?returnUrl=" + CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE);
         String requestQueryParam = "";
         if (request.getQueryString() != null) {
