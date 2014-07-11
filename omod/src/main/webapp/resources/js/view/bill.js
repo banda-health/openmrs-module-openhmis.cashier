@@ -309,7 +309,9 @@ define(
 					if (self.bill.getTotalPayments() >= self.bill.getTotal()) {
 						self.trigger("paid", self.bill);
 					}
+                    /*The line below is to add the the payment for a posted or not fully paid bill*/
                     self.bill.addPayment(payment);
+
 					self.updateTotals();
 					if (success) {
 						success(model, resp);
@@ -322,6 +324,9 @@ define(
 				}
 
 				if (this.bill.get("status") === this.bill.BillStatus.PENDING) {
+                    /*The line below is to add the payment for a pending bill*/
+                    this.bill.addPayment(payment);
+
 					if (!this.postBill(options));
 						this.bill.get("payments").remove(payment);
 				} else {
