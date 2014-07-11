@@ -13,10 +13,7 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
@@ -37,7 +34,8 @@ public class BillServiceImplTest extends IBillServiceTest {
 	@Rule
 	public PowerMockRule rule = new PowerMockRule();
 
-	static {
+	@BeforeClass
+	public static void beforeClass() throws Exception {
 		PowerMockAgent.initializeIfNeeded();
 	}
 

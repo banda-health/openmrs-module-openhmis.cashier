@@ -18,7 +18,8 @@ define(
         openhmis.url.backboneBase + 'js/model/generic',
         openhmis.url.backboneBase + 'js/lib/i18n',
         openhmis.url.inventoryBase + 'js/model/item',
-        openhmis.url.backboneBase + 'js/model/fieldGenHandler'
+        openhmis.url.backboneBase + 'js/model/fieldGenHandler',
+        openhmis.url.backboneBase + 'js/model/openhmis'
     ],
     function(_, Backbone, openhmis, __) {
         openhmis.PaymentAttribute = openhmis.GenericModel.extend({
@@ -121,66 +122,26 @@ define(
             }
         });
         
-        openhmis.PaymentModeAttributeType = openhmis.GenericModel.extend({
+        openhmis.PaymentModeAttributeType = openhmis.AttributeTypeBase.extend({
             meta: {
-                name: "Attribute Type",
-                namePlural: "Attribute Types",
-                openmrsType: 'metadata',
                 restUrl: 'v2/cashier/paymentMode'
-            },
-
-            schema: {
-                name: { type: 'Text' },
-                format: {
-                    type: 'Select',
-                    options: new openhmis.FieldFormatCollection()
-                },
-                foreignKey: { type: 'BasicNumber' },
-                regExp: { type: 'Text' },
-                required: { type: 'Checkbox' }
-            },
-            
-            validate: function(attrs, options) {
-   				if (!attrs.name) {
-   					return { name: __("A name is required") }
-   				}
-                return null;
-            },
-            
-            toString: function() { return this.get('name'); }
+            }
         });
 
-        openhmis.PaymentMode = openhmis.GenericModel.extend({
+        openhmis.PaymentMode = openhmis.CustomizableInstanceTypeBase.extend({
+            attributeType: openhmis.PaymentModeAttributeType,
+
             meta: {
                 name: "Payment Mode",
                 namePlural: "Payment Modes",
-                openmrsType: 'metadata',
                 restUrl: 'v2/cashier/paymentMode'
             },
-            
+
             schema: {
                 name: { type: 'Text' },
-                description: { type: 'Text' },
-                attributeTypes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentModeAttributeType }
-            },
-            
-            validate: function(attrs, options) {
-   				if (!attrs.name) {
-   					return { name: __("A name is required") }
-   				}
-                return null;
+                description: { type: 'Text' }
             },
 
-            toJSON: function() {
-                if (this.attributes.attributeTypes !== undefined) {
-                    // Can't set these, so need to remove them from JSON
-                    for (var attributeType in this.attributes.attributeTypes) {
-                        delete this.attributes.attributeTypes[attributeType].resourceVersion;
-                    }
-                }
-                return openhmis.GenericModel.prototype.toJSON.call(this);
-            },
-            
             toString: function() {
                 return this.get('name');
             }
