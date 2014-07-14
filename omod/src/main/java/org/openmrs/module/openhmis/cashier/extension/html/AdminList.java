@@ -17,6 +17,7 @@ import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.Extension;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.web.CashierPrivilegeWebConstants;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 import java.util.LinkedHashMap;
@@ -50,9 +51,6 @@ public class AdminList extends AdministrationSectionExt {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
         if(authenticatedUser.hasPrivilege(CashierPrivilegeConstants.MANAGE_METADATA)) {
             map.put("/module/openhmis/cashier/cashierRole.form", "openhmis.cashier.admin.role");
-        }
-
-        if(authenticatedUser.hasPrivilege(CashierPrivilegeConstants.MANAGE_VIEW_METADATA)) {
             map.put("/module/openhmis/cashier/cashPoints.form", "openhmis.cashier.admin.cashPoints");
             map.put("/module/openhmis/cashier/paymentModes.form", "openhmis.cashier.admin.paymentModes");
         }

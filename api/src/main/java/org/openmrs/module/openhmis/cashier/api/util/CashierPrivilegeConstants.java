@@ -52,6 +52,6 @@ public class CashierPrivilegeConstants {
 	public static final String MANAGE_CASHIER_ITEMS = "Manage Cashier Items";
 	public static final String PURGE_CASHIER_ITEMS = "Purge Cashier Items";
 
-    public static final String MANAGE_VIEW_METADATA = MANAGE_METADATA + "," +VIEW_METADATA;
+    protected CashierPrivilegeConstants() {}
 
 }

@@ -1,5 +1,4 @@
 <%@ page import="org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants" %>
-<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
   ~ Version 2.0 (the "License"); you may not use this file except in

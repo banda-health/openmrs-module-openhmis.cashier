@@ -1,4 +1,5 @@
 <%@ page import="org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants" %>
+<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierPrivilegeWebConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
@@ -13,7 +14,7 @@
   ~
   ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
   --%>
-<openmrs:require allPrivileges="<%=CashierPrivilegeConstants.MANAGE_VIEW_METADATA%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
+<openmrs:require allPrivileges="<%=CashierPrivilegeWebConstants.BILL_PAGE_PRIVILEDGES%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
