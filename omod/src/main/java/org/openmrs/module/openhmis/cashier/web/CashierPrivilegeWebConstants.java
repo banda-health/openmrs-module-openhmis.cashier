@@ -10,5 +10,6 @@ public class CashierPrivilegeWebConstants extends CashierPrivilegeConstants {
     public static final String CASHPOINTS_PAGE_PRIVILEDGES = MANAGE_METADATA + "," +VIEW_METADATA;
     public static final String PAYMENTSMODES_PAGE_PRIVILEDGES = MANAGE_METADATA + "," +VIEW_METADATA;
     public static final String BILL_PAGE_PRIVILEDGES = MANAGE_METADATA + "," +VIEW_METADATA;
+    
     protected CashierPrivilegeWebConstants() {}
 }
