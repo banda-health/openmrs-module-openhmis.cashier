@@ -30,7 +30,6 @@ import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetHelper;
-import org.openmrs.module.openhmis.cashier.api.util.TimesheetRequiredException;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
