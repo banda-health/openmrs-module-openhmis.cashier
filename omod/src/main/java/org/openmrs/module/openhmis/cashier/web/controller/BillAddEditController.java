@@ -54,13 +54,14 @@ public class BillAddEditController {
 	    Timesheet timesheet = null;
 		try {
 			timesheet = TimesheetHelper.getCurrentTimesheet();
-		} catch (TimesheetRequiredException e) {
-		    LOG.error("TimesheetRequired exception when trying to get current timesheet: ", e);
-			return buildRedirectUrl(request);
 		} catch (Exception e) {
 			LOG.error("An exception occured: ", e);
 			timesheet = null;
 		}
+
+        if (timesheet == null && TimesheetHelper.isTimesheetRequired()) {
+           return buildRedirectUrl(request);
+        }
 
 		model.addAttribute("timesheet", timesheet);
 		model.addAttribute("user", Context.getAuthenticatedUser());
