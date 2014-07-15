@@ -51,12 +51,11 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			description.addProperty("payments", Representation.FULL);
 			description.addProperty("receiptNumber");
 			description.addProperty("status");
+            description.addProperty("adjustmentReason");
 		}
-
 		return description;
-	}
+    }
 
-	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		return getRepresentationDescription(new DefaultRepresentation());
@@ -89,7 +88,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		billAdjusted.addAdjustedBy(instance);
 		instance.setBillAdjusted(billAdjusted);
 	}
-	
+
 	@PropertySetter("status")
 	public void setBillStatus(Bill instance, BillStatus status) {
 		if (instance.getStatus() == null) {
@@ -101,6 +100,13 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			RoundingUtil.addRoundingLineItem(instance);
 		}
 	}
+
+    @PropertySetter("adjustmentReason")
+    public void setAdjustReason(Bill instance, String adjustReason){
+        if (instance.getBillAdjusted().getUuid() != null){
+            instance.getBillAdjusted().setAdjustmentReason(adjustReason);
+        }
+    }
 
 	@Override
 	public Bill save (Bill delegate) {
@@ -151,7 +157,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			if (delegate.getStatus() == null) {
 				delegate.setStatus(BillStatus.PENDING);
 			}
-		}
+        }
 		return super.save(delegate);
 	}
 	

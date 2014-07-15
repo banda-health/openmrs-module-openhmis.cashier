@@ -55,3 +55,13 @@ li.bbf-field.field-cashPoint div.bbf-editor { margin-left: 7em; }
 .paymentList .field-amountFmt, .paymentList .field-amountTenderedFmt,
 .paymentList .field-paymentMode, .paymentList .field-dateCreatedFmt { width: 13%; }
 .paymentList td.field-Details { color: #777; }
+.hide{
+ display: none;
+}
+.adjustinput{
+    width: 30%;
+}
+.margins{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}

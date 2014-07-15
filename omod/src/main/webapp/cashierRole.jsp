@@ -1,3 +1,4 @@
+<%@ page import="org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants" %>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
   ~ Version 2.0 (the "License"); you may not use this file except in
@@ -15,7 +16,7 @@
 <%--@elvariable id="roles" type="java.util.List<org.openmrs.Role>"--%>
 
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<openmrs:require allPrivileges="Manage Cashier Metadata" otherwise="/login.htm" redirect="/module/openhmis/cashier/role.form" />
+<openmrs:require allPrivileges="<%=CashierPrivilegeConstants.MANAGE_METADATA %>" otherwise="/login.htm" redirect="/module/openhmis/cashier/cashierRole.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/linksHeader.jsp"%>
 

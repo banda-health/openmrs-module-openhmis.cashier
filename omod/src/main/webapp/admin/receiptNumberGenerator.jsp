@@ -1,5 +1,4 @@
 <%@ page import="org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants" %>
-<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
   ~ Version 2.0 (the "License"); you may not use this file except in
@@ -20,7 +19,7 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="../template/linksHeader.jsp"%>
 
-<openmrs:require privilege="Manage Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/admin/receiptNumberGenerator.form" />
+<openmrs:require privilege="<%=CashierPrivilegeConstants.MANAGE_BILLS %>" otherwise="/login.htm" redirect="/module/openhmis/cashier/admin/receiptNumberGenerator.form" />
 
 <h2>
     <spring:message code="openhmis.cashier.admin.receiptNumberGenerator" />
