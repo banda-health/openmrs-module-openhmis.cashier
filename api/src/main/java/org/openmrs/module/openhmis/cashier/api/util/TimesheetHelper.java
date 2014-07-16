@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.openhmis.cashier.api.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Provider;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
@@ -23,6 +25,8 @@ import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.ProviderHelper;
 
 public class TimesheetHelper {
+    private static final Log log = LogFactory.getLog(TimesheetHelper.class);
+
 	public static Timesheet getCurrentTimesheet() throws TimesheetRequiredException {
 		Provider provider = null;
 		Timesheet timesheet = null;
@@ -37,15 +41,10 @@ public class TimesheetHelper {
 		try {
 			timesheet = tsService.getCurrentTimesheet(provider);
 		} catch (Exception e) {
-			if (TimesheetHelper.isTimesheetRequired()) {
-				throw new TimesheetRequiredException(e);
-			} else {
-				return null;
-			}
+            log.error("Error occured while trying to get the current timesheet" + e);
+            return null;
 		}
-		if (TimesheetHelper.isTimesheetRequired() && timesheet == null) {
-			throw new TimesheetRequiredException();
-		}
+
 		return timesheet;
 	}
 	
@@ -54,7 +53,8 @@ public class TimesheetHelper {
 		boolean timesheetRequired;
 		try {
 			timesheetRequired = Boolean.parseBoolean(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY));
-		} catch (Exception e2) {
+		} catch (Exception e) {
+            log.error("Error occured while trying to parse the boolean value" + e);
 			timesheetRequired = false;
 		}
 		return timesheetRequired;

@@ -30,7 +30,6 @@ import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetHelper;
-import org.openmrs.module.openhmis.cashier.api.util.TimesheetRequiredException;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -54,13 +53,14 @@ public class BillAddEditController {
 	    Timesheet timesheet = null;
 		try {
 			timesheet = TimesheetHelper.getCurrentTimesheet();
-		} catch (TimesheetRequiredException e) {
-		    LOG.error("TimesheetRequired exception when trying to get current timesheet: ", e);
-			return buildRedirectUrl(request);
 		} catch (Exception e) {
 			LOG.error("An exception occured: ", e);
 			timesheet = null;
 		}
+
+        if (timesheet == null && TimesheetHelper.isTimesheetRequired()) {
+           return buildRedirectUrl(request);
+        }
 
 		model.addAttribute("timesheet", timesheet);
 		model.addAttribute("user", Context.getAuthenticatedUser());
