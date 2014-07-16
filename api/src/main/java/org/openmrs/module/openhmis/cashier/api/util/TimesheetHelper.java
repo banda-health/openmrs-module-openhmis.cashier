@@ -25,8 +25,7 @@ import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.ProviderHelper;
 
 public class TimesheetHelper {
-
-    private static final Log LOG = LogFactory.getLog(TimesheetHelper.class);
+    private static final Log log = LogFactory.getLog(TimesheetHelper.class);
 
 	public static Timesheet getCurrentTimesheet() throws TimesheetRequiredException {
 		Provider provider = null;
@@ -42,7 +41,7 @@ public class TimesheetHelper {
 		try {
 			timesheet = tsService.getCurrentTimesheet(provider);
 		} catch (Exception e) {
-            LOG.error("Error occured while trying to get the current timesheet" + e);
+            log.error("Error occured while trying to get the current timesheet" + e);
             return null;
 		}
 
@@ -55,7 +54,7 @@ public class TimesheetHelper {
 		try {
 			timesheetRequired = Boolean.parseBoolean(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY));
 		} catch (Exception e) {
-            LOG.error("Error occured while trying to parse the boolean value" + e);
+            log.error("Error occured while trying to parse the boolean value" + e);
 			timesheetRequired = false;
 		}
 		return timesheetRequired;
