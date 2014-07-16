@@ -18,7 +18,7 @@ import org.openmrs.module.openhmis.commons.web.WebConstants;
 
 public class CashierWebConstants {
 	public static final String MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_NAME + "/";
-    public static final String ADMIN_MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_ADMIN_NAME + "/";
+    public static final String ADMIN_MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_ADMIN_LINK + "/";
 
 	public static final String RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = ADMIN_MODULE_ROOT + "receiptNumberGenerator";
 	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = ADMIN_MODULE_ROOT + "seqReceiptNumberGenerator";
