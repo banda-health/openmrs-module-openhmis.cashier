@@ -17,7 +17,6 @@ import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.Extension;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
-import org.openmrs.module.openhmis.cashier.web.CashierPrivilegeWebConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
@@ -52,12 +51,12 @@ public class AdminList extends AdministrationSectionExt {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
         if(authenticatedUser.hasPrivilege(CashierPrivilegeConstants.MANAGE_METADATA)) {
             map.put(CashierWebConstants.CASHIER_ROLE_PAGE, "openhmis.cashier.admin.role");
-            map.put(CashierWebConstants.CASHPOINTS_PAGE, "openhmis.cashier.admin.cashPoints");
-            map.put(CashierWebConstants.PAYMENTMODES_PAGE, "openhmis.cashier.admin.paymentModes");
+            map.put(CashierWebConstants.CASH_POINTS_PAGE, "openhmis.cashier.admin.cashPoints");
+            map.put(CashierWebConstants.PAYMENT_MODES_PAGE, "openhmis.cashier.admin.paymentModes");
         }
 
 		if(authenticatedUser.hasPrivilege(CashierPrivilegeConstants.MANAGE_BILLS)) {
-            map.put(CashierWebConstants.RECEIPTNUMBERGENERATOR_PAGE, "openhmis.cashier.admin.receiptNumberGenerator");
+            map.put(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_PAGE, "openhmis.cashier.admin.receiptNumberGenerator");
         }
 
 		return map;
