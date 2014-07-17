@@ -16,7 +16,7 @@ package org.openmrs.module.openhmis.cashier.web;
 import org.openmrs.module.openhmis.cashier.api.util.CashierModuleConstants;
 import org.openmrs.module.openhmis.commons.web.WebConstants;
 
-public class CashierWebConstants {
+public class CashierWebConstants extends WebConstants {
 	public static final String MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_NAME + "/";
     public static final String ADMIN_MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_ADMIN_LINK + "/";
 
