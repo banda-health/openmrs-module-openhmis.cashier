@@ -76,7 +76,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 
 	@Override
 	public String getConfigurationPage() {
-		return CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE;
+		return CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_PAGE;
 	}
 
 	@Override

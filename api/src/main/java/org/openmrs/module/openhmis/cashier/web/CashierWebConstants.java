@@ -13,17 +13,16 @@
  */
 package org.openmrs.module.openhmis.cashier.web;
 
+import org.openmrs.module.openhmis.cashier.api.util.CashierModuleConstants;
 import org.openmrs.module.openhmis.commons.web.WebConstants;
 
 public class CashierWebConstants extends WebConstants {
-    public static final String MODULE_NAME = "cashier";
-    public static final String MODULE_ADMIN_LINK = MODULE_NAME + "/admin";
+    public static final String MODULE_ADMIN_LINK = CashierModuleConstants.MODULE_NAME + "/admin";
 
-	public static final String MODULE_ROOT = WebConstants.MODULE_BASE + MODULE_NAME + "/";
+	public static final String MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_NAME + "/";
     public static final String ADMIN_MODULE_ROOT = WebConstants.MODULE_BASE + MODULE_ADMIN_LINK + "/";
 
-	public static final String RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = ADMIN_MODULE_ROOT + "receiptNumberGenerator";
-	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = ADMIN_MODULE_ROOT + "seqReceiptNumberGenerator";
+	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_PAGE = ADMIN_MODULE_ROOT + "seqReceiptNumberGenerator";
 
 	public static final String CASHIER_PAGE = MODULE_ROOT + "cashier";
 	public static final String CASHIER_SHIFT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultShiftReportId";
@@ -38,7 +37,7 @@ public class CashierWebConstants extends WebConstants {
     public static final String PAYMENT_MODES_ROOT = MODULE_ROOT + "paymentModes";
     public static final String PAYMENT_MODES_PAGE = PAYMENT_MODES_ROOT + ".form";
 
-    public static final String RECEIPT_NUMBER_GENERATOR_ROOT = ADMIN_MODULE_ROOT+ "receiptNumberGenerator";
+    public static final String RECEIPT_NUMBER_GENERATOR_ROOT = ADMIN_MODULE_ROOT + "receiptNumberGenerator";
     public static final String RECEIPT_NUMBER_GENERATOR_PAGE = RECEIPT_NUMBER_GENERATOR_ROOT + ".form";
 
 	public static final String BILL_PAGE = MODULE_ROOT + "bill";
