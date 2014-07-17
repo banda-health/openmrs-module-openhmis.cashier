@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(value = CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE)
+@RequestMapping(value = CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_PAGE)
 public class SequentialReceiptNumberGeneratorController {
 	ISequentialReceiptNumberGeneratorService service;
 
@@ -61,6 +61,6 @@ public class SequentialReceiptNumberGeneratorController {
 		// Set the system generator
 		ReceiptNumberGeneratorFactory.setGenerator(new SequentialReceiptNumberGenerator());
 
-		return CashierWebConstants.redirectUrl("/" + CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE);
+		return CashierWebConstants.redirectUrl("/" + CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT);
 	}
 }
