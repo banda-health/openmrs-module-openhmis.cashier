@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value = CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE)
+@RequestMapping(value = CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT)
 public class ReceiptNumberGeneratorController {
 	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorController.class);
 
@@ -75,6 +75,6 @@ public class ReceiptNumberGeneratorController {
 		model.addAttribute("currentGenerator", selectedGenerator);
 		model.addAttribute("generators", generators);
 
-		return  CashierWebConstants.redirectUrl(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE);
+		return  CashierWebConstants.redirectUrl(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT);
 	}
 }

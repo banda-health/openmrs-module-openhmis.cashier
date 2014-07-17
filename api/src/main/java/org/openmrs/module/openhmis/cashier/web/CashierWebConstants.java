@@ -13,16 +13,32 @@
  */
 package org.openmrs.module.openhmis.cashier.web;
 
-public class CashierWebConstants {
-	public static final String MODULE_ROOT = "/module/openhmis/cashier/";
+import org.openmrs.module.openhmis.cashier.api.util.CashierModuleConstants;
+import org.openmrs.module.openhmis.commons.web.WebConstants;
 
-	public static final String RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = MODULE_ROOT + "admin/receiptNumberGenerator";
-	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_CONFIGURATION_PAGE = MODULE_ROOT + "admin/seqReceiptNumberGenerator";
+public class CashierWebConstants extends WebConstants {
+    public static final String MODULE_ADMIN_LINK = CashierModuleConstants.MODULE_NAME + "/admin";
+
+	public static final String MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_NAME + "/";
+    public static final String ADMIN_MODULE_ROOT = WebConstants.MODULE_BASE + MODULE_ADMIN_LINK + "/";
+
+	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_PAGE = ADMIN_MODULE_ROOT + "seqReceiptNumberGenerator";
 
 	public static final String CASHIER_PAGE = MODULE_ROOT + "cashier";
 	public static final String CASHIER_SHIFT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultShiftReportId";
 	public static final String JASPER_REPORT_PAGE = MODULE_ROOT + "jasperReport";
-	public static final String CASHIER_ROLE_PAGE = MODULE_ROOT + "cashierRole";
+
+	public static final String CASHIER_ROLE_ROOT = MODULE_ROOT + "cashierRole";
+    public static final String CASHIER_ROLE_PAGE = CASHIER_ROLE_ROOT + ".form";
+
+    public static final String CASH_POINTS_ROOT = MODULE_ROOT + "cashPoints";
+    public static final String CASH_POINTS_PAGE = CASH_POINTS_ROOT + ".form";
+
+    public static final String PAYMENT_MODES_ROOT = MODULE_ROOT + "paymentModes";
+    public static final String PAYMENT_MODES_PAGE = PAYMENT_MODES_ROOT + ".form";
+
+    public static final String RECEIPT_NUMBER_GENERATOR_ROOT = ADMIN_MODULE_ROOT + "receiptNumberGenerator";
+    public static final String RECEIPT_NUMBER_GENERATOR_PAGE = RECEIPT_NUMBER_GENERATOR_ROOT + ".form";
 
 	public static final String BILL_PAGE = MODULE_ROOT + "bill";
 	public static final String TIMESHEET_REQUIRED_PROPERTY = "openhmis.cashier.timesheetRequired";

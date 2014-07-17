@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping(CashierWebConstants.CASHIER_ROLE_PAGE)
+@RequestMapping(CashierWebConstants.CASHIER_ROLE_ROOT)
 public class CashierRoleController {
 
 	private static final Log LOG = LogFactory.getLog(CashierRoleController.class);
