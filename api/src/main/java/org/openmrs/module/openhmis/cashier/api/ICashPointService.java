@@ -13,9 +13,76 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import org.openmrs.Location;
+import org.openmrs.annotation.Authorized;
+import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
+import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface ICashPointService extends IMetadataDataService<CashPoint> {
+    /**
+     * Gets all the cashpoints for the specified {@link Location}.
+     * @param location The location.
+     * @param includeRetired Whether retired cashpoints should be included in the results.
+     * @return All cashpoints for the specified {@link Location}.
+     * @throws APIException
+     * @should throw NullPointerException if the location is null
+     * @should return an empty list if the location has no cashpoints
+     * @should not return retired cashpoints unless specified
+     * @should return all cashpoints for the specified location
+     */
+    @Transactional(readOnly = true)
+    @Authorized( {CashierPrivilegeConstants.MANAGE_METADATA})
+    List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired) throws APIException;
+
+    /**
+     * Gets all the cashpoints for the specified {@link org.openmrs.Location}.
+     * @param location The location.
+     * @param includeRetired Whether retired cashpoints should be included in the results.
+     * @param pagingInfo The paging information
+     * @return All cashpoints for the specified {@link location}.
+     * @throws org.openmrs.api.APIException
+     */
+    @Transactional(readOnly = true)
+    @Authorized( {CashierPrivilegeConstants.MANAGE_METADATA})
+    List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired, PagingInfo pagingInfo) throws APIException;
+
+    /**
+     * Finds all cashpoints in the specified {@link location} that start with the specified name.
+     * @param location The location to search within.
+     * @param name The cashpoints name fragment.
+     * @param includeRetired Whether retired cashpoints should be included in the results.
+     * @return All cashpoints in the specified {@link location} that start with the specified name.
+     * @throws APIException
+     * @should throw NullPointerException if the location is null
+     * @should throw IllegalArgumentException if the name is null
+     * @should throw IllegalArgumentException if the name is empty
+     * @should throw IllegalArgumentException if the name is longer than 255 characters
+     * @should return an empty list if no cashpoints are found
+     * @should not return retired cashpoints unless specified
+     * @should return cashpoints that start with the specified name
+     * @should return cashpoints for only the specified location
+     */
+    @Transactional(readOnly = true)
+    @Authorized( {CashierPrivilegeConstants.MANAGE_METADATA})
+    List<CashPoint> findCashPoints(Location location, String name, boolean includeRetired) throws APIException;
+
+    /**
+     * Finds all cashpoints in the specified {@link Location} that start with the specified name.
+     * @param location The location to search within.
+     * @param name The cashpoints name fragment.
+     * @param includeRetired Whether retired cashpoints should be included in the results.
+     * @param pagingInfo The paging information.
+     * @return All cashpoints in the specified {@link location} that start with the specified name.
+     * @throws APIException
+     */
+    @Transactional(readOnly = true)
+    @Authorized( {CashierPrivilegeConstants.MANAGE_METADATA})
+    List<CashPoint> findCashPoints(Location location, String name, boolean includeRetired, PagingInfo pagingInfo) throws APIException;
 }
 

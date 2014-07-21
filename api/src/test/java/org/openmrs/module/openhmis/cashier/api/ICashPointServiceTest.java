@@ -13,8 +13,16 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import org.junit.Assert;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataServiceTest;
+import org.openmrs.module.openhmis.commons.api.f.Action2;
+import org.openmrs.module.openhmis.inventory.api.IStockOperationDataServiceTest;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
+import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
+
+import java.util.Date;
 
 public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointService, CashPoint> {
 	public static final String CASH_POINT_DATASET = TestConstants.BASE_DATASET_DIR + "CashPointTest.xml";
@@ -35,8 +43,12 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 		}
 
 		cashPoint.setDescription("Test description");
+        cashPoint.setLocation(Context.getLocationService().getLocation(1));
+        cashPoint.setCreator(Context.getAuthenticatedUser());
+        cashPoint.setDateCreated(new Date());
 
-		return cashPoint;
+
+        return cashPoint;
 	}
 
 	@Override
@@ -48,5 +60,26 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 	protected void updateEntityFields(CashPoint cashPoint) {
 		cashPoint.setName(cashPoint.getName() + " updated");
 		cashPoint.setDescription(cashPoint.getDescription() + " updated");
+        cashPoint.setLocation(Context.getLocationService().getLocation(0));
+        cashPoint.setCreator(Context.getAuthenticatedUser());
+        cashPoint.setDateChanged(new Date());
 	}
+
+    public static void assertCashPoint(CashPoint expected, CashPoint actual) {
+        assertOpenmrsMetadata(expected, actual);
+
+        Assert.assertEquals(expected.getName(), actual.getName());
+        Assert.assertEquals(expected.getDescription(), actual.getDescription());
+        if (expected.getLocation() == null) {
+            Assert.assertNull(actual.getLocation());
+        } else {
+            Assert.assertEquals(expected.getLocation().getId(), actual.getLocation().getId());
+        }
+    }
+
+    @Override
+    protected void assertEntity(CashPoint expected, CashPoint  actual) {
+        assertCashPoint(expected, actual);
+    }
+
 }
