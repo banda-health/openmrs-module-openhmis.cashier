@@ -78,10 +78,10 @@ public class CashPointServiceImpl
             throw new NullPointerException("The department must be defined");
         }
         if (StringUtils.isEmpty(name)) {
-            throw new IllegalArgumentException("The Cashpoint code must be defined.");
+            throw new IllegalArgumentException("The Cashpoint " + name + " code must be defined.");
         }
         if (name.length() > 255) {
-            throw new IllegalArgumentException("The Cashpoint code must be less than 256 characters.");
+            throw new IllegalArgumentException("The Cashpoint " + name + " code must be less than 256 characters.");
         }
 
         return executeCriteria(CashPoint.class, pagingInfo, new Action1<Criteria>() {

@@ -21,14 +21,11 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by benjamin on 7/18/14.
- */
 @Component
 public class CashPointSearchHandler implements SearchHandler {
     private final SearchConfig searchConfig = new SearchConfig("default", CashierRestConstants.CASH_POINT_RESOURCE, Arrays.asList("1.9.*"),
             Arrays.asList(
-                    new SearchQuery.Builder("Find a cashpoints by its name, optionally filtering by location")
+                    new SearchQuery.Builder("Find a cashpoint by its name, optionally filtering by location")
                             .withRequiredParameters("q")
                             .withOptionalParameters("location_uuid").build()
             )
@@ -41,36 +38,24 @@ public class CashPointSearchHandler implements SearchHandler {
         query = query.isEmpty() ? null : query;
         location_uuid = StringUtils.isEmpty(location_uuid) ? null : location_uuid;
         ICashPointService service = Context.getService(ICashPointService.class);
+        LocationService locationService = Context.getLocationService();
+        Location location = locationService.getLocationByUuid(location_uuid);
+        PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
+        List<CashPoint> cashpoints = null;
+        PageableResult results = null;
 
         if (location_uuid == null) {
             // Do a name search
-            PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
-            List<CashPoint> cashpoints = service.findByName(query, context.getIncludeAll(), pagingInfo);
-            AlreadyPagedWithLength<CashPoint> results = new AlreadyPagedWithLength<CashPoint>(context, cashpoints, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
-            return results;
-        } else {
+            cashpoints = service.findByName(query, context.getIncludeAll(), pagingInfo);
+        } else if (query == null) {
             //performs the location search
-            LocationService locationService = Context.getLocationService();
-            Location location = locationService.getLocationByUuid(location_uuid);
-                if (query == null) {
-                    return searchByLocation(location_uuid, context);
-                }
-            // Do a name + location search
-            PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
-            List<CashPoint> cashpoints = service.findCashPoints(location, query, context.getIncludeAll(), pagingInfo);
-            PageableResult results = new AlreadyPagedWithLength<CashPoint>(context, cashpoints, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
-            return results;
+            cashpoints = service.getCashPointsByLocation(location, context.getIncludeAll(), pagingInfo);
+        } else {
+            // Do a name & location search
+            cashpoints = service.findCashPoints(location, query, context.getIncludeAll(), pagingInfo);
         }
-    }
 
-    public PageableResult searchByLocation(String location_uuid, RequestContext context) throws ResponseException {
-        LocationService locationService = Context.getLocationService();
-        Location location = locationService.getLocationByUuid(location_uuid);
-        ICashPointService service = Context.getService(ICashPointService.class);
-
-        PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
-        List<CashPoint> cashpoints = service.getCashPointsByLocation(location, context.getIncludeAll(), pagingInfo);
-        PageableResult results = new AlreadyPagedWithLength<CashPoint>(context, cashpoints, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
+        results = new AlreadyPagedWithLength<CashPoint>(context, cashpoints, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
         return results;
     }
 
