@@ -22,7 +22,6 @@ import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.ICashPointService;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizationPrivileges;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.HibernateCriteriaConstants;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
@@ -35,7 +34,7 @@ import java.util.List;
 @Transactional
 public class CashPointServiceImpl
 		extends BaseMetadataDataServiceImpl<CashPoint>
-		implements ICashPointService, IMetadataAuthorizationPrivileges {
+		implements ICashPointService {
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
@@ -75,13 +74,13 @@ public class CashPointServiceImpl
     @Override
     public List<CashPoint> findCashPoints(final Location location, final String name, final boolean includeRetired, PagingInfo pagingInfo) throws APIException {
         if (location == null) {
-            throw new NullPointerException("The department must be defined");
+            throw new NullPointerException("The location must be defined");
         }
         if (StringUtils.isEmpty(name)) {
-            throw new IllegalArgumentException("The Cashpoint " + name + " code must be defined.");
+            throw new IllegalArgumentException("The Cashpoint name must be defined.");
         }
         if (name.length() > 255) {
-            throw new IllegalArgumentException("The Cashpoint " + name + " code must be less than 256 characters.");
+            throw new IllegalArgumentException("The Cashpoint name must be less than 256 characters.");
         }
 
         return executeCriteria(CashPoint.class, pagingInfo, new Action1<Criteria>() {
@@ -95,26 +94,6 @@ public class CashPointServiceImpl
                 }
             }
         });
-    }
-
-    @Override
-    public String getRetirePrivilege() {
-        return CashierPrivilegeConstants.MANAGE_METADATA;
-    }
-
-    @Override
-    public String getSavePrivilege() {
-        return CashierPrivilegeConstants.MANAGE_METADATA;
-    }
-
-    @Override
-    public String getPurgePrivilege() {
-        return CashierPrivilegeConstants.PURGE_METADATA;
-    }
-
-    @Override
-    public String getGetPrivilege() {
-        return CashierPrivilegeConstants.VIEW_METADATA;
     }
 }
 
