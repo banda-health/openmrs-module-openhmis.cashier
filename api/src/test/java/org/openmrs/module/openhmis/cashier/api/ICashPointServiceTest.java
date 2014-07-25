@@ -59,7 +59,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 	protected void updateEntityFields(CashPoint cashPoint) {
 		cashPoint.setName(cashPoint.getName() + " updated");
 		cashPoint.setDescription(cashPoint.getDescription() + " updated");
-        cashPoint.setLocation(Context.getLocationService().getLocation(0));
+        cashPoint.setLocation(Context.getLocationService().getLocation(1));
         cashPoint.setCreator(Context.getAuthenticatedUser());
         cashPoint.setDateChanged(new Date());
 	}
@@ -101,7 +101,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 
         List<CashPoint> results = service.getCashPointsByLocation(location,false);
         Assert.assertNotNull(results);
-        Assert.assertEquals(0,results.size());
+        Assert.assertEquals(1,results.size());
     }
 
     /**
@@ -114,7 +114,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
         cashPoint.setRetired(true);
         cashPoint.setRetireReason("reason");
         service.save(cashPoint);
-        Location location = Context.getLocationService().getLocation(1);
+        Location location = Context.getLocationService().getLocation(2);
 
         Context.flushSession();
 
@@ -140,7 +140,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
     public void getCashPointsByLocation_shouldReturnAllCashpointsForTheSpecifiedLocation() throws Exception {
         List<CashPoint> cashPoint = service.getCashPointsByLocation(Context.getLocationService().getLocation(1),false);
         Assert.assertNotNull(cashPoint);
-        Assert.assertEquals(0, cashPoint.size());
+        Assert.assertEquals(1, cashPoint.size());
     }
 
     /**
@@ -190,7 +190,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 
         List<CashPoint> results = service.findCashPoints(location,"Test 1 Cash Point",false);
         Assert.assertNotNull(results);
-        Assert.assertEquals(0,results.size());
+        Assert.assertEquals(1,results.size());
     }
 
     /**
@@ -203,7 +203,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
         cashPoint.setRetired(true);
         cashPoint.setRetireReason("reason");
         service.save(cashPoint);
-        Location location = Context.getLocationService().getLocation(1);
+        Location location = Context.getLocationService().getLocation(0);
 
         Context.flushSession();
 
@@ -229,7 +229,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
     public void findCashPoints_shouldReturnCashpointsThatStartWithTheSpecifiedName() throws Exception {
         List<CashPoint> results = service.findCashPoints(Context.getLocationService().getLocation(0),"Test 1 Cash Point",false);
         Assert.assertNotNull(results);
-        Assert.assertEquals(0,results.size());
+        Assert.assertEquals(1,results.size());
 
         CashPoint cashPoint = service.getById(0);
         assertEntity(cashPoint, results.get(0));
@@ -241,8 +241,8 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
      */
     @Test
     public void findCashPoints_shouldReturnCashpointsForOnlyTheSpecifiedLocation() throws Exception {
-        List<CashPoint> cashPoint = service.findCashPoints(Context.getLocationService().getLocation(1),"Test 1 Cash Point",false);
+        List<CashPoint> cashPoint = service.findCashPoints(Context.getLocationService().getLocation(0),"Test 1 Cash Point",false);
         Assert.assertNotNull(cashPoint);
-        Assert.assertEquals(0, cashPoint.size());
+        Assert.assertEquals(1, cashPoint.size());
     }
 }
