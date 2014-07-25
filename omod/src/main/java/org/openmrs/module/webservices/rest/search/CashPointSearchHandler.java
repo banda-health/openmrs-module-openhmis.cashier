@@ -37,10 +37,12 @@ public class CashPointSearchHandler implements SearchHandler {
         String location_uuid = context.getParameter("location_uuid");
         query = query.isEmpty() ? null : query;
         location_uuid = StringUtils.isEmpty(location_uuid) ? null : location_uuid;
+
         ICashPointService service = Context.getService(ICashPointService.class);
         LocationService locationService = Context.getLocationService();
         Location location = locationService.getLocationByUuid(location_uuid);
         PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
+
         List<CashPoint> cashpoints = null;
         PageableResult results = null;
 

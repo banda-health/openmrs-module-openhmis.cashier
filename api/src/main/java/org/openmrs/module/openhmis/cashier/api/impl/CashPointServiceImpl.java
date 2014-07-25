@@ -52,7 +52,7 @@ public class CashPointServiceImpl
     @Override
     public List<CashPoint> getCashPointsByLocation(final Location location, final boolean includeRetired, PagingInfo pagingInfo) throws APIException {
         if (location == null) {
-            throw new NullPointerException("The location must be defined");
+            throw new IllegalArgumentException("The location must be defined");
         }
 
         return executeCriteria(CashPoint.class, pagingInfo, new Action1<Criteria>() {
@@ -74,7 +74,7 @@ public class CashPointServiceImpl
     @Override
     public List<CashPoint> findCashPoints(final Location location, final String name, final boolean includeRetired, PagingInfo pagingInfo) throws APIException {
         if (location == null) {
-            throw new NullPointerException("The location must be defined");
+            throw new IllegalArgumentException("The location must be defined");
         }
         if (StringUtils.isEmpty(name)) {
             throw new IllegalArgumentException("The Cashpoint name must be defined.");

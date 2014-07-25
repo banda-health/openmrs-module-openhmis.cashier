@@ -26,6 +26,8 @@ import java.util.List;
 
 public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointService, CashPoint> {
 	public static final String CASH_POINT_DATASET = TestConstants.BASE_DATASET_DIR + "CashPointTest.xml";
+
+	@Override
 	public void before() throws Exception {
 		super.before();
 
@@ -52,7 +54,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 
 	@Override
 	protected int getTestEntityCount() {
-		return 3;
+		return 6;
 	}
 
 	@Override
@@ -82,26 +84,16 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
     }
 
     /**
-     * @verifies throw NullPointerException if the location is null
-     * @see ICashPointService#getCashPointsByLocation(org.openmrs.Location, boolean)
-     */
-    @Test(expected = NullPointerException.class)
-    public void getCashPointsByLocation_shouldThrowNullPointerExceptionIfTheLocationIsNull() throws Exception {
-        Location location = null;
-        service.getCashPointsByLocation(location,false);
-    }
-
-    /**
      * @verifies return an empty list if the location has no cashpoints
      * @see ICashPointService#getCashPointsByLocation(org.openmrs.Location, boolean)
      */
     @Test
     public void getCashPointsByLocation_shouldReturnAnEmptyListIfTheLocationHasNoCashpoints() throws Exception {
-        Location location = Context.getLocationService().getLocation(1);
+        Location location = Context.getLocationService().getLocation(4);
 
         List<CashPoint> results = service.getCashPointsByLocation(location,false);
         Assert.assertNotNull(results);
-        Assert.assertEquals(1,results.size());
+        Assert.assertEquals(0,results.size());
     }
 
     /**
@@ -110,26 +102,21 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
      */
     @Test
     public void getCashPointsByLocation_shouldNotReturnRetiredCashpointsUnlessSpecified() throws Exception {
-        CashPoint cashPoint = service.getById(2);
+        CashPoint cashPoint = service.getById(0);
         cashPoint.setRetired(true);
         cashPoint.setRetireReason("reason");
         service.save(cashPoint);
-        Location location = Context.getLocationService().getLocation(2);
+        Location location = Context.getLocationService().getLocation(0);
 
         Context.flushSession();
 
         List<CashPoint> cashPoints = service.getCashPointsByLocation(location,false);
         Assert.assertNotNull(cashPoints);
-        Assert.assertEquals(0,cashPoints.size());
-        for (CashPoint cashpoint : cashPoints) {
-            if(cashpoint.getId().equals(cashPoint.getId())) {
-                Assert.fail("The retired item was incorrectly returned.");
-            }
-        }
+        Assert.assertEquals(2,cashPoints.size());
 
-        cashPoints = service.getCashPointsByLocation(location,false);
-        Assert.assertNotNull(cashPoints);
-        Assert.assertEquals(0,cashPoints.size());
+	    List<CashPoint> cashPoints1 = service.getCashPointsByLocation(location,true);
+	    Assert.assertNotNull(cashPoints1);
+	    Assert.assertEquals(3,cashPoints1.size());
     }
 
     /**
@@ -138,19 +125,9 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
      */
     @Test
     public void getCashPointsByLocation_shouldReturnAllCashpointsForTheSpecifiedLocation() throws Exception {
-        List<CashPoint> cashPoint = service.getCashPointsByLocation(Context.getLocationService().getLocation(1),false);
+        List<CashPoint> cashPoint = service.getCashPointsByLocation(Context.getLocationService().getLocation(0),false);
         Assert.assertNotNull(cashPoint);
-        Assert.assertEquals(1, cashPoint.size());
-    }
-
-    /**
-     * @verifies throw NullPointerException if the location is null
-     * @see ICashPointService#findCashPoints(org.openmrs.Location, String, boolean)
-     */
-    @Test(expected = NullPointerException.class)
-    public void findCashPoints_shouldThrowNullPointerExceptionIfTheLocationIsNull() throws Exception {
-        Location location = null;
-        service.findCashPoints(location,"Test 1 Cash Point",false);
+        Assert.assertEquals(3, cashPoint.size());
     }
 
     /**
@@ -166,9 +143,9 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
      * @verifies throw IllegalArgumentException if the name is empty
      * @see ICashPointService#findCashPoints(org.openmrs.Location, String, boolean)
      */
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void findCashPoints_shouldThrowIllegalArgumentExceptionIfTheNameIsEmpty() throws Exception {
-        service.findCashPoints(Context.getLocationService().getLocation(1),"Test 1 Cash Point",false);
+        service.findCashPoints(Context.getLocationService().getLocation(1),"",false);
     }
 
     /**
@@ -186,11 +163,11 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
      */
     @Test
     public void findCashPoints_shouldReturnAnEmptyListIfNoCashpointsAreFound() throws Exception {
-        Location location = Context.getLocationService().getLocation(0);
+        Location location = Context.getLocationService().getLocation(4);
 
-        List<CashPoint> results = service.findCashPoints(location,"Test 1 Cash Point",false);
+        List<CashPoint> results = service.findCashPoints(location,"Test",false);
         Assert.assertNotNull(results);
-        Assert.assertEquals(1,results.size());
+        Assert.assertEquals(0,results.size());
     }
 
     /**
@@ -207,18 +184,13 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 
         Context.flushSession();
 
-        List<CashPoint> results = service.findCashPoints(location,"Test 1 Cash Point",false);
+        List<CashPoint> results = service.findCashPoints(location,"Test",false);
         Assert.assertNotNull(results);
-        Assert.assertEquals(0,results.size());
-        for (CashPoint cashpoint : results) {
-            if(cashpoint.getId().equals(cashPoint.getId())) {
-                Assert.fail("The retired item was incorrectly returned.");
-            }
-        }
+        Assert.assertEquals(2,results.size());
 
-        results = service.findCashPoints(location,"Test 1 Cash Point",false);
-        Assert.assertNotNull(results);
-        Assert.assertEquals(0,results.size());
+	    List<CashPoint> results1 = service.findCashPoints(location,"Test",true);
+	    Assert.assertNotNull(results1);
+	    Assert.assertEquals(3,results1.size());
     }
 
     /**
@@ -227,7 +199,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
      */
     @Test
     public void findCashPoints_shouldReturnCashpointsThatStartWithTheSpecifiedName() throws Exception {
-        List<CashPoint> results = service.findCashPoints(Context.getLocationService().getLocation(0),"Test 1 Cash Point",false);
+        List<CashPoint> results = service.findCashPoints(Context.getLocationService().getLocation(0),"Test 1",false);
         Assert.assertNotNull(results);
         Assert.assertEquals(1,results.size());
 
@@ -241,8 +213,28 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
      */
     @Test
     public void findCashPoints_shouldReturnCashpointsForOnlyTheSpecifiedLocation() throws Exception {
-        List<CashPoint> cashPoint = service.findCashPoints(Context.getLocationService().getLocation(0),"Test 1 Cash Point",false);
+        List<CashPoint> cashPoint = service.findCashPoints(Context.getLocationService().getLocation(0),"Test",false);
         Assert.assertNotNull(cashPoint);
-        Assert.assertEquals(1, cashPoint.size());
+        Assert.assertEquals(3, cashPoint.size());
     }
+
+	/**
+	 * @verifies throw IllegalArgumentException if the location is null
+	 * @see ICashPointService#getCashPointsByLocation(org.openmrs.Location, boolean)
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void getCashPointsByLocation_shouldThrowIllegalArgumentExceptionIfTheLocationIsNull() throws Exception {
+		Location location = null;
+		service.getCashPointsByLocation(location,false);
+	}
+
+	/**
+	 * @verifies throw IllegalArgumentException if the location is null
+	 * @see ICashPointService#findCashPoints(org.openmrs.Location, String, boolean)
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void findCashPoints_shouldThrowIllegalArgumentExceptionIfTheLocationIsNull() throws Exception {
+		Location location = null;
+		service.findCashPoints(location,"Test",false);
+	}
 }

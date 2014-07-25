@@ -31,7 +31,7 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
      * @param includeRetired Whether retired cashpoints should be included in the results.
      * @return All cashpoints for the specified {@link Location}.
      * @throws APIException
-     * @should throw NullPointerException if the location is null
+     * @should throw IllegalArgumentException if the location is null
      * @should return an empty list if the location has no cashpoints
      * @should not return retired cashpoints unless specified
      * @should return all cashpoints for the specified location
@@ -59,7 +59,7 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
      * @param includeRetired Whether retired cashpoints should be included in the results.
      * @return All cashpoints in the specified {@link location} that start with the specified name.
      * @throws APIException
-     * @should throw NullPointerException if the location is null
+     * @should throw IllegalArgumentException if the location is null
      * @should throw IllegalArgumentException if the name is null
      * @should throw IllegalArgumentException if the name is empty
      * @should throw IllegalArgumentException if the name is longer than 255 characters
