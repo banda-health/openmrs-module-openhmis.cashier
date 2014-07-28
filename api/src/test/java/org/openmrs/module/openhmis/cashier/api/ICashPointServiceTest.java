@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import com.google.common.collect.Iterators;
 import liquibase.util.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -113,10 +114,13 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
         List<CashPoint> cashPoints = service.getCashPointsByLocation(location,false);
         Assert.assertNotNull(cashPoints);
         Assert.assertEquals(2,cashPoints.size());
+	    Assert.assertEquals(4,(int)Iterators.get(cashPoints.iterator(),0).getId());
+	    Assert.assertEquals(5,(int)Iterators.get(cashPoints.iterator(),1).getId());
 
 	    List<CashPoint> cashPoints1 = service.getCashPointsByLocation(location,true);
 	    Assert.assertNotNull(cashPoints1);
 	    Assert.assertEquals(3,cashPoints1.size());
+	    Assert.assertEquals(0,(int)Iterators.get(cashPoints1.iterator(),0).getId());
     }
 
     /**
@@ -128,6 +132,10 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
         List<CashPoint> cashPoint = service.getCashPointsByLocation(Context.getLocationService().getLocation(0),false);
         Assert.assertNotNull(cashPoint);
         Assert.assertEquals(3, cashPoint.size());
+
+	    Assert.assertEquals(0,(int)Iterators.get(cashPoint.iterator(),0).getId());
+	    Assert.assertEquals(4,(int)Iterators.get(cashPoint.iterator(),1).getId());
+	    Assert.assertEquals(5,(int)Iterators.get(cashPoint.iterator(),2).getId());
     }
 
     /**
@@ -187,10 +195,13 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
         List<CashPoint> results = service.findCashPoints(location,"Test",false);
         Assert.assertNotNull(results);
         Assert.assertEquals(2,results.size());
+	    Assert.assertEquals(4,(int)Iterators.get(results.iterator(),0).getId());
+	    Assert.assertEquals(5,(int)Iterators.get(results.iterator(),1).getId());
 
 	    List<CashPoint> results1 = service.findCashPoints(location,"Test",true);
 	    Assert.assertNotNull(results1);
 	    Assert.assertEquals(3,results1.size());
+	    Assert.assertEquals(0,(int)Iterators.get(results1.iterator(),0).getId());
     }
 
     /**
@@ -202,6 +213,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
         List<CashPoint> results = service.findCashPoints(Context.getLocationService().getLocation(0),"Test 1",false);
         Assert.assertNotNull(results);
         Assert.assertEquals(1,results.size());
+	    Assert.assertEquals(0,(int)Iterators.get(results.iterator(),0).getId());
 
         CashPoint cashPoint = service.getById(0);
         assertEntity(cashPoint, results.get(0));
@@ -216,6 +228,10 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
         List<CashPoint> cashPoint = service.findCashPoints(Context.getLocationService().getLocation(0),"Test",false);
         Assert.assertNotNull(cashPoint);
         Assert.assertEquals(3, cashPoint.size());
+
+	    Assert.assertEquals(0,(int)Iterators.get(cashPoint.iterator(),0).getId());
+	    Assert.assertEquals(4,(int)Iterators.get(cashPoint.iterator(),1).getId());
+	    Assert.assertEquals(5,(int)Iterators.get(cashPoint.iterator(),2).getId());
     }
 
 	/**
