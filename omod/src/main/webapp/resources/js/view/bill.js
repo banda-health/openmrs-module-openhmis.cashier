@@ -200,7 +200,7 @@ define(
 			},
 
 			schema: {
-				item: { type: "Item" },
+				item: { type: "ItemAutocomplete" },
 				quantity: { type: "CustomNumber" },
 				price: {
 					type: "ItemPriceSelect",

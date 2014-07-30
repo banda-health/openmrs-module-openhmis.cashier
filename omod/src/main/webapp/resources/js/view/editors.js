@@ -25,7 +25,7 @@ define(
     function($, Backbone, _, openhmis) {
         var editors = Backbone.Form.editors;
 
-        editors.Item = editors.Base.extend({
+        editors.ItemAutocomplete = editors.Base.extend({
             tagName: "span",
             className: "editor",
             tmplFile: openhmis.url.inventoryBase + 'template/editors.html',
