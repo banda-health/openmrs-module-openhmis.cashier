@@ -24,21 +24,18 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 @Resource(name = CashierRestConstants.CASH_POINT_RESOURCE, supportedClass=CashPoint.class, supportedOpenmrsVersions={"1.9"})
 public class CashPointResource extends BaseRestMetadataResource<CashPoint> {
     @Override
-    public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
-        DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-        description.addProperty("location", Representation.REF);
-        return description;
-    }
+	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
+		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		description.addProperty("location", Representation.REF);
+		return description;
+	}
 
     @Override
-    public DelegatingResourceDescription getCreatableProperties() {
-        DelegatingResourceDescription description = super.getCreatableProperties();
-        description.addProperty("name");
-        description.addProperty("location");
-        description.addProperty("description");
-
-        return description;
-    }
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = super.getCreatableProperties();
+		description.addProperty("location");
+		return description;
+	}
 
 	@Override
 	public CashPoint newDelegate() {
