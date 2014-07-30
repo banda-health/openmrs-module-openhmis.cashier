@@ -55,7 +55,7 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 
 	@Override
 	protected int getTestEntityCount() {
-		return 6;
+		return 7;
 	}
 
 	@Override
@@ -217,6 +217,12 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 
         CashPoint cashPoint = service.getById(0);
         assertEntity(cashPoint, results.get(0));
+
+	    List<CashPoint> results1 = service.findCashPoints(Context.getLocationService().getLocation(2),"Test",false);
+	    Assert.assertNotNull(results1);
+	    Assert.assertEquals(2,results1.size());
+	    Assert.assertEquals(2,(int)Iterators.get(results1.iterator(),0).getId());
+	    Assert.assertEquals(6,(int)Iterators.get(results1.iterator(),1).getId());
     }
 
     /**

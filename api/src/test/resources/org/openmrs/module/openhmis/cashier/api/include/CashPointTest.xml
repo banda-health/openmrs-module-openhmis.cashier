@@ -18,4 +18,7 @@
     <cashier_cash_point cash_point_id="5" name="Test 6 Cash Point"
                         creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04CD210005"
                         location_id="0"/>
+    <cashier_cash_point cash_point_id="6" name="Test 7 Cash Point"
+                        creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04CD210006"
+                        location_id="2"/>
 </dataset>
