@@ -1,9 +1,24 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
 	<cashier_cash_point cash_point_id="0" name="Test 1 Cash Point" description="Some cash point location"
-	                    creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04B98B0000" />
+	                    creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04B98B0000"
+                        location_id="0"/>
 	<cashier_cash_point cash_point_id="1" name="Test 2 Cash Point" description="Another test cash point"
-	                    creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04C3380001" />
+	                    creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04C3380001"
+                        location_id="1"/>
 	<cashier_cash_point cash_point_id="2" name="Test 3 Cash Point"
-	                    creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04CD210002" />
+	                    creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04CD210002"
+                        location_id="2"/>
+    <cashier_cash_point cash_point_id="3" name="Test 4 Cash Point"
+                        creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04CD210003"
+                        location_id="3"/>
+    <cashier_cash_point cash_point_id="4" name="Test 5 Cash Point"
+                        creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04CD210004"
+                        location_id="0"/>
+    <cashier_cash_point cash_point_id="5" name="Test 6 Cash Point"
+                        creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04CD210005"
+                        location_id="0"/>
+    <cashier_cash_point cash_point_id="6" name="Test 7 Cash Point"
+                        creator="1" date_created="2012-01-01 00:00:00.0" retired="false" uuid="4028814B39BB04B90139BB04CD210006"
+                        location_id="2"/>
 </dataset>
