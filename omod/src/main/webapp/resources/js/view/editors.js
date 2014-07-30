@@ -28,8 +28,8 @@ define(
         editors.ItemAutocomplete = editors.Base.extend({
             tagName: "span",
             className: "editor",
-            tmplFile: openhmis.url.inventoryBase + 'template/editors.html',
-            tmplSelector: '#item-editor',
+            tmplFile: openhmis.url.cashierBase + 'template/editors.html',
+            tmplSelector: '#item-autocomplete-editor',
             departmentCollection: function() {
                 var collection = new openhmis.GenericCollection([], { model: openhmis.Department });
                 collection.fetch();
