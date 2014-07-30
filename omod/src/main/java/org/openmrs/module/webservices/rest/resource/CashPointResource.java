@@ -14,13 +14,29 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.module.openhmis.cashier.api.ICashPointService;
-import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
-import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.openhmis.cashier.web.CashierRestConstants;
+import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
-@Resource(name=RestConstants.VERSION_2 + "/cashier/cashPoint", supportedClass=CashPoint.class, supportedOpenmrsVersions={"1.9"})
+@Resource(name = CashierRestConstants.CASH_POINT_RESOURCE, supportedClass=CashPoint.class, supportedOpenmrsVersions={"1.9"})
 public class CashPointResource extends BaseRestMetadataResource<CashPoint> {
+    @Override
+	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
+		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		description.addProperty("location", Representation.REF);
+		return description;
+	}
+
+    @Override
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = super.getCreatableProperties();
+		description.addProperty("location");
+		return description;
+	}
+
 	@Override
 	public CashPoint newDelegate() {
 		return new CashPoint();
