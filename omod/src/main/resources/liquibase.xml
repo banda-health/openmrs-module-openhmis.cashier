@@ -662,4 +662,13 @@
             <column name="adjustment_reason" type="varchar(500)"><constraints nullable="true"/></column>
         </addColumn>
     </changeSet>
+    <changeSet id="openhmis.cashier-v2.0.0-3" author="Benjamin Mwalimu">
+        <comment>Adding the column "location_id" to the table cashier_cash_point</comment>
+        <addColumn tableName="cashier_cash_point">
+            <column name="location_id" type="int"><constraints nullable="true"/></column>
+        </addColumn>
+        <addForeignKeyConstraint constraintName="cashier_cash_point_location_fk"
+                                 baseTableName="cashier_cash_point" baseColumnNames="location_id"
+                                 referencedTableName="location" referencedColumnNames="location_id"/>
+    </changeSet>
 </databaseChangeLog>
