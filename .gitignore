@@ -24,9 +24,11 @@
 .idea/misc.xml
 .idea/libraries
 .idea/*datasources.*
+.idea/*dataSources.*
 .idea/encodings.xml
 .idea/dictionaries/*
-.idea/ant.xml
+.idea/modules.xml
+.idea/vcs.xml
 
 # building
 target
@@ -43,7 +45,6 @@ pom.xml.releaseBackup
 
 ## generic files to ignore
 *~
-*.txt
 *.lock
 *.DS_Store
 *.swp

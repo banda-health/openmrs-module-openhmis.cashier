@@ -20,7 +20,8 @@ define(
 		openhmis.url.backboneBase + 'js/lib/i18n',
 		openhmis.url.backboneBase + 'js/lib/backbone-forms',
 		openhmis.url.backboneBase + 'js/view/editors',
-		openhmis.url.inventoryBase + 'js/view/editors',
+		openhmis.url.cashierBase + 'js/view/editors',
+        openhmis.url.inventoryBase + 'js/view/editors',
 		openhmis.url.cashierBase + 'js/model/bill',
 		openhmis.url.cashierBase + 'js/model/cashPoint',
 		'link!' + openhmis.url.cashierBase + 'css/style.css'
@@ -199,7 +200,7 @@ define(
 			},
 
 			schema: {
-				item: { type: "Item" },
+				item: { type: "ItemAutocomplete" },
 				quantity: { type: "CustomNumber" },
 				price: {
 					type: "ItemPriceSelect",
