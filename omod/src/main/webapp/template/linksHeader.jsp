@@ -25,13 +25,6 @@
 		</li>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="Manage Cashier Metadata">
-		<li <c:if test='<%= request.getRequestURI().contains("cashier/departments") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/openhmis/cashier/departments.form">
-				<spring:message code="openhmis.cashier.admin.departments"/>
-			</a>
-		</li>
-	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="Manage Cashier Metadata">
 		<li <c:if test='<%= request.getRequestURI().contains("cashier/cashPoints") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/module/openhmis/cashier/cashPoints.form">
 				<spring:message code="openhmis.cashier.admin.cashPoints"/>
@@ -42,13 +35,6 @@
 		<li <c:if test='<%= request.getRequestURI().contains("cashier/paymentModes") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/module/openhmis/cashier/paymentModes.form">
 				<spring:message code="openhmis.cashier.admin.paymentModes"/>
-			</a>
-		</li>
-	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="Manage Cashier Metadata">
-		<li <c:if test='<%= request.getRequestURI().contains("cashier/items") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/openhmis/cashier/items.form">
-				<spring:message code="openhmis.cashier.admin.items"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
