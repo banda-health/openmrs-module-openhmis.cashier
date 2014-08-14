@@ -53,7 +53,7 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
     List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired, PagingInfo pagingInfo) throws APIException;
 
     /**
-     * Finds all cashpoints in the specified {@link location} that start with the specified name.
+     * Gets all cashpoints in the specified {@link location} that start with the specified name.
      * @param location The location to search within.
      * @param name The cashpoints name fragment.
      * @param includeRetired Whether retired cashpoints should be included in the results.
@@ -70,10 +70,10 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
      */
     @Transactional(readOnly = true)
     @Authorized( {CashierPrivilegeConstants.MANAGE_METADATA})
-    List<CashPoint> findCashPoints(Location location, String name, boolean includeRetired) throws APIException;
+    List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired) throws APIException;
 
     /**
-     * Finds all cashpoints in the specified {@link Location} that start with the specified name.
+     * Gets all cashpoints in the specified {@link Location} that start with the specified name.
      * @param location The location to search within.
      * @param name The cashpoints name fragment.
      * @param includeRetired Whether retired cashpoints should be included in the results.
@@ -83,6 +83,6 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
      */
     @Transactional(readOnly = true)
     @Authorized( {CashierPrivilegeConstants.MANAGE_METADATA})
-    List<CashPoint> findCashPoints(Location location, String name, boolean includeRetired, PagingInfo pagingInfo) throws APIException;
+    List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired, PagingInfo pagingInfo) throws APIException;
 }
 

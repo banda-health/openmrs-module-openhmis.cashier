@@ -48,13 +48,13 @@ public class CashPointSearchHandler implements SearchHandler {
 
         if (location_uuid == null) {
             // Do a name search
-            cashpoints = service.findByName(query, context.getIncludeAll(), pagingInfo);
+            cashpoints = service.getByNameFragment(query, context.getIncludeAll(), pagingInfo);
         } else if (query == null) {
             //performs the location search
             cashpoints = service.getCashPointsByLocation(location, context.getIncludeAll(), pagingInfo);
         } else {
             // Do a name & location search
-            cashpoints = service.findCashPoints(location, query, context.getIncludeAll(), pagingInfo);
+            cashpoints = service.getCashPointsByLocationAndName(location, query, context.getIncludeAll(), pagingInfo);
         }
 
         results = new AlreadyPagedWithLength<CashPoint>(context, cashpoints, pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());

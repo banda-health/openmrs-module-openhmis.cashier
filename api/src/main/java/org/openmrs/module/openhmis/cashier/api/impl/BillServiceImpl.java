@@ -108,16 +108,16 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	}
 
 	@Override
-	public List<Bill> findPatientBills(Patient patient, PagingInfo paging) {
+	public List<Bill> getBillsByPatient(Patient patient, PagingInfo paging) {
 		if (patient == null) {
 			throw new NullPointerException("The patient must be defined.");
 		}
 
-		return findPatientBills(patient.getId(), paging);
+		return getBillsByPatientId(patient.getId(), paging);
 	}
 
 	@Override
-	public List<Bill> findPatientBills(int patientId, PagingInfo paging) {
+	public List<Bill> getBillsByPatientId(int patientId, PagingInfo paging) {
 		if (patientId < 0) {
 			throw new IllegalArgumentException("The patient id must be a valid identifier.");
 		}
@@ -131,12 +131,12 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	}
 	
 	@Override
-	public List<Bill> findBills(final BillSearch billSearch) {
-		return findBills(billSearch, null);
+	public List<Bill> getBills(final BillSearch billSearch) {
+		return getBills(billSearch, null);
 	}
 	
 	@Override
-	public List<Bill> findBills(final BillSearch billSearch, PagingInfo pagingInfo) {
+	public List<Bill> getBills(final BillSearch billSearch, PagingInfo pagingInfo) {
 		if (billSearch == null) {
 			throw new NullPointerException("The bill search must be defined.");
 		} else if (billSearch.getTemplate() == null) {
