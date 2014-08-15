@@ -31,6 +31,7 @@ import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetHelper;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -138,13 +139,13 @@ public class BillAddEditController {
     }
 
     private String buildUrlModelAttribute(HttpServletRequest request) {
-        return CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE)
+        return UrlUtil.formUrl(CashierWebConstants.BILL_PAGE)
                 + ( (request.getQueryString() != null) ? "?" + request.getQueryString() : "");
     }
 
     private String buildRedirectUrl(HttpServletRequest request) {
-        String redirectUrl = "redirect:" + CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
-        String returnUrlParam = "?returnUrl=" + CashierWebConstants.formUrl(CashierWebConstants.BILL_PAGE);
+        String redirectUrl = "redirect:" + UrlUtil.formUrl(CashierWebConstants.CASHIER_PAGE);
+        String returnUrlParam = "?returnUrl=" + UrlUtil.formUrl(CashierWebConstants.BILL_PAGE);
         String requestQueryParam = "";
         if (request.getQueryString() != null) {
             requestQueryParam = encodeRequestQuery(request);

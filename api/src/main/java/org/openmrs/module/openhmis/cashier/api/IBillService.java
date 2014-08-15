@@ -52,7 +52,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should return all bills for the specified patient
 	 * @should return an empty list if the specified patient has no bills
 	 */
-	List<Bill> findPatientBills(Patient patient, PagingInfo paging);
+	List<Bill> getBillsByPatient(Patient patient, PagingInfo paging);
 
 	/**
 	 *  Returns all {@link Bill}s for the specified patient with the specified paging.
@@ -64,19 +64,19 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should return all bills for the specified patient
 	 * @should return an empty list if the specified patient has no bills
 	 */
-	List<Bill> findPatientBills(int patientId, PagingInfo paging);
+	List<Bill> getBillsByPatientId(int patientId, PagingInfo paging);
 
 	/**
-	 * Finds all bills using the specified {@link BillSearch} settings.
+	 * Gets all bills using the specified {@link BillSearch} settings.
 	 * @param billSearch The bill search settings.
 	 * @return The bills found or an empty list if no bills were found.
 	 */
 	@Transactional(readOnly = true)
 	@Authorized( {CashierPrivilegeConstants.VIEW_BILLS})
-	List<Bill> findBills(BillSearch billSearch);
+	List<Bill> getBills(BillSearch billSearch);
 	
 	/**
-	 * Finds all bills using the specified {@link BillSearch} settings.
+	 * Gets all bills using the specified {@link BillSearch} settings.
 	 * @param billSearch The bill search settings.
 	 * @param pagingInfo The paging information.
 	 * @return The bills found or an empty list if no bills were found.
@@ -93,7 +93,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 */
 	@Transactional(readOnly = true)
 	@Authorized( {CashierPrivilegeConstants.VIEW_BILLS})
-	List<Bill> findBills(BillSearch BillSearch, PagingInfo pagingInfo);
+	List<Bill> getBills(BillSearch BillSearch, PagingInfo pagingInfo);
 	
 	@Override
 	@Authorized(CashierPrivilegeConstants.VIEW_BILLS)

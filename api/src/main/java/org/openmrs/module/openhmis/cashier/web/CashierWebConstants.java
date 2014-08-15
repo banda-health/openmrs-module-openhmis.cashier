@@ -54,11 +54,4 @@ public class CashierWebConstants extends WebConstants {
 
 	public static final String REPORT_DOWNLOAD_URL = "/moduleServlet/jasperreport/jreportDownload";
 
-	public static String formUrl(String page) {
-		return page.endsWith(".form") ? page : page + ".form";
-	}
-
-	public static String redirectUrl(String page) {
-		return "redirect:" + formUrl(page);
-	}
 }

@@ -41,7 +41,7 @@ public class PatientBillHistoryController {
 	@RequestMapping(method = RequestMethod.GET)
 	public void billHistory(ModelMap model, @RequestParam(value = "patientId", required = true) int patientId) {
 		LOG.warn("In bill history controller");
-		List<Bill> bills = billService.findPatientBills(patientId, null);
+		List<Bill> bills = billService.getBillsByPatientId(patientId, null);
 		model.addAttribute("bills", bills);
 	}
 }

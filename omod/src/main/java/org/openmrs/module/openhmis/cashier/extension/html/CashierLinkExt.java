@@ -23,6 +23,7 @@ import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.ProviderHelper;
+import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.openmrs.module.web.extension.LinkExt;
 
 import java.util.Map;
@@ -79,7 +80,7 @@ public class CashierLinkExt extends LinkExt {
 
 	@Override
 	public String getUrl() {
-		return CashierWebConstants.formUrl(CashierWebConstants.CASHIER_PAGE);
+		return UrlUtil.formUrl(CashierWebConstants.CASHIER_PAGE);
 	}
 
 	@Override
