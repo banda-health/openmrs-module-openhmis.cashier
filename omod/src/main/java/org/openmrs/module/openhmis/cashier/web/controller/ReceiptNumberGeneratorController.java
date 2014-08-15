@@ -21,6 +21,7 @@ import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,7 +68,7 @@ public class ReceiptNumberGeneratorController {
 				ReceiptNumberGeneratorFactory.setGenerator(selectedGenerator);
 			} else {
 				// The configuration page should set the system generator when saved so it is not done here
-				return CashierWebConstants.redirectUrl(selectedGenerator.getConfigurationPage());
+				return UrlUtil.redirectUrl(selectedGenerator.getConfigurationPage());
 			}
 		}
 
@@ -75,6 +76,6 @@ public class ReceiptNumberGeneratorController {
 		model.addAttribute("currentGenerator", selectedGenerator);
 		model.addAttribute("generators", generators);
 
-		return  CashierWebConstants.redirectUrl(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT);
+		return  UrlUtil.redirectUrl(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT);
 	}
 }

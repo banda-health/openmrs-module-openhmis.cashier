@@ -67,12 +67,12 @@ public class CashPointServiceImpl
     }
 
     @Override
-    public List<CashPoint> findCashPoints(Location location, String name, boolean includeRetired) throws APIException {
-        return findCashPoints(location, name, includeRetired, null);
+    public List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired) throws APIException {
+        return getCashPointsByLocationAndName(location, name, includeRetired, null);
     }
 
     @Override
-    public List<CashPoint> findCashPoints(final Location location, final String name, final boolean includeRetired, PagingInfo pagingInfo) throws APIException {
+    public List<CashPoint> getCashPointsByLocationAndName(final Location location, final String name, final boolean includeRetired, PagingInfo pagingInfo) throws APIException {
         if (location == null) {
             throw new IllegalArgumentException("The location must be defined");
         }
