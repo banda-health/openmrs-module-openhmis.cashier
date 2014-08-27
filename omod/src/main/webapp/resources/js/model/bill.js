@@ -38,7 +38,7 @@ define(
 				status: { type: 'Text' },
 				adjustmentReason: {type: 'Text'}
 			},
-						
+
 			BillStatus: {
 				PENDING:	"PENDING",
 				POSTED:		"POSTED",
@@ -113,13 +113,15 @@ define(
 				// By default, backbone validates every time we try try to alter
 				// the model.  We don't want to be bothered with this until we
 				// care.
+				var lineItems = this.get("lineItems");
+				
 				if (goAhead !== true) {
 					return null;
 				}
 				if (this.get("patient") === undefined) {
 					return { patient: "A bill needs to be associated with a patient." }
 				}
-				if (this.get("lineItems") === undefined || this.get("lineItems").length === 0) {
+				if (lineItems === undefined || lineItems.length === 0) {
 					return { lineItems: "A bill should contain at least one item." }
 				}
 				return null;

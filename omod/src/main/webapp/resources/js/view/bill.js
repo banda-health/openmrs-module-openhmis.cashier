@@ -310,8 +310,8 @@ define(
 					if (self.bill.getTotalPayments() >= self.bill.getTotal()) {
 						self.trigger("paid", self.bill);
 					}
-                    /*The line below is to add the the payment for a posted or not fully paid bill*/
-                    self.bill.addPayment(payment);
+					/*The line below is to add the the payment for a posted or not fully paid bill*/
+					self.bill.addPayment(payment);
 
 					self.updateTotals();
 					if (success) {
@@ -325,16 +325,16 @@ define(
 				}
 
 				if (this.bill.get("status") === this.bill.BillStatus.PENDING) {
-                    /*The line below is to add the payment for a pending bill*/
-                    this.bill.addPayment(payment);
+				/*The line below is to add the payment for a pending bill*/
+					this.bill.addPayment(payment);
 
 					if (!this.postBill(options));
 						this.bill.get("payments").remove(payment);
 				} else {
-                    payment.meta.parentRestUrl = this.bill.url() + '/';
+					payment.meta.parentRestUrl = this.bill.url() + '/';
 					payment.save([], options);
 				}
-             },
+			},
 
 			validate: function(allowEmptyBill) {
 				var errors = this.bill.validate(true);
@@ -408,37 +408,37 @@ define(
 			},
 
 			_postAdjustingBill: function(bill) {
-                bill.get("billAdjusted").get("payments").each(function (payment) {
-                    payment.set("amountTendered", payment.get("amount"));
-                });
-                bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
-                var adjustingItems = bill.get("lineItems");
-                bill.set("lineItems", bill.get("billAdjusted").get("lineItems"));
-                bill.get("lineItems").add(adjustingItems.models);
-                bill.set("status", bill.BillStatus.POSTED);
-            },
+				bill.get("billAdjusted").get("payments").each(function (payment) {
+					payment.set("amountTendered", payment.get("amount"));
+				});
+				bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
+				var adjustingItems = bill.get("lineItems");
+				bill.set("lineItems", bill.get("billAdjusted").get("lineItems"));
+				bill.get("lineItems").add(adjustingItems.models);
+				bill.set("status", bill.BillStatus.POSTED);
+			},
 
 			adjustBill: function() {
 				var __ = i18n;
-                 $adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
-                if ($adjustmentReason == null || $adjustmentReason == "") {
-                    alert ("Please specify your bill adjustment reason");
-                }else{
-                     var adjustingBill = new openhmis.Bill({
-                     adjustmentReason: $adjustmentReason,
-                     billAdjusted: this.bill.id,
-                     patient: this.bill.get("patient").id
-                    });
-                    /**/
-                    adjustingBill.unset("status");
-                    var view = this;
-                    adjustingBill.save([], {
-                        success: function(model,resp) {
-                            view.trigger("adjusted", model);
-                        },
-                        error: openhmis.error
-                    });
-                }
+				$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
+				if ($adjustmentReason == null || $adjustmentReason == "") {
+					alert ("Please specify your bill adjustment reason");
+				}else{
+					var adjustingBill = new openhmis.Bill({
+						adjustmentReason: $adjustmentReason,
+						billAdjusted: this.bill.id,
+						patient: this.bill.get("patient").id
+					});
+					/**/
+					adjustingBill.unset("status");
+					var view = this;
+					adjustingBill.save([], {
+						success: function(model,resp) {
+							view.trigger("adjusted", model);
+						},
+						error: openhmis.error
+					});
+				}
 			},
 
 			printReceipt: function(event) {
