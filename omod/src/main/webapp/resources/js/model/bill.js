@@ -133,7 +133,7 @@ define(
 							errors = true;
 						}
 					});
-					if (errors = true) {
+					if (errors === true) {
 						return {lineItems: "Item quantity cannot be zero"}
 					} else {
 						return null;
