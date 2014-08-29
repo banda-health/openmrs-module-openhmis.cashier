@@ -85,7 +85,7 @@ curl(
 			} else {
 				this.displayBillView.call(this);
 			}
-		}
+		};
 		
 		/*
 		 * setupBillViewWithBill
