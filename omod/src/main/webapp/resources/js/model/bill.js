@@ -127,8 +127,8 @@ define(
 				if (lineItems !== undefined && lineItems.length > 0){
 					var errors = null;
 					lineItems.each(function(item) {
-						if (item.attributes.quantity > 0 || item.attributes.quantity < 0 ) {
-							errors =null;
+						if (item.attributes.quantity > 0 || item.attributes.quantity < 0) {
+							errors = null;
 						} else {
 							errors = 1;
 						}
