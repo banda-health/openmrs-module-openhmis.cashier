@@ -127,13 +127,17 @@ define(
 				if (lineItems !== undefined && lineItems.length > 0){
 					var errors = null;
 					lineItems.each(function(item) {
-						if (item.attributes.quantity === 0) {
-							errors ="The item quantity cannot be Zero";
+						if (item.attributes.quantity > 0 || item.attributes.quantity < 0 ) {
+							errors =null;
 						} else {
-							errors = null
+							errors = 1;
 						}
 					});
-					return {lineItems: errors}
+					if (errors === 1) {
+						return {lineItems: "Item quantity cannot be zero"}
+					} else {
+						return null;
+					}
 				}
 				return null;
 			},
