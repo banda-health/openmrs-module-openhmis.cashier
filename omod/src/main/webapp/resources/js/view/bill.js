@@ -106,8 +106,7 @@ define(
 				}
 
 				if (event.keyCode === 13 /* Enter */)  {
-					this.update;
-					this.trigger("change", this);
+					this.update();
 					this.commitForm(event);
 					// Prevent enter press from interfering with HTML form controls
 					event.preventDefault();
@@ -258,9 +257,6 @@ define(
 								return errors;
 							}
 						});
-						if (errors == null) {
-							this.setupNewItem();
-						}
 					}
 				}
 			},
@@ -458,14 +454,6 @@ define(
 				this.$('div.box').append(this.$totals);
 				this.updateTotals();
 				return this;
-			},
-
-			_addItemFromInputLine: function(inputLineView) {
-				// Prevent multiple change events causing duplicate views
-				if (this.model.getByCid(inputLineView.model.cid)) return;
-				inputLineView.off("change", this._addItemFromInputLine);
-				this.model.add(inputLineView.model, { silent: true });
-				this._deselectAll();
 			}
 		});
 
