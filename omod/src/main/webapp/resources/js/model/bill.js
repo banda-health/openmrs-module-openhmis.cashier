@@ -125,15 +125,15 @@ define(
 					return { lineItems: "A bill should contain at least one item." }
 				}
 				if (lineItems !== undefined && lineItems.length > 0){
-					var errors = null;
+					var errors = false;
 					lineItems.each(function(item) {
 						if (item.attributes.quantity > 0 || item.attributes.quantity < 0) {
-							errors = null;
+							errors = false;
 						} else {
-							errors = 1;
+							errors = true;
 						}
 					});
-					if (errors === 1) {
+					if (errors = true) {
 						return {lineItems: "Item quantity cannot be zero"}
 					} else {
 						return null;
