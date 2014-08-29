@@ -124,6 +124,17 @@ define(
 				if (lineItems === undefined || lineItems.length === 0) {
 					return { lineItems: "A bill should contain at least one item." }
 				}
+				if (lineItems !== undefined && lineItems.length > 0){
+					var errors = null;
+					lineItems.each(function(item) {
+						if (item.attributes.quantity === 0) {
+							errors ="The item quantity cannot be Zero";
+						} else {
+							errors = null
+						}
+					});
+					return {lineItems: errors}
+				}
 				return null;
 			},
 			
