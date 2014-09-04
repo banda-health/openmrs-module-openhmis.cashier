@@ -129,7 +129,7 @@ define(
         });
 
         openhmis.PaymentMode = openhmis.CustomizableInstanceTypeBase.extend({
-            attributeType: openhmis.PaymentModeAttributeType,
+            attributeTypeClass: openhmis.PaymentModeAttributeType,
 
             meta: {
                 name: "Payment Mode",
