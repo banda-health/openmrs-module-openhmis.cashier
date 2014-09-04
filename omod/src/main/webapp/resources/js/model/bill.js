@@ -116,11 +116,27 @@ define(
                 if (goAhead !== true) {
                 	return null;
                 }
+				var lineItems = this.get("lineItems");
 				if (this.get("patient") === undefined) {
 					return { patient: "A bill needs to be associated with a patient." }
 				}
-				if (this.get("lineItems") === undefined || this.get("lineItems").length === 0) {
+				if (lineItems === undefined || lineItems.length === 0) {
 					return { lineItems: "A bill should contain at least one item." }
+				}
+				if (lineItems !== undefined && lineItems.length > 0){
+					var errors = false;
+					lineItems.each(function(item) {
+						if (item.attributes.quantity > 0 || item.attributes.quantity < 0) {
+							errors = false;
+						} else {
+							errors = true;
+						}
+					});
+					if (errors = true) {
+						return {lineItems: "Item quantity cannot be zero"}
+					} else {
+						return null;
+					}
 				}
 				return null;
 			},
