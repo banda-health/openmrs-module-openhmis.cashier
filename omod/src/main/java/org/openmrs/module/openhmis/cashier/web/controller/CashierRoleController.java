@@ -81,7 +81,7 @@ public class CashierRoleController {
 			throw new APIException("The role '" + roleUuid + "' could not be found.");
 		}
 
-		for (Privilege priv : PrivilegeConstants.getPrivileges()) {
+		for (Privilege priv : PrivilegeConstants.getDefaultPrivileges()) {
 			if (!role.hasPrivilege(priv.getName())) {
 				role.addPrivilege(priv);
 			}
@@ -97,7 +97,7 @@ public class CashierRoleController {
 			throw new APIException("The role '" + roleUuid + "' could not be found.");
 		}
 
-		for (Privilege priv : PrivilegeConstants.getPrivileges()) {
+		for (Privilege priv : PrivilegeConstants.getDefaultPrivileges()) {
 			if (role.hasPrivilege(priv.getName())) {
 				role.removePrivilege(priv);
 			}
@@ -109,7 +109,7 @@ public class CashierRoleController {
 		Role newRole = new Role();
 		newRole.setRole(viewModel.getNewRoleName());
 		newRole.setDescription("Users who creates and manage patient bills");
-		newRole.setPrivileges(PrivilegeConstants.getPrivileges());
+		newRole.setPrivileges(PrivilegeConstants.getDefaultPrivileges());
 
 		Role inheritedRole = userService.getRole(RoleConstants.PROVIDER);
 		Set<Role> inheritedRoles = new HashSet<Role>();
