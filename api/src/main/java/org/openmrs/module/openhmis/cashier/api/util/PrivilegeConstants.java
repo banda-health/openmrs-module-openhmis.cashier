@@ -60,9 +60,28 @@ public class PrivilegeConstants {
 
 		List<String> names = new ArrayList<String>(Arrays.asList(PRIVILEGE_NAMES));
 
-		// Add required inventory privilege
+		// Add other required cashier privileges
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_ITEMS);
+		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_METADATA);
 		names.add(JasperReportPrivilegeConstants.VIEW_JASPER_REPORTS);
+
+		names.add(org.openmrs.util.PrivilegeConstants.ADD_ENCOUNTERS);
+		names.add(org.openmrs.util.PrivilegeConstants.ADD_VISITS);
+		names.add(org.openmrs.util.PrivilegeConstants.EDIT_ENCOUNTERS);
+		names.add(org.openmrs.util.PrivilegeConstants.EDIT_PATIENTS);
+		names.add(org.openmrs.util.PrivilegeConstants.EDIT_VISITS);
+		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_SUMMARY);
+		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_DEMOGRAPHICS);
+		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_OVERVIEW);
+		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_VISITS);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_ADMIN_FUNCTIONS);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_CONCEPTS);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_ENCOUNTERS);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_NAVIGATION_MENU);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_OBS);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_PATIENTS);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_PROVIDERS);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_VISITS);
 
 		for (String name : names) {
 			privileges.add(service.getPrivilege(name));
