@@ -50,7 +50,11 @@ public class PrivilegeConstants {
 
     protected PrivilegeConstants() {}
 
-	public static Set<Privilege> getPrivileges() {
+	/**
+	 * Gets all the privileges defined by the module.
+	 * @return The module privileges.
+	 */
+	public static Set<Privilege> getModulePrivileges() {
 		Set<Privilege> privileges = new HashSet<Privilege>(PRIVILEGE_NAMES.length);
 
 		UserService service = Context.getUserService();
@@ -58,8 +62,26 @@ public class PrivilegeConstants {
 			throw new IllegalStateException("The OpenMRS user service cannot be loaded.");
 		}
 
-		List<String> names = new ArrayList<String>(Arrays.asList(PRIVILEGE_NAMES));
+		for (String name : PRIVILEGE_NAMES) {
+			privileges.add(service.getPrivilege(name));
+		}
 
+		return privileges;
+	}
+
+	/**
+	 * Gets the default privileges needed to fully use the module.
+	 * @return A set containing the default set of privileges.
+	 */
+	public static Set<Privilege> getDefaultPrivileges() {
+		Set<Privilege> privileges = getModulePrivileges();
+
+		UserService service = Context.getUserService();
+		if (service == null) {
+			throw new IllegalStateException("The OpenMRS user service cannot be loaded.");
+		}
+
+		List<String> names = new ArrayList<String>();
 		// Add other required cashier privileges
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_ITEMS);
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_METADATA);
@@ -88,5 +110,7 @@ public class PrivilegeConstants {
 		}
 
 		return privileges;
+
+
 	}
 }

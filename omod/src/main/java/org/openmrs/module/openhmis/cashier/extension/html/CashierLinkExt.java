@@ -41,27 +41,33 @@ public class CashierLinkExt extends LinkExt {
 	public void initialize(Map<String, String> parameterMap) {
 		super.initialize(parameterMap);
 
-		try {
-			this.timesheetService = Context.getService(ITimesheetService.class);
-			this.providerService = Context.getProviderService();
+		isProviderUser = false;
+		currentTimesheet = null;
 
-			isProviderUser = false;
-			if (Context.isAuthenticated()) {
-				Provider provider = ProviderHelper.getCurrentProvider(providerService);
-				if (provider != null) {
-					isProviderUser = true;
-					try {
-						currentTimesheet = timesheetService.getCurrentTimesheet(provider);
-					} catch (Exception e) {
-						currentTimesheet = null;
+		if (Context.getAuthenticatedUser() != null
+				&& Context.getAuthenticatedUser().hasPrivilege(org.openmrs.util.PrivilegeConstants.VIEW_PROVIDERS)) {
+			try {
+				this.timesheetService = Context.getService(ITimesheetService.class);
+				this.providerService = Context.getProviderService();
+
+				isProviderUser = false;
+				if (Context.isAuthenticated()) {
+					Provider provider = ProviderHelper.getCurrentProvider(providerService);
+					if (provider != null) {
+						isProviderUser = true;
+						try {
+							currentTimesheet = timesheetService.getCurrentTimesheet(provider);
+						} catch (Exception e) {
+							currentTimesheet = null;
+						}
 					}
 				}
-			}
-		} catch (Exception ex) {
-			LOG.error("An error occurred while attempting to load the cashier extension point", ex);
+			} catch (Exception ex) {
+				LOG.error("An error occurred while attempting to load the cashier extension point", ex);
 
-			isProviderUser = false;
-			currentTimesheet = null;
+				isProviderUser = false;
+				currentTimesheet = null;
+			}
 		}
 	}
 
