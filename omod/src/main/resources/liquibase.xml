@@ -671,4 +671,54 @@
                                  baseTableName="cashier_cash_point" baseColumnNames="location_id"
                                  referencedTableName="location" referencedColumnNames="location_id"/>
     </changeSet>
+    <changeSet id="openhmis.cashier-v2.0.0-4" author="marios">
+    	<comment>Adding new View item Privilege</comment>
+		<sql>
+			INSERT INTO role_privilege (role, privilege)
+			SELECT role, 'View Inventory Items'
+			FROM role_privilege
+			WHERE privilege = 'View Cashier Items'
+		</sql>
+		<comment>Adding new Manage item Privilege</comment>
+		<sql>
+			INSERT INTO role_privilege (role, privilege)
+			SELECT role, 'Manage Inventory Items'
+			FROM role_privilege
+			WHERE privilege = 'Manage Cashier Items'
+		</sql>
+		<comment>Adding new Purge item Privilege</comment>
+		<sql>
+			INSERT INTO role_privilege (role, privilege)
+			SELECT role, 'Purge Inventory Items'
+			FROM role_privilege
+			WHERE privilege = 'Purge Cashier Items'
+		</sql>
+		<comment>Deleting obsolete Cashier Item Role_Privilege Mappings</comment>
+		<sql>
+			DELETE FROM role_privilege
+			WHERE privilege = 'View Cashier Items'
+		</sql>
+		<sql>
+			DELETE FROM role_privilege
+			WHERE privilege = 'Manage Cashier Items'
+		</sql>
+		<sql>
+			DELETE FROM role_privilege
+			WHERE privilege = 'Purge Cashier Items'
+		</sql>
+		<comment>Deleting obsolete Cashier Item Privileges</comment>
+		<sql>
+			DELETE FROM privilege
+			WHERE privilege = 'View Cashier Items'
+		</sql>
+		<sql>
+			DELETE FROM privilege
+			WHERE privilege = 'Manage Cashier Items'
+		</sql>
+		<sql>
+			DELETE FROM privilege
+			WHERE privilege = 'Purge Cashier Items'
+		</sql>
+    </changeSet>
+    
 </databaseChangeLog>
