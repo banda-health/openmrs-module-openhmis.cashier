@@ -1,15 +1,11 @@
 package org.openmrs.module.openhmis.cashier.web;
 
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 
-/**
- * Created by benjamin on 7/14/14.
- */
-public class CashierPrivilegeWebConstants extends CashierPrivilegeConstants {
-
+public class PrivilegeWebConstants extends PrivilegeConstants {
     public static final String CASHPOINTS_PAGE_PRIVILEDGES = MANAGE_METADATA + "," +VIEW_METADATA;
     public static final String PAYMENTSMODES_PAGE_PRIVILEDGES = MANAGE_METADATA + "," +VIEW_METADATA;
     public static final String BILL_PAGE_PRIVILEDGES = MANAGE_METADATA + "," +VIEW_METADATA;
     
-    protected CashierPrivilegeWebConstants() {}
+    protected PrivilegeWebConstants() {}
 }

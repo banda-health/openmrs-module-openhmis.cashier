@@ -19,7 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.springframework.stereotype.Controller;
@@ -34,7 +34,7 @@ public class ReceiptNumberGeneratorController {
 	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorController.class);
 
 	@RequestMapping(method = RequestMethod.GET)
-	@Authorized(CashierPrivilegeConstants.MANAGE_BILLS)
+	@Authorized(PrivilegeConstants.MANAGE_BILLS)
 	public void render(ModelMap model) {
 		IReceiptNumberGenerator currentGenerator = ReceiptNumberGeneratorFactory.getGenerator();
 		IReceiptNumberGenerator[] generators = ReceiptNumberGeneratorFactory.locateGenerators();
@@ -44,7 +44,7 @@ public class ReceiptNumberGeneratorController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	@Authorized(CashierPrivilegeConstants.MANAGE_BILLS)
+	@Authorized(PrivilegeConstants.MANAGE_BILLS)
 	public String submit(ModelMap model, @RequestParam(value = "selectedGenerator", required = true) String generatorName) {
 		IReceiptNumberGenerator[] generators = ReceiptNumberGeneratorFactory.locateGenerators();
 		IReceiptNumberGenerator selectedGenerator = null;

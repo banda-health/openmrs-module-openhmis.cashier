@@ -18,7 +18,7 @@ import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.ProviderHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -79,7 +79,7 @@ public class CashierLogoutFilter implements Filter {
         boolean isNotCashier = true;
         User authenticatedUser = Context.getAuthenticatedUser();
         if (authenticatedUser != null) {
-            isNotCashier = !authenticatedUser.hasPrivilege(CashierPrivilegeConstants.MANAGE_TIMESHEETS) || authenticatedUser.isSuperUser();
+            isNotCashier = !authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_TIMESHEETS) || authenticatedUser.isSuperUser();
         }
         return isNotCashier;
     }

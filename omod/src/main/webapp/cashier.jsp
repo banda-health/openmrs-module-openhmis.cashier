@@ -1,4 +1,4 @@
-<%@ page import="org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants" %>
+<%@ page import="org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants" %>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
   ~ Version 2.0 (the "License"); you may not use this file except in
@@ -19,7 +19,7 @@
 <%--@elvariable id="returnUrl" type="java.lang.String"--%>
 
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<openmrs:require privilege="<%=CashierPrivilegeConstants.MANAGE_TIMESHEETS%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/timesheetEntry.form" />
+<openmrs:require privilege="<%=PrivilegeConstants.MANAGE_TIMESHEETS%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/timesheetEntry.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp" %>
 <%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>

@@ -13,7 +13,7 @@
  */
 package org.openmrs.module.openhmis.cashier.api.security;
 
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 
 public class BasicMetadataAuthorizationPrivileges
@@ -21,7 +21,7 @@ public class BasicMetadataAuthorizationPrivileges
 		implements IMetadataAuthorizationPrivileges {
 	@Override
 	public String getRetirePrivilege() {
-		return CashierPrivilegeConstants.MANAGE_METADATA;
+		return PrivilegeConstants.MANAGE_METADATA;
 	}
 }
 

@@ -36,6 +36,11 @@
 			<type>test-jar</type>
 		</dependency>
 
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>jasperreport-api</artifactId>
+		</dependency>
+
 		<!-- Begin OpenMRS core -->
 		
 		<dependency>

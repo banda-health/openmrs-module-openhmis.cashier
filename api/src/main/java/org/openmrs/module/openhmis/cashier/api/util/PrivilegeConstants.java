@@ -1,0 +1,73 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+package org.openmrs.module.openhmis.cashier.api.util;
+
+import org.openmrs.Privilege;
+import org.openmrs.api.UserService;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.jasperreport.util.JasperReportPrivilegeConstants;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class PrivilegeConstants {
+	public static final String MANAGE_BILLS = "Manage Cashier Bills";
+	public static final String ADJUST_BILLS = "Adjust Cashier Bills";
+	public static final String VIEW_BILLS = "View Cashier Bills";
+	public static final String PURGE_BILLS = "Purge Cashier Bills";
+
+	public static final String REFUND_MONEY = "Refund Money";
+	public static final String REPRINT_RECEIPT = "Reprint Receipt";
+
+	public static final String MANAGE_METADATA = "Manage Cashier Metadata";
+	public static final String VIEW_METADATA = "View Cashier Metadata";
+	public static final String PURGE_METADATA = "Purge Cashier Metadata";
+
+	public static final String MANAGE_TIMESHEETS = "Manage Cashier Timesheets";
+	public static final String VIEW_TIMESHEETS = "View Cashier Timesheets";
+	public static final String PURGE_TIMESHEETS = "Purge Cashier Timesheets";
+
+	public static final String[] PRIVILEGE_NAMES = new String[] {
+			MANAGE_BILLS, ADJUST_BILLS, VIEW_BILLS, PURGE_BILLS,
+			REFUND_MONEY, REPRINT_RECEIPT,
+			MANAGE_TIMESHEETS, VIEW_TIMESHEETS, PURGE_TIMESHEETS,
+			MANAGE_METADATA, VIEW_METADATA, PURGE_METADATA
+	};
+
+    protected PrivilegeConstants() {}
+
+	public static Set<Privilege> getPrivileges() {
+		Set<Privilege> privileges = new HashSet<Privilege>(PRIVILEGE_NAMES.length);
+
+		UserService service = Context.getUserService();
+		if (service == null) {
+			throw new IllegalStateException("The OpenMRS user service cannot be loaded.");
+		}
+
+		List<String> names = new ArrayList<String>(Arrays.asList(PRIVILEGE_NAMES));
+
+		// Add required inventory privilege
+		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_ITEMS);
+		names.add(JasperReportPrivilegeConstants.VIEW_JASPER_REPORTS);
+
+		for (String name : names) {
+			privileges.add(service.getPrivilege(name));
+		}
+
+		return privileges;
+	}
+}

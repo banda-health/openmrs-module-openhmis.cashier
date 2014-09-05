@@ -1,7 +1,7 @@
 <%@ taglib prefix="x_rt" uri="http://java.sun.com/jstl/xml_rt" %>
 <%@ page import="org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator.GroupingType" %>
 <%@ page import="org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator.SequenceType" %>
-<%@ page import="org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants" %>
+<%@ page import="org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants" %>
 <%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
 
 <%--

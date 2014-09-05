@@ -28,7 +28,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetHelper;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
@@ -121,7 +121,7 @@ public class BillAddEditController {
         model.addAttribute("patient", patient);
         model.addAttribute("cashPoint", bill.getCashPoint());
         model.addAttribute("adjustmentReason",bill.getAdjustmentReason());
-        if (!bill.isReceiptPrinted() || (bill.isReceiptPrinted() && Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT))) {
+        if (!bill.isReceiptPrinted() || (bill.isReceiptPrinted() && Context.hasPrivilege(PrivilegeConstants.REPRINT_RECEIPT))) {
             model.addAttribute("showPrint", true);
         }
     }

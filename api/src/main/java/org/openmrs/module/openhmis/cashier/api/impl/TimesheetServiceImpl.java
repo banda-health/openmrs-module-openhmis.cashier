@@ -20,8 +20,8 @@ import org.openmrs.Provider;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,22 +48,22 @@ public class TimesheetServiceImpl
 
 	@Override
 	public String getVoidPrivilege() {
-		return CashierPrivilegeConstants.MANAGE_TIMESHEETS;
+		return PrivilegeConstants.MANAGE_TIMESHEETS;
 	}
 
 	@Override
 	public String getSavePrivilege() {
-		return CashierPrivilegeConstants.MANAGE_TIMESHEETS;
+		return PrivilegeConstants.MANAGE_TIMESHEETS;
 	}
 
 	@Override
 	public String getPurgePrivilege() {
-		return CashierPrivilegeConstants.PURGE_TIMESHEETS;
+		return PrivilegeConstants.PURGE_TIMESHEETS;
 	}
 
 	@Override
 	public String getGetPrivilege() {
-		return CashierPrivilegeConstants.VIEW_TIMESHEETS;
+		return PrivilegeConstants.VIEW_TIMESHEETS;
 	}
 
 	@Override

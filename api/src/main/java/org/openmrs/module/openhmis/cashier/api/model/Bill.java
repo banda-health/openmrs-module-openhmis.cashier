@@ -17,7 +17,7 @@ import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
 
@@ -315,7 +315,7 @@ public class Bill extends BaseOpenmrsData {
 	}
 	
 	private void checkAuthorizedToAdjust() {
-		if (!Context.hasPrivilege(CashierPrivilegeConstants.ADJUST_BILLS)) {
+		if (!Context.hasPrivilege(PrivilegeConstants.ADJUST_BILLS)) {
 			throw new AccessControlException("Access denied to adjust bill.");
 		}
 	}

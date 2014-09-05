@@ -19,7 +19,7 @@ import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.search.BillSearch;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +40,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should return null if the receipt number is not found
 	 */
 	@Transactional(readOnly =  true)
-	@Authorized( {CashierPrivilegeConstants.VIEW_BILLS})
+	@Authorized( { PrivilegeConstants.VIEW_BILLS})
 	Bill getBillByReceiptNumber(String receiptNumber) throws APIException;
 
 	/**
@@ -72,7 +72,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @return The bills found or an empty list if no bills were found.
 	 */
 	@Transactional(readOnly = true)
-	@Authorized( {CashierPrivilegeConstants.VIEW_BILLS})
+	@Authorized( { PrivilegeConstants.VIEW_BILLS})
 	List<Bill> getBills(BillSearch billSearch);
 	
 	/**
@@ -92,10 +92,10 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should not return retired bills from search unless specified
 	 */
 	@Transactional(readOnly = true)
-	@Authorized( {CashierPrivilegeConstants.VIEW_BILLS})
-	List<Bill> getBills(BillSearch BillSearch, PagingInfo pagingInfo);
+	@Authorized( { PrivilegeConstants.VIEW_BILLS})
+	List<Bill> getBills(BillSearch billSearch, PagingInfo pagingInfo);
 	
 	@Override
-	@Authorized(CashierPrivilegeConstants.VIEW_BILLS)
+	@Authorized(PrivilegeConstants.VIEW_BILLS)
 	Bill getByUuid(String uuid) throws APIException;
 }

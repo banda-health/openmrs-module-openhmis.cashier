@@ -14,8 +14,7 @@
 package org.openmrs.module.openhmis.cashier.model;
 
 public class CashierRole {
-
-	private String privAdded; 
+	private String privAdded;
 	private String privRemoved; 
 	private String newCashierRole;
 	private String role;

@@ -13,7 +13,7 @@
  */
 package org.openmrs.module.openhmis.cashier.extension.html;
 
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.web.extension.PatientDashboardTabExt;
 
 public class CashierPatientBilHistoryExt extends PatientDashboardTabExt {
@@ -29,7 +29,7 @@ public class CashierPatientBilHistoryExt extends PatientDashboardTabExt {
 
 	@Override
 	public String getRequiredPrivilege() {
-		return CashierPrivilegeConstants.VIEW_BILLS;
+		return PrivilegeConstants.VIEW_BILLS;
 	}
 
 	@Override

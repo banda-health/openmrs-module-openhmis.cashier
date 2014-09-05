@@ -13,22 +13,22 @@
  */
 package org.openmrs.module.openhmis.cashier.api.security;
 
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.entity.security.IObjectAuthorizationPrivileges;
 
 public class BasicEntityAuthorizationPrivileges implements IObjectAuthorizationPrivileges {
 	@Override
 	public String getSavePrivilege() {
-		return CashierPrivilegeConstants.MANAGE_METADATA;
+		return PrivilegeConstants.MANAGE_METADATA;
 	}
 
 	@Override
 	public String getPurgePrivilege() {
-		return CashierPrivilegeConstants.PURGE_METADATA;
+		return PrivilegeConstants.PURGE_METADATA;
 	}
 
 	@Override
 	public String getGetPrivilege() {
-		return CashierPrivilegeConstants.VIEW_METADATA;
+		return PrivilegeConstants.VIEW_METADATA;
 	}
 }

@@ -27,7 +27,7 @@ import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.search.BillSearch;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
@@ -63,7 +63,7 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	 * @should Throw APIException if receipt number cannot be generated.
 	 */
 	@Override
-	@Authorized( { CashierPrivilegeConstants.MANAGE_BILLS } )
+	@Authorized( { PrivilegeConstants.MANAGE_BILLS } )
 	@Transactional
 	public Bill save(Bill bill) throws APIException {
 		if (bill == null) {
@@ -73,7 +73,7 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 		/* Check for refund.
 		 * A refund is given when the total of the bill's line items is negative.
 		 */
-		if (bill.getTotal().compareTo(BigDecimal.ZERO) < 0 && !Context.hasPrivilege(CashierPrivilegeConstants.REFUND_MONEY)) {
+		if (bill.getTotal().compareTo(BigDecimal.ZERO) < 0 && !Context.hasPrivilege(PrivilegeConstants.REFUND_MONEY)) {
 			throw new AccessControlException("Access denied to give a refund.");
 		}
 		IReceiptNumberGenerator generator = ReceiptNumberGeneratorFactory.getGenerator();
@@ -89,7 +89,7 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	}
 
 	@Override
-	@Authorized( { CashierPrivilegeConstants.VIEW_BILLS } )
+	@Authorized( { PrivilegeConstants.VIEW_BILLS } )
 	@Transactional(readOnly = true)
 	public Bill getBillByReceiptNumber(String receiptNumber) throws APIException {
 		if (StringUtils.isEmpty(receiptNumber)) {
@@ -209,21 +209,21 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 
 	@Override
 	public String getVoidPrivilege() {
-		return CashierPrivilegeConstants.MANAGE_BILLS;
+		return PrivilegeConstants.MANAGE_BILLS;
 	}
 
 	@Override
 	public String getSavePrivilege() {
-		return CashierPrivilegeConstants.MANAGE_BILLS;
+		return PrivilegeConstants.MANAGE_BILLS;
 	}
 
 	@Override
 	public String getPurgePrivilege() {
-		return CashierPrivilegeConstants.PURGE_BILLS;
+		return PrivilegeConstants.PURGE_BILLS;
 	}
 
 	@Override
 	public String getGetPrivilege() {
-		return CashierPrivilegeConstants.VIEW_BILLS;
+		return PrivilegeConstants.VIEW_BILLS;
 	}
 }

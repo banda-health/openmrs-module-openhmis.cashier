@@ -101,7 +101,7 @@
 	</privilege>
 
 	<privilege>
-		<name>Give Refund</name>
+		<name>Refund Money</name>
 		<description>Able to create/adjust a bill so that it refunds money.</description>
 	</privilege>
 

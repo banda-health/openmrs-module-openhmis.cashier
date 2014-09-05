@@ -20,7 +20,7 @@ import org.openmrs.module.jasperreport.JasperReportService;
 import org.openmrs.module.jasperreport.ReportGenerator;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
-import org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants;
+import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +49,7 @@ public class ReceiptController {
 			response.sendError(404, "Could not find bill with receipt number \""+receiptNumber+"\"");
 			return;
 		}
-		if (bill.isReceiptPrinted() && !Context.hasPrivilege(CashierPrivilegeConstants.REPRINT_RECEIPT)) {
+		if (bill.isReceiptPrinted() && !Context.hasPrivilege(PrivilegeConstants.REPRINT_RECEIPT)) {
 			response.sendError(403, "You do not have permission to reprint receipt \""+receiptNumber+"\"");
 			return;
 		}

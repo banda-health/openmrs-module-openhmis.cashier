@@ -1,4 +1,4 @@
-<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierPrivilegeWebConstants" %>
+<%@ page import="org.openmrs.module.openhmis.cashier.web.PrivilegeWebConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
@@ -13,7 +13,7 @@
   ~
   ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
   --%>
-<openmrs:require allPrivileges="<%=CashierPrivilegeWebConstants.CASHPOINTS_PAGE_PRIVILEDGES%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/cashPoints.form" />
+<openmrs:require allPrivileges="<%=PrivilegeWebConstants.CASHPOINTS_PAGE_PRIVILEDGES%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/cashPoints.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <%@ include file="template/linksHeader.jsp"%>
