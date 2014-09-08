@@ -720,5 +720,20 @@
 			WHERE privilege = 'Purge Cashier Items'
 		</sql>
     </changeSet>
-    
+    <changeSet id="openhmis.cashier-v2.0.0-5" author="marios">
+		<sql>
+			INSERT INTO role_privilege (role, privilege)
+			SELECT role, 'Refund Money'
+			FROM role_privilege
+			WHERE privilege = 'Give Refund'
+		</sql>
+		<sql>
+			DELETE FROM role_privilege
+			WHERE privilege = 'Give Refund'
+		</sql>
+		<sql>
+			DELETE FROM privilege
+			WHERE privilege = 'Give Refund'
+		</sql>
+    </changeSet>
 </databaseChangeLog>
