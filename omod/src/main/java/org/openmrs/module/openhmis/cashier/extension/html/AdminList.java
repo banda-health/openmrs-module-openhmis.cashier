@@ -42,7 +42,12 @@ public class AdminList extends AdministrationSectionExt {
 	public String getTitle() {
 		return "openhmis.cashier.title";
 	}
-	
+
+	@Override
+	public String getRequiredPrivilege() {
+		return PrivilegeConstants.MANAGE_BILLS;
+	}
+
 	/**
 	 * @see AdministrationSectionExt#getLinks()
 	 */
