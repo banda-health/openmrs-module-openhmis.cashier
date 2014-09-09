@@ -54,6 +54,11 @@ public class BillAddEditController {
 	    Timesheet timesheet = null;
 		try {
 			timesheet = TimesheetHelper.getCurrentTimesheet();
+		} catch (RuntimeException e) {
+			LOG.error("Error retrieving provider for current user. ", e);
+			timesheet = null;
+			return "redirect:/login.htm";
+			
 		} catch (Exception e) {
 			LOG.error("An exception occured: ", e);
 			timesheet = null;
