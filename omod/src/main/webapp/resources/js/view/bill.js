@@ -220,7 +220,6 @@ define(
 			},
 
 			onItemRemoved: function(itemView) {
-				this.setupNewItem();
 				openhmis.GenericListEntryView.prototype.onItemRemoved.call(this, itemView);
 				this.updateTotals();
 			},
