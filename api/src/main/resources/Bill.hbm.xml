@@ -22,6 +22,7 @@
 		<property name="status" column="status" not-null="true">
 			<type name="org.hibernate.type.EnumType">
 				<param name="enumClass">org.openmrs.module.openhmis.cashier.api.model.BillStatus</param>
+				<param name="type">12</param>
 			</type>
 		</property>
 

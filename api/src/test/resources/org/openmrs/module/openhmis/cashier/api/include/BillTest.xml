@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-	<cashier_bill bill_id="0" receipt_number="test 1 receipt number" provider_id="0" patient_id="0" cash_point_id="0" status="1"
+	<cashier_bill bill_id="0" receipt_number="test 1 receipt number" provider_id="0" patient_id="0"
+				  cash_point_id="0" status="POSTED"
 	              creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B95D74360004" receipt_printed="0" />
 	<cashier_bill_line_item bill_line_item_id="0" bill_id="0" item_id="0" price="101.01" price_name="default" quantity="1" line_item_order="0"
 							creator="1" date_created="2012-01-01 00:00:00.0" voided="false" uuid="4028814B39B565A20139B95FB3440005" />
