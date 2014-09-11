@@ -63,7 +63,10 @@ public class ReceiptController {
 		}
 		JasperReportService reportService = Context.getService(JasperReportService.class);
 		JasperReport report = reportService.getJasperReport(reportId);
+
+		String name = report.getName();
 		report.setName(receiptNumber);
+
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("billId", bill.getId());
 		try {
@@ -72,6 +75,10 @@ public class ReceiptController {
 			response.sendError(500, "Error generating report for receipt \""+receiptNumber+"\""); 
 			return;
 		}
+
+		// Reset the report name
+		report.setName(name);
+
 		bill.setReceiptPrinted(true);
 		service.save(bill);
 	}
