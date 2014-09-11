@@ -45,4 +45,10 @@ public interface ITimesheetService extends IEntityDataService<Timesheet> {
 	 * @should return timesheets that start before date and have not ended
 	 */
 	List<Timesheet> getTimesheetsByDate(Provider cashier, Date date);
+
+	/**
+	* Closes all open {@link Timesheet}'s.
+	* @should return close all open timesheets
+	*/
+	void closeOpenTimesheets();
 }
