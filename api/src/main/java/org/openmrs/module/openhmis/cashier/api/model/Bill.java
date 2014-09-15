@@ -90,9 +90,9 @@ public class Bill extends BaseOpenmrsData {
 
 	public BigDecimal getAmountPaid() {
 		BigDecimal total = getTotal();
-		BigDecimal payments = getTotalPayments();
+		BigDecimal totalPayments = getTotalPayments();
 
-		return total.min(payments);
+		return total.min(totalPayments);
 	}
 
 	@Override

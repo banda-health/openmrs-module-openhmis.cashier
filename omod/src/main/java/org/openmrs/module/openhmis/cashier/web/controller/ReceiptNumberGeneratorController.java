@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value = CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT)
 public class ReceiptNumberGeneratorController {
-	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorController.class);
+	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorController.class);
 
 	@RequestMapping(method = RequestMethod.GET)
 	@Authorized(PrivilegeConstants.MANAGE_BILLS)
@@ -62,7 +62,7 @@ public class ReceiptNumberGeneratorController {
 
 			// Load the generator configuration page, if defined
 			if (selectedGenerator == null) {
-				log.warn("Could not locate a receipt number generator named '" + generatorName + "'.");
+				LOG.warn("Could not locate a receipt number generator named '" + generatorName + "'.");
 			} else if (StringUtils.isEmpty(selectedGenerator.getConfigurationPage())) {
 				// There is no generator configuration page so just set the system generator and reload the page
 				ReceiptNumberGeneratorFactory.setGenerator(selectedGenerator);

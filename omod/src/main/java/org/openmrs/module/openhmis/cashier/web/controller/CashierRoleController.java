@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Privilege;
@@ -122,7 +123,7 @@ public class CashierRoleController {
 	}
 
 	private boolean newRoleValidated(RoleCreationViewModel viewModel, Errors errors) throws Exception {
-		if (viewModel.getNewRoleName() == "") {
+		if (viewModel.getNewRoleName().equals(StringUtils.EMPTY)) {
 			errors.rejectValue("role", "openhmis.cashier.roleCreation.page.feedback.error.blankRole");
 			return false;
 		} else if (checkForDuplicateRole(viewModel.getNewRoleName())) {

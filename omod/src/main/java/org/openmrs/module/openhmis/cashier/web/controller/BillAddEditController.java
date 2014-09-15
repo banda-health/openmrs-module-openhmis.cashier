@@ -73,28 +73,35 @@ public class BillAddEditController {
 		model.addAttribute("url", buildUrlModelAttribute(request));
 
 		if (billUuid != null) {
-			Bill bill = getBillFromService(billUuid);
-			if (bill != null) {
-			    Patient patient = bill.getPatient();
-			    addBillAttributes(model, bill, patient);
-			}
-			return CashierWebConstants.BILL_PAGE;
+			handleExistingBill(model, billUuid);
 		} else {
-			if (patientUuid != null) {
-				Patient patient = getPatientFromService(patientUuid);
-
-				String patientIdentifier = null;
-				if (patient != null) {
-				    patientIdentifier = getPreferedPatientIdentifier(patient);
-				}
-				model.addAttribute("patient", patient);
-				model.addAttribute("patientIdentifier", patientIdentifier);
-			}
+			addPatientAttributes(model, patientUuid);
 			model.addAttribute("showPrint", true);
 			model.addAttribute("cashPoint", timesheet != null ? timesheet.getCashPoint() : null);
-			return CashierWebConstants.BILL_PAGE;
 		}
+		return CashierWebConstants.BILL_PAGE;
 	}
+
+	private void handleExistingBill(ModelMap model, String billUuid) {
+	    Bill bill = getBillFromService(billUuid);
+	    if (bill != null) {
+	        Patient patient = bill.getPatient();
+	        addBillAttributes(model, bill, patient);
+	    }
+    }
+
+	private void addPatientAttributes(ModelMap model, String patientUuid) {
+	    if (patientUuid != null) {
+	    	Patient patient = getPatientFromService(patientUuid);
+
+	    	String patientIdentifier = null;
+	    	if (patient != null) {
+	    	    patientIdentifier = getPreferedPatientIdentifier(patient);
+	    	}
+	    	model.addAttribute("patient", patient);
+	    	model.addAttribute("patientIdentifier", patientIdentifier);
+	    }
+    }
 
     private String getPreferedPatientIdentifier(Patient patient) {
         String patientIdentifier = null;

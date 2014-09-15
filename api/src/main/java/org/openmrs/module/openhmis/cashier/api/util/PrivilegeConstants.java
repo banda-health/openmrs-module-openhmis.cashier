@@ -13,16 +13,15 @@
  */
 package org.openmrs.module.openhmis.cashier.api.util;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.openmrs.Privilege;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.util.JasperReportPrivilegeConstants;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class PrivilegeConstants {
 	public static final String MANAGE_BILLS = "Manage Cashier Bills";

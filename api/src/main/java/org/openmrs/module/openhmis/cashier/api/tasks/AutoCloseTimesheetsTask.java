@@ -15,8 +15,9 @@ public class AutoCloseTimesheetsTask extends AbstractTask {
 	@Override
 	public void execute() {
 		if (!isExecuting) {
-			if (LOG.isDebugEnabled())
+			if (LOG.isDebugEnabled()) {
 				LOG.debug("Starting Auto Close Timesheets Task...");
+			}
 
 			startExecuting();
 

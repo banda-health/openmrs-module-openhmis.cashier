@@ -29,7 +29,7 @@ import org.openmrs.module.web.extension.LinkExt;
 import java.util.Map;
 
 public class CashierLinkExt extends LinkExt {
-	private static Log LOG = LogFactory.getLog(CashierLinkExt.class);
+	private final static  Log LOG = LogFactory.getLog(CashierLinkExt.class);
 
 	private ITimesheetService timesheetService;
 	private ProviderService providerService;

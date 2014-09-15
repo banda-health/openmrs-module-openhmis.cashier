@@ -34,19 +34,19 @@ public class CashPointSearchHandler implements SearchHandler {
     @Override
     public PageableResult search(RequestContext context) throws ResponseException {
         String query = context.getParameter("q");
-        String location_uuid = context.getParameter("location_uuid");
+        String locationUuid = context.getParameter("location_uuid");
         query = query.isEmpty() ? null : query;
-        location_uuid = StringUtils.isEmpty(location_uuid) ? null : location_uuid;
+        locationUuid = StringUtils.isEmpty(locationUuid) ? null : locationUuid;
 
         ICashPointService service = Context.getService(ICashPointService.class);
         LocationService locationService = Context.getLocationService();
-        Location location = locationService.getLocationByUuid(location_uuid);
+        Location location = locationService.getLocationByUuid(locationUuid);
         PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 
         List<CashPoint> cashpoints = null;
         PageableResult results = null;
 
-        if (location_uuid == null) {
+        if (locationUuid == null) {
             // Do a name search
             cashpoints = service.getByNameFragment(query, context.getIncludeAll(), pagingInfo);
         } else if (query == null) {

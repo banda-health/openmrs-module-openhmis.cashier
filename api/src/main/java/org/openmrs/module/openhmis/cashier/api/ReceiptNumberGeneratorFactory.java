@@ -75,22 +75,9 @@ public class ReceiptNumberGeneratorFactory {
 	 */
 	public static IReceiptNumberGenerator getGenerator() throws APIException {
 		if (generator == null) {
-			Class<? super IReceiptNumberGenerator> cls = null;
-			try {
-				cls = FactoryImpl.INSTANCE.getGeneratorClass();
-				if (cls == null) {
-					return null;
-				}
-
-				generator = (IReceiptNumberGenerator) cls.newInstance();
-			} catch (ClassNotFoundException classEx) {
-				LOG.warn("Attempt to load unknown receipt number generator type", classEx);
-
-				throw new APIException("Could not locate receipt number generator class.", classEx);
-			} catch (InstantiationException instantiationEx) {
-				throw new APIException("Could not instantiate the '" + cls.getClass().getName() + "' class.", instantiationEx);
-			} catch (IllegalAccessException accessEx) {
-				throw new APIException("Could not access the '" + cls.getClass().getName() + "' class.", accessEx);
+			generator = getGeneratorInstance();
+			if (generator == null) {
+				return null;
 			}
 		}
 
@@ -101,6 +88,25 @@ public class ReceiptNumberGeneratorFactory {
 
 		return generator;
 	}
+
+	private static IReceiptNumberGenerator getGeneratorInstance() {
+	    Class<? super IReceiptNumberGenerator> cls = null;
+	    try {
+	    	cls = FactoryImpl.INSTANCE.getGeneratorClass();
+	    	if (cls == null) {
+	    		return null;
+	    	}
+
+	    	return generator = (IReceiptNumberGenerator) cls.newInstance();
+	    } catch (ClassNotFoundException classEx) {
+	    	LOG.warn("Attempt to load unknown receipt number generator type", classEx);
+	    	throw new APIException("Could not locate receipt number generator class.", classEx);
+	    } catch (InstantiationException instantiationEx) {
+	    	throw new APIException("Could not instantiate the '" + cls.getClass().getName() + "' class.", instantiationEx);
+	    } catch (IllegalAccessException accessEx) {
+	    	throw new APIException("Could not access the '" + cls.getClass().getName() + "' class.", accessEx);
+	    }
+    }
 
 	/**
 	 * Sets the system-wide {@link IReceiptNumberGenerator}.
