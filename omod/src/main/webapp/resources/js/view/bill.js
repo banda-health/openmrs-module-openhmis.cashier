@@ -71,6 +71,14 @@ define(
 					if (price) {
 						form.fields.price.setValue(price);
 					}
+					if (this.model.attributes.price) {
+						var self = this;
+						options.each(function(model) {
+							if(model.get('price') === self.model.attributes.price) {
+								self.$('select[name=price]').val(model.get('uuid'));
+							}
+						});
+					}
 				}
 			},
 
