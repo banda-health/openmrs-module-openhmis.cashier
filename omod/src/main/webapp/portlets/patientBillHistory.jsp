@@ -7,11 +7,11 @@
   ~ http://license.openmrs.org
   ~
   ~ Software distributed under the License is distributed on an "AS IS"
-  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-  ~ License for the specific language governing rights and limitations
-  ~ under the License.
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+  ~ the License for the specific language governing rights and
+  ~ limitations under the License.
   ~
-  ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+  ~ Copyright (C) OpenHMIS.  All Rights Reserved.
   --%>
 <openmrs:hasPrivilege privilege="Manage Cashier Bills">
     &nbsp;<a href="<openmrs:contextPath />/module/openhmis/cashier/bill.form?patientUuid=${patient.uuid}"><openmrs:message code="openhmis.cashier.addBill" /></a>
