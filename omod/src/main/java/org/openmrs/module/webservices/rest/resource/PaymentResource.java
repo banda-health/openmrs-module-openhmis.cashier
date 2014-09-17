@@ -13,8 +13,11 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
@@ -39,11 +42,8 @@ import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-import javax.annotation.Nullable;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 
 @SubResource(parent = BillResource.class, path = "payment", supportedClass=Payment.class, supportedOpenmrsVersions={"1.9"})
 public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillResource> {

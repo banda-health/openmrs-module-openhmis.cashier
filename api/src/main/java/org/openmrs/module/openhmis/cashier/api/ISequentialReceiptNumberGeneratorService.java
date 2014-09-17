@@ -13,12 +13,12 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import java.util.List;
+
 import org.openmrs.module.openhmis.cashier.api.model.GroupSequence;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 public interface ISequentialReceiptNumberGeneratorService
 		extends IObjectDataService<SequentialReceiptNumberGeneratorModel> {

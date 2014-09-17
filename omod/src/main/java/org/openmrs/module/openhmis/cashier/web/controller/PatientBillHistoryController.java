@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import java.util.List;
+
 import org.directwebremoting.util.Logger;
 import org.openmrs.api.PatientService;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
@@ -23,8 +25,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/module/openhmis/cashier/portlets/patientBillHistory")

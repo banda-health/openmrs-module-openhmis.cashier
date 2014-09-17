@@ -27,4 +27,3 @@ public class CashierResourceController extends MainResourceController {
 		return RestConstants.VERSION_2 + "/cashier";
 	}
 }
-

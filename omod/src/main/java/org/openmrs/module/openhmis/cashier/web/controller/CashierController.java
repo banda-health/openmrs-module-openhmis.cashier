@@ -31,6 +31,7 @@ import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
 import org.openmrs.module.jasperreport.JasperReportService;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ICashPointService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
@@ -100,22 +101,23 @@ public class CashierController {
 			throw new APIException("ERROR: Could not locate the provider. Please make sure the user is listed as provider (Admin -> Manage providers)");
 		}
 
-		if (StringUtils.isEmpty(returnUrl)) {
+		String returnTo = returnUrl;
+		if (StringUtils.isEmpty(returnTo)) {
 			HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-			returnUrl = req.getHeader("Referer");
+			returnTo = req.getHeader("Referer");
 
-			if (!StringUtils.isEmpty(returnUrl)) {
+			if (!StringUtils.isEmpty(returnTo)) {
 				try {
-					URL url = new URL(returnUrl);
+					URL url = new URL(returnTo);
 
-					returnUrl = url.getPath();
-					if (StringUtils.startsWith(returnUrl, req.getContextPath())) {
+					returnTo = url.getPath();
+					if (StringUtils.startsWith(returnTo, req.getContextPath())) {
 
-						returnUrl = returnUrl.substring(req.getContextPath().length());
+						returnTo = returnTo.substring(req.getContextPath().length());
 					}
 				} catch (MalformedURLException e) {
-					LOG.warn("Could not parse referrer url '" + returnUrl + "'");
-					returnUrl = "";
+					LOG.warn("Could not parse referrer url '" + returnTo + "'");
+					returnTo = "";
 				}
 			}
 		}
@@ -131,7 +133,7 @@ public class CashierController {
 		// load shift report (this must be refactored for the next version)
 		loadShiftReport(modelMap);
 
-		addRenderAttributes(modelMap, timesheet, provider, returnUrl);
+		addRenderAttributes(modelMap, timesheet, provider, returnTo);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -166,7 +168,7 @@ public class CashierController {
 			jasperService = Context.getService(JasperReportService.class);
 		}
 		JasperReport shiftReport = null;
-		String shiftReportId = adminService.getGlobalProperty(CashierWebConstants.CASHIER_SHIFT_REPORT_ID_PROPERTY);
+		String shiftReportId = adminService.getGlobalProperty(ModuleSettings.CASHIER_SHIFT_REPORT_ID_PROPERTY);
 		if (StringUtils.isNotEmpty(shiftReportId)) {
 			if (StringUtils.isNumeric(shiftReportId)) {
 				shiftReport = jasperService.getJasperReport(Integer.parseInt(shiftReportId));

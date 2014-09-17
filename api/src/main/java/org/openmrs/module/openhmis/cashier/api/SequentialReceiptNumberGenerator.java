@@ -13,6 +13,10 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,10 +25,6 @@ import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.patient.impl.LuhnIdentifierValidator;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator {
 	public static enum SequenceType {
@@ -198,4 +198,3 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 		return number;
 	}
 }
-

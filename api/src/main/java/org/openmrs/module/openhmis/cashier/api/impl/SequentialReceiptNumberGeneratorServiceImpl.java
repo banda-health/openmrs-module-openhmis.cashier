@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.api.APIException;
@@ -22,8 +24,6 @@ import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGene
 import org.openmrs.module.openhmis.cashier.api.security.BasicEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseObjectDataServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Transactional
 public class SequentialReceiptNumberGeneratorServiceImpl

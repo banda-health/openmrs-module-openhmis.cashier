@@ -13,9 +13,9 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.module.openhmis.commons.api.entity.model.BaseCustomizableInstanceData;
-
 import java.math.BigDecimal;
+
+import org.openmrs.module.openhmis.commons.api.entity.model.BaseCustomizableInstanceData;
 
 /**
  * Model class that represents the {@link Bill} payment information.

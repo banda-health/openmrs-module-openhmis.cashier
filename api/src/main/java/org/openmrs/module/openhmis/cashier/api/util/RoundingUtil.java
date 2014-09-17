@@ -1,11 +1,14 @@
 package org.openmrs.module.openhmis.cashier.api.util;
 
+import java.math.BigDecimal;
+
 import org.apache.commons.logging.Log;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
@@ -17,9 +20,9 @@ import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
 
-import java.math.BigDecimal;
-
 public class RoundingUtil {
+	protected RoundingUtil() {}
+
 	public static BigDecimal round(BigDecimal value, BigDecimal nearest, CashierOptions.RoundingMode mode) {
 		if (nearest.equals(BigDecimal.ZERO)) {
 			return value;
@@ -51,7 +54,7 @@ public class RoundingUtil {
 		 */
 		AdministrationService adminService = Context.getService(AdministrationService.class);
 
-		String nearest = adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY);
+		String nearest = adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY);
 		if (nearest != null && !nearest.isEmpty() && !nearest.equals("0")) {
 			MessageSourceService msgService = Context.getMessageSourceService();
 			IDepartmentDataService deptService = Context.getService(IDepartmentDataService.class);
@@ -73,7 +76,7 @@ public class RoundingUtil {
 				department.setRetireReason("Used by Cashier Module for rounding adjustments.");
 				deptService.save(department);
 				log.info("Created department for rounding item (ID = " + department.getId() + ")...");
-				adminService.saveGlobalProperty(new GlobalProperty(CashierWebConstants.ROUNDING_DEPT_ID, department.getId().toString()));
+				adminService.saveGlobalProperty(new GlobalProperty(ModuleSettings.ROUNDING_DEPT_ID, department.getId().toString()));
 				
 				Item item = new Item();
 				item.setName(name);
@@ -84,7 +87,7 @@ public class RoundingUtil {
 				item.setDefaultPrice(price);
 				itemService.save(item);
 				log.info("Created item for rounding (ID = " + item.getId() + ")...");
-				adminService.saveGlobalProperty(new GlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID, item.getId().toString()));
+				adminService.saveGlobalProperty(new GlobalProperty(ModuleSettings.ROUNDING_ITEM_ID, item.getId().toString()));
 			}
 		}	
 	}
@@ -123,7 +126,7 @@ public class RoundingUtil {
 	private static Integer parseItemId(AdministrationService adminService) {
 		Integer itemId;
 		try {
-			itemId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID));
+			itemId = Integer.parseInt(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID));
 		}
 		catch (NumberFormatException e) {
 			itemId = null;
@@ -134,7 +137,7 @@ public class RoundingUtil {
 	private static Integer parseDepartmentId(AdministrationService adminService) {
 		Integer deptId;
 		try {
-			deptId = Integer.parseInt(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_DEPT_ID));
+			deptId = Integer.parseInt(adminService.getGlobalProperty(ModuleSettings.ROUNDING_DEPT_ID));
 		}
 		catch (NumberFormatException e) {
 			deptId = null;

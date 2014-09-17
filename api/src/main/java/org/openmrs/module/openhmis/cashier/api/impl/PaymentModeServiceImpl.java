@@ -15,11 +15,11 @@
 package org.openmrs.module.openhmis.cashier.api.impl;
 
 import org.openmrs.api.APIException;
-import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
+import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
@@ -46,8 +47,8 @@ public class CashierOptionsController {
 
         CashierOptions options = cashierOptionsService.getOptions();
 
-        String roundingModeProperty = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY);
-        String roundingItemId = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID);
+        String roundingModeProperty = adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY);
+        String roundingItemId = adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID);
         if(StringUtils.isNotEmpty(roundingModeProperty)) {
             if (StringUtils.isEmpty(options.getRoundingItemUuid()) && StringUtils.isNotEmpty(roundingItemId)) {
                 throw new APIException("Rounding item ID set in options but item not found. Make sure your user has the required rights and the item has the set ID in the database");

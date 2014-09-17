@@ -13,6 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
@@ -24,10 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
 
 @Controller
 @RequestMapping(value = CashierWebConstants.JASPER_REPORT_PAGE)

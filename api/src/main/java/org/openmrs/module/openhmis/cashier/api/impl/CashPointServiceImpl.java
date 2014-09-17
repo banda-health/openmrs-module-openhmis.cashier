@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
@@ -28,8 +30,6 @@ import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServi
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Transactional
 public class CashPointServiceImpl
@@ -96,4 +96,3 @@ public class CashPointServiceImpl
         });
     }
 }
-

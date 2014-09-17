@@ -24,4 +24,3 @@ public class BasicMetadataAuthorizationPrivileges
 		return PrivilegeConstants.MANAGE_METADATA;
 	}
 }
-

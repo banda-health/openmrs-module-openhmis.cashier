@@ -12,9 +12,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
-import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 
 public class CashierOptionsControllerTest {
 
@@ -28,7 +28,7 @@ public class CashierOptionsControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY)).thenReturn("RM");
+        when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY)).thenReturn("RM");
         cashierOptionsController = new CashierOptionsController(adminService, cashierOptionsService);
 
     }
@@ -42,7 +42,7 @@ public class CashierOptionsControllerTest {
         options = new CashierOptions();
         options.setRoundingItemUuid(null);
         when(cashierOptionsService.getOptions()).thenReturn(options);
-        when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID)).thenReturn("12");
+        when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID)).thenReturn("12");
         cashierOptionsController.options();
     }
 
@@ -53,7 +53,7 @@ public class CashierOptionsControllerTest {
         options = new CashierOptions();
         options.setRoundToNearest(BigDecimal.TEN);
         when(cashierOptionsService.getOptions()).thenReturn(options);
-        when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID)).thenReturn(null);
+        when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID)).thenReturn(null);
         cashierOptionsController.options();
     }
 

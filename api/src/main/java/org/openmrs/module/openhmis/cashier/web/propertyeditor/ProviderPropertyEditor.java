@@ -13,13 +13,13 @@
  */
 package org.openmrs.module.openhmis.cashier.web.propertyeditor;
 
+import java.beans.PropertyEditorSupport;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.openmrs.Provider;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
-
-import java.beans.PropertyEditorSupport;
 
 public class ProviderPropertyEditor extends PropertyEditorSupport {
 	@Override

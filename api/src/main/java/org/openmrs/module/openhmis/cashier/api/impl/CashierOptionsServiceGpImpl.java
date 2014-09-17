@@ -19,9 +19,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
-import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
-
 	private static final Log LOG = LogFactory.getLog(CashierOptionsServiceGpImpl.class);
 
 	private AdministrationService adminService;
@@ -67,16 +66,16 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 	}
 
 	private void setRoundingOptions(CashierOptions options) {
-		String roundingModeProperty = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY);
+		String roundingModeProperty = adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY);
 		if (StringUtils.isNotEmpty(roundingModeProperty)) {
 			try {
 				options.setRoundingMode(CashierOptions.RoundingMode.valueOf(roundingModeProperty));
 
-				String roundToNearestProperty = adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY);
+				String roundToNearestProperty = adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY);
 				if (StringUtils.isNotEmpty(roundToNearestProperty)) {
 					options.setRoundToNearest(new BigDecimal(roundToNearestProperty));
 
-					String roundingItemId = adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID);
+					String roundingItemId = adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID);
 					if (StringUtils.isNotEmpty(roundingItemId)) {
 						Item roundingItem = null;
 						try {
@@ -103,7 +102,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 	}
 
 	private void setDefaultReceiptReportId(CashierOptions options) {
-		String receiptReportIdProperty = adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY);
+		String receiptReportIdProperty = adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY);
 		if (StringUtils.isNotEmpty(receiptReportIdProperty)) {
 			try {
 				options.setDefaultReceiptReportId(Integer.parseInt(receiptReportIdProperty));
@@ -120,7 +119,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 	}
 
 	private void setTimesheetOptions(CashierOptions options) {
-		String timesheetRequiredProperty = adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY);
+		String timesheetRequiredProperty = adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY);
 		if (StringUtils.isNotBlank(timesheetRequiredProperty)) {
 			try {
 				options.setTimesheetRequired(Boolean.parseBoolean(timesheetRequiredProperty));

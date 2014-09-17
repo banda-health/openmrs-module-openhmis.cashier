@@ -56,4 +56,3 @@ public interface IReceiptNumberGenerator {
 	 */
 	String generateNumber(Bill bill);
 }
-

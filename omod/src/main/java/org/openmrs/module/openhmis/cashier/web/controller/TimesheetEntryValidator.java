@@ -13,11 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import java.util.Date;
+
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
-import java.util.Date;
 
 public class TimesheetEntryValidator implements Validator {
 

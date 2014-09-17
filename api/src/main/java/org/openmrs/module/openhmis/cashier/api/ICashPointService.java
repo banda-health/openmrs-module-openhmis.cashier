@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import java.util.List;
+
 import org.openmrs.Location;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
@@ -21,8 +23,6 @@ import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 public interface ICashPointService extends IMetadataDataService<CashPoint> {
     /**
@@ -85,4 +85,3 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
     @Authorized( { PrivilegeConstants.MANAGE_METADATA})
     List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired, PagingInfo pagingInfo) throws APIException;
 }
-

@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
@@ -44,15 +45,15 @@ public class CashierOptionsServiceGpImplTest {
 	 */
 	@Test
 	public void getOptions_shouldLoadCashierOptionsFromTheDatabase() throws Exception {
-		when(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
 				.thenReturn("1");
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
 				.thenReturn(CashierOptions.RoundingMode.MID.toString());
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
 				.thenReturn("5");
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
 				.thenReturn("1");
-		when(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY))
 				.thenReturn("true");
 
 		Item item = new Item();
@@ -75,15 +76,15 @@ public class CashierOptionsServiceGpImplTest {
 	 */
 	@Test
 	public void getOptions_shouldNotThrowExceptionIfNumericOptionsAreNull() throws Exception {
-		when(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
 				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
 				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
 				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
 				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY))
 				.thenReturn(null);
 
 		CashierOptions options = optionsService.getOptions();
@@ -97,15 +98,15 @@ public class CashierOptionsServiceGpImplTest {
 	 */
 	@Test
 	public void getOptions_shouldDefaultToFalseIfTimesheetRequiredIsNotSpecified() throws Exception {
-		when(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
 				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
 				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
 				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
 				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY))
 				.thenReturn(null);
 
 		CashierOptions options = optionsService.getOptions();
@@ -121,13 +122,13 @@ public class CashierOptionsServiceGpImplTest {
 	@Test
 	public void getOptions_shouldLogErrorIfRoundingItemIdCannotBeParsed() throws Exception {
 
-		when(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
 				.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
 				.thenReturn(CashierOptions.RoundingMode.FLOOR.toString());
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
 				.thenReturn("5");
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
 				.thenReturn("HELP");
 
 		Logger logger = Logger.getLogger(CashierOptionsServiceGpImpl.class);
@@ -154,15 +155,15 @@ public class CashierOptionsServiceGpImplTest {
 	@Test
 	public void getOptions_shouldLogErrorIfRoundingItemIsNullDespiteIdGiven() throws Exception {
 
-		when(adminService.getGlobalProperty(CashierWebConstants.RECEIPT_REPORT_ID_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
 			.thenReturn(null);
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_MODE_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
 			.thenReturn(CashierOptions.RoundingMode.FLOOR.toString());
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUND_TO_NEAREST_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
 			.thenReturn("5");
-		when(adminService.getGlobalProperty(CashierWebConstants.ROUNDING_ITEM_ID))
+		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
 			.thenReturn("273423");
-		when(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY))
+		when(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY))
 			.thenReturn(null);
 
 		Logger logger = Logger.getLogger(CashierOptionsServiceGpImpl.class);

@@ -13,10 +13,10 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
+import java.math.BigDecimal;
+
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
-
-import java.math.BigDecimal;
 
 /**
  * A LineItem represents a line on a {@link Bill} which will bill some quantity

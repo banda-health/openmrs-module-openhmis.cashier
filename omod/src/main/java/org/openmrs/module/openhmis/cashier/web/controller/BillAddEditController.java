@@ -29,7 +29,7 @@ import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
-import org.openmrs.module.openhmis.cashier.api.util.TimesheetHelper;
+import org.openmrs.module.openhmis.cashier.api.util.TimesheetUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.springframework.stereotype.Controller;
@@ -53,7 +53,7 @@ public class BillAddEditController {
 
 	    Timesheet timesheet = null;
 		try {
-			timesheet = TimesheetHelper.getCurrentTimesheet();
+			timesheet = TimesheetUtil.getCurrentTimesheet();
 		} catch (RuntimeException e) {
 			LOG.error("Error retrieving provider for current user. ", e);
 			timesheet = null;
@@ -64,7 +64,7 @@ public class BillAddEditController {
 			timesheet = null;
 		}
 
-        if (timesheet == null && TimesheetHelper.isTimesheetRequired()) {
+        if (timesheet == null && TimesheetUtil.isTimesheetRequired()) {
            return buildRedirectUrl(request);
         }
 

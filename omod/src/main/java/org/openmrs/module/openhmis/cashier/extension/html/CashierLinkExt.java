@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.openhmis.cashier.extension.html;
 
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Provider;
@@ -25,8 +27,6 @@ import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.ProviderHelper;
 import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.openmrs.module.web.extension.LinkExt;
-
-import java.util.Map;
 
 public class CashierLinkExt extends LinkExt {
 	private final static  Log LOG = LogFactory.getLog(CashierLinkExt.class);

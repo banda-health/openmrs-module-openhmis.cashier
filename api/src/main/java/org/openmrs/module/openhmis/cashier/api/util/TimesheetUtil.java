@@ -19,13 +19,16 @@ import org.openmrs.Provider;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.ProviderHelper;
 
-public class TimesheetHelper {
-    private static final Log LOG = LogFactory.getLog(TimesheetHelper.class);
+public class TimesheetUtil {
+    private static final Log LOG = LogFactory.getLog(TimesheetUtil.class);
+
+	protected TimesheetUtil() {}
 
 	public static Timesheet getCurrentTimesheet() throws TimesheetRequiredException {
 		Provider provider = null;
@@ -52,7 +55,7 @@ public class TimesheetHelper {
 		AdministrationService adminService = Context.getAdministrationService();
 		boolean timesheetRequired;
 		try {
-			timesheetRequired = Boolean.parseBoolean(adminService.getGlobalProperty(CashierWebConstants.TIMESHEET_REQUIRED_PROPERTY));
+			timesheetRequired = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY));
 		} catch (Exception e) {
             LOG.error("Error occured while trying to parse the boolean value" + e);
 			timesheetRequired = false;

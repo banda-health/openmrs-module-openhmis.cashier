@@ -17,8 +17,8 @@ import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeAttributeTypeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizationPrivileges;
-import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
+import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 
 public class PaymentModeAttributeTypeServiceImpl
 		extends BaseMetadataDataServiceImpl<PaymentModeAttributeType>

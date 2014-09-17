@@ -78,11 +78,11 @@ public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
 	}
 
 	public void setSeparator(String separator) {
-		if (separator == null) {
-			separator = "";
-		}
-
 		this.separator = separator;
+
+		if (this.separator == null) {
+			this.separator = "";
+		}
 	}
 
 	public String getCashierPrefix() {

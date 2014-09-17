@@ -14,17 +14,17 @@
 
 package org.openmrs.module.openhmis.cashier.api;
 
+import java.util.List;
+
 import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.search.BillSearch;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
-import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Transactional
 public interface IBillService extends IEntityDataService<Bill> {

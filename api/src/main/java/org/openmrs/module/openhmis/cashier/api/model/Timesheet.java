@@ -13,10 +13,10 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
+import java.util.Date;
+
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Provider;
-
-import java.util.Date;
 
 /**
  * Model class to represent a cashier timesheet entry.

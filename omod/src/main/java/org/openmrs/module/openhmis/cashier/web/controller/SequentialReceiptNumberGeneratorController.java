@@ -17,8 +17,8 @@ import org.openmrs.module.openhmis.cashier.api.ISequentialReceiptNumberGenerator
 import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
 import org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
-import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,7 +30,7 @@ import org.springframework.web.context.request.WebRequest;
 @Controller
 @RequestMapping(value = CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_PAGE)
 public class SequentialReceiptNumberGeneratorController {
-	ISequentialReceiptNumberGeneratorService service;
+	private ISequentialReceiptNumberGeneratorService service;
 
 	@Autowired
 	public SequentialReceiptNumberGeneratorController(ISequentialReceiptNumberGeneratorService service) {

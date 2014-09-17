@@ -13,6 +13,13 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
+import java.math.BigDecimal;
+import java.security.AccessControlException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
@@ -20,10 +27,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
-
-import java.math.BigDecimal;
-import java.security.AccessControlException;
-import java.util.*;
 
 /**
  * Model class that represents a list of {@link BillLineItem}s and {@link Payment}s created by a cashier for a patient.
@@ -320,4 +323,3 @@ public class Bill extends BaseOpenmrsData {
 		}
 	}
 }
-
