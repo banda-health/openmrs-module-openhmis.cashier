@@ -38,67 +38,70 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CashierLogoutFilter implements Filter {
-
-    private static final Log LOG = LogFactory.getLog(CashierLogoutFilter.class);
-    private static final String PROVIDER_ERROR_LOG_MESSAGE = "Could not locate the Provider";
-    private static final Object TIMESHEET_ERROR_LOG_MESSAGE = "Could not locate Timesheet";
-
-    @Autowired private ProviderService providerService;
-    @Autowired private ITimesheetService timesheetService;
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        LOG.debug("doCashierLogoutFilter");
-        clockOutCashier();
-        chain.doFilter(request, response);
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-
-    private void clockOutCashier() {
-        if (userIsNotCashier()) {
-            return;
-        }
-
-        Provider provider = ProviderHelper.getCurrentProvider(providerService);
-
-        if (provider == null) {
-            LOG.error(PROVIDER_ERROR_LOG_MESSAGE);
-            return;
-        }
-
-        Timesheet timesheet = timesheetService.getCurrentTimesheet(provider);
-
-        if (timesheet == null) {
-            LOG.error(TIMESHEET_ERROR_LOG_MESSAGE);
-            return;
-        }
-
-        if (cashierIsClockedIn(timesheet)) {
-            timesheet.setClockOut(new Date());
-            timesheetService.save(timesheet);
-        }
-    }
-
-    private boolean userIsNotCashier() {
-        boolean isNotCashier = true;
-        User authenticatedUser = Context.getAuthenticatedUser();
-        if (authenticatedUser != null) {
-            isNotCashier = !authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_TIMESHEETS) || authenticatedUser.isSuperUser();
-        }
-        return isNotCashier;
-    }
-
-    private boolean cashierIsClockedIn(Timesheet timesheet) {
-        return timesheet != null && timesheet.getClockIn() != null;
-    }
-
+	private static final Log LOG = LogFactory.getLog(CashierLogoutFilter.class);
+	private static final String PROVIDER_ERROR_LOG_MESSAGE = "Could not locate the Provider";
+	private static final Object TIMESHEET_ERROR_LOG_MESSAGE = "Could not locate Timesheet";
+	
+	@Autowired
+	private ProviderService providerService;
+	@Autowired
+	private ITimesheetService timesheetService;
+	
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+	        ServletException {
+		LOG.debug("doCashierLogoutFilter");
+		clockOutCashier();
+		chain.doFilter(request, response);
+	}
+	
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		
+	}
+	
+	@Override
+	public void destroy() {
+		
+	}
+	
+	private void clockOutCashier() {
+		if (userIsNotCashier()) {
+			return;
+		}
+		
+		Provider provider = ProviderHelper.getCurrentProvider(providerService);
+		
+		if (provider == null) {
+			LOG.error(PROVIDER_ERROR_LOG_MESSAGE);
+			return;
+		}
+		
+		Timesheet timesheet = timesheetService.getCurrentTimesheet(provider);
+		
+		if (timesheet == null) {
+			LOG.error(TIMESHEET_ERROR_LOG_MESSAGE);
+			return;
+		}
+		
+		if (cashierIsClockedIn(timesheet)) {
+			timesheet.setClockOut(new Date());
+			timesheetService.save(timesheet);
+		}
+	}
+	
+	private boolean userIsNotCashier() {
+		boolean isNotCashier = true;
+		User authenticatedUser = Context.getAuthenticatedUser();
+		if (authenticatedUser != null) {
+			isNotCashier =
+			        !authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_TIMESHEETS) || authenticatedUser.isSuperUser();
+		}
+		return isNotCashier;
+	}
+	
+	private boolean cashierIsClockedIn(Timesheet timesheet) {
+		return timesheet != null && timesheet.getClockIn() != null;
+	}
+	
 }

@@ -22,14 +22,15 @@ import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
-@Resource(name=RestConstants.VERSION_2 + "/cashier/paymentModeAttributeType", supportedClass=PaymentModeAttributeType.class, supportedOpenmrsVersions={"1.9"})
+@Resource(name = RestConstants.VERSION_2 + "/cashier/paymentModeAttributeType",
+        supportedClass = PaymentModeAttributeType.class, supportedOpenmrsVersions = { "1.9" })
 public class PaymentModeAttributeTypeResource
-		extends BaseRestInstanceAttributeTypeResource<PaymentModeAttributeType, Payment, PaymentMode, PaymentAttribute> {
+        extends BaseRestInstanceAttributeTypeResource<PaymentModeAttributeType, Payment, PaymentMode, PaymentAttribute> {
 	@Override
 	public PaymentModeAttributeType newDelegate() {
 		return new PaymentModeAttributeType();
 	}
-
+	
 	@Override
 	public Class<? extends IMetadataDataService<PaymentModeAttributeType>> getServiceClass() {
 		return IPaymentModeAttributeTypeService.class;

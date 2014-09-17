@@ -18,9 +18,9 @@ package org.openmrs.module.openhmis.cashier.api.model;
  */
 public enum BillStatus {
 	PENDING(0), POSTED(4), PAID(1), CANCELLED(2), ADJUSTED(3);
-
+	
 	private int value;
-
+	
 	private BillStatus(int value) {
 		this.value = value;
 	}

@@ -17,27 +17,28 @@ import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Location;
 
 /**
- * Model class that represents a location where {@link org.openmrs.module.openhmis.cashier.api.model.Bill}'s can be created and paid for.
+ * Model class that represents a location where
+ * {@link org.openmrs.module.openhmis.cashier.api.model.Bill}'s can be created and paid for.
  */
 public class CashPoint extends BaseOpenmrsMetadata {
 	private static final long serialVersionUID = 0L;
-
+	
 	private Integer cashPointId;
-    private Location location;
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    @Override
+	private Location location;
+	
+	public Location getLocation() {
+		return location;
+	}
+	
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+	
+	@Override
 	public Integer getId() {
 		return this.cashPointId;
 	}
-
+	
 	@Override
 	public void setId(Integer id) {
 		this.cashPointId = id;

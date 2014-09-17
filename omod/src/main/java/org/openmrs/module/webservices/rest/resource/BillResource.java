@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Iterators;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
@@ -35,7 +34,6 @@ import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.RoundingUtil;
-import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
@@ -46,9 +44,11 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.springframework.web.client.RestClientException;
 
-@Resource(name=RestConstants.VERSION_2 + "/cashier/bill", supportedClass=Bill.class, supportedOpenmrsVersions={"1.9"})
+import com.google.common.collect.Iterators;
+
+@Resource(name = RestConstants.VERSION_2 + "/cashier/bill", supportedClass = Bill.class,
+        supportedOpenmrsVersions = { "1.9" })
 public class BillResource extends BaseRestDataResource<Bill> {
-	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
@@ -62,11 +62,11 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			description.addProperty("payments", Representation.FULL);
 			description.addProperty("receiptNumber");
 			description.addProperty("status");
-            description.addProperty("adjustmentReason");
+			description.addProperty("adjustmentReason");
 		}
 		return description;
-    }
-
+	}
+	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		return getRepresentationDescription(new DefaultRepresentation());
@@ -78,18 +78,18 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			instance.setLineItems(new ArrayList<BillLineItem>(lineItems.size()));
 		}
 		BaseRestDataResource.syncCollection(instance.getLineItems(), lineItems);
-		for (BillLineItem item: instance.getLineItems()) {
+		for (BillLineItem item : instance.getLineItems()) {
 			item.setBill(instance);
 		}
 	}
-
+	
 	@PropertySetter("payments")
 	public void setBillPayments(Bill instance, Set<Payment> payments) {
 		if (instance.getPayments() == null) {
 			instance.setPayments(new HashSet<Payment>(payments.size()));
 		}
 		BaseRestDataResource.syncCollection(instance.getPayments(), payments);
-		for (Payment payment: instance.getPayments()) {
+		for (Payment payment : instance.getPayments()) {
 			instance.addPayment(payment);
 		}
 	}
@@ -99,7 +99,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		billAdjusted.addAdjustedBy(instance);
 		instance.setBillAdjusted(billAdjusted);
 	}
-
+	
 	@PropertySetter("status")
 	public void setBillStatus(Bill instance, BillStatus status) {
 		if (instance.getStatus() == null) {
@@ -111,50 +111,50 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			RoundingUtil.addRoundingLineItem(instance);
 		}
 	}
-
-    @PropertySetter("adjustmentReason")
-    public void setAdjustReason(Bill instance, String adjustReason){
-        if (instance.getBillAdjusted().getUuid() != null){
-            instance.getBillAdjusted().setAdjustmentReason(adjustReason);
-        }
-    }
-
+	
+	@PropertySetter("adjustmentReason")
+	public void setAdjustReason(Bill instance, String adjustReason) {
+		if (instance.getBillAdjusted().getUuid() != null) {
+			instance.getBillAdjusted().setAdjustmentReason(adjustReason);
+		}
+	}
+	
 	@Override
-	public Bill save (Bill bill) {
+	public Bill save(Bill bill) {
 		//TODO: Test all the ways that this could fail
-
+		
 		if (bill.getId() == null) {
 			if (bill.getCashier() == null) {
 				Provider cashier = getCurrentCashier(bill);
 				if (cashier == null) {
-					throw new RestClientException("Couldn't find Provider for the current user (" +
-							Context.getAuthenticatedUser().getName() + ")");
+					throw new RestClientException("Couldn't find Provider for the current user ("
+					        + Context.getAuthenticatedUser().getName() + ")");
 				}
-
+				
 				bill.setCashier(cashier);
 			}
-
+			
 			if (bill.getCashPoint() == null) {
 				loadBillCashPoint(bill);
 			}
-
+			
 			// Now that all all attributes have been set (i.e., payments and bill status) we can check to see if the bill
 			// is fully paid.
 			bill.checkPaidAndUpdateStatus();
 			if (bill.getStatus() == null) {
 				bill.setStatus(BillStatus.PENDING);
 			}
-        }
-
+		}
+		
 		return super.save(bill);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<IEntityDataService<Bill>> getServiceClass() {
 		return (Class<IEntityDataService<Bill>>)(Object)IBillService.class;
 	}
-
+	
 	public String getDisplayString(Bill instance) {
 		return instance.getReceiptNumber();
 	}
@@ -163,15 +163,15 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	public Bill newDelegate() {
 		return new Bill();
 	}
-
+	
 	private Provider getCurrentCashier(Bill bill) {
 		User currentUser = Context.getAuthenticatedUser();
 		ProviderService service = Context.getProviderService();
 		Collection<Provider> providers = service.getProvidersByPerson(currentUser.getPerson());
-
+		
 		return Iterators.get(providers.iterator(), 0, null);
 	}
-
+	
 	private void loadBillCashPoint(Bill bill) {
 		ITimesheetService service = Context.getService(ITimesheetService.class);
 		Timesheet timesheet = service.getCurrentTimesheet(bill.getCashier());
@@ -179,11 +179,12 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			AdministrationService adminService = Context.getAdministrationService();
 			boolean timesheetRequired;
 			try {
-				timesheetRequired = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY));
+				timesheetRequired =
+				        Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY));
 			} catch (Exception e) {
 				timesheetRequired = false;
 			}
-
+			
 			if (timesheetRequired) {
 				throw new RestClientException("A current timesheet does not exist for cashier " + bill.getCashier());
 			} else if (bill.getBillAdjusted() != null) {

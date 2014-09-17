@@ -25,19 +25,20 @@ import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
-@Resource(name=RestConstants.VERSION_2 + "/cashier/paymentMode", supportedClass=PaymentMode.class, supportedOpenmrsVersions={"1.9"})
+@Resource(name = RestConstants.VERSION_2 + "/cashier/paymentMode", supportedClass = PaymentMode.class,
+        supportedOpenmrsVersions = { "1.9" })
 public class PaymentModeResource
-		extends BaseRestInstanceTypeResource<PaymentMode, Payment, PaymentModeAttributeType, PaymentAttribute> {
+        extends BaseRestInstanceTypeResource<PaymentMode, Payment, PaymentModeAttributeType, PaymentAttribute> {
 	@Override
 	public PaymentMode newDelegate() {
 		return new PaymentMode();
 	}
-
+	
 	@Override
 	public Class<? extends IMetadataDataService<PaymentMode>> getServiceClass() {
 		return IPaymentModeService.class;
 	}
-
+	
 	// Workaround to fix the TypeVariable issue on base generic property
 	@PropertySetter("attributeTypes")
 	public void setAttributeTypes(PaymentMode instance, List<PaymentModeAttributeType> attributeTypes) {

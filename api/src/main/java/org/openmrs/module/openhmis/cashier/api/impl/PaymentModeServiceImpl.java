@@ -23,15 +23,12 @@ import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthoriz
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public class PaymentModeServiceImpl
-		extends BaseMetadataDataServiceImpl<PaymentMode>
-		implements IPaymentModeService {
+public class PaymentModeServiceImpl extends BaseMetadataDataServiceImpl<PaymentMode> implements IPaymentModeService {
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
 	}
-
+	
 	@Override
-	protected void validate(PaymentMode entity) throws APIException {
-	}
+	protected void validate(PaymentMode entity) throws APIException {}
 }

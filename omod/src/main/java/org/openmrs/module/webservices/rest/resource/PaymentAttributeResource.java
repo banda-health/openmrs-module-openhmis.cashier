@@ -30,21 +30,21 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 
-@Resource(name=RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass=PaymentAttribute.class, supportedOpenmrsVersions={"1.9"})
+@Resource(name = RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass = PaymentAttribute.class,
+        supportedOpenmrsVersions = { "1.9" })
 public class PaymentAttributeResource
-		extends BaseRestInstanceAttributeDataResource<PaymentAttribute, Payment, PaymentMode, PaymentModeAttributeType> {
-
+        extends BaseRestInstanceAttributeDataResource<PaymentAttribute, Payment, PaymentMode, PaymentModeAttributeType> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-
+		
 		if (!(rep instanceof RefRepresentation)) {
 			description.addProperty("valueName", findMethod("getValueName"));
 		}
-
+		
 		return description;
 	}
-
+	
 	@Override
 	public String getDisplayString(PaymentAttribute instance) {
 		return instance.getAttributeType().getName() + ": " + instance.getValue();
@@ -54,31 +54,31 @@ public class PaymentAttributeResource
 		if (instance.getAttributeType().getFormat().contains("Concept")) {
 			ConceptService service = Context.getService(ConceptService.class);
 			Concept concept = service.getConcept(instance.getValue());
-
+			
 			return concept == null ? "" : concept.getDisplayString();
-		} else {		
-			return instance.getValue(); 	
+		} else {
+			return instance.getValue();
 		}
 	}
-
+	
 	// Work around TypeVariable issue on base generic property (BaseCustomizableInstanceData.getInstanceType)
 	@PropertySetter("attributeType")
 	public void setAttributeType(PaymentAttribute instance, String uuid) {
 		IPaymentModeAttributeTypeService service = Context.getService(IPaymentModeAttributeTypeService.class);
-
+		
 		PaymentModeAttributeType type = service.getByUuid(uuid);
 		if (type == null) {
 			throw new ObjectNotFoundException();
 		}
-
+		
 		instance.setAttributeType(type);
 	}
-
+	
 	@Override
 	public PaymentAttribute newDelegate() {
 		return new PaymentAttribute();
 	}
-
+	
 	@Override
 	public Class<? extends IEntityDataService<PaymentAttribute>> getServiceClass() {
 		throw new RuntimeException("No service class implemented for " + getClass().getSimpleName());

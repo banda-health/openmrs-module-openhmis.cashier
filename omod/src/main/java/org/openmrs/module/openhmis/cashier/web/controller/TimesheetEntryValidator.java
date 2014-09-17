@@ -20,22 +20,21 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 public class TimesheetEntryValidator implements Validator {
-
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return Timesheet.class.isAssignableFrom(clazz);
 	}
-
+	
 	@Override
 	public void validate(Object target, Errors errors) {
-		Timesheet timesheet = (Timesheet) target;
-
+		Timesheet timesheet = (Timesheet)target;
+		
 		if (timesheet.getClockIn() == null) {
 			errors.rejectValue("clockIn", "openhmis.cashier.timesheet.entry.error.clockIn.empty");
 		} else if (timesheet.getClockIn().after(new Date())) {
 			errors.rejectValue("clockIn", "openhmis.cashier.timesheet.entry.error.clockIn.future");
 		}
-
+		
 		if (timesheet.getClockOut() != null && timesheet.getClockOut().after(new Date())) {
 			errors.rejectValue("clockOut", "openhmis.cashier.timesheet.entry.error.clockOut.future");
 		}

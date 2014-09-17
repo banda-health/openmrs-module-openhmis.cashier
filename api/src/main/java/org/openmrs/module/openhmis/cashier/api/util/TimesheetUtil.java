@@ -22,14 +22,13 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
-import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.ProviderHelper;
 
 public class TimesheetUtil {
-    private static final Log LOG = LogFactory.getLog(TimesheetUtil.class);
-
+	private static final Log LOG = LogFactory.getLog(TimesheetUtil.class);
+	
 	protected TimesheetUtil() {}
-
+	
 	public static Timesheet getCurrentTimesheet() throws TimesheetRequiredException {
 		Provider provider = null;
 		Timesheet timesheet = null;
@@ -44,10 +43,10 @@ public class TimesheetUtil {
 		try {
 			timesheet = tsService.getCurrentTimesheet(provider);
 		} catch (Exception e) {
-            LOG.error("Error occured while trying to get the current timesheet" + e);
-            return null;
+			LOG.error("Error occured while trying to get the current timesheet" + e);
+			return null;
 		}
-
+		
 		return timesheet;
 	}
 	
@@ -55,9 +54,10 @@ public class TimesheetUtil {
 		AdministrationService adminService = Context.getAdministrationService();
 		boolean timesheetRequired;
 		try {
-			timesheetRequired = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY));
+			timesheetRequired =
+			        Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY));
 		} catch (Exception e) {
-            LOG.error("Error occured while trying to parse the boolean value" + e);
+			LOG.error("Error occured while trying to parse the boolean value" + e);
 			timesheetRequired = false;
 		}
 		return timesheetRequired;

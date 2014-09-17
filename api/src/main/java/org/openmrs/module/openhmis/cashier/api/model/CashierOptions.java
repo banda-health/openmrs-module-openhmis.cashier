@@ -18,55 +18,61 @@ import java.math.BigDecimal;
 public class CashierOptions {
 	private static final long serialVersionUID = 0L;
 	private static final BigDecimal DEFAULT_NO_ROUNDING = BigDecimal.ZERO;
+	private BigDecimal roundToNearest = DEFAULT_NO_ROUNDING;
+	private RoundingMode roundingMode = RoundingMode.MID;
+	private String roundingItemUuid;
+	private int defaultReceiptReportId;
+	private boolean timesheetRequired = false;
+
+	public String getRoundingItemUuid() {
+		return roundingItemUuid;
+	}
+	
+	public void setRoundingItemUuid(String roundingItemUuid) {
+		this.roundingItemUuid = roundingItemUuid;
+	}
+	
+	// Getters & setters
+	public BigDecimal getRoundToNearest() {
+		return roundToNearest;
+	}
+	
+	public void setRoundToNearest(BigDecimal roundToNearest) {
+		this.roundToNearest = roundToNearest;
+	}
+	
+	public RoundingMode getRoundingMode() {
+		return roundingMode;
+	}
+	
+	public void setRoundingMode(RoundingMode roundingMode) {
+		this.roundingMode = roundingMode;
+	}
+	
+	public int getDefaultReceiptReportId() {
+		return defaultReceiptReportId;
+	}
+	
+	public void setDefaultReceiptReportId(int defaultReceiptReportId) {
+		this.defaultReceiptReportId = defaultReceiptReportId;
+	}
+	
+	public boolean isTimesheetRequired() {
+		return timesheetRequired;
+	}
+	
+	public void setTimesheetRequired(boolean timesheetRequired) {
+		this.timesheetRequired = timesheetRequired;
+	}
 	
 	public enum RoundingMode {
 		FLOOR(1), MID(2), CEILING(3);
-		
+
 		@SuppressWarnings("unused")
 		private int value;
 
 		private RoundingMode(int value) {
 			this.value = value;
 		}
-	}
-	
-	private BigDecimal roundToNearest = DEFAULT_NO_ROUNDING;
-	private RoundingMode roundingMode = RoundingMode.MID;
-	private String roundingItemUuid;
-	private int defaultReceiptReportId;
-	private boolean timesheetRequired = false;
-	
-	public String getRoundingItemUuid() {
-		return roundingItemUuid;
-	}
-
-	public void setRoundingItemUuid(String roundingItemUuid) {
-		this.roundingItemUuid = roundingItemUuid;
-	}
-
-	// Getters & setters
-	public BigDecimal getRoundToNearest() {
-		return roundToNearest;
-	}
-	public void setRoundToNearest(BigDecimal roundToNearest) {
-		this.roundToNearest = roundToNearest;
-	}
-	public RoundingMode getRoundingMode() {
-		return roundingMode;
-	}
-	public void setRoundingMode(RoundingMode roundingMode) {
-		this.roundingMode = roundingMode;
-	}
-	public int getDefaultReceiptReportId() {
-		return defaultReceiptReportId;
-	}
-	public void setDefaultReceiptReportId(int defaultReceiptReportId) {
-		this.defaultReceiptReportId = defaultReceiptReportId;
-	}
-	public boolean isTimesheetRequired() {
-		return timesheetRequired;
-	}
-	public void setTimesheetRequired(boolean timesheetRequired) {
-		this.timesheetRequired = timesheetRequired;
 	}
 }

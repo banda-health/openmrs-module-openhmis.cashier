@@ -27,31 +27,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class SequentialReceiptNumberGeneratorServiceImpl
-		extends BaseObjectDataServiceImpl<SequentialReceiptNumberGeneratorModel, BasicEntityAuthorizationPrivileges>
-		implements ISequentialReceiptNumberGeneratorService{
+        extends BaseObjectDataServiceImpl<SequentialReceiptNumberGeneratorModel, BasicEntityAuthorizationPrivileges>
+        implements ISequentialReceiptNumberGeneratorService {
 	@Override
 	protected BasicEntityAuthorizationPrivileges getPrivileges() {
 		// No authorization required
 		return null;
 	}
-
+	
 	@Override
 	protected void validate(SequentialReceiptNumberGeneratorModel entity) throws APIException {
 		return;
 	}
-
+	
 	@Override
 	@Transactional(readOnly = true)
 	public SequentialReceiptNumberGeneratorModel getOnly() {
 		List<SequentialReceiptNumberGeneratorModel> records = getAll();
-
+		
 		if (records.size() > 0) {
 			return records.get(0);
 		} else {
 			return new SequentialReceiptNumberGeneratorModel();
 		}
 	}
-
+	
 	@Override
 	@Transactional
 	public int reserveNextSequence(String group) throws APIException {
@@ -66,50 +66,50 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 			// Increment the value
 			sequence.setValue(sequence.getValue() + 1);
 		}
-
+		
 		// Store the sequence and save the updated or new sequence
 		int result = sequence.getValue();
 		saveSequence(sequence);
-
+		
 		return result;
 	}
-
+	
 	@Override
 	@Transactional(readOnly = true)
 	public List<GroupSequence> getSequences() {
 		return repository.select(GroupSequence.class);
 	}
-
+	
 	@Override
 	@Transactional(readOnly = true)
 	public GroupSequence getSequence(String group) {
 		if (group == null) {
 			throw new IllegalArgumentException("The group must be defined.");
 		}
-
+		
 		Criteria criteria = repository.createCriteria(GroupSequence.class);
 		criteria.add(Restrictions.eq("group", group));
-
+		
 		return repository.selectSingle(GroupSequence.class, criteria);
 	}
-
+	
 	@Override
 	@Transactional
 	public GroupSequence saveSequence(GroupSequence sequence) {
 		if (sequence == null) {
 			throw new NullPointerException("The sequence to save must be defined.");
 		}
-
+		
 		return repository.save(sequence);
 	}
-
+	
 	@Override
 	@Transactional
 	public void purgeSequence(GroupSequence sequence) {
 		if (sequence == null) {
 			throw new NullPointerException("The sequence to purge must be defined.");
 		}
-
+		
 		repository.delete(sequence);
 	}
 }

@@ -19,5 +19,4 @@ import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface IPaymentModeService extends IMetadataDataService<PaymentMode> {
-}
+public interface IPaymentModeService extends IMetadataDataService<PaymentMode> {}

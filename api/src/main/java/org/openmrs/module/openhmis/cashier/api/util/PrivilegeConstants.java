@@ -28,64 +28,61 @@ public class PrivilegeConstants {
 	public static final String ADJUST_BILLS = "Adjust Cashier Bills";
 	public static final String VIEW_BILLS = "View Cashier Bills";
 	public static final String PURGE_BILLS = "Purge Cashier Bills";
-
+	
 	public static final String REFUND_MONEY = "Refund Money";
 	public static final String REPRINT_RECEIPT = "Reprint Receipt";
-
+	
 	public static final String MANAGE_METADATA = "Manage Cashier Metadata";
 	public static final String VIEW_METADATA = "View Cashier Metadata";
 	public static final String PURGE_METADATA = "Purge Cashier Metadata";
-
+	
 	public static final String MANAGE_TIMESHEETS = "Manage Cashier Timesheets";
 	public static final String VIEW_TIMESHEETS = "View Cashier Timesheets";
 	public static final String PURGE_TIMESHEETS = "Purge Cashier Timesheets";
-
-	public static final String[] PRIVILEGE_NAMES = new String[] {
-			MANAGE_BILLS, ADJUST_BILLS, VIEW_BILLS, PURGE_BILLS,
-			REFUND_MONEY, REPRINT_RECEIPT,
-			MANAGE_TIMESHEETS, VIEW_TIMESHEETS, PURGE_TIMESHEETS,
-			MANAGE_METADATA, VIEW_METADATA, PURGE_METADATA
-	};
-
-    protected PrivilegeConstants() {}
-
+	
+	public static final String[] PRIVILEGE_NAMES = new String[] { MANAGE_BILLS, ADJUST_BILLS, VIEW_BILLS, PURGE_BILLS,
+	        REFUND_MONEY, REPRINT_RECEIPT, MANAGE_TIMESHEETS, VIEW_TIMESHEETS, PURGE_TIMESHEETS, MANAGE_METADATA,
+	        VIEW_METADATA, PURGE_METADATA };
+	
+	protected PrivilegeConstants() {}
+	
 	/**
 	 * Gets all the privileges defined by the module.
 	 * @return The module privileges.
 	 */
 	public static Set<Privilege> getModulePrivileges() {
 		Set<Privilege> privileges = new HashSet<Privilege>(PRIVILEGE_NAMES.length);
-
+		
 		UserService service = Context.getUserService();
 		if (service == null) {
 			throw new IllegalStateException("The OpenMRS user service cannot be loaded.");
 		}
-
+		
 		for (String name : PRIVILEGE_NAMES) {
 			privileges.add(service.getPrivilege(name));
 		}
-
+		
 		return privileges;
 	}
-
+	
 	/**
 	 * Gets the default privileges needed to fully use the module.
 	 * @return A set containing the default set of privileges.
 	 */
 	public static Set<Privilege> getDefaultPrivileges() {
 		Set<Privilege> privileges = getModulePrivileges();
-
+		
 		UserService service = Context.getUserService();
 		if (service == null) {
 			throw new IllegalStateException("The OpenMRS user service cannot be loaded.");
 		}
-
+		
 		List<String> names = new ArrayList<String>();
 		// Add other required cashier privileges
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_ITEMS);
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_METADATA);
 		names.add(JasperReportPrivilegeConstants.VIEW_JASPER_REPORTS);
-
+		
 		names.add(org.openmrs.util.PrivilegeConstants.ADD_ENCOUNTERS);
 		names.add(org.openmrs.util.PrivilegeConstants.ADD_VISITS);
 		names.add(org.openmrs.util.PrivilegeConstants.EDIT_ENCOUNTERS);
@@ -103,13 +100,12 @@ public class PrivilegeConstants {
 		names.add(org.openmrs.util.PrivilegeConstants.VIEW_PATIENTS);
 		names.add(org.openmrs.util.PrivilegeConstants.VIEW_PROVIDERS);
 		names.add(org.openmrs.util.PrivilegeConstants.VIEW_VISITS);
-
+		
 		for (String name : names) {
 			privileges.add(service.getPrivilege(name));
 		}
-
+		
 		return privileges;
-
-
+		
 	}
 }

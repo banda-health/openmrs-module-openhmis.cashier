@@ -20,17 +20,16 @@ import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGene
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataService;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface ISequentialReceiptNumberGeneratorService
-		extends IObjectDataService<SequentialReceiptNumberGeneratorModel> {
-
+public interface ISequentialReceiptNumberGeneratorService extends IObjectDataService<SequentialReceiptNumberGeneratorModel> {
 	/**
-	 * Gets the first {@link SequentialReceiptNumberGeneratorModel} or creates a new model if none have been defined.
+	 * Gets the first {@link SequentialReceiptNumberGeneratorModel} or creates a new model if none
+	 * have been defined.
 	 * @return The first or new model.
 	 * @should return the first model.
 	 * @should return a new model if none has been defined.
 	 */
 	SequentialReceiptNumberGeneratorModel getOnly();
-
+	
 	/**
 	 * Reserves the next sequence value for the specified group.
 	 * @param group The grouping value.
@@ -41,7 +40,7 @@ public interface ISequentialReceiptNumberGeneratorService
 	 */
 	@Transactional
 	int reserveNextSequence(String group);
-
+	
 	/**
 	 * Returns all sequences.
 	 * @return All sequences in the database.
@@ -50,7 +49,7 @@ public interface ISequentialReceiptNumberGeneratorService
 	 */
 	@Transactional(readOnly = true)
 	List<GroupSequence> getSequences();
-
+	
 	/**
 	 * Returns the sequence for the specified group.
 	 * @param group The group sequence to find.
@@ -62,7 +61,7 @@ public interface ISequentialReceiptNumberGeneratorService
 	 */
 	@Transactional(readOnly = true)
 	GroupSequence getSequence(String group);
-
+	
 	/**
 	 * Saves the sequence, creating a new sequences or updating an existing one.
 	 * @param sequence The sequence to save.
@@ -74,7 +73,7 @@ public interface ISequentialReceiptNumberGeneratorService
 	 */
 	@Transactional
 	GroupSequence saveSequence(GroupSequence sequence);
-
+	
 	/**
 	 * Complete removes the specified sequence from the database.
 	 * @param sequence The sequence to remove.

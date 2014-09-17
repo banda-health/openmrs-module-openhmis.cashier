@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value = "/module/openhmis/cashier/portlets/patientBillHistory")
 public class PatientBillHistoryController {
-	
 	private static final Logger LOG = Logger.getLogger(PatientBillHistoryController.class);
 	private IBillService billService;
 	
@@ -37,7 +36,7 @@ public class PatientBillHistoryController {
 	public PatientBillHistoryController(IBillService billServce, PatientService patientService) {
 		this.billService = billServce;
 	}
-
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public void billHistory(ModelMap model, @RequestParam(value = "patientId", required = true) int patientId) {
 		LOG.warn("In bill history controller");

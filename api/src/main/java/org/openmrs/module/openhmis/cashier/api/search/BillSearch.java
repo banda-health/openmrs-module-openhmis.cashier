@@ -19,7 +19,6 @@ import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.commons.api.entity.search.BaseDataTemplateSearch;
 
 public class BillSearch extends BaseDataTemplateSearch<Bill> {
-
 	public BillSearch() {
 		this(new Bill(), false);
 	}
@@ -27,15 +26,15 @@ public class BillSearch extends BaseDataTemplateSearch<Bill> {
 	public BillSearch(Bill template) {
 		this(template, false);
 	}
-
+	
 	public BillSearch(Bill template, Boolean includeRetired) {
 		super(template, includeRetired);
 	}
-
+	
 	@Override
 	public void updateCriteria(Criteria criteria) {
 		super.updateCriteria(criteria);
-
+		
 		Bill bill = getTemplate();
 		if (bill.getCashier() != null) {
 			criteria.add(Restrictions.eq("cashier", bill.getCashier()));

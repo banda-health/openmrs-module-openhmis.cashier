@@ -19,12 +19,12 @@ import org.openmrs.BaseOpenmrsData;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 
 /**
- * A LineItem represents a line on a {@link Bill} which will bill some quantity
- * of a particular {@link Item}.
+ * A LineItem represents a line on a {@link Bill} which will bill some quantity of a particular
+ * {@link Item}.
  */
 public class BillLineItem extends BaseOpenmrsData {
 	private static final long serialVersionUID = 0L;
-
+	
 	private int billLineItemId;
 	private Bill bill;
 	private Item item;
@@ -32,17 +32,17 @@ public class BillLineItem extends BaseOpenmrsData {
 	private String priceName;
 	private Integer quantity;
 	private Integer lineItemOrder;
-
+	
 	@Override
 	public Integer getId() {
 		return billLineItemId;
 	}
-
+	
 	@Override
 	public void setId(Integer id) {
 		billLineItemId = id;
 	}
-
+	
 	/**
 	 * Get the total price for the line item
 	 * @return double the total price for the line item
@@ -50,51 +50,51 @@ public class BillLineItem extends BaseOpenmrsData {
 	public BigDecimal getTotal() {
 		return price.multiply(BigDecimal.valueOf(quantity));
 	}
-
+	
 	public Integer getQuantity() {
 		return quantity;
 	}
-
+	
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-
+	
 	public Bill getBill() {
 		return bill;
 	}
-
+	
 	public void setBill(Bill bill) {
 		this.bill = bill;
 	}
-
+	
 	public Item getItem() {
 		return item;
 	}
-
+	
 	public void setItem(Item item) {
 		this.item = item;
 	}
-
+	
 	public BigDecimal getPrice() {
 		return price;
 	}
-
+	
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-
+	
 	public String getPriceName() {
 		return priceName;
 	}
-
+	
 	public void setPriceName(String priceName) {
 		this.priceName = priceName;
 	}
-
+	
 	public Integer getLineItemOrder() {
 		return lineItemOrder;
 	}
-
+	
 	public void setLineItemOrder(Integer lineItemOrder) {
 		this.lineItemOrder = lineItemOrder;
 	}

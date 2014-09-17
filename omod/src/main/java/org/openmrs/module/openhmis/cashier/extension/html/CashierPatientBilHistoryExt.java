@@ -21,17 +21,17 @@ public class CashierPatientBilHistoryExt extends PatientDashboardTabExt {
 	public String getTabName() {
 		return "openhmis.cashier.patient.bill.history";
 	}
-
+	
 	@Override
 	public String getTabId() {
 		return "openhmis.cashier.bill.history";
 	}
-
+	
 	@Override
 	public String getRequiredPrivilege() {
 		return PrivilegeConstants.VIEW_BILLS;
 	}
-
+	
 	@Override
 	public String getPortletUrl() {
 		return "patientBillHistory";

@@ -25,9 +25,9 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ConversionException;
 
-@Resource(name=RestConstants.VERSION_2 + "/cashier/billLineItem", supportedClass=BillLineItem.class, supportedOpenmrsVersions={"1.9"})
+@Resource(name = RestConstants.VERSION_2 + "/cashier/billLineItem", supportedClass = BillLineItem.class,
+        supportedOpenmrsVersions = { "1.9" })
 public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
-
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
@@ -44,12 +44,14 @@ public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
 	public void setPrice(BillLineItem instance, Object price) throws ConversionException {
 		instance.setPrice(Converter.objectToBigDecimal(price));
 	}
-
+	
 	@Override
 	public BillLineItem newDelegate() {
 		return new BillLineItem();
 	}
-
+	
 	@Override
-	public Class<IEntityDataService<BillLineItem>> getServiceClass() { return null; }
+	public Class<IEntityDataService<BillLineItem>> getServiceClass() {
+		return null;
+	}
 }

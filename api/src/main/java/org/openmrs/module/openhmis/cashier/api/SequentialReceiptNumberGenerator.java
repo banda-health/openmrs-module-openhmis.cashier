@@ -27,38 +27,11 @@ import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.patient.impl.LuhnIdentifierValidator;
 
 public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator {
-	public static enum SequenceType {
-		COUNTER(0),
-		DATE_COUNTER(1),
-		DATE_TIME_COUNTER(2);
-
-		private int value;
-
-		private SequenceType(int value) {
-			this.value = value;
-		}
-	}
-
-	public static enum GroupingType {
-		NONE(0),
-		CASHIER(1),
-		CASH_POINT(2),
-		CASHIER_AND_CASH_POINT(3);
-
-		private int value;
-
-		private GroupingType(int value) {
-			this.value = value;
-		}
-	}
-
 	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
-
 	private ISequentialReceiptNumberGeneratorService service;
 	private SequentialReceiptNumberGeneratorModel model;
 	private LuhnIdentifierValidator checkDigitGenerator;
 	private boolean loaded = false;
-
 	public SequentialReceiptNumberGenerator() {
 		service = Context.getService(ISequentialReceiptNumberGeneratorService.class);
 		checkDigitGenerator = new LuhnIdentifierValidator();
@@ -68,22 +41,22 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 	public String getName() {
 		return "Sequential Receipt Number Generator";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "This receipt number generator provides support for grouped sequential receipt numbers.";
 	}
-
+	
 	@Override
 	public String getConfigurationPage() {
 		return CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_PAGE;
 	}
-
+	
 	@Override
 	public boolean isLoaded() {
 		return loaded;
 	}
-
+	
 	/**
 	 * Loads the generator settings from the database.
 	 */
@@ -92,7 +65,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 		model = service.getOnly();
 		loaded = true;
 	}
-
+	
 	/**
 	 * Generates a sequential receipt number for the specified bill.
 	 * @param bill The bill to generate a new receipt number for.
@@ -120,7 +93,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 
 		return number;
 	}
-
+	
 	public String generateCheckDigit(String number) {
 		// Remove the separator from the number
 		String numberWithoutSep = number;
@@ -134,7 +107,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 		// Get the check digit from the end of the returned identifier
 		return numberWithoutSep.substring(numberWithoutSep.length() - 1);
 	}
-
+	
 	private String createGrouping(Bill bill) {
 		String result = "";
 
@@ -146,14 +119,15 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 				result = model.getCashPointPrefix() + bill.getCashPoint().getId();
 				break;
 			case CASHIER_AND_CASH_POINT:
-				result = model.getCashierPrefix() + bill.getCashier().getId() + model.getSeparator() +
-						model.getCashPointPrefix() + bill.getCashPoint().getId();
+				result =
+				        model.getCashierPrefix() + bill.getCashier().getId() + model.getSeparator()
+				                + model.getCashPointPrefix() + bill.getCashPoint().getId();
 				break;
 		}
 
 		return result;
 	}
-
+	
 	private String getSequence(String grouping) {
 		// Do not include the separator when getting the next sequence
 		String groupingWithoutSep = grouping;
@@ -182,7 +156,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 
 		return sequence;
 	}
-
+	
 	private String buildReceiptNumber(String grouping, String sequence) {
 		String number;
 		if (StringUtils.isEmpty(grouping)) {
@@ -196,5 +170,25 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 		}
 
 		return number;
+	}
+	
+	public static enum SequenceType {
+		COUNTER(0), DATE_COUNTER(1), DATE_TIME_COUNTER(2);
+
+		private int value;
+
+		private SequenceType(int value) {
+			this.value = value;
+		}
+	}
+	
+	public static enum GroupingType {
+		NONE(0), CASHIER(1), CASH_POINT(2), CASHIER_AND_CASH_POINT(3);
+
+		private int value;
+
+		private GroupingType(int value) {
+			this.value = value;
+		}
 	}
 }

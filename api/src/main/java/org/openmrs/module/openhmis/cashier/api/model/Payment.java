@@ -22,20 +22,20 @@ import org.openmrs.module.openhmis.commons.api.entity.model.BaseCustomizableInst
  */
 public class Payment extends BaseCustomizableInstanceData<PaymentMode, PaymentAttribute> {
 	private static final long serialVersionUID = 0L;
-
+	
 	private Integer paymentId;
 	private Bill bill;
 	private BigDecimal amount;
 	private BigDecimal amountTendered;
-
+	
 	public Integer getId() {
 		return paymentId;
-	}	
-
+	}
+	
 	public void setId(Integer id) {
 		paymentId = id;
 	}
-
+	
 	public PaymentAttribute addAttribute(PaymentModeAttributeType type, String value) {
 		if (type == null) {
 			throw new NullPointerException("The payment mode attribute type must be defined.");
@@ -43,36 +43,36 @@ public class Payment extends BaseCustomizableInstanceData<PaymentMode, PaymentAt
 		if (value == null) {
 			throw new NullPointerException(("The payment attribute value must be defined."));
 		}
-
+		
 		PaymentAttribute attribute = new PaymentAttribute();
 		attribute.setAttributeType(type);
 		attribute.setValue(value);
-
+		
 		addAttribute(attribute);
-
+		
 		return attribute;
 	}
-
+	
 	public BigDecimal getAmount() {
 		return amount;
 	}
-
+	
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-
+	
 	public BigDecimal getAmountTendered() {
 		return amountTendered;
 	}
-
+	
 	public void setAmountTendered(BigDecimal amountTendered) {
 		this.amountTendered = amountTendered;
 	}
-
+	
 	public Bill getBill() {
 		return bill;
 	}
-
+	
 	public void setBill(Bill bill) {
 		this.bill = bill;
 	}

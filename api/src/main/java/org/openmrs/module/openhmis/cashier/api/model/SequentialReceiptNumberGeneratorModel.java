@@ -20,15 +20,13 @@ import org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator;
  * Model class that represents the settings for the {@link SequentialReceiptNumberGenerator}.
  */
 public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
-	private static final long serialVersionUID = 0L;
-
 	public static final String DEFAULT_SEPARATOR = "-";
 	public static final String DEFAULT_CASHIER_PREFIX = "P";
 	public static final String DEFAULT_CASH_POINT_PREFIX = "CP";
 	public static final int DEFAULT_SEQUENCE_PADDING = 4;
-
+	private static final long serialVersionUID = 0L;
 	private Integer id;
-
+	
 	private SequentialReceiptNumberGenerator.GroupingType groupingType;
 	private SequentialReceiptNumberGenerator.SequenceType sequenceType;
 	private String separator;
@@ -36,7 +34,7 @@ public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
 	private String cashPointPrefix;
 	private int sequencePadding;
 	private boolean includeCheckDigit;
-
+	
 	public SequentialReceiptNumberGeneratorModel() {
 		groupingType = SequentialReceiptNumberGenerator.GroupingType.NONE;
 		sequenceType = SequentialReceiptNumberGenerator.SequenceType.COUNTER;
@@ -46,77 +44,77 @@ public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
 		sequencePadding = DEFAULT_SEQUENCE_PADDING;
 		includeCheckDigit = true;
 	}
-
+	
 	@Override
 	public Integer getId() {
 		return this.id;
 	}
-
+	
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+	
 	public SequentialReceiptNumberGenerator.GroupingType getGroupingType() {
 		return groupingType;
 	}
-
+	
 	public void setGroupingType(SequentialReceiptNumberGenerator.GroupingType groupingType) {
 		this.groupingType = groupingType;
 	}
-
+	
 	public SequentialReceiptNumberGenerator.SequenceType getSequenceType() {
 		return sequenceType;
 	}
-
+	
 	public void setSequenceType(SequentialReceiptNumberGenerator.SequenceType sequenceType) {
 		this.sequenceType = sequenceType;
 	}
-
+	
 	public String getSeparator() {
 		return separator;
 	}
-
+	
 	public void setSeparator(String separator) {
 		this.separator = separator;
-
+		
 		if (this.separator == null) {
 			this.separator = "";
 		}
 	}
-
+	
 	public String getCashierPrefix() {
 		return cashierPrefix;
 	}
-
+	
 	public void setCashierPrefix(String cashierPrefix) {
 		this.cashierPrefix = cashierPrefix;
 	}
-
+	
 	public String getCashPointPrefix() {
 		return cashPointPrefix;
 	}
-
+	
 	public void setCashPointPrefix(String cashPointPrefix) {
 		this.cashPointPrefix = cashPointPrefix;
 	}
-
+	
 	public int getSequencePadding() {
 		return sequencePadding;
 	}
-
+	
 	public void setSequencePadding(int sequencePadding) {
 		if (sequencePadding <= 0) {
 			sequencePadding = 1;
 		}
-
+		
 		this.sequencePadding = sequencePadding;
 	}
-
+	
 	public boolean isIncludeCheckDigit() {
 		return includeCheckDigit;
 	}
-
+	
 	public void setIncludeCheckDigit(boolean includeCheckDigit) {
 		this.includeCheckDigit = includeCheckDigit;
 	}

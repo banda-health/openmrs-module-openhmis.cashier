@@ -31,18 +31,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/module/openhmis/cashier/paymentModeFragment")
 public class PaymentModeFragmentController {
-	
 	@RequestMapping(method = RequestMethod.GET)
 	public void paymentModeFragment(@RequestParam("uuid") String uuid, ModelMap model) {
 		IPaymentModeService service = Context.getService(IPaymentModeService.class);
 		PaymentMode paymentMode = service.getByUuid(uuid);
 		ConceptService conceptService = Context.getConceptService();
+
 		Map<Integer, Concept> conceptMap = new HashMap<Integer, Concept>();
 		for (PaymentModeAttributeType type : paymentMode.getAttributeTypes()) {
 			if (type.getFormat().equals("org.openmrs.Concept") && type.getForeignKey() != null) {
 				conceptMap.put(type.getForeignKey(), conceptService.getConcept(type.getForeignKey()));
 			}
 		}
+
 		model.addAttribute("paymentMode", paymentMode);
 		model.addAttribute("conceptMap", conceptMap);
 	}

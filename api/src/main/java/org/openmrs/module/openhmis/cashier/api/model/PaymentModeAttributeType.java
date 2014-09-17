@@ -16,8 +16,8 @@ package org.openmrs.module.openhmis.cashier.api.model;
 import org.openmrs.module.openhmis.commons.api.entity.model.BaseInstanceAttributeType;
 
 /**
- * Model class to describe an attribute of a payment mode.  For example, a credit card mode of payment may require
- * a transaction number as an attribute.
+ * Model class to describe an attribute of a payment mode. For example, a credit card mode of
+ * payment may require a transaction number as an attribute.
  */
 public class PaymentModeAttributeType extends BaseInstanceAttributeType<PaymentMode> {
 	private static final long serialVersionUID = 0L;

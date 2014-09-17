@@ -20,19 +20,19 @@ import org.openmrs.module.openhmis.commons.api.entity.model.BaseCustomizableInst
  */
 public class PaymentMode extends BaseCustomizableInstanceType<PaymentModeAttributeType> {
 	private static final long serialVersionUID = 0L;
-
+	
 	public PaymentModeAttributeType addAttributeType(String name, String format, String regExp, boolean required) {
 		PaymentModeAttributeType attributeType = new PaymentModeAttributeType();
-
+		
 		attributeType.setOwner(this);
-
+		
 		attributeType.setName(name);
 		attributeType.setFormat(format);
 		attributeType.setRegExp(regExp);
 		attributeType.setRequired(required);
-
+		
 		addAttributeType(attributeType);
-
+		
 		return attributeType;
 	}
 }

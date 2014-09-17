@@ -25,7 +25,7 @@ import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 /**
  * This class defines the links that will appear on the administration page under the
- * "openhmis.cashier.title" heading. 
+ * "openhmis.cashier.title" heading.
  */
 public class AdminList extends AdministrationSectionExt {
 	
@@ -42,28 +42,28 @@ public class AdminList extends AdministrationSectionExt {
 	public String getTitle() {
 		return "openhmis.cashier.title";
 	}
-
+	
 	@Override
 	public String getRequiredPrivilege() {
 		return PrivilegeConstants.MANAGE_BILLS;
 	}
-
+	
 	/**
 	 * @see AdministrationSectionExt#getLinks()
 	 */
 	public Map<String, String> getLinks() {
-        User authenticatedUser = Context.getAuthenticatedUser();
+		User authenticatedUser = Context.getAuthenticatedUser();
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-        if(authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_METADATA)) {
-            map.put(CashierWebConstants.CASHIER_ROLE_PAGE, "openhmis.cashier.admin.role");
-            map.put(CashierWebConstants.CASH_POINTS_PAGE, "openhmis.cashier.admin.cashPoints");
-            map.put(CashierWebConstants.PAYMENT_MODES_PAGE, "openhmis.cashier.admin.paymentModes");
-        }
-
-		if(authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_BILLS)) {
-            map.put(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_PAGE, "openhmis.cashier.admin.receiptNumberGenerator");
-        }
-
+		if (authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_METADATA)) {
+			map.put(CashierWebConstants.CASHIER_ROLE_PAGE, "openhmis.cashier.admin.role");
+			map.put(CashierWebConstants.CASH_POINTS_PAGE, "openhmis.cashier.admin.cashPoints");
+			map.put(CashierWebConstants.PAYMENT_MODES_PAGE, "openhmis.cashier.admin.paymentModes");
+		}
+		
+		if (authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_BILLS)) {
+			map.put(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_PAGE, "openhmis.cashier.admin.receiptNumberGenerator");
+		}
+		
 		return map;
 	}
 	

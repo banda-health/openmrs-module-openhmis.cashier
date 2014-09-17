@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/rest/" + RestConstants.VERSION_2 + "/cashier")
 public class CashierResourceController extends MainResourceController {
-	
 	@Override
 	public String getNamespace() {
 		return RestConstants.VERSION_2 + "/cashier";

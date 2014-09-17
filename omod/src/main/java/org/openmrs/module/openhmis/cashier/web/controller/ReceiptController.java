@@ -18,10 +18,8 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
-import org.openmrs.module.jasperreport.JasperReportService;
 import org.openmrs.module.jasperreport.ReportGenerator;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
@@ -36,9 +34,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value = CashierWebConstants.RECEIPT)
 public class ReceiptController {
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public void get(@RequestParam(value = "receiptNumber", required = false) String receiptNumber,
-			HttpServletResponse response) throws IOException {
+	        HttpServletResponse response) throws IOException {
 		if (receiptNumber == null) {
 			response.sendError(404);
 			return;
@@ -49,27 +47,27 @@ public class ReceiptController {
 		if (!validateBill(receiptNumber, bill, response)) {
 			return;
 		}
-
+		
 		JasperReport report = ModuleSettings.getReceiptReport();
 		if (report == null) {
-			response.sendError(500, "Configuration error: need to specify global option for default report ID."); 
+			response.sendError(500, "Configuration error: need to specify global option for default report ID.");
 			return;
 		}
-
+		
 		if (generateReport(receiptNumber, response, bill, report)) {
 			bill.setReceiptPrinted(true);
 			service.save(bill);
 		}
 	}
-
+	
 	private boolean generateReport(String receiptNumber, HttpServletResponse response, Bill bill, JasperReport report)
-			throws IOException {
+	        throws IOException {
 		String name = report.getName();
 		report.setName(receiptNumber);
-
+		
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("billId", bill.getId());
-
+		
 		try {
 			ReportGenerator.generateHtmlAndWriteToResponse(report, params, response);
 		} catch (IOException e) {
@@ -79,21 +77,21 @@ public class ReceiptController {
 			// Reset the report name
 			report.setName(name);
 		}
-
+		
 		return true;
 	}
-
-	private boolean validateBill(String receiptNumber, Bill bill, HttpServletResponse response) throws IOException  {
+	
+	private boolean validateBill(String receiptNumber, Bill bill, HttpServletResponse response) throws IOException {
 		if (bill == null) {
 			response.sendError(404, "Could not find bill with receipt number '" + receiptNumber + "'");
 			return false;
 		}
-
+		
 		if (bill.isReceiptPrinted() && !Context.hasPrivilege(PrivilegeConstants.REPRINT_RECEIPT)) {
 			response.sendError(403, "You do not have permission to reprint receipt '" + receiptNumber + "'");
 			return false;
 		}
-
+		
 		return true;
 	}
 }

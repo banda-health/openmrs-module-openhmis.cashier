@@ -37,12 +37,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TimesheetSearchHandler implements SearchHandler {
+	private final SearchConfig searchConfig = new SearchConfig("default", RestConstants.VERSION_2 + "/cashier/timesheet",
+	        Arrays.asList("1.9.*"), new SearchQuery.Builder("Find a timesheet by date").withRequiredParameters("date")
+	                .build());
 	
-	private final SearchConfig searchConfig = new SearchConfig("default", RestConstants.VERSION_2 + "/cashier/timesheet", Arrays.asList("1.9.*"),
-			new SearchQuery.Builder("Find a timesheet by date")
-				.withRequiredParameters("date").build()
-	);
-
 	@Override
 	public PageableResult search(RequestContext context) throws ResponseException {
 		ITimesheetService service = Context.getService(ITimesheetService.class);
@@ -60,7 +58,7 @@ public class TimesheetSearchHandler implements SearchHandler {
 		PageableResult results = new AlreadyPagedWithLength<Timesheet>(context, timesheets, false, timesheets.size());
 		return results;
 	}
-
+	
 	@Override
 	public SearchConfig getSearchConfig() {
 		return searchConfig;

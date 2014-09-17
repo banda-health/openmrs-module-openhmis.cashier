@@ -32,67 +32,67 @@ import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public class CashPointServiceImpl
-		extends BaseMetadataDataServiceImpl<CashPoint>
-		implements ICashPointService {
+public class CashPointServiceImpl extends BaseMetadataDataServiceImpl<CashPoint> implements ICashPointService {
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
 	}
-
+	
 	@Override
-	protected void validate(CashPoint entity) throws APIException {
+	protected void validate(CashPoint entity) throws APIException {}
+	
+	@Override
+	public List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired) throws APIException {
+		return getCashPointsByLocation(location, includeRetired, null);
 	}
-
-    @Override
-    public List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired) throws APIException {
-        return getCashPointsByLocation(location, includeRetired, null);
-    }
-
-    @Override
-    public List<CashPoint> getCashPointsByLocation(final Location location, final boolean includeRetired, PagingInfo pagingInfo) throws APIException {
-        if (location == null) {
-            throw new IllegalArgumentException("The location must be defined");
-        }
-
-        return executeCriteria(CashPoint.class, pagingInfo, new Action1<Criteria>() {
-            @Override
-            public void apply(Criteria criteria) {
-                criteria.add(Restrictions.eq(HibernateCriteriaConstants.LOCATION, location));
-                if (!includeRetired) {
-                    criteria.add(Restrictions.eq(HibernateCriteriaConstants.RETIRED, false));
-                }
-            }
-        });
-    }
-
-    @Override
-    public List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired) throws APIException {
-        return getCashPointsByLocationAndName(location, name, includeRetired, null);
-    }
-
-    @Override
-    public List<CashPoint> getCashPointsByLocationAndName(final Location location, final String name, final boolean includeRetired, PagingInfo pagingInfo) throws APIException {
-        if (location == null) {
-            throw new IllegalArgumentException("The location must be defined");
-        }
-        if (StringUtils.isEmpty(name)) {
-            throw new IllegalArgumentException("The Cashpoint name must be defined.");
-        }
-        if (name.length() > 255) {
-            throw new IllegalArgumentException("The Cashpoint name must be less than 256 characters.");
-        }
-
-        return executeCriteria(CashPoint.class, pagingInfo, new Action1<Criteria>() {
-            @Override
-            public void apply(Criteria criteria) {
-                criteria.add(Restrictions.eq(HibernateCriteriaConstants.LOCATION, location))
-                        .add(Restrictions.ilike(HibernateCriteriaConstants.NAME, name, MatchMode.START));
-
-                if (!includeRetired) {
-                    criteria.add(Restrictions.eq(HibernateCriteriaConstants.RETIRED, false));
-                }
-            }
-        });
-    }
+	
+	@Override
+	public List<CashPoint> getCashPointsByLocation(final Location location, final boolean includeRetired,
+	        PagingInfo pagingInfo) throws APIException {
+		if (location == null) {
+			throw new IllegalArgumentException("The location must be defined");
+		}
+		
+		return executeCriteria(CashPoint.class, pagingInfo, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+				criteria.add(Restrictions.eq(HibernateCriteriaConstants.LOCATION, location));
+				if (!includeRetired) {
+					criteria.add(Restrictions.eq(HibernateCriteriaConstants.RETIRED, false));
+				}
+			}
+		});
+	}
+	
+	@Override
+	public List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired)
+	        throws APIException {
+		return getCashPointsByLocationAndName(location, name, includeRetired, null);
+	}
+	
+	@Override
+	public List<CashPoint> getCashPointsByLocationAndName(final Location location, final String name,
+	        final boolean includeRetired, PagingInfo pagingInfo) throws APIException {
+		if (location == null) {
+			throw new IllegalArgumentException("The location must be defined");
+		}
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("The Cashpoint name must be defined.");
+		}
+		if (name.length() > 255) {
+			throw new IllegalArgumentException("The Cashpoint name must be less than 256 characters.");
+		}
+		
+		return executeCriteria(CashPoint.class, pagingInfo, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+				criteria.add(Restrictions.eq(HibernateCriteriaConstants.LOCATION, location)).add(
+						Restrictions.ilike(HibernateCriteriaConstants.NAME, name, MatchMode.START));
+				
+				if (!includeRetired) {
+					criteria.add(Restrictions.eq(HibernateCriteriaConstants.RETIRED, false));
+				}
+			}
+		});
+	}
 }

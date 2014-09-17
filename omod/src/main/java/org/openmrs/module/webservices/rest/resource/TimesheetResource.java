@@ -22,29 +22,31 @@ import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
-@Resource(name=RestConstants.VERSION_2 + "/cashier/timesheet", supportedClass=Timesheet.class, supportedOpenmrsVersions={"1.9"})
+@Resource(name = RestConstants.VERSION_2 + "/cashier/timesheet", supportedClass = Timesheet.class,
+        supportedOpenmrsVersions = { "1.9" })
 public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 	@Override
 	public Timesheet newDelegate() {
 		return new Timesheet();
 	}
-
+	
 	@Override
 	public Class<? extends IEntityDataService<Timesheet>> getServiceClass() {
 		return ITimesheetService.class;
 	}
-
+	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		if (rep instanceof RefRepresentation) {
 			description.addProperty("id");
 		}
-
+		
 		return description;
 	}
-
+	
 	public String getDisplayString(Timesheet instance) {
-		return instance.getClockIn().toString() + " to " + (instance.getClockOut() != null ? instance.getClockOut() : " open");
+		return instance.getClockIn().toString() + " to "
+		        + (instance.getClockOut() != null ? instance.getClockOut() : " open");
 	}
 }

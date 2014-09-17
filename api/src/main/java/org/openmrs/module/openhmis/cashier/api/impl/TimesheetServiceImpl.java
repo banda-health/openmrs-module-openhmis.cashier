@@ -31,67 +31,62 @@ import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizat
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public class TimesheetServiceImpl
-		extends BaseEntityDataServiceImpl<Timesheet>
-		implements ITimesheetService, IEntityAuthorizationPrivileges {
-
+public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
+        implements ITimesheetService, IEntityAuthorizationPrivileges {
+	
 	private static final String CLOCK_IN = "clockIn";
 	private static final String CLOCK_OUT = "clockOut";
-
+	
 	@Override
 	protected IEntityAuthorizationPrivileges getPrivileges() {
 		return this;
 	}
-
+	
 	@Override
-	protected void validate(Timesheet entity) throws APIException {
-	}
-
+	protected void validate(Timesheet entity) throws APIException {}
+	
 	@Override
 	public String getVoidPrivilege() {
 		return PrivilegeConstants.MANAGE_TIMESHEETS;
 	}
-
+	
 	@Override
 	public String getSavePrivilege() {
 		return PrivilegeConstants.MANAGE_TIMESHEETS;
 	}
-
+	
 	@Override
 	public String getPurgePrivilege() {
 		return PrivilegeConstants.PURGE_TIMESHEETS;
 	}
-
+	
 	@Override
 	public String getGetPrivilege() {
 		return PrivilegeConstants.VIEW_TIMESHEETS;
 	}
-
+	
 	@Override
 	public Timesheet getCurrentTimesheet(Provider cashier) {
 		Criteria criteria = repository.createCriteria(Timesheet.class);
-		criteria.add(Restrictions.and(
-				Restrictions.eq("cashier", cashier),
-				Restrictions.isNull(CLOCK_OUT))
-		);
+		criteria.add(Restrictions.and(Restrictions.eq("cashier", cashier), Restrictions.isNull(CLOCK_OUT)));
 		criteria.addOrder(Order.desc(CLOCK_IN));
-
+		
 		return repository.selectSingle(Timesheet.class, criteria);
 	}
-
+	
 	@Override
 	public void closeOpenTimesheets() {
 		Criteria criteria = repository.createCriteria(Timesheet.class);
 		criteria.add(Restrictions.isNull("clockOut"));
 		criteria.addOrder(Order.desc("clockIn"));
-
+		
 		List<Timesheet> timesheets = repository.select(Timesheet.class, criteria);
-
+		
 		Date clockOutDate = new Date();
 		int counter = 0;
 		for (Timesheet timesheet : timesheets) {
 			timesheet.setClockOut(clockOutDate);
-
+			
 			if (counter++ > 50) {
 				//ensure changes are persisted to DB before reclaiming memory
 				Context.flushSession();
@@ -100,7 +95,7 @@ public class TimesheetServiceImpl
 			}
 		}
 	}
-
+	
 	@Override
 	public List<Timesheet> getTimesheetsByDate(Provider cashier, Date date) {
 		Calendar calendar = Calendar.getInstance();
@@ -109,38 +104,25 @@ public class TimesheetServiceImpl
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		Date startDate = calendar.getTime();
-
+		
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
 		Date endDate = calendar.getTime();
-
+		
 		Criteria criteria = repository.createCriteria(Timesheet.class);
 		criteria.add(Restrictions.and(
-				Restrictions.eq("cashier", cashier),
-				Restrictions.or(
-					// Start or end on date
-					Restrictions.or(
-						Restrictions.between(CLOCK_IN, startDate, endDate),
-						Restrictions.between(CLOCK_OUT, startDate, endDate)
-					),
-					Restrictions.or(
-						// Start on or before date and have not ended
-						Restrictions.and(
-							Restrictions.le(CLOCK_IN, endDate),
-							Restrictions.isNull(CLOCK_OUT)
-						),
-						// Start before and end after date
-						Restrictions.and(
-							Restrictions.le(CLOCK_IN, startDate),
-							Restrictions.ge(CLOCK_OUT, endDate)
-						)
-					)
-				)
-			)
-		);
+		    Restrictions.eq("cashier", cashier),
+		    Restrictions.or(
+		    // Start or end on date
+		        Restrictions.or(Restrictions.between(CLOCK_IN, startDate, endDate),
+		            Restrictions.between(CLOCK_OUT, startDate, endDate)), Restrictions.or(
+		        // Start on or before date and have not ended
+		            Restrictions.and(Restrictions.le(CLOCK_IN, endDate), Restrictions.isNull(CLOCK_OUT)),
+		            // Start before and end after date
+		            Restrictions.and(Restrictions.le(CLOCK_IN, startDate), Restrictions.ge(CLOCK_OUT, endDate))))));
 		criteria.addOrder(Order.desc(CLOCK_IN));
-
+		
 		return repository.select(Timesheet.class, criteria);
 	}
 }

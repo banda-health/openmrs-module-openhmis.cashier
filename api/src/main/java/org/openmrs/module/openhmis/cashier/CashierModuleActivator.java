@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.openhmis.cashier;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.Module;
@@ -28,8 +27,8 @@ import org.openmrs.module.web.WebModuleUtil;
  */
 public class CashierModuleActivator implements ModuleActivator {
 	
-    private static final Log LOG = LogFactory.getLog(CashierModuleActivator.class);
-
+	private static final Log LOG = LogFactory.getLog(CashierModuleActivator.class);
+	
 	/**
 	 * @see ModuleActivator#willRefreshContext()
 	 */
@@ -70,9 +69,9 @@ public class CashierModuleActivator implements ModuleActivator {
 	 * @see ModuleActivator#stopped()
 	 */
 	public void stopped() {
-	    Module module = ModuleFactory.getModuleById(CashierWebConstants.OPENHMIS_CASHIER_MODULE_ID);
-	    WebModuleUtil.unloadFilters(module);
+		Module module = ModuleFactory.getModuleById(CashierWebConstants.OPENHMIS_CASHIER_MODULE_ID);
+		WebModuleUtil.unloadFilters(module);
 		LOG.info("OpenHMIS Cashier Module Module stopped");
 	}
-		
+	
 }

@@ -16,9 +16,8 @@ package org.openmrs.module.openhmis.cashier.api.security;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 
-public class BasicMetadataAuthorizationPrivileges
-		extends BasicEntityAuthorizationPrivileges
-		implements IMetadataAuthorizationPrivileges {
+public class BasicMetadataAuthorizationPrivileges extends BasicEntityAuthorizationPrivileges
+        implements IMetadataAuthorizationPrivileges {
 	@Override
 	public String getRetirePrivilege() {
 		return PrivilegeConstants.MANAGE_METADATA;

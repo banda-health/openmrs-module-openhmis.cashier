@@ -39,12 +39,12 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should return the bill with the specified reciept number
 	 * @should return null if the receipt number is not found
 	 */
-	@Transactional(readOnly =  true)
-	@Authorized( { PrivilegeConstants.VIEW_BILLS})
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	Bill getBillByReceiptNumber(String receiptNumber) throws APIException;
-
+	
 	/**
-	 *  Returns all {@link Bill}s for the specified patient with the specified paging.
+	 * Returns all {@link Bill}s for the specified patient with the specified paging.
 	 * @param patient The {@link Patient}.
 	 * @param paging The paging information.
 	 * @return All of the bills for the specified patient.
@@ -53,9 +53,9 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should return an empty list if the specified patient has no bills
 	 */
 	List<Bill> getBillsByPatient(Patient patient, PagingInfo paging);
-
+	
 	/**
-	 *  Returns all {@link Bill}s for the specified patient with the specified paging.
+	 * Returns all {@link Bill}s for the specified patient with the specified paging.
 	 * @param patientId The patient id.
 	 * @param paging The paging information.
 	 * @return All of the bills for the specified patient.
@@ -65,14 +65,14 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should return an empty list if the specified patient has no bills
 	 */
 	List<Bill> getBillsByPatientId(int patientId, PagingInfo paging);
-
+	
 	/**
 	 * Gets all bills using the specified {@link BillSearch} settings.
 	 * @param billSearch The bill search settings.
 	 * @return The bills found or an empty list if no bills were found.
 	 */
 	@Transactional(readOnly = true)
-	@Authorized( { PrivilegeConstants.VIEW_BILLS})
+	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	List<Bill> getBills(BillSearch billSearch);
 	
 	/**
@@ -92,7 +92,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should not return retired bills from search unless specified
 	 */
 	@Transactional(readOnly = true)
-	@Authorized( { PrivilegeConstants.VIEW_BILLS})
+	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	List<Bill> getBills(BillSearch billSearch, PagingInfo pagingInfo);
 	
 	@Override

@@ -20,15 +20,14 @@ import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizati
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 
-public class PaymentModeAttributeTypeServiceImpl
-		extends BaseMetadataDataServiceImpl<PaymentModeAttributeType>
-		implements IPaymentModeAttributeTypeService {
-
+public class PaymentModeAttributeTypeServiceImpl extends BaseMetadataDataServiceImpl<PaymentModeAttributeType>
+        implements IPaymentModeAttributeTypeService {
+	
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
 	}
-
+	
 	@Override
-	protected void validate(PaymentModeAttributeType entity) throws APIException { }
+	protected void validate(PaymentModeAttributeType entity) throws APIException {}
 }

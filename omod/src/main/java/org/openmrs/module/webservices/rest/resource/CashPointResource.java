@@ -21,27 +21,28 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
-@Resource(name = CashierRestConstants.CASH_POINT_RESOURCE, supportedClass=CashPoint.class, supportedOpenmrsVersions={"1.9"})
+@Resource(name = CashierRestConstants.CASH_POINT_RESOURCE, supportedClass = CashPoint.class,
+        supportedOpenmrsVersions = { "1.9" })
 public class CashPointResource extends BaseRestMetadataResource<CashPoint> {
-    @Override
+	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		description.addProperty("location", Representation.REF);
 		return description;
 	}
-
-    @Override
+	
+	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = super.getCreatableProperties();
 		description.addProperty("location");
 		return description;
 	}
-
+	
 	@Override
 	public CashPoint newDelegate() {
 		return new CashPoint();
 	}
-
+	
 	@Override
 	public Class<? extends IMetadataDataService<CashPoint>> getServiceClass() {
 		return ICashPointService.class;

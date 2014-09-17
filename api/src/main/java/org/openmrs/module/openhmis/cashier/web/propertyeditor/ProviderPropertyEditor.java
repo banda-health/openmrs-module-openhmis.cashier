@@ -23,6 +23,17 @@ import org.openmrs.api.context.Context;
 
 public class ProviderPropertyEditor extends PropertyEditorSupport {
 	@Override
+	public String getAsText() {
+		Provider provider = (Provider)getValue();
+
+		if (provider == null) {
+			return "";
+		} else {
+			return provider.getId().toString();
+		}
+	}
+	
+	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		ProviderService service = Context.getProviderService();
 
@@ -37,20 +48,9 @@ public class ProviderPropertyEditor extends PropertyEditorSupport {
 			}
 
 			setValue(provider);
-			if (provider== null) {
+			if (provider == null) {
 				throw new IllegalArgumentException("Provider not found: " + text);
 			}
-		}
-	}
-
-	@Override
-	public String getAsText() {
-		Provider provider = (Provider)getValue();
-
-		if (provider == null) {
-			return "";
-		} else {
-			return provider.getId().toString();
 		}
 	}
 }

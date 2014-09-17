@@ -33,11 +33,11 @@ import org.springframework.web.context.request.WebRequest;
 @Controller
 @RequestMapping(value = CashierWebConstants.JASPER_REPORT_PAGE)
 public class JasperReportController {
-	@RequestMapping(method= RequestMethod.GET)
-	public String render(@RequestParam(value = "reportId", required = true) int reportId,
-	                   WebRequest request, HttpServletResponse response) throws IOException {
+	@RequestMapping(method = RequestMethod.GET)
+	public String render(@RequestParam(value = "reportId", required = true) int reportId, WebRequest request,
+	        HttpServletResponse response) throws IOException {
 		// Currently we only handle the cashier shift report so this method is tailored to it.
-
+		
 		int timesheetId;
 		String temp = request.getParameter("timesheetId");
 		if (!StringUtils.isEmpty(temp) && StringUtils.isNumeric(temp)) {
@@ -46,14 +46,14 @@ public class JasperReportController {
 			response.sendError(500, "The timesheet id ('" + temp + "') must be defined and be numeric.");
 			return null;
 		}
-
+		
 		JasperReportService jasperService = Context.getService(JasperReportService.class);
 		JasperReport report = jasperService.getJasperReport(reportId);
 		if (report == null) {
 			response.sendError(500, "Could not find report " + reportId);
 			return null;
 		}
-
+		
 		report.setName("Cashier Shift Report - " + temp);
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("timesheetId", timesheetId);
@@ -63,7 +63,8 @@ public class JasperReportController {
 			response.sendError(500, "Error generating cashier shift report for timesheet \"" + temp + "\"");
 			return null;
 		}
-
-		return "redirect:" + CashierWebConstants.REPORT_DOWNLOAD_URL + "?reportName=" + report.getName().replaceAll("\\W", "") + ".pdf";
+		
+		return "redirect:" + CashierWebConstants.REPORT_DOWNLOAD_URL + "?reportName="
+		        + report.getName().replaceAll("\\W", "") + ".pdf";
 	}
 }
