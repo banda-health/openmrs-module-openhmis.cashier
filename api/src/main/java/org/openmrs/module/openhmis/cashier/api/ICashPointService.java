@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.openmrs.Location;
 import org.openmrs.annotation.Authorized;
-import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
@@ -30,7 +29,6 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
 	 * @param location The location.
 	 * @param includeRetired Whether retired cashpoints should be included in the results.
 	 * @return All cashpoints for the specified {@link Location}.
-	 * @throws APIException
 	 * @should throw IllegalArgumentException if the location is null
 	 * @should return an empty list if the location has no cashpoints
 	 * @should not return retired cashpoints unless specified
@@ -58,7 +56,6 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
 	 * @param name The cashpoints name fragment.
 	 * @param includeRetired Whether retired cashpoints should be included in the results.
 	 * @return All cashpoints in the specified {@link Location} that start with the specified name.
-	 * @throws APIException
 	 * @should throw IllegalArgumentException if the location is null
 	 * @should throw IllegalArgumentException if the name is null
 	 * @should throw IllegalArgumentException if the name is empty
@@ -79,7 +76,6 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
 	 * @param includeRetired Whether retired cashpoints should be included in the results.
 	 * @param pagingInfo The paging information.
 	 * @return All cashpoints in the specified {@link Location} that start with the specified name.
-	 * @throws APIException
 	 */
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.MANAGE_METADATA })

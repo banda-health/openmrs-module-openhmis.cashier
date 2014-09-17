@@ -16,6 +16,7 @@ package org.openmrs.module.openhmis.cashier.api.util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Provider;
+import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
@@ -36,7 +37,7 @@ public class TimesheetUtil {
 		try {
 			provider = ProviderHelper.getCurrentProvider(providerService);
 		} catch (Exception e) {
-			throw new RuntimeException("Error retrieving provider for current user.", e);
+			throw new APIException("Error retrieving provider for current user.", e);
 		}
 		
 		ITimesheetService tsService = Context.getService(ITimesheetService.class);
