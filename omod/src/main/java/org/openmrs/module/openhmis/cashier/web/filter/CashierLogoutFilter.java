@@ -32,7 +32,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
-import org.openmrs.module.openhmis.commons.api.ProviderHelper;
+import org.openmrs.module.openhmis.commons.api.ProviderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -70,7 +70,7 @@ public class CashierLogoutFilter implements Filter {
 			return;
 		}
 		
-		Provider provider = ProviderHelper.getCurrentProvider(providerService);
+		Provider provider = ProviderUtil.getCurrentProvider(providerService);
 		
 		if (provider == null) {
 			LOG.error(PROVIDER_ERROR_LOG_MESSAGE);

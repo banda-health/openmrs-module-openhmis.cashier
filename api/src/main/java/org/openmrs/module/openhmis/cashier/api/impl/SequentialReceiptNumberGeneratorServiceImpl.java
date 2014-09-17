@@ -76,7 +76,7 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 	@Override
 	@Transactional(readOnly = true)
 	public List<GroupSequence> getSequences() {
-		return repository.select(GroupSequence.class);
+		return getRepository().select(GroupSequence.class);
 	}
 	
 	@Override
@@ -86,10 +86,10 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 			throw new IllegalArgumentException("The group must be defined.");
 		}
 		
-		Criteria criteria = repository.createCriteria(GroupSequence.class);
+		Criteria criteria = getRepository().createCriteria(GroupSequence.class);
 		criteria.add(Restrictions.eq("group", group));
 		
-		return repository.selectSingle(GroupSequence.class, criteria);
+		return getRepository().selectSingle(GroupSequence.class, criteria);
 	}
 	
 	@Override
@@ -99,7 +99,7 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 			throw new NullPointerException("The sequence to save must be defined.");
 		}
 		
-		return repository.save(sequence);
+		return getRepository().save(sequence);
 	}
 	
 	@Override
@@ -108,7 +108,7 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 		if (sequence == null) {
 			throw new NullPointerException("The sequence to purge must be defined.");
 		}
-		
-		repository.delete(sequence);
+
+		getRepository().delete(sequence);
 	}
 }

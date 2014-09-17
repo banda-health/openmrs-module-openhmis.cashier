@@ -24,7 +24,7 @@ import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
-import org.openmrs.module.openhmis.commons.api.ProviderHelper;
+import org.openmrs.module.openhmis.commons.api.ProviderUtil;
 import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.openmrs.module.web.extension.LinkExt;
 
@@ -52,7 +52,7 @@ public class CashierLinkExt extends LinkExt {
 				
 				isProviderUser = false;
 				if (Context.isAuthenticated()) {
-					Provider provider = ProviderHelper.getCurrentProvider(providerService);
+					Provider provider = ProviderUtil.getCurrentProvider(providerService);
 					if (provider != null) {
 						isProviderUser = true;
 						try {

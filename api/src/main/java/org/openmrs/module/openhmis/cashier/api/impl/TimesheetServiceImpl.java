@@ -67,20 +67,20 @@ public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
 	
 	@Override
 	public Timesheet getCurrentTimesheet(Provider cashier) {
-		Criteria criteria = repository.createCriteria(Timesheet.class);
+		Criteria criteria = getRepository().createCriteria(Timesheet.class);
 		criteria.add(Restrictions.and(Restrictions.eq("cashier", cashier), Restrictions.isNull(CLOCK_OUT)));
 		criteria.addOrder(Order.desc(CLOCK_IN));
 		
-		return repository.selectSingle(Timesheet.class, criteria);
+		return getRepository().selectSingle(Timesheet.class, criteria);
 	}
 	
 	@Override
 	public void closeOpenTimesheets() {
-		Criteria criteria = repository.createCriteria(Timesheet.class);
+		Criteria criteria = getRepository().createCriteria(Timesheet.class);
 		criteria.add(Restrictions.isNull("clockOut"));
 		criteria.addOrder(Order.desc("clockIn"));
 		
-		List<Timesheet> timesheets = repository.select(Timesheet.class, criteria);
+		List<Timesheet> timesheets = getRepository().select(Timesheet.class, criteria);
 		
 		Date clockOutDate = new Date();
 		int counter = 0;
@@ -110,7 +110,7 @@ public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
 		calendar.set(Calendar.SECOND, 59);
 		Date endDate = calendar.getTime();
 		
-		Criteria criteria = repository.createCriteria(Timesheet.class);
+		Criteria criteria = getRepository().createCriteria(Timesheet.class);
 		criteria.add(Restrictions.and(
 		    Restrictions.eq("cashier", cashier),
 		    Restrictions.or(
@@ -123,6 +123,6 @@ public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
 		            Restrictions.and(Restrictions.le(CLOCK_IN, startDate), Restrictions.ge(CLOCK_OUT, endDate))))));
 		criteria.addOrder(Order.desc(CLOCK_IN));
 		
-		return repository.select(Timesheet.class, criteria);
+		return getRepository().select(Timesheet.class, criteria);
 	}
 }

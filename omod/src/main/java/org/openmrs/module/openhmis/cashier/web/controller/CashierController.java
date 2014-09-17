@@ -39,7 +39,7 @@ import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.cashier.web.propertyeditor.EntityPropertyEditor;
 import org.openmrs.module.openhmis.cashier.web.propertyeditor.ProviderPropertyEditor;
-import org.openmrs.module.openhmis.commons.api.ProviderHelper;
+import org.openmrs.module.openhmis.commons.api.ProviderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -93,7 +93,7 @@ public class CashierController {
 		if (providerId != null) {
 			provider = providerService.getProvider(providerId);
 		} else {
-			provider = ProviderHelper.getCurrentProvider(providerService);
+			provider = ProviderUtil.getCurrentProvider(providerService);
 		}
 		
 		if (provider == null) {

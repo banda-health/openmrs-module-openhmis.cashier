@@ -24,7 +24,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
-import org.openmrs.module.openhmis.commons.api.ProviderHelper;
+import org.openmrs.module.openhmis.commons.api.ProviderUtil;
 import org.openmrs.module.webservices.rest.resource.AlreadyPagedWithLength;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -43,7 +43,7 @@ public class TimesheetSearchHandler implements SearchHandler {
 	@Override
 	public PageableResult search(RequestContext context) {
 		ITimesheetService service = Context.getService(ITimesheetService.class);
-		Provider provider = ProviderHelper.getCurrentProvider();
+		Provider provider = ProviderUtil.getCurrentProvider();
 		Date date;
 		if (provider == null) {
 			return null;

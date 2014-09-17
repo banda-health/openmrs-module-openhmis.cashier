@@ -96,10 +96,10 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 			throw new IllegalArgumentException("The receipt number must be less than 256 characters.");
 		}
 		
-		Criteria criteria = repository.createCriteria(getEntityClass());
+		Criteria criteria = getRepository().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("receiptNumber", receiptNumber));
 		
-		Bill bill = repository.selectSingle(getEntityClass(), criteria);
+		Bill bill = getRepository().selectSingle(getEntityClass(), criteria);
 		removeNullLineItems(bill);
 		return bill;
 	}
@@ -119,10 +119,10 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 			throw new IllegalArgumentException("The patient id must be a valid identifier.");
 		}
 		
-		Criteria criteria = repository.createCriteria(getEntityClass());
+		Criteria criteria = getRepository().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("patient.id", patientId));
 		
-		List<Bill> results = repository.select(getEntityClass(), criteria);
+		List<Bill> results = getRepository().select(getEntityClass(), criteria);
 		removeNullLineItems(results);
 		return results;
 	}

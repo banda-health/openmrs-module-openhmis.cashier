@@ -23,7 +23,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
-import org.openmrs.module.openhmis.commons.api.ProviderHelper;
+import org.openmrs.module.openhmis.commons.api.ProviderUtil;
 
 public class TimesheetUtil {
 	private static final Log LOG = LogFactory.getLog(TimesheetUtil.class);
@@ -35,7 +35,7 @@ public class TimesheetUtil {
 		Timesheet timesheet = null;
 		ProviderService providerService = Context.getProviderService();
 		try {
-			provider = ProviderHelper.getCurrentProvider(providerService);
+			provider = ProviderUtil.getCurrentProvider(providerService);
 		} catch (Exception e) {
 			throw new APIException("Error retrieving provider for current user.", e);
 		}
