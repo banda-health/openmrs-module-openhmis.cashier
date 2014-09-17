@@ -38,7 +38,7 @@ public class ReceiptController {
 	public void get(@RequestParam(value = "receiptNumber", required = false) String receiptNumber,
 	        HttpServletResponse response) throws IOException {
 		if (receiptNumber == null) {
-			response.sendError(404);
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
 		
@@ -50,7 +50,8 @@ public class ReceiptController {
 		
 		JasperReport report = ModuleSettings.getReceiptReport();
 		if (report == null) {
-			response.sendError(500, "Configuration error: need to specify global option for default report ID.");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Configuration error: need to specify global " +
+					"option for default report ID.");
 			return;
 		}
 		
@@ -71,7 +72,8 @@ public class ReceiptController {
 		try {
 			ReportGenerator.generateHtmlAndWriteToResponse(report, params, response);
 		} catch (IOException e) {
-			response.sendError(500, "Error generating report for receipt '" + receiptNumber + "'");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating report for receipt '" +
+					receiptNumber + "'");
 			return false;
 		} finally {
 			// Reset the report name
@@ -83,12 +85,15 @@ public class ReceiptController {
 	
 	private boolean validateBill(String receiptNumber, Bill bill, HttpServletResponse response) throws IOException {
 		if (bill == null) {
-			response.sendError(404, "Could not find bill with receipt number '" + receiptNumber + "'");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find bill with receipt number '" +
+					receiptNumber  + "'");
+
 			return false;
 		}
 		
 		if (bill.isReceiptPrinted() && !Context.hasPrivilege(PrivilegeConstants.REPRINT_RECEIPT)) {
-			response.sendError(403, "You do not have permission to reprint receipt '" + receiptNumber + "'");
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to reprint receipt '" +
+					receiptNumber + "'");
 			return false;
 		}
 		

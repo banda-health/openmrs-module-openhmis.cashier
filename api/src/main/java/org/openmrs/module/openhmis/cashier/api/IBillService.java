@@ -41,7 +41,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 */
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_BILLS })
-	Bill getBillByReceiptNumber(String receiptNumber) throws APIException;
+	Bill getBillByReceiptNumber(String receiptNumber);
 	
 	/**
 	 * Returns all {@link Bill}s for the specified patient with the specified paging.

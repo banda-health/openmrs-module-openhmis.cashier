@@ -29,5 +29,5 @@ public class PaymentModeAttributeTypeServiceImpl extends BaseMetadataDataService
 	}
 	
 	@Override
-	protected void validate(PaymentModeAttributeType entity) throws APIException {}
+	protected void validate(PaymentModeAttributeType entity) {}
 }

@@ -39,16 +39,16 @@ public class CashPointServiceImpl extends BaseMetadataDataServiceImpl<CashPoint>
 	}
 	
 	@Override
-	protected void validate(CashPoint entity) throws APIException {}
+	protected void validate(CashPoint entity) {}
 	
 	@Override
-	public List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired) throws APIException {
+	public List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired) {
 		return getCashPointsByLocation(location, includeRetired, null);
 	}
 	
 	@Override
 	public List<CashPoint> getCashPointsByLocation(final Location location, final boolean includeRetired,
-	        PagingInfo pagingInfo) throws APIException {
+	        PagingInfo pagingInfo) {
 		if (location == null) {
 			throw new IllegalArgumentException("The location must be defined");
 		}
@@ -65,14 +65,13 @@ public class CashPointServiceImpl extends BaseMetadataDataServiceImpl<CashPoint>
 	}
 	
 	@Override
-	public List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired)
-	        throws APIException {
+	public List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired) {
 		return getCashPointsByLocationAndName(location, name, includeRetired, null);
 	}
 	
 	@Override
 	public List<CashPoint> getCashPointsByLocationAndName(final Location location, final String name,
-	        final boolean includeRetired, PagingInfo pagingInfo) throws APIException {
+	        final boolean includeRetired, PagingInfo pagingInfo) {
 		if (location == null) {
 			throw new IllegalArgumentException("The location must be defined");
 		}

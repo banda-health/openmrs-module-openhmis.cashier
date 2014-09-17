@@ -50,7 +50,7 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	}
 	
 	@Override
-	protected void validate(Bill bill) throws APIException {}
+	protected void validate(Bill bill) {}
 	
 	/**
 	 * Saves the bill to the database, creating a new bill or updating an existing one.
@@ -63,7 +63,7 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	@Override
 	@Authorized({ PrivilegeConstants.MANAGE_BILLS })
 	@Transactional
-	public Bill save(Bill bill) throws APIException {
+	public Bill save(Bill bill) {
 		if (bill == null) {
 			throw new NullPointerException("The bill must be defined.");
 		}
@@ -89,7 +89,7 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	@Override
 	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	@Transactional(readOnly = true)
-	public Bill getBillByReceiptNumber(String receiptNumber) throws APIException {
+	public Bill getBillByReceiptNumber(String receiptNumber) {
 		if (StringUtils.isEmpty(receiptNumber)) {
 			throw new IllegalArgumentException("The receipt number must be defined.");
 		}
@@ -154,28 +154,28 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 		from the results before being returned to the caller.
 	 */
 	@Override
-	public List<Bill> getAll(boolean includeVoided, PagingInfo pagingInfo) throws APIException {
+	public List<Bill> getAll(boolean includeVoided, PagingInfo pagingInfo) {
 		List<Bill> results = super.getAll(includeVoided, pagingInfo);
 		removeNullLineItems(results);
 		return results;
 	}
 	
 	@Override
-	public Bill getById(int entityId) throws APIException {
+	public Bill getById(int entityId) {
 		Bill bill = super.getById(entityId);
 		removeNullLineItems(bill);
 		return bill;
 	}
 	
 	@Override
-	public Bill getByUuid(String uuid) throws APIException {
+	public Bill getByUuid(String uuid) {
 		Bill bill = super.getByUuid(uuid);
 		removeNullLineItems(bill);
 		return bill;
 	}
 	
 	@Override
-	public List<Bill> getAll() throws APIException {
+	public List<Bill> getAll() {
 		List<Bill> results = super.getAll();
 		removeNullLineItems(results);
 		return results;

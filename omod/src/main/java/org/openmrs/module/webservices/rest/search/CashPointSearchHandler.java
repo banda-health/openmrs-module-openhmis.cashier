@@ -42,7 +42,7 @@ public class CashPointSearchHandler implements SearchHandler {
 	                .withOptionalParameters("location_uuid").build()));
 	
 	@Override
-	public PageableResult search(RequestContext context) throws ResponseException {
+	public PageableResult search(RequestContext context) {
 		String query = context.getParameter("q");
 		String locationUuid = context.getParameter("location_uuid");
 		query = query.isEmpty() ? null : query;

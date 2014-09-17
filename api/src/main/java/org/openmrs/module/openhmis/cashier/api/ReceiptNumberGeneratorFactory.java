@@ -44,7 +44,7 @@ public class ReceiptNumberGeneratorFactory {
 	 * @should Throw APIException if generator class cannot be found
 	 * @should Throw APIException if generator class cannot be instantiated
 	 */
-	public static IReceiptNumberGenerator getGenerator() throws APIException {
+	public static IReceiptNumberGenerator getGenerator() {
 		if (generator == null) {
 			generator = createGeneratorInstance();
 			if (generator == null) {
@@ -67,7 +67,7 @@ public class ReceiptNumberGeneratorFactory {
 	 * @should Set the receipt number generator for the system
 	 * @should Remove the current generator if set to null
 	 */
-	public static void setGenerator(IReceiptNumberGenerator generator) throws APIException {
+	public static void setGenerator(IReceiptNumberGenerator generator) {
 		Class<? extends IReceiptNumberGenerator> cls = (generator == null) ? null : generator.getClass();
 
 		FactoryImpl.INSTANCE.setGeneratorClass(cls);

@@ -41,7 +41,7 @@ public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
 	}
 	
 	@PropertySetter(value = "price")
-	public void setPrice(BillLineItem instance, Object price) throws ConversionException {
+	public void setPrice(BillLineItem instance, Object price) {
 		instance.setPrice(Converter.objectToBigDecimal(price));
 	}
 	

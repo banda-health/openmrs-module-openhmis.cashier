@@ -29,7 +29,7 @@ import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.openmrs.module.web.extension.LinkExt;
 
 public class CashierLinkExt extends LinkExt {
-	private final static Log LOG = LogFactory.getLog(CashierLinkExt.class);
+	private static final Log LOG = LogFactory.getLog(CashierLinkExt.class);
 	
 	private ITimesheetService timesheetService;
 	private ProviderService providerService;

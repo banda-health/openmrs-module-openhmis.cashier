@@ -54,7 +54,7 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 	
 	@Override
 	@Transactional
-	public int reserveNextSequence(String group) throws APIException {
+	public int reserveNextSequence(String group) {
 		// Get the sequence
 		GroupSequence sequence = getSequence(group);
 		if (sequence == null) {

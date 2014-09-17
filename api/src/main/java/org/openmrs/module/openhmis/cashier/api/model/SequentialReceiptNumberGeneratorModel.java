@@ -104,11 +104,11 @@ public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
 	}
 	
 	public void setSequencePadding(int sequencePadding) {
-		if (sequencePadding <= 0) {
-			sequencePadding = 1;
-		}
-		
 		this.sequencePadding = sequencePadding;
+		
+		if (this.sequencePadding <= 0) {
+			this.sequencePadding = 1;
+		}
 	}
 	
 	public boolean isIncludeCheckDigit() {

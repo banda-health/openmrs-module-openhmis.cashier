@@ -36,6 +36,7 @@ public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
 	
 	private static final String CLOCK_IN = "clockIn";
 	private static final String CLOCK_OUT = "clockOut";
+	private static final Integer BATCH_SIZE = 50;
 	
 	@Override
 	protected IEntityAuthorizationPrivileges getPrivileges() {
@@ -43,7 +44,7 @@ public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
 	}
 	
 	@Override
-	protected void validate(Timesheet entity) throws APIException {}
+	protected void validate(Timesheet entity) {}
 	
 	@Override
 	public String getVoidPrivilege() {
@@ -87,7 +88,7 @@ public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
 		for (Timesheet timesheet : timesheets) {
 			timesheet.setClockOut(clockOutDate);
 			
-			if (counter++ > 50) {
+			if (counter++ > BATCH_SIZE) {
 				//ensure changes are persisted to DB before reclaiming memory
 				Context.flushSession();
 				Context.clearSession();

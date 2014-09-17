@@ -43,14 +43,15 @@ public class JasperReportController {
 		if (!StringUtils.isEmpty(temp) && StringUtils.isNumeric(temp)) {
 			timesheetId = Integer.parseInt(temp);
 		} else {
-			response.sendError(500, "The timesheet id ('" + temp + "') must be defined and be numeric.");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "The timesheet id ('" + temp + "') must be " +
+					"defined and be numeric.");
 			return null;
 		}
 		
 		JasperReportService jasperService = Context.getService(JasperReportService.class);
 		JasperReport report = jasperService.getJasperReport(reportId);
 		if (report == null) {
-			response.sendError(500, "Could not find report " + reportId);
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not find report '" + reportId + "'");
 			return null;
 		}
 		
@@ -60,7 +61,8 @@ public class JasperReportController {
 		try {
 			ReportGenerator.generate(report, params, false, true);
 		} catch (IOException e) {
-			response.sendError(500, "Error generating cashier shift report for timesheet \"" + temp + "\"");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating cashier shift report for " +
+					"timesheet '" + temp + "'");
 			return null;
 		}
 		

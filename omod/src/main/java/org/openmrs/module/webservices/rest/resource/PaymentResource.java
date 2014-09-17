@@ -102,12 +102,12 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	}
 	
 	@PropertySetter("amount")
-	public void setPaymentAmount(Payment instance, Object price) throws ConversionException {
+	public void setPaymentAmount(Payment instance, Object price) {
 		instance.setAmount(Converter.objectToBigDecimal(price));
 	}
 	
 	@PropertySetter("amountTendered")
-	public void setPaymentAmountTendered(Payment instance, Object price) throws ConversionException {
+	public void setPaymentAmountTendered(Payment instance, Object price) {
 		instance.setAmountTendered(Converter.objectToBigDecimal(price));
 	}
 	
@@ -127,7 +127,7 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	}
 	
 	@Override
-	protected void delete(Payment delegate, String reason, RequestContext context) throws ResponseException {
+	protected void delete(Payment delegate, String reason, RequestContext context) {
 		delete(delegate.getBill().getUuid(), delegate.getUuid(), reason, context);
 	}
 	
@@ -146,12 +146,12 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	}
 	
 	@Override
-	public void purge(Payment delegate, RequestContext context) throws ResponseException {
+	public void purge(Payment delegate, RequestContext context) {
 		purge(delegate.getBill().getUuid(), delegate.getUuid(), context);
 	}
 	
 	@Override
-	public void purge(String parentUniqueId, String uuid, RequestContext context) throws ResponseException {
+	public void purge(String parentUniqueId, String uuid, RequestContext context) {
 		IBillService service = Context.getService(IBillService.class);
 		Bill bill = findBill(service, parentUniqueId);
 		Payment payment = findPayment(bill, uuid);
@@ -161,7 +161,7 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	}
 	
 	@Override
-	public PageableResult doGetAll(Bill parent, RequestContext context) throws ResponseException {
+	public PageableResult doGetAll(Bill parent, RequestContext context) {
 		return new AlreadyPaged<Payment>(context, new ArrayList<Payment>(parent.getPayments()), false);
 	}
 	

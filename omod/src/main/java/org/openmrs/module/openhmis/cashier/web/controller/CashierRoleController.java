@@ -42,8 +42,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(CashierWebConstants.CASHIER_ROLE_ROOT)
 public class CashierRoleController {
-	private static final Log LOG = LogFactory.getLog(CashierRoleController.class);
-	
 	private UserService userService;
 	
 	@Autowired
@@ -58,8 +56,7 @@ public class CashierRoleController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public void submit(HttpServletRequest request, RoleCreationViewModel viewModel, Errors errors, ModelMap model)
-	        throws Exception {
+	public void submit(HttpServletRequest request, RoleCreationViewModel viewModel, Errors errors, ModelMap model) {
 		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
 		
@@ -77,7 +74,7 @@ public class CashierRoleController {
 		render(model);
 	}
 	
-	private void addCashierPrivileges(String roleUuid) throws Exception {
+	private void addCashierPrivileges(String roleUuid) {
 		Role role = userService.getRoleByUuid(roleUuid);
 		if (role == null) {
 			throw new APIException("The role '" + roleUuid + "' could not be found.");
@@ -92,7 +89,7 @@ public class CashierRoleController {
 		userService.saveRole(role);
 	}
 	
-	private void removeCashierPrivileges(String roleUuid) throws Exception {
+	private void removeCashierPrivileges(String roleUuid) {
 		Role role = userService.getRoleByUuid(roleUuid);
 		if (role == null) {
 			throw new APIException("The role '" + roleUuid + "' could not be found.");
@@ -107,7 +104,7 @@ public class CashierRoleController {
 		userService.saveRole(role);
 	}
 	
-	private void createRole(RoleCreationViewModel viewModel, HttpSession session) throws Exception {
+	private void createRole(RoleCreationViewModel viewModel, HttpSession session) {
 		Role newRole = new Role();
 		newRole.setRole(viewModel.getNewRoleName());
 		newRole.setDescription("Users who creates and manage patient bills");
@@ -123,7 +120,7 @@ public class CashierRoleController {
 		session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.new");
 	}
 	
-	private boolean newRoleValidated(RoleCreationViewModel viewModel, Errors errors) throws Exception {
+	private boolean newRoleValidated(RoleCreationViewModel viewModel, Errors errors) {
 		if (viewModel.getNewRoleName().equals(StringUtils.EMPTY)) {
 			errors.rejectValue("role", "openhmis.cashier.roleCreation.page.feedback.error.blankRole");
 			return false;

@@ -42,7 +42,7 @@ public class TimesheetSearchHandler implements SearchHandler {
 	                .build());
 	
 	@Override
-	public PageableResult search(RequestContext context) throws ResponseException {
+	public PageableResult search(RequestContext context) {
 		ITimesheetService service = Context.getService(ITimesheetService.class);
 		Provider provider = ProviderHelper.getCurrentProvider();
 		Date date;

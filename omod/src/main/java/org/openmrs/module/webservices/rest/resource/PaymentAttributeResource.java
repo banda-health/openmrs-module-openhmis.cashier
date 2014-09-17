@@ -81,6 +81,6 @@ public class PaymentAttributeResource
 	
 	@Override
 	public Class<? extends IEntityDataService<PaymentAttribute>> getServiceClass() {
-		throw new RuntimeException("No service class implemented for " + getClass().getSimpleName());
+		return null;
 	}
 }

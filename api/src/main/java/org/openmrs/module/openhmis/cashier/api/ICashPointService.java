@@ -38,7 +38,7 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
 	 */
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.MANAGE_METADATA })
-	List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired) throws APIException;
+	List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired);
 	
 	/**
 	 * Gets all the cashpoints for the specified {@link org.openmrs.Location}.
@@ -50,8 +50,7 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
 	 */
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.MANAGE_METADATA })
-	List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired, PagingInfo pagingInfo)
-	        throws APIException;
+	List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired, PagingInfo pagingInfo);
 	
 	/**
 	 * Gets all cashpoints in the specified {@link Location} that start with the specified name.
@@ -71,8 +70,7 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
 	 */
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.MANAGE_METADATA })
-	List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired)
-	        throws APIException;
+	List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired);
 	
 	/**
 	 * Gets all cashpoints in the specified {@link Location} that start with the specified name.
@@ -86,5 +84,5 @@ public interface ICashPointService extends IMetadataDataService<CashPoint> {
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.MANAGE_METADATA })
 	List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired,
-	        PagingInfo pagingInfo) throws APIException;
+	        PagingInfo pagingInfo);
 }
