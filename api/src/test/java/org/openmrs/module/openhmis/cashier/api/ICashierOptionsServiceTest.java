@@ -13,17 +13,15 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import java.math.BigDecimal;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
 import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
-
-import java.math.BigDecimal;
 
 public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
 	public static final String OPTIONS_DATASET_VALID = TestConstants.BASE_DATASET_DIR + "CashierOptionsTestValid.xml";

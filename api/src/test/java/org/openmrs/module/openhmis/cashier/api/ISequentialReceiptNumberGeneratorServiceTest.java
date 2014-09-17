@@ -13,6 +13,9 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import java.util.List;
+import java.util.Properties;
+
 import org.hibernate.cfg.Environment;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,9 +24,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.GroupSequence;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataServiceTest;
-
-import java.util.List;
-import java.util.Properties;
 
 public class ISequentialReceiptNumberGeneratorServiceTest
 		extends IObjectDataServiceTest<ISequentialReceiptNumberGeneratorService, SequentialReceiptNumberGeneratorModel> {

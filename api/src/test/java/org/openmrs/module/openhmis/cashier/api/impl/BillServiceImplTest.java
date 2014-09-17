@@ -13,7 +13,17 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
-import org.junit.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
@@ -24,10 +34,6 @@ import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.agent.PowerMockAgent;
 import org.powermock.modules.junit4.rule.PowerMockRule;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 @PrepareForTest(ReceiptNumberGeneratorFactory.class)
 public class BillServiceImplTest extends IBillServiceTest {

@@ -13,6 +13,10 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.Provider;
@@ -20,10 +24,6 @@ import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataServiceTest;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 public class ITimesheetServiceTest extends IEntityDataServiceTest<ITimesheetService, Timesheet> {
 	private ProviderService providerService;

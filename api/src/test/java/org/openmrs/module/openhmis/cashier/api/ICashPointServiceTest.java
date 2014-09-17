@@ -13,8 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
-import com.google.common.collect.Iterators;
+import java.util.Date;
+import java.util.List;
+
 import liquibase.util.StringUtils;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.Location;
@@ -22,8 +25,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataServiceTest;
 
-import java.util.Date;
-import java.util.List;
+import com.google.common.collect.Iterators;
 
 public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointService, CashPoint> {
 	public static final String CASH_POINT_DATASET = TestConstants.BASE_DATASET_DIR + "CashPointTest.xml";

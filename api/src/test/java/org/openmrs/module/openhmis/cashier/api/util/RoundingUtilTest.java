@@ -14,6 +14,9 @@
 package org.openmrs.module.openhmis.cashier.api.util;
 
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,9 +28,6 @@ import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
 import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	private ICashierOptionsService cashOptService;

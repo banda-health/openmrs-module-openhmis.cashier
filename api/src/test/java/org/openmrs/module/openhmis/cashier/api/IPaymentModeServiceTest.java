@@ -13,12 +13,12 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataServiceTest;
-
-import java.util.List;
 
 public class IPaymentModeServiceTest extends IMetadataDataServiceTest<IPaymentModeService, PaymentMode> {
 	public static final String PAYMENT_MODE_DATASET = TestConstants.BASE_DATASET_DIR + "PaymentModeTest.xml";

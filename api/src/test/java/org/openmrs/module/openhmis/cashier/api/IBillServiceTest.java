@@ -13,6 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import liquibase.util.StringUtils;
 
 import org.junit.Assert;
@@ -21,17 +26,19 @@ import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.model.*;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
+import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
+import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
+import org.openmrs.module.openhmis.cashier.api.model.Payment;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.search.BillSearch;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataServiceTest;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
-import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillService, Bill> {
 	public static final String BILL_DATASET = TestConstants.BASE_DATASET_DIR + "BillTest.xml";

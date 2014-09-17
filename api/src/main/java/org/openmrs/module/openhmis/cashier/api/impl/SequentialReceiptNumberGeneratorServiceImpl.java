@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import org.openmrs.api.APIException;
 import org.openmrs.module.openhmis.cashier.api.ISequentialReceiptNumberGeneratorService;
 import org.openmrs.module.openhmis.cashier.api.model.GroupSequence;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;

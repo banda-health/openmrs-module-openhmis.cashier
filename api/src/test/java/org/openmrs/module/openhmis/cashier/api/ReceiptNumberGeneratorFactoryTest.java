@@ -13,6 +13,12 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,10 +33,6 @@ import org.openmrs.module.openhmis.cashier.api.test.InvalidReceiptNumberGenerato
 import org.openmrs.module.openhmis.cashier.api.test.TestReceiptNumberGenerator;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Context.class)

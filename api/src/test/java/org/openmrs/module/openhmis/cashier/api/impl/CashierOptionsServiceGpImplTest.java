@@ -33,7 +33,6 @@ import org.junit.runner.RunWith;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
-import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.powermock.modules.junit4.PowerMockRunner;
