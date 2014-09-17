@@ -38,7 +38,6 @@ import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingSubResource;
-import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
@@ -132,8 +131,7 @@ public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillRe
 	}
 	
 	@Override
-	public void delete(String parentUniqueId, final String uuid, String reason, RequestContext context)
-	        throws ResponseException {
+	public void delete(String parentUniqueId, final String uuid, String reason, RequestContext context) {
 		IBillService service = Context.getService(IBillService.class);
 		Bill bill = findBill(service, parentUniqueId);
 		Payment payment = findPayment(bill, uuid);

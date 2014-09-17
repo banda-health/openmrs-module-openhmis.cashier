@@ -23,7 +23,6 @@ import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentat
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
-import org.openmrs.module.webservices.rest.web.response.ConversionException;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/billLineItem", supportedClass = BillLineItem.class,
         supportedOpenmrsVersions = { "1.9" })

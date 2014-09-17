@@ -36,7 +36,7 @@ public class SequentialReceiptNumberGeneratorServiceImpl
 	}
 	
 	@Override
-	protected void validate(SequentialReceiptNumberGeneratorModel entity) throws APIException {
+	protected void validate(SequentialReceiptNumberGeneratorModel entity) {
 		return;
 	}
 	

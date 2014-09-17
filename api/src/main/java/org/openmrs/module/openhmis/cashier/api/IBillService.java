@@ -97,5 +97,5 @@ public interface IBillService extends IEntityDataService<Bill> {
 	
 	@Override
 	@Authorized(PrivilegeConstants.VIEW_BILLS)
-	Bill getByUuid(String uuid) throws APIException;
+	Bill getByUuid(String uuid);
 }
