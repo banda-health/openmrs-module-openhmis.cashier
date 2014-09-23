@@ -1,17 +1,23 @@
 /*
  * The contents of this file are subject to the OpenMRS Public License
- * Version 1.1 (the "License"); you may not use this file except in
+ * Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://license.openmrs.org
  *
  * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+ * the License for the specific language governing rights and
+ * limitations under the License.
  *
- * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ * Copyright (C) OpenHMIS.  All Rights Reserved.
  */
 package org.openmrs.module.openhmis.cashier.api;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -21,15 +27,12 @@ import org.junit.runner.RunWith;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.test.AnotherTestReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.test.InvalidReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.test.TestReceiptNumberGenerator;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Context.class)
@@ -59,7 +62,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	@Test
 	public void getGenerator_shouldReturnTheCurrentlyDefinedReceiptNumberGenerator() throws Exception {
 		// Configure system generator
-		when(administrationService.getGlobalProperty(ReceiptNumberGeneratorFactory.SYSTEM_RECEIPT_NUMBER_GENERATOR))
+		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
 				.thenReturn(TestReceiptNumberGenerator.class.getName());
 
 		// Get the generator from the factory
@@ -76,7 +79,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 
 		// Ensure that the admin service was only called once
 		verify(administrationService, times(1))
-				.getGlobalProperty(ReceiptNumberGeneratorFactory.SYSTEM_RECEIPT_NUMBER_GENERATOR);
+				.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR);
 	}
 
 	/**
@@ -85,7 +88,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	 */
 	@Test
 	public void getGenerator_shouldLoadTheGeneratorIfItHasNotBeenLoaded() throws Exception {
-		when(administrationService.getGlobalProperty(ReceiptNumberGeneratorFactory.SYSTEM_RECEIPT_NUMBER_GENERATOR))
+		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
 				.thenReturn(TestReceiptNumberGenerator.class.getName());
 
 		TestReceiptNumberGenerator generator = (TestReceiptNumberGenerator)ReceiptNumberGeneratorFactory.getGenerator();
@@ -120,7 +123,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	 */
 	@Test
 	public void getGenerator_shouldReturnNullIfNoGeneratorHasBeenDefined() throws Exception {
-		when(administrationService.getGlobalProperty(ReceiptNumberGeneratorFactory.SYSTEM_RECEIPT_NUMBER_GENERATOR))
+		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
 				.thenReturn(null);
 
 		IReceiptNumberGenerator generator = ReceiptNumberGeneratorFactory.getGenerator();
@@ -133,7 +136,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	 */
 	@Test(expected = APIException.class)
 	public void getGenerator_shouldThrowAPIExceptionIfGeneratorClassCannotBeFound() throws Exception {
-		when(administrationService.getGlobalProperty(ReceiptNumberGeneratorFactory.SYSTEM_RECEIPT_NUMBER_GENERATOR))
+		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
 				.thenReturn("org.openmrs.module.openhmis.cashier.NotAValidClass");
 
 		ReceiptNumberGeneratorFactory.getGenerator();
@@ -145,7 +148,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	 */
 	@Test(expected = APIException.class)
 	public void getGenerator_shouldThrowAPIExceptionIfGeneratorClassCannotBeInstantiated() throws Exception {
-		when(administrationService.getGlobalProperty(ReceiptNumberGeneratorFactory.SYSTEM_RECEIPT_NUMBER_GENERATOR))
+		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
 				.thenReturn(InvalidReceiptNumberGenerator.class.getName());
 
 		ReceiptNumberGeneratorFactory.getGenerator();

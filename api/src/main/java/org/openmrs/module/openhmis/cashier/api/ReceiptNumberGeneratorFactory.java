@@ -1,17 +1,21 @@
 /*
  * The contents of this file are subject to the OpenMRS Public License
- * Version 1.1 (the "License"); you may not use this file except in
+ * Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://license.openmrs.org
  *
  * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+ * the License for the specific language governing rights and
+ * limitations under the License.
  *
- * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ * Copyright (C) OpenHMIS.  All Rights Reserved.
  */
 package org.openmrs.module.openhmis.cashier.api;
+
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -19,50 +23,17 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.reflections.Reflections;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-
 @Transactional
 public class ReceiptNumberGeneratorFactory {
-	public static final String SYSTEM_RECEIPT_NUMBER_GENERATOR = "openhmis.cashier.systemReceiptNumberGenerator";
-
-	private static final Log log = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
+	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
 	private static volatile IReceiptNumberGenerator generator;
-
-	/**
-	 * Singleton implementation for storing and retrieving the generator in the database.
-	 */
-	private enum FactoryImpl {
-		INSTANCE;
-
-		@SuppressWarnings("unchecked")
-		public Class<? super IReceiptNumberGenerator> getGeneratorClass() throws ClassNotFoundException {
-			Class<? super IReceiptNumberGenerator> result = null;
-
-			String propertyValue = Context.getAdministrationService().getGlobalProperty(SYSTEM_RECEIPT_NUMBER_GENERATOR);
-			if (!StringUtils.isEmpty(propertyValue)) {
-				log.debug("Loading receipt number generator '" + propertyValue + "'...");
-				result = (Class<? super IReceiptNumberGenerator>) Class.forName(propertyValue);
-				log.debug("Receipt number generator loaded.");
-			} else {
-				log.warn("Request for receipt number generator when none has been defined.");
-			}
-
-			return result;
-		}
-
-		public void setGeneratorClass(Class<? extends IReceiptNumberGenerator> generatorClass) {
-			String className = (generatorClass == null) ? "" : generatorClass.getName();
-			GlobalProperty property = new GlobalProperty(SYSTEM_RECEIPT_NUMBER_GENERATOR, className);
-
-			Context.getAdministrationService().saveGlobalProperty(property);
-		}
-	}
-
+	
+	protected ReceiptNumberGeneratorFactory() {}
+	
 	/**
 	 * Returns the currently defined {@link IReceiptNumberGenerator} for the system.
 	 * @return The {@link IReceiptNumberGenerator}.
@@ -73,24 +44,11 @@ public class ReceiptNumberGeneratorFactory {
 	 * @should Throw APIException if generator class cannot be found
 	 * @should Throw APIException if generator class cannot be instantiated
 	 */
-	public static IReceiptNumberGenerator getGenerator() throws APIException {
+	public static IReceiptNumberGenerator getGenerator() {
 		if (generator == null) {
-			Class<? super IReceiptNumberGenerator> cls = null;
-			try {
-				cls = FactoryImpl.INSTANCE.getGeneratorClass();
-				if (cls == null) {
-					return null;
-				}
-
-				generator = (IReceiptNumberGenerator) cls.newInstance();
-			} catch (ClassNotFoundException classEx) {
-				log.warn("Attempt to load unknown receipt number generator type", classEx);
-
-				throw new APIException("Could not locate receipt number generator class.", classEx);
-			} catch (InstantiationException instantiationEx) {
-				throw new APIException("Could not instantiate the '" + cls.getClass().getName() + "' class.", instantiationEx);
-			} catch (IllegalAccessException accessEx) {
-				throw new APIException("Could not access the '" + cls.getClass().getName() + "' class.", accessEx);
+			generator = createGeneratorInstance();
+			if (generator == null) {
+				return null;
 			}
 		}
 
@@ -101,7 +59,7 @@ public class ReceiptNumberGeneratorFactory {
 
 		return generator;
 	}
-
+	
 	/**
 	 * Sets the system-wide {@link IReceiptNumberGenerator}.
 	 * @param generator The generator.
@@ -109,16 +67,36 @@ public class ReceiptNumberGeneratorFactory {
 	 * @should Set the receipt number generator for the system
 	 * @should Remove the current generator if set to null
 	 */
-	public static void setGenerator(IReceiptNumberGenerator generator) throws APIException {
+	public static void setGenerator(IReceiptNumberGenerator generator) {
 		Class<? extends IReceiptNumberGenerator> cls = (generator == null) ? null : generator.getClass();
 
 		FactoryImpl.INSTANCE.setGeneratorClass(cls);
 
 		ReceiptNumberGeneratorFactory.generator = generator;
 	}
-
+	
+	private static IReceiptNumberGenerator createGeneratorInstance() {
+		Class<? super IReceiptNumberGenerator> cls = null;
+		try {
+			cls = FactoryImpl.INSTANCE.getGeneratorClass();
+			if (cls == null) {
+				return null;
+			}
+			
+			return generator = (IReceiptNumberGenerator)cls.newInstance();
+		} catch (ClassNotFoundException classEx) {
+			LOG.warn("Attempt to load unknown receipt number generator type", classEx);
+			throw new APIException("Could not locate receipt number generator class.", classEx);
+		} catch (InstantiationException instantiationEx) {
+			throw new APIException("Could not instantiate the '" + cls.getClass().getName() + "' class.", instantiationEx);
+		} catch (IllegalAccessException accessEx) {
+			throw new APIException("Could not access the '" + cls.getClass().getName() + "' class.", accessEx);
+		}
+	}
+	
 	/**
-	 * Locates and instantiates all classes that implement {@link IReceiptNumberGenerator} in the current classpath.
+	 * Locates and instantiates all classes that implement {@link IReceiptNumberGenerator} in the
+	 * current classpath.
 	 * @return The instantiated receipt number generators.
 	 * @should Locate all classes that implement IReceiptNumberGenerator
 	 * @should Not throw an exception if the class instantiation fails
@@ -130,9 +108,7 @@ public class ReceiptNumberGeneratorFactory {
 		List<Class<? extends IReceiptNumberGenerator>> classes = new ArrayList<Class<? extends IReceiptNumberGenerator>>();
 		for (Class<? extends IReceiptNumberGenerator> cls : reflections.getSubTypesOf(IReceiptNumberGenerator.class)) {
 			// We only care about public instantiable classes so ignore others
-			if (!cls.isInterface() &&
-					!Modifier.isAbstract(cls.getModifiers()) &&
-					Modifier.isPublic(cls.getModifiers())) {
+			if (!cls.isInterface() && !Modifier.isAbstract(cls.getModifiers()) && Modifier.isPublic(cls.getModifiers())) {
 				classes.add(cls);
 			}
 		}
@@ -147,7 +123,7 @@ public class ReceiptNumberGeneratorFactory {
 					instances.add(cls.newInstance());
 				} catch (Exception ex) {
 					// We don't care about specific exceptions here.  Just log and ignore the class
-					log.warn("Could not instantiate the '" + cls.getName() + "' class.  It will be ignored.");
+					LOG.warn("Could not instantiate the '" + cls.getName() + "' class.  It will be ignored.");
 				}
 			}
 		}
@@ -158,12 +134,43 @@ public class ReceiptNumberGeneratorFactory {
 
 		return results;
 	}
-
+	
 	/**
-	 * Resets this factory, effectively creating a new instance.  If you are using this for anything other than testing
-	 * you are likely doing something wrong.
+	 * Resets this factory, effectively creating a new instance. If you are using this for anything
+	 * other than testing you are likely doing something wrong.
 	 */
 	static void reset() {
 		generator = null;
+	}
+	
+	/**
+	 * Singleton implementation for storing and retrieving the generator in the database.
+	 */
+	private enum FactoryImpl {
+		INSTANCE;
+
+		@SuppressWarnings("unchecked")
+		public Class<? super IReceiptNumberGenerator> getGeneratorClass() throws ClassNotFoundException {
+			Class<? super IReceiptNumberGenerator> result = null;
+
+			String propertyValue =
+			        Context.getAdministrationService().getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR);
+			if (!StringUtils.isEmpty(propertyValue)) {
+				LOG.debug("Loading receipt number generator '" + propertyValue + "'...");
+				result = (Class<? super IReceiptNumberGenerator>)Class.forName(propertyValue);
+				LOG.debug("Receipt number generator loaded.");
+			} else {
+				LOG.warn("Request for receipt number generator when none has been defined.");
+			}
+
+			return result;
+		}
+
+		public void setGeneratorClass(Class<? extends IReceiptNumberGenerator> generatorClass) {
+			String className = (generatorClass == null) ? "" : generatorClass.getName();
+			GlobalProperty property = new GlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR, className);
+
+			Context.getAdministrationService().saveGlobalProperty(property);
+		}
 	}
 }

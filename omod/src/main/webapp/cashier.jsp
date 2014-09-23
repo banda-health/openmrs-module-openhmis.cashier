@@ -1,13 +1,28 @@
+<%@ page import="org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants" %>
+<%--
+  ~ The contents of this file are subject to the OpenMRS Public License
+  ~ Version 2.0 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://license.openmrs.org
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+  ~ the License for the specific language governing rights and
+  ~ limitations under the License.
+  ~
+  ~ Copyright (C) OpenHMIS.  All Rights Reserved.
+  --%>
+
 <%--@elvariable id="shiftReport" type="org.openmrs.module.jasperreport.JasperReport"--%>
 <%--@elvariable id="cashier" type="org.openmrs.Provider"--%>
 <%--@elvariable id="timesheet" type="org.openmrs.module.openhmis.cashier.api.model.Timesheet"--%>
 <%--@elvariable id="returnUrl" type="java.lang.String"--%>
 
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<openmrs:require privilege="Manage Cashier Timesheets" otherwise="/login.htm" redirect="/module/openhmis/cashier/timesheetEntry.form" />
-<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
-
+<openmrs:require privilege="<%=PrivilegeConstants.MANAGE_TIMESHEETS%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/timesheetEntry.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="template/localHeader.jsp" %>
+<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
 <openmrs:htmlInclude file="/openmrs/ws/module/openhmis/backboneforms/init.js" />
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/init.js" />
 
@@ -66,7 +81,7 @@
         resultDiv.empty();
 
         // get timesheets from server
-        $j.getJSON(openhmis.url.rest + "timesheet?date=" + encodeURIComponent(element.val()), function(data) {
+        $j.getJSON(openhmis.url.rest + "/v2/cashier/timesheet?date=" + encodeURIComponent(element.val()), function(data) {
             if (data == null || data.length == 0) {
                 resultDiv.append("No timesheets found on " + dt.toDateString());
             }

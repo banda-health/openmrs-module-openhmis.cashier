@@ -22,6 +22,7 @@
 		<property name="status" column="status" not-null="true">
 			<type name="org.hibernate.type.EnumType">
 				<param name="enumClass">org.openmrs.module.openhmis.cashier.api.model.BillStatus</param>
+				<param name="type">12</param>
 			</type>
 		</property>
 
@@ -55,6 +56,7 @@
 		<property name="voidReason" type="java.lang.String" column="void_reason" length="255" />
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+        <property name="adjustmentReason" type="java.lang.String" column="adjustment_reason" length="500" not-null="false"/>
 	</class>
 
 	<class name="BillLineItem" table="cashier_bill_line_item">
@@ -68,7 +70,7 @@
 		<discriminator column="bill_line_item_id" insert="false" />
 
 		<many-to-one name="bill" class="Bill" column="bill_id" not-null="true" />
-		<many-to-one name="item" class="Item" column="item_id" not-null="true" />
+		<many-to-one name="item" class="org.openmrs.module.openhmis.inventory.api.model.Item" column="item_id" not-null="true" />
 		<property name="price" type="java.math.BigDecimal" column="price" not-null="true" />
 		<property name="priceName" type="java.lang.String" column="price_name" length="255" />
 		<property name="quantity" type="int" column="quantity" not-null="true" />
@@ -101,7 +103,7 @@
 		<discriminator column="bill_payment_id" insert="false" />
 
 		<many-to-one name="bill" class="Bill" column="bill_id" not-null="true" />
-		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
+		<many-to-one name="instanceType" class="PaymentMode" column="payment_mode_id" not-null="true" />
 
 		<property name="amount" type="java.math.BigDecimal" column="amount" not-null="true" />
 		<property name="amountTendered" type="java.math.BigDecimal" column="amount_tendered" not-null="true" />
@@ -133,8 +135,8 @@
 		</id>
 		<discriminator column="bill_payment_attribute_id" insert="false" />
 
-		<many-to-one name="payment" class="Payment" column="bill_payment_id" not-null="true" />
-		<many-to-one name="paymentModeAttributeType" class="PaymentModeAttributeType" column="payment_mode_attribute_type_id" not-null="true" />
+		<many-to-one name="owner" class="Payment" column="bill_payment_id" not-null="true" />
+		<many-to-one name="attributeType" class="PaymentModeAttributeType" column="payment_mode_attribute_type_id" not-null="true" />
 		<property name="value" type="text" access="field" column="value_reference" length="65535" />
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
@@ -181,7 +183,7 @@
 		</id>
 		<discriminator column="payment_mode_attribute_type_id" insert="false" />
 
-		<many-to-one name="paymentMode" class="PaymentMode" column="payment_mode_id" not-null="true" />
+		<many-to-one name="owner" class="PaymentMode" column="payment_mode_id" not-null="true" />
 
 		<property name="attributeOrder" type="int" column="attribute_order" />
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />

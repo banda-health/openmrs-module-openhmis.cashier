@@ -1,5 +1,20 @@
+<%@ page import="org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants" %>
+<%@ page import="org.openmrs.module.openhmis.cashier.web.PrivilegeWebConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<openmrs:require allPrivileges="Manage Cashier Bills, View Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
+<%--
+  ~ The contents of this file are subject to the OpenMRS Public License
+  ~ Version 2.0 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://license.openmrs.org
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+  ~ the License for the specific language governing rights and
+  ~ limitations under the License.
+  ~
+  ~ Copyright (C) OpenHMIS.  All Rights Reserved.
+  --%>
+<openmrs:require allPrivileges="<%=PrivilegeWebConstants.BILL_PAGE_PRIVILEDGES%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
@@ -60,7 +75,7 @@
 </div>
 
 <div id="bill"></div>
-<div id="payment" class="box"></div>
+<div id="payment"></div>
 
 <input type="submit" id="saveBill" value="<spring:message code="openhmis.cashier.bill.saveBill" />" />
 <input type="button" id="postBill" value="<spring:message code="openhmis.cashier.bill.postBill" />" style="display: none;" />

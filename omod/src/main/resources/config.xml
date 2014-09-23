@@ -16,8 +16,9 @@
 	<!-- / Module Properties -->
 
 	<require_modules>
-		<require_module version="1.0.0">org.openmrs.module.openhmis.backboneforms</require_module>
-		<require_module version="1.5.0">org.openmrs.module.openhmis.commons</require_module>
+		<require_module version="2.0.0">org.openmrs.module.openhmis.backboneforms</require_module>
+		<require_module version="2.0.0">org.openmrs.module.openhmis.commons</require_module>
+		<require_module version="1.0.0">org.openmrs.module.openhmis.inventory</require_module>
 		<require_module version="1.5.4">org.openmrs.module.jasperreport</require_module>
 	</require_modules>
 	
@@ -100,7 +101,7 @@
 	</privilege>
 
 	<privilege>
-		<name>Give Refund</name>
+		<name>Refund Money</name>
 		<description>Able to create/adjust a bill so that it refunds money.</description>
 	</privilege>
 
@@ -114,22 +115,6 @@
 		<description>Able to purge bills</description>
 	</privilege>
 	
-	<!--  Items  -->
-	<privilege>
-		<name>View Cashier Items</name>
-		<description>Able to view billing items</description>
-	</privilege>
-	
-	<privilege>
-		<name>Manage Cashier Items</name>
-		<description>Able to add/edit/delete billing items</description>
-	</privilege>
-
-	<privilege>
-		<name>Purge Cashier Items</name>
-		<description>Able to purge billing items</description>
-	</privilege>
-
 	<!--  Metadata  -->
 	<privilege>
 		<name>View Cashier Metadata</name>
@@ -164,8 +149,6 @@
 	
 	<!-- Maps hibernate files, if present -->
 	<mappingFiles>
-		Department.hbm.xml
-		Item.hbm.xml
 		Bill.hbm.xml
 		Cashier.hbm.xml
 		SequentialReceiptNumberGenerator.hbm.xml
@@ -186,6 +169,16 @@
 		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
+
+    <filter>
+        <filter-name>cashierLogoutFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>cashierLogoutFilter</filter-name>
+        <url-pattern>/logout</url-pattern>
+    </filter-mapping>
 
 </module>
 

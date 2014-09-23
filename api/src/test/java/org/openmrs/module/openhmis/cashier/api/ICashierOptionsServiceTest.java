@@ -1,15 +1,26 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+ * the License for the specific language governing rights and
+ * limitations under the License.
+ *
+ * Copyright (C) OpenHMIS.  All Rights Reserved.
+ */
 package org.openmrs.module.openhmis.cashier.api;
-
 
 import java.math.BigDecimal;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.TestConstants;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
+import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
@@ -17,12 +28,12 @@ public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
 	public static final String OPTIONS_DATASET_INVALID = TestConstants.BASE_DATASET_DIR + "CashierOptionsTestInvalid.xml";
 
 	private ICashierOptionsService cashierOptionsService;
-	
+
 	@Before
 	public void before() {
 		cashierOptionsService = Context.getService(ICashierOptionsService.class);
 	}
-	
+
 	/**
 	 * @see ICashierOptionsService#getOptions()
 	 * @verifies Load options
@@ -30,7 +41,7 @@ public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void getOptions_shouldLoadOptions() throws Exception {
 		executeDataSet(OPTIONS_DATASET_VALID);
-		executeDataSet(IItemServiceTest.ITEM_DATASET);
+		executeDataSet(IItemDataServiceTest.ITEM_DATASET);
 		CashierOptions options = cashierOptionsService.getOptions();
 		Assert.assertEquals("4028814B399565AA01399681B1B5000E", options.getRoundingItemUuid());
 		Assert.assertEquals(3, options.getDefaultReceiptReportId());
@@ -56,14 +67,4 @@ public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
 		Assert.assertEquals(reference.isTimesheetRequired(), options.isTimesheetRequired());
 	}
 
-	/**
-	 * @see ICashierOptionsService#getOptions()
-	 * @verifies throw APIException if a rounding item ID is specified but the item cannot be retrieved
-	 */
-	@Test(expected = APIException.class)
-	public void getOptions_shouldThrowAPIExceptionIfARoundingItemIDIsSpecifiedButTheItemCannotBeRetrieved()
-			throws Exception {
-		executeDataSet(OPTIONS_DATASET_VALID);		
-		cashierOptionsService.getOptions();
-	}
 }

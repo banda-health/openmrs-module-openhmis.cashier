@@ -11,6 +11,11 @@
 	<provider provider_id="2" name="Test 3 Provider" person_id="3" identifier="8A762" creator="1"  date_created="2005-01-01 00:00:00.0" retired="0" uuid="ae401f88-6b94-11e0-93c3-18a905e044dc" />
 
 	<location location_id="0" name="Test Location" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="ef93c695-ac43-450a-93f8-4b2b4d50a3c8"/>
+	<location location_id="1" name="Test Location1" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="ef93c695-ac43-450a-93f8-4b2b4d50a3c9"/>
+	<location location_id="2" name="Test Location2" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="ef93c695-ac43-450a-93f8-4b2b4d50a3c0"/>
+	<location location_id="3" name="Test Location3" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="FF8081813D91C2DA013D91C3D8040001"/>
+	<location location_id="4" name="Test Location4" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="FF8081813D91C2DA013D91C3D8040002"/>
+
 	<patient patient_id="0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
 	<patient_identifier patient_identifier_id="0" patient_id="0" identifier="Test 1234" identifier_type="1" preferred="1" location_id="0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="1ac98ec8-e9d9-4626-998c-c795c2f0aa9f"/>
 	<patient_identifier_type patient_identifier_type_id="0" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false" uuid="0cbecb62-7249-4f91-8edf-d0206ecceb63"/>

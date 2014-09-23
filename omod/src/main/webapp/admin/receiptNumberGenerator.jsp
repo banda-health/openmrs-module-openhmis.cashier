@@ -1,12 +1,25 @@
-<%@ page import="org.openmrs.module.openhmis.cashier.api.util.CashierPrivilegeConstants" %>
-<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
+<%@ page import="org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants" %>
+<%--
+  ~ The contents of this file are subject to the OpenMRS Public License
+  ~ Version 2.0 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://license.openmrs.org
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+  ~ the License for the specific language governing rights and
+  ~ limitations under the License.
+  ~
+  ~ Copyright (C) OpenHMIS.  All Rights Reserved.
+  --%>
+
 <%--@elvariable id="currentGenerator" type="org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator"--%>
 <%--@elvariable id="generators" type="java.util.List"--%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="../template/linksHeader.jsp"%>
 
-<openmrs:require privilege="Manage Cashier Bills" otherwise="/login.htm" redirect="/module/openhmis/cashier/admin/receiptNumberGenerator.form" />
+<openmrs:require privilege="<%=PrivilegeConstants.MANAGE_BILLS %>" otherwise="/login.htm" redirect="/module/openhmis/cashier/admin/receiptNumberGenerator.form" />
 
 <h2>
     <spring:message code="openhmis.cashier.admin.receiptNumberGenerator" />

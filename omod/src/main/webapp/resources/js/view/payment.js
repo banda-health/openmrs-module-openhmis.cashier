@@ -1,3 +1,16 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+ * the License for the specific language governing rights and
+ * limitations under the License.
+ *
+ * Copyright (C) OpenHMIS.  All Rights Reserved.
+ */
 define(
 	[
 		openhmis.url.backboneBase + 'js/lib/jquery',
@@ -9,40 +22,6 @@ define(
 		openhmis.url.backboneBase + 'js/view/generic'
 	],
 	function($, Backbone, openhmis, i18n) {
-		openhmis.PaymentModeAddEditView = openhmis.GenericAddEditView.extend({
-			prepareModelForm: function(model, options) {
-				var form = openhmis.GenericAddEditView.prototype.prepareModelForm.call(this, model, options);
-				form.on('attributeTypes:change', this.makeTypesSortable);
-				this.makeTypesSortable(form);
-				return form;
-			},
-			
-			makeTypesSortable: function(form) {
-				form = form ? form : this.modelForm;
-				form.$('.bbf-list ul').sortable();
-			},
-			
-			save: function() {
-				var attributes = this.$('.bbf-list ul').sortable("widget").children();
-				$(attributes).each(function() {
-					$(this).attr("id", "attr-" + $(attributes).index(this));
-				});
-				var items = this.modelForm.fields['attributeTypes'].editor.items;
-				for (var id in items) {
-					var getValue = items[id].getValue;
-					var newGetValue = function() {
-						var order = $(this.el).attr("id");
-						order = parseInt(order.substring(order.lastIndexOf('-') + 1));
-						var value = getValue.call(this);
-						value.attributeOrder = order;
-						return value;
-					}
-					items[id].getValue = newGetValue;
-				}
-				openhmis.GenericAddEditView.prototype.save.call(this);
-			}
-		});
-		
 		openhmis.PaymentListItemView = openhmis.GenericListItemView.extend({
 			render: function() {
 				openhmis.GenericListItemView.prototype.render.call(this);
@@ -62,8 +41,9 @@ define(
 				_.bindAll(this, "focus");
 				if (options) {
 					this.processCallback = options.processCallback;
-					if (options.paymentCollection)
+					if (options.paymentCollection) {
 						this.paymentCollection = options.paymentCollection;
+					}
 					this.readOnly = options.readOnly;
 				}
 				this.paymentCollection = this.paymentCollection ? this.paymentCollection
@@ -77,7 +57,7 @@ define(
 					itemView: openhmis.PaymentListItemView,
 					id: "paymentList",
 					className: "paymentList",
-					listFields: ['dateCreatedFmt', 'Details', 'amountTenderedFmt', 'paymentMode'],
+					listFields: ['dateCreatedFmt', 'attributes', 'amountTenderedFmt', 'instanceType'],
 					//itemActions: ["details"],
 					showRetiredOption: false,
 					showPaging: false,
@@ -85,7 +65,9 @@ define(
 				});
 				this.template = this.getTemplate();
 				if (!this.readOnly) {
-					if (this.model === undefined) this.model = new openhmis.Payment();
+					if (this.model === undefined) {
+						this.model = new openhmis.Payment();
+					}
 					this.form = new Backbone.Form({
 						schema: {
 							paymentMode: {
@@ -97,6 +79,9 @@ define(
 							}
 						}
 					});
+					$('#payment').addClass("box");
+				} else {
+					$('#payment').removeClass("box")
 				}
 			},
 			
@@ -136,7 +121,7 @@ define(
 						break;
 					}
 					attributes[i] = new openhmis.PaymentAttribute({
-						paymentModeAttributeType: attributeForm[i].name,
+						attributeType: attributeForm[i].name,
 						value: attributeForm[i].value
 					});
 				}
@@ -146,7 +131,7 @@ define(
 				}
 				this.model.set("attributes", attributes);
 				this.model.set("amount", this.form.getValue("amount"));
-				this.model.set("paymentMode", new openhmis.PaymentMode({
+				this.model.set("instanceType", new openhmis.PaymentMode({
 					uuid: this.form.getValue("paymentMode"),
 					name: this.form.fields["paymentMode"].editor.$('option:selected').text()
 				}));
@@ -171,18 +156,12 @@ define(
 			},
 			
 			processPayment: function(event) {
-				if (!this.commitForm()) return;
-				if (confirm(i18n("Are you sure you want to process a %s payment of %s?",
-							   this.model.get("paymentMode"), this.model.get("amountFmt")))) {
+				if (!this.commitForm()) {
+					return;
+				}
+				if (confirm(i18n("Are you sure you want to process a %s payment of %s?", this.model.get("instanceType"), this.model.get("amountFmt")))) {
 					var self = this;
 					this.processCallback(this.model, { success: function(model, resp) {
-						if (model instanceof openhmis.Bill) {
-							// Entire bill was saved, so we expect the page to be
-							// refreshed soon
-						} else {
-							// Payment has been saved, so it will be automatically
-							// added to the payment collection, triggering rendering
-						}
 						// Set up new empty Payment
 						self.model = new openhmis.Payment();
 						self.form.fields["amount"].setValue("");

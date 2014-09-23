@@ -1,3 +1,16 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+ * the License for the specific language governing rights and
+ * limitations under the License.
+ *
+ * Copyright (C) OpenHMIS.  All Rights Reserved.
+ */
 define(
 	[
 		openhmis.url.backboneBase + 'js/model/generic',
@@ -13,7 +26,7 @@ define(
 				name: "Bill",
 				namePlural: "Bills",
 				openmrsType: 'data',
-				restUrl: "bill"
+				restUrl: "v2/cashier/bill"
 			},
 			
 			schema: {
@@ -22,7 +35,8 @@ define(
 				lineItems: { type: "List", itemType: "NestedModel", model: openhmis.LineItem },
 				patient: { type: 'Object', objRef: true },
 				payments: { type: "List", itemType: "NestedModel", model: openhmis.Payment},
-				status: { type: 'Text' }
+				status: { type: 'Text' },
+                adjustmentReason: {type: 'Text'}
 			},
 						
 			BillStatus: {
@@ -34,16 +48,18 @@ define(
 			
 			initialize: function(attrs, options) {
 				openhmis.GenericModel.prototype.initialize.call(this, attrs, options);
-				if (!this.get("lineItems")) this.set("lineItems",
-					new openhmis.GenericCollection([], { model: openhmis.LineItem }), { silent: true });
-				if (!this.get("payments")) this.set("payments",
-					new openhmis.GenericCollection([], { model: openhmis.Payment }), { silent: true });
-				if (!this.get("status")) this.set("status",
-					this.BillStatus.PENDING, { silent: true });
+				if (!this.get("lineItems")) {
+					this.set("lineItems", new openhmis.GenericCollection([], { model: openhmis.LineItem }), { silent: true });
+				}
+				if (!this.get("payments")) {
+					this.set("payments", new openhmis.GenericCollection([], { model: openhmis.Payment }), { silent: true });
+				}
+				if (!this.get("status")) {
+					this.set("status", this.BillStatus.PENDING, { silent: true });
+				}
 			},
 			
 			addPayment: function(payment) {
-				payment.meta.parentRestUrl = this.url() + '/';
 				this.get("payments").add(payment);
 			},
 			
@@ -68,9 +84,9 @@ define(
 				var billAdjusted = this.get("billAdjusted");
 				if (billAdjusted !== undefined && this.get("status") == this.BillStatus.PENDING) {
 					return this.getTotal() + billAdjusted.getTotal() - billAdjusted.getAmountPaid();
-				}
-				else
+				} else {
 					return this.getTotal();
+				}
 			},
 			
 			getTotalPayments: function() {
@@ -85,7 +101,7 @@ define(
 				}
 				return total;
 			},
-			
+
 			getAmountPaid: function() {
 				var total = this.getTotal();
 				var totalPayments = this.getTotalPayments();
@@ -97,12 +113,29 @@ define(
 				// By default, backbone validates every time we try try to alter
 				// the model.  We don't want to be bothered with this until we
 				// care.
-                if (goAhead !== true) return null;
-				
-				if (this.get("patient") === undefined)
+                if (goAhead !== true) {
+                	return null;
+                }
+				var lineItems = this.get("lineItems");
+				if (this.get("patient") === undefined) {
 					return { patient: "A bill needs to be associated with a patient." }
-				if (this.get("lineItems") === undefined || this.get("lineItems").length === 0)
+				}
+				if (lineItems === undefined || lineItems.length === 0) {
 					return { lineItems: "A bill should contain at least one item." }
+				}
+				if (lineItems !== undefined && lineItems.length > 0) {
+					var errors = false;
+					lineItems.each(function(item) {
+						if (item.attributes.quantity === 0) {
+							errors = true;
+						}
+					});
+					if (errors === true) {
+						return {lineItems: "Item quantity cannot be zero"}
+					} else {
+						return null;
+					}
+				}
 				return null;
 			},
 			
@@ -110,19 +143,29 @@ define(
 				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
 				if (attrs.lineItems) {
 					attrs.lineItems = attrs.lineItems.toJSON();
-					for (var i in attrs.lineItems)
+					for (var i in attrs.lineItems) {
 						attrs.lineItems[i].lineItemOrder = parseInt(i);
+					}
 				}
 				return attrs;
 			},
 			
 			parse: function(resp) {
-				if (resp === null) return resp;
-				if (resp.patient) resp.patient = new openhmis.Patient(resp.patient);
-				if (resp.adjustedBy) resp.adjustedBy = new openhmis.GenericCollection(resp.adjustedBy, { model: openhmis.Bill });
+				if (resp === null) {
+					return resp;
+				}
+				if (resp.patient) {
+					resp.patient = new openhmis.Patient(resp.patient);
+				}
+				if (resp.adjustedBy) {
+					resp.adjustedBy = new openhmis.GenericCollection(resp.adjustedBy, { model: openhmis.Bill });
+				}
 				
-				if (resp.billAdjusted) resp.billAdjusted = new openhmis.Bill(resp.billAdjusted);
-				else delete resp.billAdjusted;
+				if (resp.billAdjusted) {
+					resp.billAdjusted = new openhmis.Bill(resp.billAdjusted);
+				} else {
+					delete resp.billAdjusted;
+				}
 				
 				if (resp.lineItems) {
 					resp.lineItems = new openhmis.GenericCollection(resp.lineItems, {
@@ -137,7 +180,9 @@ define(
 					//paymentCollection.reset(paymentCollection.reject(function(payment) { return payment.get("voided"); }));
 					resp.payments = paymentCollection;
 				}
-				if (resp.cashPoint) resp.cashPoint = new openhmis.CashPoint(resp.cashPoint);
+				if (resp.cashPoint) {
+					resp.cashPoint = new openhmis.CashPoint(resp.cashPoint);
+				}
 				return resp;
 			},
 			

@@ -1,40 +1,51 @@
 /*
  * The contents of this file are subject to the OpenMRS Public License
- * Version 1.1 (the "License"); you may not use this file except in
+ * Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://license.openmrs.org
  *
  * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+ * the License for the specific language governing rights and
+ * limitations under the License.
  *
- * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ * Copyright (C) OpenHMIS.  All Rights Reserved.
  */
 package org.openmrs.module.openhmis.cashier.api;
-
-import liquibase.util.StringUtils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.openmrs.Patient;
-import org.openmrs.api.PatientService;
-import org.openmrs.api.ProviderService;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.TestConstants;
-import org.openmrs.module.openhmis.cashier.api.model.*;
-import org.openmrs.module.openhmis.commons.api.entity.IEntityDataServiceTest;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import liquibase.util.StringUtils;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.openmrs.Patient;
+import org.openmrs.api.PatientService;
+import org.openmrs.api.ProviderService;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
+import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
+import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
+import org.openmrs.module.openhmis.cashier.api.model.Payment;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
+import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
+import org.openmrs.module.openhmis.cashier.api.search.BillSearch;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
+import org.openmrs.module.openhmis.commons.api.entity.IEntityDataServiceTest;
+import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
+
 public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillService, Bill> {
 	public static final String BILL_DATASET = TestConstants.BASE_DATASET_DIR + "BillTest.xml";
 
 	private ProviderService providerService;
 	private PatientService patientService;
-	private IItemService itemService;
+	private IItemDataService itemService;
 	private IPaymentModeService paymentModeService;
 	private IPaymentModeAttributeTypeService paymentModeAttributeTypeService;
 	private ICashPointService cashPointService;
@@ -45,12 +56,12 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 		providerService = Context.getProviderService();
 		patientService = Context.getPatientService();
-		itemService = Context.getService(IItemService.class);
+		itemService = Context.getService(IItemDataService.class);
 		paymentModeService = Context.getService(IPaymentModeService.class);
 		paymentModeAttributeTypeService = Context.getService(IPaymentModeAttributeTypeService.class);
 		cashPointService = Context.getService(ICashPointService.class);
 
-		executeDataSet(IItemServiceTest.ITEM_DATASET);
+		executeDataSet(IItemDataServiceTest.ITEM_DATASET);
 		executeDataSet(IPaymentModeServiceTest.PAYMENT_MODE_DATASET);
 		executeDataSet(ICashPointServiceTest.CASH_POINT_DATASET);
 		executeDataSet(TestConstants.CORE_DATASET);
@@ -58,7 +69,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 	}
 
 	@Override
-	protected Bill createEntity(boolean valid) {
+	public Bill createEntity(boolean valid) {
 		Bill bill = new Bill();
 
 		if (valid) {
@@ -178,7 +189,7 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 			actual.getPayments().toArray(actualPayments);
 			for (int i = 0; i < expected.getPayments().size(); i++) {
 				Assert.assertEquals(expectedPayments[i].getId(), actualPayments[i].getId());
-				Assert.assertEquals(expectedPayments[i].getPaymentMode(), actualPayments[i].getPaymentMode());
+				Assert.assertEquals(expectedPayments[i].getInstanceType(), actualPayments[i].getInstanceType());
 				Assert.assertEquals(expectedPayments[i].getAmount(), actualPayments[i].getAmount());
 				Assert.assertEquals(expectedPayments[i].getUuid(), actualPayments[i].getUuid());
 
@@ -194,8 +205,8 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 						for (int j = 0; j < expectedAttributes.length; j++) {
 							Assert.assertEquals(expectedAttributes[j].getId(), actualAttributes[j].getId());
 							Assert.assertEquals(expectedAttributes[j].getValue(), actualAttributes[j].getValue());
-							Assert.assertEquals(expectedAttributes[j].getPaymentModeAttributeType(),
-									actualAttributes[j].getPaymentModeAttributeType());
+							Assert.assertEquals(expectedAttributes[j].getAttributeType(),
+									actualAttributes[j].getAttributeType());
 							Assert.assertEquals(expectedAttributes[j].getUuid(), actualAttributes[j].getUuid());
 						}
 					}
@@ -286,28 +297,28 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies throw NullPointerException if patient is null
-	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 * @see IBillService#getBillsByPatient(org.openmrs.Patient, org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test(expected = NullPointerException.class)
-	public void findPatientBills_shouldThrowNullPointerExceptionIfPatientIsNull() throws Exception {
-		service.findPatientBills(null, null);
+	public void getBillsByPatient_shouldThrowNullPointerExceptionIfPatientIsNull() throws Exception {
+		service.getBillsByPatient(null, null);
 	}
 
 	/**
 	 * @verifies return all bills for the specified patient
-	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 * @see IBillService#getBillsByPatient(org.openmrs.Patient, org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
-	public void findPatientBills_shouldReturnAllBillsForTheSpecifiedPatient() throws Exception {
+	public void getBillsByPatientId_shouldReturnAllBillsForTheSpecifiedPatient() throws Exception {
 		Patient patient = patientService.getPatient(0);
 
-		List<Bill> bills = service.findPatientBills(patient, null);
+		List<Bill> bills = service.getBillsByPatient(patient, null);
 
 		Assert.assertNotNull(bills);
 		Assert.assertEquals(1, bills.size());
 		assertEntity(service.getById(0), bills.get(0));
 
-		bills = service.findPatientBills(patient.getId(), null);
+		bills = service.getBillsByPatientId(patient.getId(), null);
 		Assert.assertNotNull(bills);
 		Assert.assertEquals(1, bills.size());
 		assertEntity(service.getById(0), bills.get(0));
@@ -315,27 +326,135 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies return an empty list if the specified patient has no bills
-	 * @see IBillService#findPatientBills(org.openmrs.Patient, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 * @see IBillService#getBillsByPatient(org.openmrs.Patient, org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
-	public void findPatientBills_shouldReturnAnEmptyListIfTheSpecifiedPatientHasNoBills() throws Exception {
+	public void getBillsByPatientId_shouldReturnAnEmptyListIfTheSpecifiedPatientHasNoBills() throws Exception {
 		Patient patient = patientService.getPatient(1);
 
-		List<Bill> bills = service.findPatientBills(patient, null);
+		List<Bill> bills = service.getBillsByPatient(patient, null);
 		Assert.assertNotNull(bills);
 		Assert.assertEquals(0, bills.size());
 
-		bills = service.findPatientBills(1, null);
+		bills = service.getBillsByPatientId(1, null);
 		Assert.assertNotNull(bills);
 		Assert.assertEquals(0, bills.size());
 	}
 
 	/**
 	 * @verifies throw IllegalArgumentException if the patientId is less than zero
-	 * @see IBillService#findPatientBills(int, org.openmrs.module.openhmis.cashier.api.util.PagingInfo)
+	 * @see IBillService#getBillsByPatientId(int, org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void findPatientBills_shouldThrowIllegalArgumentExceptionIfThePatientIdIsLessThanZero() throws Exception {
-		service.findPatientBills(-1, null);
+	public void getBillsByPatientId_shouldThrowIllegalArgumentExceptionIfThePatientIdIsLessThanZero() throws Exception {
+		service.getBillsByPatientId(-1, null);
+	}
+	
+	/**
+	 * @verifies throw NullPointerException if bill search is null
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 */
+	@Test(expected = NullPointerException.class)
+	public void getBills_throwNullPointerExceptionIfBillSearchIsNull() throws Exception {
+		service.getBills(null, null);
+	}
+	
+	/**
+	 * @verifies throw NullPointerException if bill search template object is null
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 */
+	@Test(expected = NullPointerException.class)
+	public void getBills_throwNullPointerExceptionIfBillSearchTemplateObjectIsNull() throws Exception {
+		BillSearch search = new BillSearch();
+		search.setTemplate(null);
+		service.getBills(search, null);
+	}
+
+	/**
+	 * @verifies return an empty list if no bills are found via the search
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 */
+	@Test
+	public void getBills_returnAnEmptyListIfNoBillsAreFoundViaTheSearch() throws Exception {
+		BillSearch billSearch = new BillSearch();
+		Bill bill = new Bill();
+		CashPoint cashPoint = new CashPoint();
+		cashPoint.setId(2);
+		bill.setCashPoint(cashPoint);
+		billSearch.setTemplate(bill);
+		List<Bill> results = service.getBills(billSearch, null);
+		Assert.assertTrue(results.isEmpty());
+	}
+	
+	/**
+	 * @verifies return bills filtered by cashier
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 */
+	@Test
+	public void getBills_returnBillsFilteredByCashier() throws Exception {
+		Bill bill = new Bill();
+		bill.setCashier(providerService.getProvider(0));
+		List<Bill> results = service.getBills(new BillSearch(bill), null);
+		Assert.assertEquals(1, results.size());
+	}
+
+	/**
+	 * @verifies return bills filtered by cash point
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 */
+	@Test
+	public void getBills_returnBillsFilteredByCashPoint() throws Exception {
+		Bill bill = new Bill();
+		bill.setCashPoint(cashPointService.getById(0));
+		List<Bill> results = service.getBills(new BillSearch(bill), null);
+		Assert.assertEquals(1, results.size());
+	}
+	
+	/**
+	 * @verifies return bills filtered by patient
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 */
+	@Test
+	public void getBills_returnBillsFilteredByPatient() throws Exception {
+		Bill bill = new Bill();
+		bill.setPatient(patientService.getPatient(0));
+		List<Bill> results = service.getBills(new BillSearch(bill), null);
+		Assert.assertEquals(1, results.size());
+	}
+
+	/**
+	 * @verifies return bills filtered by status
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 */
+	@Test
+	public void getBills_returnBillsFilteredByStatus() throws Exception {
+		Bill bill = new Bill();
+		bill.setStatus(BillStatus.POSTED);
+		List<Bill> results = service.getBills(new BillSearch(bill), null);
+		Assert.assertEquals(1, results.size());
+	}
+	
+	/**
+	 * @verifies return all bills if paging is null
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 */
+	@Test
+	public void getBills_returnAllBillsIfPagingIsNull() throws Exception {
+		List<Bill> results = service.getBills(new BillSearch(), null);
+		Assert.assertEquals(1, results.size());
+	}
+
+	/**
+	 * @verifies return paged bills if paging is specified
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 */
+	@Test
+	public void getBills_returnPagedBillsIfPagingIsSpecified() throws Exception {
+		PagingInfo pagingInfo = new PagingInfo(1, 100);
+		List<Bill> results = service.getBills(new BillSearch(), pagingInfo);
+		
+		Assert.assertNotNull(results);
+		Assert.assertEquals(1, results.size());
+		Assert.assertEquals(1, (long)pagingInfo.getTotalRecordCount());
 	}
 }

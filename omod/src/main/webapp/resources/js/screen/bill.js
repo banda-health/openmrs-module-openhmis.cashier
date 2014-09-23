@@ -1,3 +1,16 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+ * the License for the specific language governing rights and
+ * limitations under the License.
+ *
+ * Copyright (C) OpenHMIS.  All Rights Reserved.
+ */
 curl(
 	{ baseUrl: openhmis.url.resources },
 	[
@@ -29,12 +42,12 @@ curl(
 						code: resp.exception.cause,
 						detail: resp.exception.stackTrace
 					});
-				}
-				else
+				} else {
 					self.createBillView.call(self, options, resp);
+				}
 			}});
 		}
-		
+
 		/**
 		 * createBillView
 		 *
@@ -69,11 +82,10 @@ curl(
 						self.setupBillViewWithPatient.call(self, patient, resp);
 					}
 				});
-			}
-			else {
+			} else {
 				this.displayBillView.call(this);
 			}
-		}
+		};
 		
 		/*
 		 * setupBillViewWithBill
@@ -92,9 +104,9 @@ curl(
 						self.displayBillView();
 					}
 				});
-			}
-			else
+			} else {
 				this.displayBillView();
+			}
 			this.patientView.selectPatient(this.patientView.model, {silent:true});			
 		}
 		
@@ -110,7 +122,7 @@ curl(
 			this.patientView.model = patient;
 			this.displayBillView();
 		}
-		
+
 		/*
 		 * displayBillView
 		 *
@@ -129,8 +141,9 @@ curl(
 			}
 			
 			// Patient View
-			if (this.billView.bill.get("status") !== BillStatus.PENDING)
+			if (this.billView.bill.get("status") !== BillStatus.PENDING) {
 				this.patientView.readOnly = true;
+			}
 			this.patientView.setElement($('#patient-view'));
 			this.patientView.render();
 			
@@ -142,8 +155,8 @@ curl(
 				url = openhmis.addQueryStringParameter(url, "print=true");
 				window.location = url;
 			});
+
 			this.billView.setElement($('#bill'));
-			
 			$saveButton = $('#saveBill');
 			$postButton = $('#postBill');
 			$printButton = $("#printReceipt");
@@ -155,7 +168,7 @@ curl(
 					$saveButton.click(function() {
 						inst.billView.saveBill();
 					});
-					
+
 					var confirmMsg = __("Are you sure you want to post this bill?");
 					$postButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill() }});
 					$postButton.show();
@@ -175,19 +188,19 @@ curl(
 					
 					// Provide cash point select, if this option is enabled
 					var $cashPointLi = $("li.cashPoint");
-					if (!$cashPointLi.hasClass("timesheet") && !this.billView.bill.get("billAdjusted"))
+					if (!$cashPointLi.hasClass("timesheet") && !this.billView.bill.get("billAdjusted")) {
 						this.billView.setupCashPointForm($("li.cashPoint"));
+					}
 					break;
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
-					$saveButton.val(__("Adjust Bill"));
-					$saveButton.click(this.billView.adjustBill);
-					$printButton.val(__("Print Receipt"));
-					$printButton.click(function(event) {
-						self.billView.printReceipt(event);
-						$(this).attr("disabled", "disabled");
-					});
-					$printButton.show();
+                    $saveButton.val(__("Adjust Bill"));
+                    $saveButton.click(this.billView.adjustBill);
+                    $printButton.val(__("Print Receipt"));
+                    $printButton.click(function(event) {self.billView.printReceipt(event);
+                        $(this).attr("disabled", "disabled");
+                    });
+                    $printButton.show();
 					break;
 				case BillStatus.ADJUSTED:
 					$saveButton.remove();
@@ -196,8 +209,9 @@ curl(
 
 			this.billView.render();
 			
-			if (this.billView.bill.get("status") === BillStatus.PENDING)
+			if (this.billView.bill.get("status") === BillStatus.PENDING) {
 				this.billView.setupNewItem();
+			}
 			
 			this.patientView.on('selected', this.billView.patientSelected);
 			this.patientView.on('editing', this.billView.blur);
@@ -220,20 +234,23 @@ curl(
 			this.billView.on("focusNext", paymentView.focus);
 			
 			window.onbeforeunload = function() {
-				if (self.billView.bill.isUnsaved())
+				if (self.billView.bill.isUnsaved()) {
 					return __("There are unsaved changes.");
+				}
 				return null;
 			}
 			
-			if (this.billView.bill.get("patient"))
+			if (this.billView.bill.get("patient")) {
 				this.billView.focus();
-			else
+			} else {
 				$('#inputNode').focus();
+			}
 		}
 		
 		$(document).ready(function() {
-			if ($("#bill").length > 0)
+			if ($("#bill").length > 0) {
 				var screen = new Screen();
+			}
 		});
 		
 		return Screen;

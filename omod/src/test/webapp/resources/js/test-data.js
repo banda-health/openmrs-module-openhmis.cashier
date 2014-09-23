@@ -1,3 +1,16 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
 openhmis.testData = {};
 openhmis.testData.JSON = {
 	itemCollection: '\
@@ -152,7 +165,7 @@ openhmis.testData.JSON = {
 		},\
 		"payments":[{\
 			"uuid":"8f3e963f-08b0-41a2-ac54-d36b04031d9d",\
-			"paymentMode":{\
+			"instanceType":{\
 				"uuid":"f4a7bf8a-d583-43bc-884b-72bd35617b0d",\
 				"name":"M-pesa",\
 				"retired":false\
@@ -162,7 +175,7 @@ openhmis.testData.JSON = {
 				"display":"Account Number: 9595",\
 				"voided":false,\
 				"voidReason":null,\
-				"paymentModeAttributeType":{\
+				"attributeType":{\
 					"uuid":"8a0390c3-d6e6-4de0-bc2e-44fc87beb9f5",\
 					"name":"Account Number",\
 					"retired":false\
@@ -185,14 +198,14 @@ openhmis.testData.JSON = {
 	payment: '{\
 		"amount":100,\
 		"amountTendered":100,\
-		"paymentMode":"9b7c3730-b9e5-4e2b-afc4-82076b0e531c",\
+		"instanceType":"9b7c3730-b9e5-4e2b-afc4-82076b0e531c",\
 		"attributes":[\
 			{\
-				"paymentModeAttributeType":"85f493d0-fdda-4d33-bbcc-f30d786f1668",\
+				"attributeType":"85f493d0-fdda-4d33-bbcc-f30d786f1668",\
 				"value":"6101"\
 			},\
 			{\
-				"paymentModeAttributeType":"5090715a-b44f-4324-ad05-51bc6382dfa9",\
+				"attributeType":"5090715a-b44f-4324-ad05-51bc6382dfa9",\
 				"value":"654"\
 			}\
 		]\
