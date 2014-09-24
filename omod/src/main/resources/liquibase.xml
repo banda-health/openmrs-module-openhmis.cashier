@@ -721,6 +721,9 @@
 		</sql>
     </changeSet>
     <changeSet id="openhmis.cashier-v2.0.0-5" author="marios">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">SELECT COUNT(*) FROM privilege WHERE privilege = 'Refund Money'</sqlCheck>
+		</preConditions>
 		<sql>
 			INSERT INTO role_privilege (role, privilege)
 			SELECT role, 'Refund Money'

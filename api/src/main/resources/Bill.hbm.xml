@@ -26,12 +26,12 @@
 			</type>
 		</property>
 
-		<list name="lineItems" lazy="true" inverse="true" cascade="all-delete-orphan">
+		<list name="lineItems" lazy="false" inverse="true" cascade="all-delete-orphan">
 			<key column="bill_id" />
 			<list-index column="line_item_order" />
 			<one-to-many class="BillLineItem" />
 		</list>
-		<set name="payments" lazy="true" inverse="true" cascade="all-delete-orphan">
+		<set name="payments" lazy="false" inverse="true" cascade="all-delete-orphan">
 			<key column="bill_id" />
 			<one-to-many class="Payment" />
 		</set>
@@ -108,7 +108,7 @@
 		<property name="amount" type="java.math.BigDecimal" column="amount" not-null="true" />
 		<property name="amountTendered" type="java.math.BigDecimal" column="amount_tendered" not-null="true" />
 
-		<set name="attributes" lazy="true" inverse="true" cascade="all-delete-orphan">
+		<set name="attributes" lazy="false" inverse="true" cascade="all-delete-orphan">
 			<key column="bill_payment_id" />
 			<one-to-many class="PaymentAttribute" />
 		</set>
@@ -155,7 +155,7 @@
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
 		<property name="description" type="java.lang.String" column="description" length="1024" />
 
-		<list name="attributeTypes" lazy="true" inverse="true" cascade="all-delete-orphan">
+		<list name="attributeTypes" lazy="false" inverse="true" cascade="all-delete-orphan">
 			<key column="payment_mode_id" />
 			<list-index column="attribute_order" />
 			<one-to-many class="PaymentModeAttributeType" />

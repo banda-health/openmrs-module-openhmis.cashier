@@ -19,7 +19,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-import org.junit.Assert;
+import org.junit.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
