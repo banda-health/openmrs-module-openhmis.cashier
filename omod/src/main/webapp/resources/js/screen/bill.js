@@ -195,7 +195,7 @@ curl(
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
                     $saveButton.val(__("Adjust Bill"));
-                    $saveButton.click(this.billView.adjustBill);
+                    $saveButton.click(this.billView.handleAdjustBill);
                     $printButton.val(__("Print Receipt"));
                     $printButton.click(function(event) {self.billView.printReceipt(event);
                         $(this).attr("disabled", "disabled");

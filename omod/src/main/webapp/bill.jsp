@@ -43,6 +43,7 @@
 			</span>
 	</c:if>
 </h2>
+<input type="hidden" id="showAdjustmentReasonField" value="${showAdjustmentReasonField}">
 <ul id="bill-info" class="floating">
 <c:choose>
 	<c:when test="${!empty bill}">

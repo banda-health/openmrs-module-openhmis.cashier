@@ -177,7 +177,6 @@ define(
 					var urlRoot = this.url() + '/payment/';
 					var paymentCollection = new openhmis.GenericCollection([], { model: openhmis.Payment });
 					paymentCollection.add(resp.payments, { parse: true, urlRoot: urlRoot });
-					//paymentCollection.reset(paymentCollection.reject(function(payment) { return payment.get("voided"); }));
 					resp.payments = paymentCollection;
 				}
 				if (resp.cashPoint) {

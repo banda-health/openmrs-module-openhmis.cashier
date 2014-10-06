@@ -23,8 +23,10 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.api.APIException;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
@@ -32,6 +34,7 @@ import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +45,15 @@ import org.springframework.web.util.UriUtils;
 @Controller
 @RequestMapping(value = CashierWebConstants.BILL_PAGE)
 public class BillAddEditController {
+	
 	private static final Log LOG = LogFactory.getLog(BillAddEditController.class);
+	
+	private AdministrationService adminService;
+	
+	@Autowired
+	public BillAddEditController(AdministrationService adminService) {
+		this.adminService = adminService;
+    }
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String bill(ModelMap model, @RequestParam(value = "billUuid", required = false) String billUuid,
@@ -67,6 +78,9 @@ public class BillAddEditController {
 		model.addAttribute("timesheet", timesheet);
 		model.addAttribute("user", Context.getAuthenticatedUser());
 		model.addAttribute("url", buildUrlModelAttribute(request));
+		
+		boolean showAdjustmentReasonField = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ADJUSTMENT_REASEON_FIELD));
+		model.addAttribute("showAdjustmentReasonField", showAdjustmentReasonField);
 		
 		if (billUuid != null) {
 			handleExistingBill(model, billUuid);
