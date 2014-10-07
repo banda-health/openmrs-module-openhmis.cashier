@@ -421,27 +421,36 @@ define(
                 bill.set("status", bill.BillStatus.POSTED);
             },
 
-			adjustBill: function() {
+            handleAdjustBill: function() {
+            	var __ = i18n;
+            	if ($('#showAdjustmentReasonField').val() === 'false') {
+            		this.adjustBill("");
+            	} else {
+            		$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
+                    if ($adjustmentReason == null || $adjustmentReason == "") {
+                        alert ("Please specify your bill adjustment reason");
+                    } else {
+                    	this.adjustBill($adjustmentReason);
+                    }
+            	}
+            },
+            
+			adjustBill: function(adjustmentReason) {
 				var __ = i18n;
-                 $adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
-                if ($adjustmentReason == null || $adjustmentReason == "") {
-                    alert ("Please specify your bill adjustment reason");
-                }else{
-                     var adjustingBill = new openhmis.Bill({
-                     adjustmentReason: $adjustmentReason,
-                     billAdjusted: this.bill.id,
-                     patient: this.bill.get("patient").id
-                    });
-                    /**/
-                    adjustingBill.unset("status");
-                    var view = this;
-                    adjustingBill.save([], {
-                        success: function(model,resp) {
-                            view.trigger("adjusted", model);
-                        },
-                        error: openhmis.error
-                    });
-                }
+                var adjustingBill = new openhmis.Bill({
+	                adjustmentReason: adjustmentReason,
+	                billAdjusted: this.bill.id,
+	                patient: this.bill.get("patient").id
+                });
+                /**/
+                adjustingBill.unset("status");
+                var view = this;
+                adjustingBill.save([], {
+                    success: function(model,resp) {
+                        view.trigger("adjusted", model);
+                    },
+                    error: openhmis.error
+                });
 			},
 
 			printReceipt: function(event) {
