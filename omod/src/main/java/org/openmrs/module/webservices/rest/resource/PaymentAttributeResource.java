@@ -31,7 +31,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass = PaymentAttribute.class,
-        supportedOpenmrsVersions = { "1.9" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*" })
 public class PaymentAttributeResource
         extends BaseRestInstanceAttributeDataResource<PaymentAttribute, Payment, PaymentMode, PaymentModeAttributeType> {
 	@Override

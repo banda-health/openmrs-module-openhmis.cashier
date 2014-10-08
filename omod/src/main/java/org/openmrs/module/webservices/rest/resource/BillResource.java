@@ -47,7 +47,7 @@ import org.springframework.web.client.RestClientException;
 import com.google.common.collect.Iterators;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/bill", supportedClass = Bill.class,
-        supportedOpenmrsVersions = { "1.9" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*" })
 public class BillResource extends BaseRestDataResource<Bill> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {

@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CashPointSearchHandler implements SearchHandler {
 	private final SearchConfig searchConfig = new SearchConfig("default", CashierRestConstants.CASH_POINT_RESOURCE,
-	        Arrays.asList("1.9.*"), Arrays.asList(new SearchQuery.Builder(
+	        Arrays.asList("*"), Arrays.asList(new SearchQuery.Builder(
 	                "Find a cashpoint by its name, optionally filtering by location").withRequiredParameters("q")
 	                .withOptionalParameters("location_uuid").build()));
 	

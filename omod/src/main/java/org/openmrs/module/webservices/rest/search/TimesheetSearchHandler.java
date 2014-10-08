@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TimesheetSearchHandler implements SearchHandler {
 	private final SearchConfig searchConfig = new SearchConfig("default", RestConstants.VERSION_2 + "/cashier/timesheet",
-	        Arrays.asList("1.9.*"), new SearchQuery.Builder("Find a timesheet by date").withRequiredParameters("date")
+	        Arrays.asList("*"), new SearchQuery.Builder("Find a timesheet by date").withRequiredParameters("date")
 	                .build());
 	
 	@Override

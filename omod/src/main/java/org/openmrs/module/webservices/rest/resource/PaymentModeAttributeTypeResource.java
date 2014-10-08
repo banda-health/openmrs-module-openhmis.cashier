@@ -23,7 +23,7 @@ import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentModeAttributeType",
-        supportedClass = PaymentModeAttributeType.class, supportedOpenmrsVersions = { "1.9" })
+		supportedClass = PaymentModeAttributeType.class, supportedOpenmrsVersions = { "1.9.*", "1.10.*" })
 public class PaymentModeAttributeTypeResource
         extends BaseRestInstanceAttributeTypeResource<PaymentModeAttributeType, Payment, PaymentMode, PaymentAttribute> {
 	@Override

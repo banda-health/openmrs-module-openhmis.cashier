@@ -25,7 +25,7 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/billLineItem", supportedClass = BillLineItem.class,
-        supportedOpenmrsVersions = { "1.9" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*" })
 public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
