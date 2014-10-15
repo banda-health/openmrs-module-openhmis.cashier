@@ -420,6 +420,11 @@ define(
                 var adjustingItems = bill.get("lineItems");
                 bill.set("lineItems", bill.get("billAdjusted").get("lineItems"));
                 bill.get("lineItems").add(adjustingItems.models);
+                bill.get("lineItems").each(function (lineItem) {
+                	if (lineItem.get("uuid") != null || lineItem.get("uuid") != undefined) {
+                		lineItem.set("uuid", "");
+                	}
+                });
                 bill.set("status", bill.BillStatus.POSTED);
             },
 
