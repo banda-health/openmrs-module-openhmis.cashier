@@ -95,6 +95,8 @@ define(
 				}
 				this.updateTimeout = setTimeout(update, 200);
 				this.form.model.set(this.form.getValue());
+				this.trigger("select", this);
+				this.$el.addClass("row_selected");
 			},
 
 			onKeyPress: function(event) {
