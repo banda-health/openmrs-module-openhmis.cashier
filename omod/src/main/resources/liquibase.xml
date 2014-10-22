@@ -822,4 +822,9 @@
 		<renameColumn tableName="cashier_seq_receipt_number_generator" oldColumnName="_grouping_type" newColumnName="grouping_type" columnDataType="varchar(25)"/>
 		<addNotNullConstraint tableName="cashier_seq_receipt_number_generator" columnName="grouping_type" columnDataType="varchar(25)"/>
 	</changeSet>
+	<changeSet id="openhmis.cashier-v2.0.0-8" author="marios">
+		<addColumn tableName="cashier_bill_line_item">
+			<column name="price_id" type="int"><constraints nullable="false" /></column>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

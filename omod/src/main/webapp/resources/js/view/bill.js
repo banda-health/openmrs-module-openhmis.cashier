@@ -179,6 +179,8 @@ define(
 					allowArrows: false,
 					onStep: this.stepCallback
 				});
+				this.$('td.field-priceName').hide();
+				this.$('td.field-priceUuid').hide();
 				return this;
 			},
 
@@ -476,6 +478,9 @@ define(
 				this.$totals = $('<table class="totals"></table>');
 				this.$('div.box').append(this.$totals);
 				this.updateTotals();
+				this.$('th.field-priceName').hide();
+				this.$('th.field-priceUuid').hide();
+				
 				return this;
 			}
 		});
