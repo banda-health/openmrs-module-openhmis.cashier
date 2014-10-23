@@ -71,7 +71,7 @@
 
 		<many-to-one name="bill" class="Bill" column="bill_id" not-null="true" />
 		<many-to-one name="item" class="org.openmrs.module.openhmis.inventory.api.model.Item" column="item_id" not-null="true" />
-		<many-to-one name="itemPrice" class="org.openmrs.module.openhmis.inventory.api.model.ItemPrice" column="price_id" not-null="true" />
+		<many-to-one name="itemPrice" class="org.openmrs.module.openhmis.inventory.api.model.ItemPrice" column="price_id" />
 		<property name="price" type="java.math.BigDecimal" column="price" not-null="true" />
 		<property name="priceName" type="java.lang.String" column="price_name" length="255" />
 		<property name="quantity" type="int" column="quantity" not-null="true" />

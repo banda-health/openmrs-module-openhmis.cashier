@@ -827,4 +827,11 @@
 			<column name="price_id" type="int"><constraints nullable="false" /></column>
 		</addColumn>
 	</changeSet>
+	<changeSet id="openhmis.cashier-v2.0.0-9" author="marios">
+		<dropNotNullConstraint  columnDataType="int" columnName="price_id" tableName="cashier_bill_line_item"/>
+		<update tableName="cashier_bill_line_item">
+        	<column name="price_id" type="int" value="NULL"/>
+        	<where>price_id = 0</where>
+		</update>
+	</changeSet>
 </databaseChangeLog>
