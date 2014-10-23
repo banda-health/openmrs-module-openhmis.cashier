@@ -14,6 +14,8 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
@@ -32,6 +34,9 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 @Resource(name = RestConstants.VERSION_2 + "/cashier/billLineItem", supportedClass = BillLineItem.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*" })
 public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
+	
+	private final static Log LOG = LogFactory.getLog(BillLineItemResource.class);
+	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
@@ -66,14 +71,21 @@ public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
 	public void setItemPrice(BillLineItem instance, String uuid) {
 		IItemDataService itemDataService = Context.getService(IItemDataService.class);
 		ItemPrice itemPrice = itemDataService.getItemPriceByUuid(uuid);
-		instance.setItemPrice(itemPrice);
-		instance.setPriceName(itemPrice.getName());
+		if (itemPrice != null) {
+			instance.setItemPrice(itemPrice);
+			instance.setPriceName(itemPrice.getName());
+		}
 	}
 	
 	@PropertyGetter(value = "priceUuid")
 	public String getItemPriceUuid(BillLineItem instance) {
-		ItemPrice itemPrice = instance.getItemPrice();
-		return itemPrice != null ? itemPrice.getUuid() : ""; 
+		try {
+			ItemPrice itemPrice = instance.getItemPrice();
+			return itemPrice != null ? itemPrice.getUuid() : ""; 
+		} catch (Exception e) {
+			LOG.warn("Price probably was deleted", e);
+			return "";
+		}
 	}
 	
 	@Override
