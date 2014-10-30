@@ -417,6 +417,9 @@ define(
 			_postAdjustingBill: function(bill) {
                 bill.get("billAdjusted").get("payments").each(function (payment) {
                     payment.set("amountTendered", payment.get("amount"));
+                    if (payment.get("uuid") != null || payment.get("uuid") != undefined) {
+                    	payment.set("uuid", "");
+                	}
                 });
                 bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
                 var adjustingItems = bill.get("lineItems");
