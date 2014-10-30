@@ -433,7 +433,9 @@ define(
             handleAdjustBill: function() {
             	var __ = i18n;
             	if ($('#showAdjustmentReasonField').val() === 'false') {
-            		this.adjustBill("");
+    				if (confirm(__("Are you sure you want to adjust this bill?"))) {
+    					this.adjustBill("");
+    				}
             	} else {
             		$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
                     if ($adjustmentReason == null || $adjustmentReason == "") {
@@ -479,7 +481,9 @@ define(
 				this.$('div.box').append(this.$totals);
 				this.updateTotals();
 				this.$('th.field-priceName').hide();
+				this.$('td.field-priceName').hide();
 				this.$('th.field-priceUuid').hide();
+				this.$('td.field-priceUuid').hide();
 				
 				return this;
 			}
@@ -509,6 +513,10 @@ define(
 				this.$el.append(this.itemsView.render().el);
 				this.itemsView.$("table").addClass("bill");
 				this.$el.append(this.paymentsView.render().el);
+				this.$('th.field-priceName').hide();
+				this.$('td.field-priceName').hide();
+				this.$('th.field-priceUuid').hide();
+				this.$('td.field-priceUuid').hide();
 				return this;
 			}
 		});

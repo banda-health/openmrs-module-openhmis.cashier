@@ -165,7 +165,7 @@ define(
 			toJSON: function() {
 				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
 				if (attrs.price) {
-					if (attrs.priceUuid == null || attrs.priceUuid == "") {
+					if (_.isObject(attrs.price) && (attrs.priceUuid == null || attrs.priceUuid == "")) {
 						attrs.priceUuid = attrs.price.get('uuid');
 					}
 					attrs.price = parseFloat(attrs.price);
