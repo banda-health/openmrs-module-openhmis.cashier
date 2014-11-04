@@ -13,10 +13,17 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
 import org.openmrs.module.webservices.rest.helper.Converter;
 import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
@@ -27,6 +34,9 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 @Resource(name = RestConstants.VERSION_2 + "/cashier/billLineItem", supportedClass = BillLineItem.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*" })
 public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
+	
+	private final static Log LOG = LogFactory.getLog(BillLineItemResource.class);
+	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
@@ -34,14 +44,48 @@ public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
 			description.addProperty("item");
 			description.addProperty("quantity");
 			description.addProperty("price");
+			description.addProperty("priceName");
+			description.addProperty("priceUuid");
 			description.addProperty("lineItemOrder");
 		}
 		return description;
 	}
 	
 	@PropertySetter(value = "price")
-	public void setPrice(BillLineItem instance, Object price) {
+	public void setPriceValue(BillLineItem instance, Object price) {
 		instance.setPrice(Converter.objectToBigDecimal(price));
+	}
+	
+	@PropertySetter(value = "priceName")
+	public void setPriceName(BillLineItem instance, String name) {
+		//name is set in setItemPriceMethod as not set in js
+	}
+	
+	@PropertyGetter(value = "priceName")
+	public String getPriceName(BillLineItem instance) {
+		String itemName = instance.getPriceName();
+		return StringUtils.isNotBlank(itemName)  ? itemName : ""; 
+	}
+	
+	@PropertySetter(value = "priceUuid")
+	public void setItemPrice(BillLineItem instance, String uuid) {
+		IItemDataService itemDataService = Context.getService(IItemDataService.class);
+		ItemPrice itemPrice = itemDataService.getItemPriceByUuid(uuid);
+		if (itemPrice != null) {
+			instance.setItemPrice(itemPrice);
+			instance.setPriceName(itemPrice.getName());
+		}
+	}
+	
+	@PropertyGetter(value = "priceUuid")
+	public String getItemPriceUuid(BillLineItem instance) {
+		try {
+			ItemPrice itemPrice = instance.getItemPrice();
+			return itemPrice != null ? itemPrice.getUuid() : ""; 
+		} catch (Exception e) {
+			LOG.warn("Price probably was deleted", e);
+			return "";
+		}
 	}
 	
 	@Override

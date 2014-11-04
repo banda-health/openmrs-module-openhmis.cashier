@@ -28,6 +28,8 @@ define(
 				item: { type: 'NestedModel', model: openhmis.Item, objRef: true },
 				quantity: { type: 'BasicNumber' },
 				price: { type: 'BasicNumber', format: openhmis.ItemPrice.prototype.format },
+				priceName: { type: 'Text'},
+				priceUuid: { type: 'Text'},
 				total: { type: 'BasicNumber', readOnly: true, format: openhmis.ItemPrice.prototype.format }
 			},
 			
@@ -163,6 +165,9 @@ define(
 			toJSON: function() {
 				var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
 				if (attrs.price) {
+					if (_.isObject(attrs.price) && (attrs.priceUuid == null || attrs.priceUuid == "")) {
+						attrs.priceUuid = attrs.price.get('uuid');
+					}
 					attrs.price = parseFloat(attrs.price);
 				}
 				return attrs;
