@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
 
 /**
  * A LineItem represents a line on a {@link Bill} which will bill some quantity of a particular
@@ -30,6 +31,7 @@ public class BillLineItem extends BaseOpenmrsData {
 	private Item item;
 	private BigDecimal price;
 	private String priceName;
+	private ItemPrice itemPrice;
 	private Integer quantity;
 	private Integer lineItemOrder;
 	
@@ -90,6 +92,14 @@ public class BillLineItem extends BaseOpenmrsData {
 	public void setPriceName(String priceName) {
 		this.priceName = priceName;
 	}
+	
+	public ItemPrice getItemPrice() {
+	    return itemPrice;
+    }
+	
+	public void setItemPrice(ItemPrice itemPrice) {
+	    this.itemPrice = itemPrice;
+    }
 	
 	public Integer getLineItemOrder() {
 		return lineItemOrder;

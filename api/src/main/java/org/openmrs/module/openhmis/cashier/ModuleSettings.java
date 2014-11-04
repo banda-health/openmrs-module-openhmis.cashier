@@ -27,6 +27,7 @@ public class ModuleSettings {
 	public static final String ROUNDING_ITEM_ID = "openhmis.cashier.roundingItemId";
 	public static final String ROUNDING_DEPT_ID = "openhmis.cashier.roundingDeptId";
 	public static final String SYSTEM_RECEIPT_NUMBER_GENERATOR = "openhmis.cashier.systemReceiptNumberGenerator";
+	public static final String ADJUSTMENT_REASEON_FIELD = "openhmis.cashier.adjustmentReasonField";
 	
 	protected ModuleSettings() {}
 	

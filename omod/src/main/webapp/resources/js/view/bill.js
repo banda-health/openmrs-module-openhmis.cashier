@@ -95,6 +95,8 @@ define(
 				}
 				this.updateTimeout = setTimeout(update, 200);
 				this.form.model.set(this.form.getValue());
+				this.trigger("select", this);
+				this.$el.addClass("row_selected");
 			},
 
 			onKeyPress: function(event) {
@@ -177,6 +179,8 @@ define(
 					allowArrows: false,
 					onStep: this.stepCallback
 				});
+				this.$('td.field-priceName').hide();
+				this.$('td.field-priceUuid').hide();
 				return this;
 			},
 
@@ -413,35 +417,54 @@ define(
 			_postAdjustingBill: function(bill) {
                 bill.get("billAdjusted").get("payments").each(function (payment) {
                     payment.set("amountTendered", payment.get("amount"));
+                    if (payment.get("uuid") != null || payment.get("uuid") != undefined) {
+                    	payment.set("uuid", "");
+                	}
                 });
                 bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
                 var adjustingItems = bill.get("lineItems");
                 bill.set("lineItems", bill.get("billAdjusted").get("lineItems"));
                 bill.get("lineItems").add(adjustingItems.models);
+                bill.get("lineItems").each(function (lineItem) {
+                	if (lineItem.get("uuid") != null || lineItem.get("uuid") != undefined) {
+                		lineItem.set("uuid", "");
+                	}
+                });
                 bill.set("status", bill.BillStatus.POSTED);
             },
 
-			adjustBill: function() {
+            handleAdjustBill: function() {
+            	var __ = i18n;
+            	if ($('#showAdjustmentReasonField').val() === 'false') {
+    				if (confirm(__("Are you sure you want to adjust this bill?"))) {
+    					this.adjustBill("");
+    				}
+            	} else {
+            		$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
+                    if ($adjustmentReason == null || $adjustmentReason == "") {
+                        alert ("Please specify your bill adjustment reason");
+                    } else {
+                    	this.adjustBill($adjustmentReason);
+                    }
+            	}
+            },
+            
+			adjustBill: function(adjustmentReason) {
 				var __ = i18n;
-                 $adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
-                if ($adjustmentReason == null || $adjustmentReason == "") {
-                    alert ("Please specify your bill adjustment reason");
-                }else{
-                     var adjustingBill = new openhmis.Bill({
-                     adjustmentReason: $adjustmentReason,
-                     billAdjusted: this.bill.id,
-                     patient: this.bill.get("patient").id
-                    });
-                    /**/
-                    adjustingBill.unset("status");
-                    var view = this;
-                    adjustingBill.save([], {
-                        success: function(model,resp) {
-                            view.trigger("adjusted", model);
-                        },
-                        error: openhmis.error
-                    });
-                }
+                var adjustingBill = new openhmis.Bill({
+	                adjustmentReason: adjustmentReason,
+	                billAdjusted: this.bill.id,
+	                patient: this.bill.get("patient").id
+                });
+                /**/
+                adjustingBill.unset("status");
+                var view = this;
+                adjustingBill.save([], {
+                    success: function(model,resp) {
+                        view.trigger("adjusted", model);
+                    },
+                    error: openhmis.error
+                });
 			},
 
 			printReceipt: function(event) {
@@ -460,6 +483,11 @@ define(
 				this.$totals = $('<table class="totals"></table>');
 				this.$('div.box').append(this.$totals);
 				this.updateTotals();
+				this.$('th.field-priceName').hide();
+				this.$('td.field-priceName').hide();
+				this.$('th.field-priceUuid').hide();
+				this.$('td.field-priceUuid').hide();
+				
 				return this;
 			}
 		});
@@ -488,6 +516,10 @@ define(
 				this.$el.append(this.itemsView.render().el);
 				this.itemsView.$("table").addClass("bill");
 				this.$el.append(this.paymentsView.render().el);
+				this.$('th.field-priceName').hide();
+				this.$('td.field-priceName').hide();
+				this.$('th.field-priceUuid').hide();
+				this.$('td.field-priceUuid').hide();
 				return this;
 			}
 		});
