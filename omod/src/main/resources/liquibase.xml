@@ -834,4 +834,9 @@
         	<where>price_id = 0</where>
 		</update>
 	</changeSet>
+	<changeSet id="openhmis.cashier-v2.2.0-0" author="ibewes">
+		<addColumn tableName="cashier_payment_mode">
+			<column name="sort_order" type="int"><constraints nullable="true"/></column>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

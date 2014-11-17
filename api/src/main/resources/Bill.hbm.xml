@@ -155,6 +155,7 @@
 
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
 		<property name="description" type="java.lang.String" column="description" length="1024" />
+		<property name="sortOrder" type="int" column="sort_order" />
 
 		<list name="attributeTypes" lazy="false" inverse="true" cascade="all-delete-orphan">
 			<key column="payment_mode_id" />

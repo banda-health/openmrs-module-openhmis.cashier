@@ -139,7 +139,8 @@ define(
 
             schema: {
                 name: { type: 'Text' },
-                description: { type: 'Text' }
+                description: { type: 'Text' },
+                sortOrder: { type: 'BasicNumber' }
             },
 
             toString: function() {
