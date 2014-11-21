@@ -33,7 +33,4 @@ public class CashierWebConstants extends WebConstants {
 	public static final String RECEIPT_NUMBER_GENERATOR_ROOT = ADMIN_MODULE_ROOT + "receiptNumberGenerator";
 	public static final String RECEIPT_NUMBER_GENERATOR_PAGE = RECEIPT_NUMBER_GENERATOR_ROOT + ".form";
 	public static final String OPENHMIS_CASHIER_MODULE_ID = "openhmis.cashier";
-	
-	public static final String REPORT_DOWNLOAD_URL = "/moduleServlet/jasperreport/jreportDownload";
-	
 }
