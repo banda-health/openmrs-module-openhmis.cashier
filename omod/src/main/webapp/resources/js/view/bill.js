@@ -170,15 +170,15 @@ define(
 			render: function() {
 				openhmis.GenericListItemView.prototype.render.call(this);
 				this.updatePriceOptions();
-				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
-				this.$('td.field-quantity')
-					.add(this.$('td.field-price'))
-					.add(this.$('td.field-total'))
-					.addClass("numeric");
-				this.$('input[type=number]').stepper({
-					allowArrows: false,
-					onStep: this.stepCallback
-				});
+//				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
+//				this.$('td.field-quantity')
+//					.add(this.$('td.field-price'))
+//					.add(this.$('td.field-total'))
+//					.addClass("numeric");
+//				this.$('input[type=number]').stepper({
+//					allowArrows: false,
+//					onStep: this.stepCallback
+//				});
 				this.$('td.field-priceName').hide();
 				this.$('td.field-priceUuid').hide();
 				return this;

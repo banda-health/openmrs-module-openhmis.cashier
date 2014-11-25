@@ -14,6 +14,7 @@
 
 package org.openmrs.module.openhmis.cashier.api.impl;
 
+import org.hibernate.criterion.Order;
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizationPrivileges;
@@ -30,4 +31,9 @@ public class PaymentModeServiceImpl extends BaseMetadataDataServiceImpl<PaymentM
 	
 	@Override
 	protected void validate(PaymentMode entity) {}
+
+	@Override
+	protected Order[] getDefaultSort() {
+		return new Order[] { Order.asc("sortOrder"), Order.asc("name") };
+	}
 }
