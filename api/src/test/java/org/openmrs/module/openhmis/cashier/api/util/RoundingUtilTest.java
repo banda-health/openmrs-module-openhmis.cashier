@@ -26,7 +26,9 @@ import org.openmrs.module.openhmis.cashier.api.ICashierOptionsServiceTest;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
+import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
@@ -42,7 +44,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	
 	/**
 	 * Assumes that the roundToNearest option is 5
-	 * @see RoundingUtil#addRoundingLineItem(Bill)
+	 * @see RoundingUtil#handleRoundingLineItem(Bill)
 	 * @verifies add a rounding line item with the appropriate value
 	 */
 	@Test
@@ -54,6 +56,9 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 		// Test bill
 		Bill bill = new Bill();
 		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
 		item.setPrice(new BigDecimal(3));
 		item.setQuantity(1);
 		bill.addLineItem(item);
@@ -61,7 +66,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 		// One line item
 		Assert.assertEquals(1, bill.getLineItems().size());
 		// Do rounding
-		RoundingUtil.addRoundingLineItem(bill);
+		RoundingUtil.handleRoundingLineItem(bill);
 		// Now two line items
 		Assert.assertEquals(2, bill.getLineItems().size());
 		// Assert rounding item's price
@@ -72,7 +77,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	}
 
 	/**
-	 * @see RoundingUtil#addRoundingLineItem(Bill)
+	 * @see RoundingUtil#handleRoundingLineItem(Bill)
 	 * @verifies not modify a bill that needs no rounding
 	 */
 	@Test
@@ -84,13 +89,179 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 		// Test bill
 		Bill bill = new Bill();
 		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
 		item.setPrice(new BigDecimal(5));
 		item.setQuantity(1);
 		bill.addLineItem(item);
 
 		Assert.assertEquals(1, bill.getLineItems().size());
-		RoundingUtil.addRoundingLineItem(bill);
+		RoundingUtil.handleRoundingLineItem(bill);
 		Assert.assertEquals(1, bill.getLineItems().size());
+	}
+	
+	@Test
+	public void roundingInAdjustedBill_shouldNotAddRoundingLineItemIfRoundingDifferenceIsZero() throws Exception {
+		// Test bill
+		Bill bill = new Bill();
+		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
+		item.setPrice(new BigDecimal(5));
+		item.setQuantity(1);
+		bill.addLineItem(item);
+
+		Assert.assertEquals(1, bill.getLineItems().size());
+		RoundingUtil.handleRoundingLineItem(bill);
+		Assert.assertEquals(1, bill.getLineItems().size());
+	}
+	
+	@Test
+	public void roundingInAdjustedBill_shouldAddRoundingLineItemIfRoundingDifferenceIsNotZero() throws Exception {
+		// Test bill
+		Bill bill = new Bill();
+		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
+		item.setPrice(new BigDecimal(7));
+		item.setQuantity(1);
+		bill.addLineItem(item);
+
+		Assert.assertEquals(1, bill.getLineItems().size());
+		RoundingUtil.handleRoundingLineItem(bill);
+		Assert.assertEquals(2, bill.getLineItems().size());
+	}
+	
+	@Test
+	public void roundingInAdjustedBill_shouldUpdateRoundingLineItemIfRoundingDifferenceIsNotZero() throws Exception {
+		// Test bill
+		Bill bill = new Bill();
+		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
+		item.setPrice(new BigDecimal(7));
+		item.setQuantity(1);
+		bill.addLineItem(item);
+
+		Assert.assertEquals(1, bill.getLineItems().size());
+		RoundingUtil.handleRoundingLineItem(bill);
+		Assert.assertEquals(2, bill.getLineItems().size());
+		
+		CashierOptions cashierOptions = cashOptService.getOptions();
+		IItemDataService itemService = Context.getService(IItemDataService.class);
+		Item roundingItem = itemService.getByUuid(cashierOptions.getRoundingItemUuid());
+		
+		BillLineItem roundingLineItem = null;
+		for (BillLineItem lineItem : bill.getLineItems()) {
+	        if (roundingItem.equals(lineItem.getItem())) {
+	        	roundingLineItem = lineItem;
+	        }
+        }
+		
+		Assert.assertNotNull(roundingLineItem);
+		Assert.assertEquals(roundingLineItem.getTotal().intValue(), -2);
+		
+		bill.addLineItem(item);
+		Assert.assertEquals(3, bill.getLineItems().size());
+		RoundingUtil.handleRoundingLineItem(bill);
+		Assert.assertEquals(3, bill.getLineItems().size());
+		
+		roundingLineItem = null;
+		for (BillLineItem lineItem : bill.getLineItems()) {
+	        if (roundingItem.equals(lineItem.getItem())) {
+	        	roundingLineItem = lineItem;
+	        }
+        }
+		
+		Assert.assertNotNull(roundingLineItem);
+		Assert.assertEquals(roundingLineItem.getTotal().intValue(), 1);
+
+	}
+	
+	@Test
+	public void roundingInAdjustedBill_shouldDeleteRoundingLineItemIfRoundingDifferenceIsZero() throws Exception {
+		// Test bill
+		Bill bill = new Bill();
+		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
+		item.setPrice(new BigDecimal(7));
+		item.setQuantity(1);
+		bill.addLineItem(item);
+
+		Assert.assertEquals(1, bill.getLineItems().size());
+		RoundingUtil.handleRoundingLineItem(bill);
+		Assert.assertEquals(2, bill.getLineItems().size());
+		
+		BillLineItem item2 = new BillLineItem();
+		item2.setItem(lineItemItem);
+		item2.setLineItemOrder(0);
+		item2.setPrice(new BigDecimal(3));
+		item2.setQuantity(1);
+		bill.addLineItem(item2);
+		
+		RoundingUtil.handleRoundingLineItem(bill);
+		Assert.assertEquals(2, bill.getLineItems().size());
+		
+		CashierOptions cashierOptions = cashOptService.getOptions();
+		IItemDataService itemService = Context.getService(IItemDataService.class);
+		Item roundingItem = itemService.getByUuid(cashierOptions.getRoundingItemUuid());
+		
+		boolean containsRoundingItem = false;
+		for (BillLineItem lineItem : bill.getLineItems()) {
+	        if (roundingItem.equals(lineItem.getItem())) {
+	        containsRoundingItem = true;	
+	        }
+        }
+		
+		Assert.assertEquals(false, containsRoundingItem);
+	}
+	
+	@Test
+	public void roundingInAdjustedBill_shouldConsiderRoundingOfPreviousBill() throws Exception {
+		CashierOptions cashierOptions = cashOptService.getOptions();
+		Assert.assertEquals(new BigDecimal(5), cashierOptions.getRoundToNearest());
+		
+		// Test bill
+		Bill bill = new Bill();
+		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
+		item.setPrice(new BigDecimal(8));
+		item.setQuantity(1);
+		bill.addLineItem(item);
+		
+		IItemDataService itemService = Context.getService(IItemDataService.class);
+		Item roundingItem = itemService.getByUuid(cashierOptions.getRoundingItemUuid());
+		
+		Assert.assertEquals(1, bill.getLineItems().size());
+		RoundingUtil.handleRoundingLineItem(bill);
+		Assert.assertEquals(2, bill.getLineItems().size());
+		item.setLineItemOrder(1);
+		bill.addLineItem(item);
+		Assert.assertEquals(3, bill.getLineItems().size());
+		RoundingUtil.handleRoundingLineItem(bill);
+		Assert.assertEquals(3, bill.getLineItems().size());
+		BigDecimal roundingValue = new BigDecimal(0);
+		BigDecimal itemTotal = new BigDecimal(0);
+		int roundingItemCounter = 0;
+		for (BillLineItem lineItem : bill.getLineItems()) {
+			if(lineItem.getItem() != null && roundingItem.getId().equals(lineItem.getItem().getId())) {
+				roundingValue = roundingValue.add(lineItem.getTotal());
+				roundingItemCounter++;
+			} else {
+				itemTotal = itemTotal.add(lineItem.getTotal());
+			}
+		}
+		Assert.assertEquals(16, itemTotal.intValue());
+		Assert.assertEquals(-1, roundingValue.intValue());
+		Assert.assertEquals(1, roundingItemCounter);
 	}
 
 	/**

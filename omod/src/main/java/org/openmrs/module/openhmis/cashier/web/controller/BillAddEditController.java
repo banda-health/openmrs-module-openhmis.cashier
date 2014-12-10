@@ -28,7 +28,9 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
+import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetUtil;
@@ -49,10 +51,12 @@ public class BillAddEditController {
 	private static final Log LOG = LogFactory.getLog(BillAddEditController.class);
 	
 	private AdministrationService adminService;
+	private ICashierOptionsService cashOptService;
 	
 	@Autowired
-	public BillAddEditController(AdministrationService adminService) {
+	public BillAddEditController(AdministrationService adminService, ICashierOptionsService cashOptService) {
 		this.adminService = adminService;
+		this.cashOptService = cashOptService;
     }
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -81,6 +85,10 @@ public class BillAddEditController {
 		
 		boolean showAdjustmentReasonField = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ADJUSTMENT_REASEON_FIELD));
 		model.addAttribute("showAdjustmentReasonField", showAdjustmentReasonField);
+		
+		CashierOptions options = cashOptService.getOptions();
+		String roundingItemUuid = options.getRoundingItemUuid();
+		model.addAttribute("roundingItemUuid", roundingItemUuid);
 		
 		if (billUuid != null) {
 			handleExistingBill(model, billUuid);

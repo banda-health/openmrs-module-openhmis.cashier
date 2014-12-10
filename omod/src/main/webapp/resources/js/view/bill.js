@@ -170,7 +170,7 @@ define(
 			render: function() {
 				openhmis.GenericListItemView.prototype.render.call(this);
 				this.updatePriceOptions();
-//				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
+				this.$(".field-price input, .field-total input").attr("readonly", "readonly");
 //				this.$('td.field-quantity')
 //					.add(this.$('td.field-price'))
 //					.add(this.$('td.field-total'))
@@ -295,14 +295,23 @@ define(
 			},
 
 			updateTotals: function() {
-				var total = openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode);
+				var total = openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode) - this.bill.getAdjustedAmountPaid();
 				var totalPaid = this.bill.getTotalPayments();
 				this.$totals.html(this.totalsTemplate({
 					bill: this.bill,
 					total: total,
 					totalPaid: totalPaid,
 					formatPrice: openhmis.ItemPrice.prototype.format,
-					__: i18n }))
+					__: i18n }));
+				if (totalPaid >= total && this.bill.get("lineItems").size() > 0) {
+					$('#payment').removeClass("box")
+					$('#processPayment').hide();
+					$('.payment-container').hide();
+				} else {
+					$('#payment').addClass("box")
+					$('#processPayment').show();
+					$('.payment-container').show();
+				}
 			},
 
 			/**
@@ -326,7 +335,9 @@ define(
 					}
 				}
 				payment.set("amountTendered", payment.get("amount"));
-				var paymentChange = (this.bill.getTotalPayments() + payment.get("amount")) - this.bill.getAdjustedTotal();
+				var paymentChange = (this.bill.getTotalPayments() + payment.get("amount")) 
+					- openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode);
+					- this.bill.getAdjustedAmountPaid();
 				if (paymentChange > 0) {
 					payment.set("amount", payment.get("amountTendered") - paymentChange);
 				}
@@ -415,13 +426,13 @@ define(
 			},
 
 			_postAdjustingBill: function(bill) {
+				bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
                 bill.get("billAdjusted").get("payments").each(function (payment) {
                     payment.set("amountTendered", payment.get("amount"));
                     if (payment.get("uuid") != null || payment.get("uuid") != undefined) {
                     	payment.set("uuid", "");
                 	}
                 });
-                bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
                 var adjustingItems = bill.get("lineItems");
                 bill.set("lineItems", bill.get("billAdjusted").get("lineItems"));
                 bill.get("lineItems").add(adjustingItems.models);
