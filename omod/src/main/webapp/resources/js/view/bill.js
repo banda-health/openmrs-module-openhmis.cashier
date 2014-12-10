@@ -335,9 +335,8 @@ define(
 					}
 				}
 				payment.set("amountTendered", payment.get("amount"));
-				var paymentChange = (this.bill.getTotalPayments() + payment.get("amount")) 
+				var paymentChange = (this.bill.getAdjustedAmountPaid() + this.bill.getTotalPaymentsAmount() + payment.get("amountTendered")) 
 					- openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode);
-					- this.bill.getAdjustedAmountPaid();
 				if (paymentChange > 0) {
 					payment.set("amount", payment.get("amountTendered") - paymentChange);
 				}
