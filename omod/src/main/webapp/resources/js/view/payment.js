@@ -57,7 +57,7 @@ define(
 					itemView: openhmis.PaymentListItemView,
 					id: "paymentList",
 					className: "paymentList",
-					listFields: ['dateCreatedFmt', 'attributes', 'amountFmt', 'instanceType'],
+					listFields: ['dateCreatedFmt', 'attributes', 'amountTenderedFmt', 'amountFmt', 'instanceType'],
 					showRetiredOption: false,
 					showPaging: false,
 					hideIfEmpty: true
