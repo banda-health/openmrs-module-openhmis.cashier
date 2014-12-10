@@ -44,6 +44,7 @@
 	</c:if>
 </h2>
 <input type="hidden" id="showAdjustmentReasonField" value="${showAdjustmentReasonField}">
+<input type="hidden" id="roundingItemUuid" value="${roundingItemUuid}">
 <ul id="bill-info" class="floating">
 <c:choose>
 	<c:when test="${!empty bill}">

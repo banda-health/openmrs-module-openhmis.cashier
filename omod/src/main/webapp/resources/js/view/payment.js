@@ -57,8 +57,7 @@ define(
 					itemView: openhmis.PaymentListItemView,
 					id: "paymentList",
 					className: "paymentList",
-					listFields: ['dateCreatedFmt', 'attributes', 'amountTenderedFmt', 'instanceType'],
-					//itemActions: ["details"],
+					listFields: ['dateCreatedFmt', 'attributes', 'amountTenderedFmt', 'amountFmt', 'instanceType'],
 					showRetiredOption: false,
 					showPaging: false,
 					hideIfEmpty: true
@@ -72,7 +71,7 @@ define(
 						schema: {
 							paymentMode: {
 								type: 'Select',
-								options: new openhmis.GenericCollection([], { model: openhmis.PaymentMode })
+								options: new openhmis.GenericCollection([], { model: openhmis.PaymentMode }),
 							},
 							amount: {
 								type: 'BasicNumber'
@@ -172,8 +171,10 @@ define(
 			
 			render: function() {
 				this.$el.html(this.template({ __: i18n, readOnly: this.readOnly }));
-				if (!this.readOnly)
+				if (!this.readOnly) {
 					this.$el.prepend(this.form.render().el);
+					this.form.$el.attr("class", "bbf-form payment-container");
+				}
 				this.$el.prepend(this.paymentListView.el);
 				if (this.paymentCollection.filter(function(payment) { return !payment.get("voided"); }).length === 0
 						&& this.paymentListView.options.hideIfEmpty) {

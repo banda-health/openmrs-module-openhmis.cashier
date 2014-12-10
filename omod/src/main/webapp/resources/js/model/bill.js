@@ -69,7 +69,9 @@ define(
 				if (lineItems && lineItems.length > 0) {
 					lineItems.each(function(item) {
 						if (item !== null && item.isClean()) {
-							total += item.getTotal();
+							if (item.get("item ") !== null && item.get("item").id !== $('#roundingItemUuid').val()) {
+								total += item.getTotal();
+							}
 						}
 					});
 				}
@@ -83,7 +85,7 @@ define(
 			getAdjustedTotal: function() {
 				var billAdjusted = this.get("billAdjusted");
 				if (billAdjusted !== undefined && this.get("status") == this.BillStatus.PENDING) {
-					return this.getTotal() + billAdjusted.getTotal() - billAdjusted.getAmountPaid();
+					return this.getTotal() + billAdjusted.getTotal();
 				} else {
 					return this.getTotal();
 				}
@@ -101,12 +103,34 @@ define(
 				}
 				return total;
 			},
+			
+			getTotalPaymentsAmount: function() {
+				var total = 0;
+				var payments = this.get("payments");
+				if (payments && payments.length > 0) {
+					payments.each(function(payment) {
+						if (payment !== null && payment.get("voided") !== true) {
+							total += payment.get("amount");
+						}
+					});
+				}
+				return total;
+			},
 
 			getAmountPaid: function() {
 				var total = this.getTotal();
 				var totalPayments = this.getTotalPayments();
 				
 				return Math.min(total, totalPayments);
+			},
+			
+			getAdjustedAmountPaid: function() {
+				var amount = 0;
+				var billAdjusted = this.get("billAdjusted");
+				if (billAdjusted !== undefined && this.get("status") == this.BillStatus.PENDING) {
+					amount = billAdjusted.getTotalPaymentsAmount();
+				}
+				return amount;
 			},
 			
 			validate: function(goAhead) {

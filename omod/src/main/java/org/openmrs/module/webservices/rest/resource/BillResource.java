@@ -14,6 +14,7 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -108,7 +109,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			instance.setStatus(status);
 		}
 		if (status == BillStatus.POSTED) {
-			RoundingUtil.addRoundingLineItem(instance);
+			RoundingUtil.handleRoundingLineItem(instance);
 		}
 	}
 	

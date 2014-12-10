@@ -324,4 +324,12 @@ public class Bill extends BaseOpenmrsData {
 			throw new AccessControlException("Access denied to adjust bill.");
 		}
 	}
+
+	public void recalculateLineItemOrder() {
+		int orderCounter = 0;
+		for (BillLineItem lineItem : this.getLineItems()) {
+	        lineItem.setLineItemOrder(orderCounter++);
+        }
+    }
+
 }

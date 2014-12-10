@@ -14,6 +14,7 @@
 package org.openmrs.module.openhmis.cashier.api.util;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.openmrs.GlobalProperty;
@@ -95,7 +96,7 @@ public class RoundingUtil {
 				itemService.save(item);
 				log.info("Created item for rounding (ID = " + item.getId() + ")...");
 				adminService
-				        .saveGlobalProperty(new GlobalProperty(ModuleSettings.ROUNDING_ITEM_ID, item.getId().toString()));
+					.saveGlobalProperty(new GlobalProperty(ModuleSettings.ROUNDING_ITEM_ID, item.getId().toString()));
 			}
 		}
 	}
@@ -103,10 +104,10 @@ public class RoundingUtil {
 	/**
 	 * Add a rounding line item to a bill if necessary
 	 * @param bill
-	 * @should add a rounding line item with the appropriate value
+	 * @should handle a rounding line item (add/update/delete with the appropriate value)
 	 * @should not modify a bill that needs no rounding
 	 */
-	public static void addRoundingLineItem(Bill bill) {
+	public static void handleRoundingLineItem(Bill bill) {
 		ICashierOptionsService cashOptService = Context.getService(ICashierOptionsService.class);
 		CashierOptions options = cashOptService.getOptions();
 		if (options.getRoundToNearest().equals(BigDecimal.ZERO)) {
@@ -115,26 +116,67 @@ public class RoundingUtil {
 		
 		if (options.getRoundingItemUuid() == null) {
 			throw new APIException(
-			        "No rounding item specified in options. This must be set in order to use rounding for bill totals.");
+					"No rounding item specified in options. This must be set in order to use rounding for bill totals.");
 		}
 		
-		BigDecimal difference =
-		        bill.getTotal().subtract(
-		            RoundingUtil.round(bill.getTotal(), options.getRoundToNearest(), options.getRoundingMode()));
-		if (!difference.equals(BigDecimal.ZERO)) {
-			// Get rounding item
-			IItemDataService itemService = Context.getService(IItemDataService.class);
-			Item roundingItem = itemService.getByUuid(options.getRoundingItemUuid());
-			
+		// Get rounding item
+		IItemDataService itemService = Context.getService(IItemDataService.class);
+		Item roundingItem = itemService.getByUuid(options.getRoundingItemUuid());
+		
+		BillLineItem roundingLineItem = findRoundingLineItem(bill, roundingItem);
+		
+		BigDecimal difference = calculateRoundingValue(bill, options, roundingLineItem);
+		
+		if (difference.equals(BigDecimal.ZERO) && roundingLineItem != null ) {
+			bill.removeLineItem(roundingLineItem);
+		} else  if (!difference.equals(BigDecimal.ZERO) && roundingLineItem == null ) {
 			// Create line item for rounding item and the required amount
-			BillLineItem lineItem =
-			        bill.addLineItem(roundingItem, difference.abs(), "", difference.compareTo(BigDecimal.ZERO) > 0 ? -1 : 1);
-			
-			// Put the rounding line item at the end of the order
-			lineItem.setLineItemOrder(bill.getLineItems() == null ? 0 : bill.getLineItems().size() - 1);
+			bill.addLineItem(roundingItem, difference.abs(), "", difference.compareTo(BigDecimal.ZERO) > 0 ? -1 : 1);
+		} else  if(!difference.equals(BigDecimal.ZERO)){
+			updateRoundingItem(bill, difference, roundingLineItem);
 		}
+		bill.recalculateLineItemOrder();
 	}
 	
+	private static BillLineItem findRoundingLineItem(Bill bill, Item roundingItem) {
+		BillLineItem result = null;
+		for (BillLineItem lineItem : bill.getLineItems()) {
+			if (roundingItem.equals(lineItem.getItem())) {
+			result = lineItem;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	private static void updateRoundingItem(Bill bill, BigDecimal difference, BillLineItem roundingLineItem) {
+		roundingLineItem.setPrice(difference.abs());
+		roundingLineItem.setQuantity(difference.compareTo(BigDecimal.ZERO) > 0 ? -1 : 1);
+		
+		bill.removeLineItem(roundingLineItem);
+		bill.addLineItem(roundingLineItem);
+	}
+
+	private static BigDecimal calculateRoundingValue(Bill bill, CashierOptions options, BillLineItem roundingLineItem) {
+		List<BillLineItem> lineItems = bill.getLineItems();
+		BigDecimal itemTotal = new BigDecimal(0);
+		
+		if (lineItems == null) {
+			return BigDecimal.ZERO;
+		}
+		
+		for (BillLineItem lineItem : lineItems) {
+			if (lineItem != null && !lineItem.getVoided()) {
+				if (roundingLineItem == null || !roundingLineItem.equals(lineItem)) {
+					itemTotal = itemTotal.add(lineItem.getTotal());
+				}
+			}
+		}
+		
+		return itemTotal.subtract(RoundingUtil.round(itemTotal, options.getRoundToNearest(), options.getRoundingMode()));
+				
+	}
+
 	private static Integer parseItemId(AdministrationService adminService) {
 		Integer itemId;
 		try {
