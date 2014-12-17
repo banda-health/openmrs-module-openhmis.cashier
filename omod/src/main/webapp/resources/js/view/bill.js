@@ -303,15 +303,6 @@ define(
 					totalPaid: totalPaid,
 					formatPrice: openhmis.ItemPrice.prototype.format,
 					__: i18n }));
-				if (totalPaid >= total && this.bill.get("lineItems").size() > 0) {
-					$('#payment').removeClass("box")
-					$('#processPayment').hide();
-					$('.payment-container').hide();
-				} else {
-					$('#payment').addClass("box")
-					$('#processPayment').show();
-					$('.payment-container').show();
-				}
 			},
 
 			/**
