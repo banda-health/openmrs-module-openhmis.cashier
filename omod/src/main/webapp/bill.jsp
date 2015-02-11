@@ -42,9 +42,9 @@
 			</span>
 	</c:if>
     <c:if test="${!empty bill.adjustmentReason}">
-    <span class="heading_annotation"><openmrs:message code="openhmis.cashier.adjustedReason"/>
-    &nbsp; ${bill.adjustmentReason}
-     </span>
+         <span class="heading_annotation"><openmrs:message code="openhmis.cashier.adjustedReason"/>
+               &nbsp; ${bill.adjustmentReason}
+         </span>
     </c:if>
 </h2>
 <input type="hidden" id="showAdjustmentReasonField" value="${showAdjustmentReasonField}">
