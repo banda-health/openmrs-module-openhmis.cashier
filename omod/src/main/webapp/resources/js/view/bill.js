@@ -442,9 +442,10 @@ define(
     				}
             	} else {
             		$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
-                    if ($adjustmentReason == null || $adjustmentReason == "") {
+                    if($adjustmentReason == null){}
+                    else if ($adjustmentReason =="") {
                         alert ("Please specify your bill adjustment reason");
-                    } else {
+                    }else {
                     	this.adjustBill($adjustmentReason);
                     }
             	}
