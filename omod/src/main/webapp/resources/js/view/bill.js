@@ -442,12 +442,13 @@ define(
     				}
             	} else {
             		$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
-                    if($adjustmentReason == null){}
-                    else if ($adjustmentReason =="") {
-                        alert ("Please specify your bill adjustment reason");
-                    }else {
-                    	this.adjustBill($adjustmentReason);
-                    }
+	                    if($adjustmentReason == null){
+	                    	//do nothing.
+	                    } else if ($adjustmentReason =="") {
+	                        alert ("Please specify your bill adjustment reason");
+	                    } else {
+	                    	this.adjustBill($adjustmentReason);
+	                    }
             	}
             },
             
