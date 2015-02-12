@@ -71,8 +71,8 @@
 	</globalProperty>
 
 	<globalProperty>
-        <property>${project.parent.artifactId}.BillAdjustmentSetting</property>
-    <description>True/false weather or not the adjustment field feature should be turned off.</description>
+        <property>${project.parent.artifactId}.allowBillAdjustments</property>
+        <description>True/false weather or not the adjustment field feature should be turned off.</description>
     </globalProperty>
 
 	<!-- Extensions -->

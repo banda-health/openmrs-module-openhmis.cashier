@@ -13,12 +13,6 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
-import java.io.Console;
-import java.io.UnsupportedEncodingException;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
@@ -44,6 +38,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.util.Set;
 
 @Controller
 @RequestMapping(value = CashierWebConstants.BILL_PAGE)
@@ -87,7 +85,7 @@ public class BillAddEditController {
 		boolean showAdjustmentReasonField = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ADJUSTMENT_REASEON_FIELD));
 		model.addAttribute("showAdjustmentReasonField", showAdjustmentReasonField);
 
-        boolean showBillAdjustmentButton = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.BILL_ADJUSTMENT_SETTING));
+        boolean showBillAdjustmentButton = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ALLOW_BILL_ADJUSTMENT));
         model.addAttribute("showBillAdjustmentButton", showBillAdjustmentButton);
 
         CashierOptions options = cashOptService.getOptions();
