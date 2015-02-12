@@ -69,7 +69,12 @@
 		<property>${project.parent.artifactId}.adjustmentReasonField</property>
 		<description>true/false whether or not the adjustment reason field should be used.</description>
 	</globalProperty>
-	
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.allowBillAdjustments</property>
+		<description>True/false weather or not the adjustment field feature should be turned off.</description>
+	</globalProperty>
+
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
