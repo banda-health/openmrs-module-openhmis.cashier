@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import java.io.Console;
 import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
@@ -85,8 +86,11 @@ public class BillAddEditController {
 		
 		boolean showAdjustmentReasonField = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ADJUSTMENT_REASEON_FIELD));
 		model.addAttribute("showAdjustmentReasonField", showAdjustmentReasonField);
-		
-		CashierOptions options = cashOptService.getOptions();
+
+        boolean showBillAdjustmentButton = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.BILL_ADJUSTMENT_SETTING));
+        model.addAttribute("showBillAdjustmentButton", showBillAdjustmentButton);
+
+        CashierOptions options = cashOptService.getOptions();
 		String roundingItemUuid = options.getRoundingItemUuid();
 		model.addAttribute("roundingItemUuid", roundingItemUuid);
 		

@@ -49,6 +49,7 @@
 </h2>
 <input type="hidden" id="showAdjustmentReasonField" value="${showAdjustmentReasonField}">
 <input type="hidden" id="roundingItemUuid" value="${roundingItemUuid}">
+<input type="hidden" id="showBillAdjustmentButton" value="${showBillAdjustmentButton}">
 <ul id="bill-info" class="floating">
 <c:choose>
 	<c:when test="${!empty bill}">

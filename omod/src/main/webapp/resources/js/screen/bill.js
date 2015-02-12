@@ -194,10 +194,16 @@ curl(
 					break;
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
-                    $saveButton.val(__("Adjust Bill"));
-                    $saveButton.click(this.billView.handleAdjustBill);
+                    var $showAdjustmentButton=$('#showBillAdjustmentButton');
+                    if($showAdjustmentButton.val() == 'true'){
+                        $saveButton.hide();
+                    }else {
+                        $saveButton.val(__("Adjust Bill"));
+                        $saveButton.click(this.billView.handleAdjustBill);
+                         }
                     $printButton.val(__("Print Receipt"));
-                    $printButton.click(function(event) {self.billView.printReceipt(event);
+                    $printButton.click(function (event) {
+                        self.billView.printReceipt(event);
                         $(this).attr("disabled", "disabled");
                     });
                     $printButton.show();

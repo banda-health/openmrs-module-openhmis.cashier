@@ -28,6 +28,7 @@ public class ModuleSettings {
 	public static final String ROUNDING_DEPT_ID = "openhmis.cashier.roundingDeptId";
 	public static final String SYSTEM_RECEIPT_NUMBER_GENERATOR = "openhmis.cashier.systemReceiptNumberGenerator";
 	public static final String ADJUSTMENT_REASEON_FIELD = "openhmis.cashier.adjustmentReasonField";
+    public static final String BILL_ADJUSTMENT_SETTING ="openhmis.cashier.billadjustmentSetting";
 	
 	protected ModuleSettings() {}
 	
@@ -37,7 +38,7 @@ public class ModuleSettings {
 		
 		return Integer.parseInt(property);
 	}
-	
+
 	public static JasperReport getReceiptReport() {
 		JasperReport report = null;
 		
