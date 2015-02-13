@@ -72,7 +72,7 @@
 
 	<globalProperty>
 		<property>${project.parent.artifactId}.allowBillAdjustments</property>
-		<description>True/false weather or not the adjustment field feature should be turned off.</description>
+		<description>True/false weather or not the adjustment field feature should be turned on.</description>
 		<defaultValue>true</defaultValue>
 	</globalProperty>
 

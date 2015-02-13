@@ -194,9 +194,8 @@ curl(
 					break;
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
-					//Disable adjust button if this option is enabled.
 					var $allowBillAdjustment = $('#allowBillAdjustment');
-                        if ($allowBillAdjustment.val() == 'true'){
+                    if ($allowBillAdjustment.val() == 'true'){
 	                        $saveButton.val(__("Adjust Bill"));
 	                        $saveButton.click(this.billView.handleAdjustBill);
 					} else {
