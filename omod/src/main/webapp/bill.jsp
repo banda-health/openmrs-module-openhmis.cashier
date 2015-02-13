@@ -18,7 +18,6 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
-
 <h2>
 	<c:choose>
 		<c:when test="${empty bill}">
@@ -28,7 +27,7 @@
 			<spring:message code="openhmis.cashier.editBill" />	${bill.receiptNumber}
 		</c:when>
 		<c:otherwise>
-			<spring:message code="openhmis.cashier.viewBill" /> ${bill.receiptNumber}	
+			<spring:message code="openhmis.cashier.viewBill" /> ${bill.receiptNumber}
 		</c:otherwise>
 	</c:choose>
 	<c:if test="${!empty billAdjusted }">
@@ -38,10 +37,15 @@
 			<span class="heading_annotation"><openmrs:message code="openhmis.cashier.adjustedBy" />
 			<c:forEach var="bill" items="${adjustedBy}" varStatus="row">
 				<c:if test="${row.index > 0}">, </c:if>
-				<a href="bill.form?billUuid=${bill.uuid}">${bill.receiptNumber}</a> 
+				<a href="bill.form?billUuid=${bill.uuid}">${bill.receiptNumber}</a>
 			</c:forEach>
 			</span>
 	</c:if>
+    <c:if test="${!empty bill.adjustmentReason}">
+         <span class="heading_annotation"><openmrs:message code="openhmis.cashier.adjustedReason"/>
+               &nbsp; ${bill.adjustmentReason}
+         </span>
+    </c:if>
 </h2>
 <input type="hidden" id="showAdjustmentReasonField" value="${showAdjustmentReasonField}">
 <input type="hidden" id="roundingItemUuid" value="${roundingItemUuid}">

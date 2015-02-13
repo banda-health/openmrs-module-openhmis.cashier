@@ -417,10 +417,12 @@ define(
 
 			_postAdjustingBill: function(bill) {
 				bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
+				var self = this;
                 bill.get("billAdjusted").get("payments").each(function (payment) {
                     payment.set("amountTendered", payment.get("amount"));
                     if (payment.get("uuid") != null || payment.get("uuid") != undefined) {
                     	payment.set("uuid", "");
+                    	self.handlePreviousPayments(payment);
                 	}
                 });
                 var adjustingItems = bill.get("lineItems");
@@ -466,6 +468,15 @@ define(
                     },
                     error: openhmis.error
                 });
+			},
+			
+			handlePreviousPayments: function(payment) {
+				var paymentAttributes = payment.get("attributes"); 
+        		for (attribute in paymentAttributes) {
+        			var attr = paymentAttributes[attribute];
+        			attr.set("uuid", "");
+        			attr.set("value", attr.get("valueName"));
+        		}
 			},
 
 			printReceipt: function(event) {
