@@ -434,8 +434,9 @@ define(
                 bill.set("status", bill.BillStatus.POSTED);
             },
 
-			handleAdjustBill: function () {
+			handleAdjustBill: function() {
 				var __ = i18n;
+				var $adjustmentReason;
 				if ($('#showAdjustmentReasonField').val() === 'false') {
 					if (confirm(__("Are you sure you want to adjust this bill?"))) {
 						this.adjustBill("");
@@ -444,8 +445,7 @@ define(
 					$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
 					if ($adjustmentReason != null && $adjustmentReason != "") {
 						this.adjustBill($adjustmentReason);
-					}
-					else if ($adjustmentReason == "") {
+					} else if ($adjustmentReason == "") {
 						alert("Please specify your bill adjustment reason");
 					}
 				}
