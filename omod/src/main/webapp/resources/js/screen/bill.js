@@ -195,14 +195,14 @@ curl(
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
 					var $allowBillAdjustment = $('#allowBillAdjustment');
-                    if ($allowBillAdjustment.val() == 'true'){
-	                        $saveButton.val(__("Adjust Bill"));
-	                        $saveButton.click(this.billView.handleAdjustBill);
+					if ($allowBillAdjustment.val() == 'true'){
+						$saveButton.val(__("Adjust Bill"));
+						$saveButton.click(this.billView.handleAdjustBill);
 					} else {
-                        $saveButton.hide();
+						$saveButton.hide();
 					}
 					$printButton.val(__("Print Receipt"));
-					 $printButton.click(function (event) {
+					$printButton.click(function (event) {
 						self.billView.printReceipt(event);
 						$(this).attr("disabled", "disabled");
 					});
