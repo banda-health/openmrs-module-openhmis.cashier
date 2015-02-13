@@ -85,10 +85,10 @@ public class BillAddEditController {
 		boolean showAdjustmentReasonField = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ADJUSTMENT_REASEON_FIELD));
 		model.addAttribute("showAdjustmentReasonField", showAdjustmentReasonField);
 
-        boolean showBillAdjustmentButton = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ALLOW_BILL_ADJUSTMENT));
-        model.addAttribute("showBillAdjustmentButton", showBillAdjustmentButton);
+		boolean allowBillAdjustment = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ALLOW_BILL_ADJUSTMENT));
+		model.addAttribute("allowBillAdjustment", allowBillAdjustment);
 
-        CashierOptions options = cashOptService.getOptions();
+		CashierOptions options = cashOptService.getOptions();
 		String roundingItemUuid = options.getRoundingItemUuid();
 		model.addAttribute("roundingItemUuid", roundingItemUuid);
 		

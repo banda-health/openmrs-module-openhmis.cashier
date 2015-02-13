@@ -195,12 +195,12 @@ curl(
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
 					//Disable adjust button if this option is enabled.
-					var $showAdjustmentButton=$('#showBillAdjustmentButton');
-					if ($showAdjustmentButton.val() == 'true'){
-						$saveButton.hide();
+					var $allowBillAdjustment = $('#allowBillAdjustment');
+                        if ($allowBillAdjustment.val() == 'true'){
+	                        $saveButton.val(__("Adjust Bill"));
+	                        $saveButton.click(this.billView.handleAdjustBill);
 					} else {
-						$saveButton.val(__("Adjust Bill"));
-						$saveButton.click(this.billView.handleAdjustBill);
+                        $saveButton.hide();
 					}
 					$printButton.val(__("Print Receipt"));
 					 $printButton.click(function (event) {
@@ -210,7 +210,7 @@ curl(
 					$printButton.show();
 					break;
 				case BillStatus.ADJUSTED:
-			        $saveButton.remove();
+					$saveButton.remove();
 					break;
 			}
 
