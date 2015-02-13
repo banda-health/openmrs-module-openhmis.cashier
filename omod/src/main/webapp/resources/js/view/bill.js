@@ -420,6 +420,7 @@ define(
 
 			_postAdjustingBill: function (bill) {
 				bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
+<<<<<<< HEAD
 				bill.get("billAdjusted").get("payments").each(function (payment) {
 					payment.set("amountTendered", payment.get("amount"));
 					if (payment.get("uuid") != null || payment.get("uuid") != undefined) {
@@ -456,6 +457,44 @@ define(
 			},
 
 			adjustBill: function (adjustmentReason) {
+=======
+                bill.get("billAdjusted").get("payments").each(function (payment) {
+                    payment.set("amountTendered", payment.get("amount"));
+                    if (payment.get("uuid") != null || payment.get("uuid") != undefined) {
+                    	payment.set("uuid", "");
+                	}
+                });
+                var adjustingItems = bill.get("lineItems");
+                bill.set("lineItems", bill.get("billAdjusted").get("lineItems"));
+                bill.get("lineItems").add(adjustingItems.models);
+                bill.get("lineItems").each(function (lineItem) {
+                	if (lineItem.get("uuid") != null || lineItem.get("uuid") != undefined) {
+                		lineItem.set("uuid", "");
+                	}
+                });
+                bill.set("status", bill.BillStatus.POSTED);
+            },
+
+            handleAdjustBill: function() {
+            	var __ = i18n;
+            	if ($('#showAdjustmentReasonField').val() === 'false') {
+    				if (confirm(__("Are you sure you want to adjust this bill?"))) {
+    					this.adjustBill("");
+    				}
+            	} else {
+            		$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
+	                    if($adjustmentReason == null){
+	                    	//do nothing.
+	                    } else if ($adjustmentReason =="") {
+	                        alert ("Please specify your bill adjustment reason");
+	                    } else {
+	                    	this.adjustBill($adjustmentReason);
+	                    }
+            	}
+            },
+            
+			adjustBill: function(adjustmentReason) {
+>>>>>>> b1a9245d5c265850109007440ca5ab8e58359379
 				var __ = i18n;
 				var adjustingBill = new openhmis.Bill({
 					adjustmentReason: adjustmentReason,
