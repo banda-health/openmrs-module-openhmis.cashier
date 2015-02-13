@@ -88,7 +88,7 @@ define(
 					return this.getTotal() + billAdjusted.getTotal();
 				} else {
 					return this.getTotal();
-		N		}
+				}
 			},
 			
 			getTotalPayments: function() {
