@@ -420,7 +420,7 @@ define(
 
 			_postAdjustingBill: function (bill) {
 				bill.get("payments").add(bill.get("billAdjusted").get("payments").models);
-<<<<<<< HEAD
+
 				bill.get("billAdjusted").get("payments").each(function (payment) {
 					payment.set("amountTendered", payment.get("amount"));
 					if (payment.get("uuid") != null || payment.get("uuid") != undefined) {
@@ -457,7 +457,7 @@ define(
 			},
 
 			adjustBill: function (adjustmentReason) {
-=======
+
                 bill.get("billAdjusted").get("payments").each(function (payment) {
                     payment.set("amountTendered", payment.get("amount"));
                     if (payment.get("uuid") != null || payment.get("uuid") != undefined) {
@@ -494,7 +494,7 @@ define(
             },
             
 			adjustBill: function(adjustmentReason) {
->>>>>>> b1a9245d5c265850109007440ca5ab8e58359379
+
 				var __ = i18n;
 				var adjustingBill = new openhmis.Bill({
 					adjustmentReason: adjustmentReason,
