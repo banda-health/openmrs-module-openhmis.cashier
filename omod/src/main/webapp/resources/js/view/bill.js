@@ -294,7 +294,7 @@ define(
 				return this.cashPointForm;
 			},
 
-			updateTotals: function() {
+			updateTotals: function () {
 				var total = openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode) - this.bill.getAdjustedAmountPaid();
 				var totalPaid = this.bill.getTotalPayments();
 				this.$totals.html(this.totalsTemplate({
@@ -302,7 +302,11 @@ define(
 					total: total,
 					totalPaid: totalPaid,
 					formatPrice: openhmis.ItemPrice.prototype.format,
-					__: i18n }));
+					__: i18n
+				}));
+				if (total > 0) {
+					$('#amount').val(total);
+				}
 			},
 
 			/**
