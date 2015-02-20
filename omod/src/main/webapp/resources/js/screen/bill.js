@@ -230,7 +230,7 @@ curl(
 			paymentView.paymentCollection.on("remove", this.billView.updateTotals);
 			paymentView.setElement($('#payment'));
 			paymentView.render();
-			
+			this.billView.updateTotals();
 			this.billView.on("focusNext", paymentView.focus);
 			
 			window.onbeforeunload = function() {
