@@ -304,11 +304,17 @@ define(
 					formatPrice: openhmis.ItemPrice.prototype.format,
 					__: i18n
 				}));
-				if (total > 0) {
-					$('#amount').val(total);
-				}
+				this.showAmountPayable(total,totalPaid);
 			},
-
+            /**
+             * @should display balance on the payment input box
+             * @param total
+             * @param totalPaid
+             */
+            showAmountPayable: function(total, totalPaid){
+                var balance= total -totalPaid;
+                $('#amount').val(balance);
+            },
 			/**
 			 * @should post bill if it is pending
 			 * @should add payment if the bill has already been posted
@@ -323,14 +329,13 @@ define(
 					}
                     /*The line below is to add the the payment for a posted or not fully paid bill*/
                     self.bill.addPayment(payment);
-
 					self.updateTotals();
 					if (success) {
 						success(model, resp);
 					}
 				}
 				payment.set("amountTendered", payment.get("amount"));
-				var paymentChange = (this.bill.getAdjustedAmountPaid() + this.bill.getTotalPaymentsAmount() + payment.get("amountTendered")) 
+				var paymentChange = (this.bill.getAdjustedAmountPaid() + this.bill.getTotalPaymentsAmount() + payment.get("amountTendered"))
 					- openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode);
 				if (paymentChange > 0) {
 					payment.set("amount", payment.get("amountTendered") - paymentChange);
@@ -453,7 +458,7 @@ define(
                     }
             	}
             },
-            
+
 			adjustBill: function(adjustmentReason) {
 				var __ = i18n;
                 var adjustingBill = new openhmis.Bill({
@@ -487,12 +492,10 @@ define(
 				this.$('table').addClass("bill");
 				this.$totals = $('<table class="totals"></table>');
 				this.$('div.box').append(this.$totals);
-				this.updateTotals();
 				this.$('th.field-priceName').hide();
 				this.$('td.field-priceName').hide();
 				this.$('th.field-priceUuid').hide();
 				this.$('td.field-priceUuid').hide();
-				
 				return this;
 			}
 		});
