@@ -163,7 +163,7 @@ define(
 					this.processCallback(this.model, { success: function(model, resp) {
 						// Set up new empty Payment
 						self.model = new openhmis.Payment();
-						self.$("#paymentAttributes").val("");
+						self.$("#paymentAttributes input").val("");
 					}});
 				}
 			},
