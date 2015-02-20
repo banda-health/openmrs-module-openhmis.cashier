@@ -294,7 +294,7 @@ define(
 				return this.cashPointForm;
 			},
 
-			updateTotals: function() {
+            updateTotals: function() {
 				var total = openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode) - this.bill.getAdjustedAmountPaid();
 				var totalPaid = this.bill.getTotalPayments();
 				this.$totals.html(this.totalsTemplate({
@@ -302,8 +302,20 @@ define(
 					total: total,
 					totalPaid: totalPaid,
 					formatPrice: openhmis.ItemPrice.prototype.format,
-					__: i18n }));
-			},
+					__: i18n
+				}));
+                this.showAmountPayable(total, totalPaid);
+            },
+
+            /**
+             * @should display balance on the payment input box
+             * @param total
+             * @param totalPaid
+             */
+            showAmountPayable: function(total, totalPaid) {
+                var balance = total - totalPaid;
+                $('#amount').val(balance);
+            },
 
 			/**
 			 * @should post bill if it is pending
@@ -326,7 +338,7 @@ define(
 					}
 				}
 				payment.set("amountTendered", payment.get("amount"));
-				var paymentChange = (this.bill.getAdjustedAmountPaid() + this.bill.getTotalPaymentsAmount() + payment.get("amountTendered")) 
+				var paymentChange = (this.bill.getAdjustedAmountPaid() + this.bill.getTotalPaymentsAmount() + payment.get("amountTendered"))
 					- openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode);
 				if (paymentChange > 0) {
 					payment.set("amount", payment.get("amountTendered") - paymentChange);
@@ -436,22 +448,22 @@ define(
                 bill.set("status", bill.BillStatus.POSTED);
             },
 
-			handleAdjustBill: function() {
-				var __ = i18n;
-				var $adjustmentReason;
-				if ($('#showAdjustmentReasonField').val() === 'false') {
-					if (confirm(__("Are you sure you want to adjust this bill?"))) {
-						this.adjustBill("");
-					}
-				} else {
-					$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
-					if ($adjustmentReason != null && $adjustmentReason != "") {
-						this.adjustBill($adjustmentReason);
-					} else if ($adjustmentReason == "") {
-						alert("Please specify your bill adjustment reason");
-					}
-				}
-			},
+            handleAdjustBill: function() {
+            	var __ = i18n;
+            	if ($('#showAdjustmentReasonField').val() === 'false') {
+    				if (confirm(__("Are you sure you want to adjust this bill?"))) {
+    					this.adjustBill("");
+    				}
+            	} else {
+            		$adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
+                    if ($adjustmentReason == null || $adjustmentReason == "") {
+                        alert ("Please specify your bill adjustment reason");
+                    } else {
+                    	this.adjustBill($adjustmentReason);
+                    }
+            	}
+            },
+
 			adjustBill: function(adjustmentReason) {
 				var __ = i18n;
                 var adjustingBill = new openhmis.Bill({
@@ -499,7 +511,7 @@ define(
 				this.$('td.field-priceName').hide();
 				this.$('th.field-priceUuid').hide();
 				this.$('td.field-priceUuid').hide();
-				
+
 				return this;
 			}
 		});
