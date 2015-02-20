@@ -294,7 +294,7 @@ define(
 				return this.cashPointForm;
 			},
 
-			updateTotals: function () {
+			updateTotals: function() {
 				var total = openhmis.round(this.bill.getAdjustedTotal(), this.options.roundToNearest, this.options.roundingMode) - this.bill.getAdjustedAmountPaid();
 				var totalPaid = this.bill.getTotalPayments();
 				this.$totals.html(this.totalsTemplate({
@@ -306,15 +306,15 @@ define(
 				}));
 				this.showAmountPayable(total,totalPaid);
 			},
-            /**
-             * @should display balance on the payment input box
-             * @param total
-             * @param totalPaid
-             */
-            showAmountPayable: function(total, totalPaid){
-                var balance= total -totalPaid;
-                $('#amount').val(balance);
-            },
+			/**
+			* @should display balance on the payment input box
+			* @param total
+			* @param totalPaid
+			*/
+			showAmountPayable: function(total, totalPaid){
+				var balance= total -totalPaid;
+				$('#amount').val(balance);
+			},
 			/**
 			 * @should post bill if it is pending
 			 * @should add payment if the bill has already been posted
