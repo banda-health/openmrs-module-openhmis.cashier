@@ -20,5 +20,5 @@ import org.openmrs.module.openhmis.commons.api.entity.model.BaseInstanceAttribut
  * payment may require a transaction number as an attribute.
  */
 public class PaymentModeAttributeType extends BaseInstanceAttributeType<PaymentMode> {
-	private static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 0L;
 }

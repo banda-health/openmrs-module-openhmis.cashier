@@ -16,7 +16,7 @@ package org.openmrs.module.openhmis.cashier.api.model;
 import org.openmrs.BaseOpenmrsObject;
 
 public class GroupSequence extends BaseOpenmrsObject {
-	private static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 0L;
 	
 	private Integer groupSequenceId;
 	private String group;

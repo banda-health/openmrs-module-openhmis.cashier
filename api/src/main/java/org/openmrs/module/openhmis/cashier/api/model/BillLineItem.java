@@ -24,7 +24,7 @@ import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
  * {@link Item}.
  */
 public class BillLineItem extends BaseOpenmrsData {
-	private static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 0L;
 	
 	private int billLineItemId;
 	private Bill bill;
