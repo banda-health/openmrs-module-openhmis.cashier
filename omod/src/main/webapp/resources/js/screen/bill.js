@@ -14,26 +14,25 @@
 curl(
 	{ baseUrl: openhmis.url.resources },
 	[
-		openhmis.url.backboneBase + 'js/lib/jquery',
 		openhmis.url.backboneBase + 'js/view/patient',
 		openhmis.url.backboneBase + 'js/lib/i18n',
 		openhmis.url.cashierBase + 'js/view/bill',
 		openhmis.url.cashierBase + 'js/view/payment',
 		openhmis.url.cashierBase + 'js/model/lineItem'
 	],
-	function($, openhmis, __) {
+	function(openhmis, __) {
 		var Screen = function() {
 			this.billUuid = openhmis.getQueryStringParameter("billUuid");
 			this.patientUuid = openhmis.getQueryStringParameter("patientUuid");
-			
+
 			this.patientView = new openhmis.PatientView();
 			// Set up patient search selection handler
 			openhmis.doSelectionHandler = this.patientView.takeRawPatient;
-			
+
 			var options = new openhmis.GenericModel([], {
 				urlRoot: openhmis.url.page + openhmis.url.cashierBase + "options.json"
 			});
-		
+
 			var self = this;
 			options.fetch({ success: function(options, resp) {
 				if (resp.exception) {

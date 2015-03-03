@@ -14,8 +14,12 @@
   ~ Copyright (C) OpenHMIS.  All Rights Reserved.
   --%>
 <openmrs:require allPrivileges="<%=PrivilegeWebConstants.PAYMENTSMODES_PAGE_PRIVILEDGES%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/paymentModes.form" />
+<spring:htmlEscape defaultHtmlEscape="true" />
+<openmrs:htmlInclude file="/ws/module/openhmis/backboneforms/init.js" />
+<openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/init.js" />
+<openmrs:htmlInclude file="/moduleResources/openhmis/inventory/js/init.js" />
+<openmrs:htmlInclude file="/moduleResources/openhmis/backboneforms/js/curl.js" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<%@ include file="template/localHeader.jsp"%>
 <%@ include file="template/linksHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/paymentModes.js" />
 
