@@ -16,4 +16,4 @@
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/init.js" />
 <openmrs:htmlInclude file="/moduleResources/openhmis/inventory/js/init.js" />
 <openmrs:htmlInclude file="/moduleResources/openhmis/backboneforms/js/curl.js" />
-<openmrs:htmlInclude file="/moduleResources/openhmis/backboneforms/js/lib/jquery.js" />
+

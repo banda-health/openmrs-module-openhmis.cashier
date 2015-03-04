@@ -14,14 +14,13 @@
 curl(
     { baseUrl: openhmis.url.resources },
     [
-        openhmis.url.backboneBase + 'js/lib/jquery',
         openhmis.url.cashierBase + 'js/model/payment',
         openhmis.url.backboneBase + 'js/view/generic',
         openhmis.url.backboneBase + 'js/view/openhmis',
         openhmis.url.cashierBase + 'js/view/payment'
         
     ],
-    function($, openhmis) {
+    function(openhmis) {
         $(function() {
             openhmis.startAddEditScreen(openhmis.PaymentMode, {
                 addEditViewType: openhmis.CustomizableInstanceTypeAddEditView,
