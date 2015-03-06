@@ -13,7 +13,6 @@
  */
 define(
 	[
-		openhmis.url.backboneBase + 'js/lib/jquery',
 		openhmis.url.backboneBase + 'js/lib/backbone',
 		openhmis.url.cashierBase + 'js/model/payment',
 		openhmis.url.backboneBase + 'js/lib/i18n',
@@ -21,7 +20,7 @@ define(
 		openhmis.url.backboneBase + 'js/lib/backbone-forms',
 		openhmis.url.backboneBase + 'js/view/generic'
 	],
-	function($, Backbone, openhmis, i18n) {
+	function( Backbone, openhmis, i18n) {
 		openhmis.PaymentListItemView = openhmis.GenericListItemView.extend({
 			render: function() {
 				openhmis.GenericListItemView.prototype.render.call(this);
