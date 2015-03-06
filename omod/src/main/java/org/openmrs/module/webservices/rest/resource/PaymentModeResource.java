@@ -29,9 +29,8 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentMode", supportedClass = PaymentMode.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*" })
-public class PaymentModeResource
-        extends BaseRestInstanceTypeResource<PaymentMode, Payment, PaymentModeAttributeType, PaymentAttribute> {
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*" })
+public class PaymentModeResource extends BaseRestInstanceTypeResource<PaymentMode, PaymentModeAttributeType> {
 	@Override
 	public PaymentMode newDelegate() {
 		return new PaymentMode();
