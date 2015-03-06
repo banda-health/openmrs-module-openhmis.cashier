@@ -28,7 +28,7 @@
 		var add = $j('#addToRole');
 		var remove = $j('#removeFromRole');
 		var newRole = $j('#newRoleName');
-		
+
 		if (radioAdd.checked) {
 			add.disabled=false;
 			remove.disabled=true;
@@ -48,7 +48,7 @@
 </script>
 
 <spring:hasBindErrors name="cashierRole">
-    <openmrs:message code="fix.error"/>
+    <openmrs:message code="fix.error" htmlEscape="false"/>
     <div class="error">
         <c:forEach items="${errors.allErrors}" var="error">
             <openmrs:message code="${error.code}" text="${error.defaultMessage}"/><br/>
@@ -103,7 +103,7 @@
 			</td>
 		</tr>
 	</table>
-	
+
 <p><input type="submit" value="<openmrs:message code="Role.save"/>"></p>
 </form>
 

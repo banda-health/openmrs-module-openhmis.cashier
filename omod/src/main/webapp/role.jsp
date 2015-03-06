@@ -30,7 +30,7 @@ Please pick a role that you want the Cashier role to inherit from:
 
 <!-- error name cashier_role has been made up, not sure if we need to declare it elsewhere-->
 <spring:hasBindErrors name="cashier_role">
-    <openmrs:message code="fix.error"/>
+    <openmrs:message code="fix.error" htmlEscape="false"/>
     <div class="error">
         <c:forEach items="${errors.allErrors}" var="error">
             <openmrs:message code="${error.code}" text="${error.defaultMessage}"/><br/>
@@ -53,7 +53,7 @@ Please pick a role that you want the Cashier role to inherit from:
 	<label for="newRole">Create New Role</label>
 	<input id="newRole" type="radio" value="new" />
 	<div>
-		<input id="newRoleName" type="text" /> 
+		<input id="newRoleName" type="text" />
 		<select id="newRole">
 			<c:forEach items="${roles}" var="role">
 				<option value="${role.uuid}">${role.name}</option>
