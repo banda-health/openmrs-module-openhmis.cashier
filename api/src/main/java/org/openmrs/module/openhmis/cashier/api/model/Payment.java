@@ -15,12 +15,12 @@ package org.openmrs.module.openhmis.cashier.api.model;
 
 import java.math.BigDecimal;
 
-import org.openmrs.module.openhmis.commons.api.entity.model.BaseCustomizableInstanceData;
+import org.openmrs.module.openhmis.commons.api.entity.model.BaseInstanceCustomizableData;
 
 /**
  * Model class that represents the {@link Bill} payment information.
  */
-public class Payment extends BaseCustomizableInstanceData<PaymentMode, PaymentAttribute> {
+public class Payment extends BaseInstanceCustomizableData<PaymentMode, PaymentAttribute> {
 	public static final long serialVersionUID = 0L;
 	
 	private Integer paymentId;
