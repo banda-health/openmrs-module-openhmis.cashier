@@ -12,8 +12,6 @@
   ~
   ~ Copyright (C) OpenHMIS.  All Rights Reserved.
   --%>
-<openmrs:htmlInclude file="/scripts/jquery/jquery.min.js" />
-<openmrs:htmlInclude file="/scripts/jquery-ui/js/jquery-ui.custom.min.js" />
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
   ~ Version 2.0 (the "License"); you may not use this file except in
