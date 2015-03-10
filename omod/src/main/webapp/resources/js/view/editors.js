@@ -13,7 +13,6 @@
  */
 define(
     [
-            openhmis.url.backboneBase + 'js/lib/jquery',
             openhmis.url.backboneBase + 'js/lib/backbone',
             openhmis.url.backboneBase + 'js/lib/underscore',
             openhmis.url.inventoryBase + 'js/model/item',
@@ -22,7 +21,7 @@ define(
             openhmis.url.backboneBase + 'js/lib/labelOver',
             openhmis.url.backboneBase + 'js/view/editors'
     ],
-    function($, Backbone, _, openhmis) {
+    function( Backbone, _, openhmis) {
         var editors = Backbone.Form.editors;
 
         editors.ItemAutocomplete = editors.Base.extend({
