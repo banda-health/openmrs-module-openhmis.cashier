@@ -13,7 +13,6 @@
  */
 define(
     [
-        openhmis.url.backboneBase + 'js/lib/jquery',
         openhmis.url.backboneBase + 'js/lib/underscore',
         openhmis.url.backboneBase + 'js/lib/backbone',
         openhmis.url.backboneBase + 'js/view/generic',
@@ -26,7 +25,7 @@ define(
         openhmis.url.cashierBase + 'js/model/cashPoint',
         'link!' + openhmis.url.cashierBase + 'css/style.css'
     ],
-    function($, _, Backbone, openhmis, i18n) {
+    function(_, Backbone, openhmis, i18n) {
         openhmis.BillLineItemView = openhmis.GenericListItemView.extend({
             initialize: function(options) {
                 this.events = _.extend({}, this.events, {
