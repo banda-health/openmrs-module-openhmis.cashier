@@ -23,7 +23,7 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/timesheet", supportedClass = Timesheet.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*" })
 public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 	@Override
 	public Timesheet newDelegate() {

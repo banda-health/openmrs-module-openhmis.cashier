@@ -44,7 +44,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 
 @SubResource(parent = BillResource.class, path = "payment", supportedClass = Payment.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*" })
 public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillResource> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
