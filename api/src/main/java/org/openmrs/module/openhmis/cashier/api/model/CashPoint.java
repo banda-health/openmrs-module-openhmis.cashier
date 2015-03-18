@@ -21,7 +21,7 @@ import org.openmrs.Location;
  * {@link org.openmrs.module.openhmis.cashier.api.model.Bill}'s can be created and paid for.
  */
 public class CashPoint extends BaseOpenmrsMetadata {
-	private static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 0L;
 	
 	private Integer cashPointId;
 	private Location location;

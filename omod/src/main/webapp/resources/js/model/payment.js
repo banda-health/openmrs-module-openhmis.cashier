@@ -122,7 +122,7 @@ define(
             }
         });
         
-        openhmis.PaymentModeAttributeType = openhmis.AttributeTypeBase.extend({
+        openhmis.PaymentModeAttributeType = openhmis.InstanceAttributeTypeBase.extend({
             meta: {
                 restUrl: 'v2/cashier/paymentMode'
             }

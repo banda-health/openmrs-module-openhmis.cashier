@@ -109,7 +109,7 @@
 </script>
 
 <spring:hasBindErrors name="timesheet">
-    <openmrs:message code="fix.error"/>
+    <openmrs:message code="fix.error" htmlEscape="false"/>
     <div class="error">
         <c:forEach items="${errors.allErrors}" var="error">
             <openmrs:message code="${error.code}" text="${error.defaultMessage}"/><br/>
@@ -144,7 +144,7 @@
                         <input id="clockIn" name="${status.expression}" type="text" value="${status.value}" readonly="true" />
 
                         <c:if test="${timesheet.id == null}">
-                            <input type="button" value="<spring:message code="openhmis.cashier.page.timesheet.box.button.clock.in" />" 
+                            <input type="button" value="<spring:message code="openhmis.cashier.page.timesheet.box.button.clock.in" />"
                             	onclick="enterTime('clockIn');" />
                         </c:if>
                     </spring:bind>
@@ -156,7 +156,7 @@
                     <div class="bbf-editor">
                         <spring:bind path="clockOut">
                             <input id="clockOut" name="${status.expression}" type="text" value="${status.value}" />
-                            <input type="button" value="<spring:message code="openhmis.cashier.page.timesheet.box.button.clock.out" />" 
+                            <input type="button" value="<spring:message code="openhmis.cashier.page.timesheet.box.button.clock.out" />"
                             	onclick="enterTime('clockOut');" />
                         </spring:bind>
                     </div>

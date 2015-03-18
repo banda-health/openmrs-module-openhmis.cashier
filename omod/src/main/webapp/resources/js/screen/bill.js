@@ -14,14 +14,13 @@
 curl(
 	{ baseUrl: openhmis.url.resources },
 	[
-		openhmis.url.backboneBase + 'js/lib/jquery',
 		openhmis.url.backboneBase + 'js/view/patient',
 		openhmis.url.backboneBase + 'js/lib/i18n',
 		openhmis.url.cashierBase + 'js/view/bill',
 		openhmis.url.cashierBase + 'js/view/payment',
 		openhmis.url.cashierBase + 'js/model/lineItem'
 	],
-	function($, openhmis, __) {
+	function(openhmis, __) {
 		var Screen = function() {
 			this.billUuid = openhmis.getQueryStringParameter("billUuid");
 			this.patientUuid = openhmis.getQueryStringParameter("patientUuid");
@@ -194,13 +193,19 @@ curl(
 					break;
 				case BillStatus.POSTED:
 				case BillStatus.PAID:
-                    $saveButton.val(__("Adjust Bill"));
-                    $saveButton.click(this.billView.handleAdjustBill);
-                    $printButton.val(__("Print Receipt"));
-                    $printButton.click(function(event) {self.billView.printReceipt(event);
-                        $(this).attr("disabled", "disabled");
-                    });
-                    $printButton.show();
+					var $allowBillAdjustment = $('#allowBillAdjustment');
+					if ($allowBillAdjustment.val() == 'true'){
+						$saveButton.val(__("Adjust Bill"));
+						$saveButton.click(this.billView.handleAdjustBill);
+					} else {
+						$saveButton.hide();
+					}
+					$printButton.val(__("Print Receipt"));
+					$printButton.click(function (event) {
+						self.billView.printReceipt(event);
+						$(this).attr("disabled", "disabled");
+					});
+					$printButton.show();
 					break;
 				case BillStatus.ADJUSTED:
 					$saveButton.remove();
@@ -230,7 +235,7 @@ curl(
 			paymentView.paymentCollection.on("remove", this.billView.updateTotals);
 			paymentView.setElement($('#payment'));
 			paymentView.render();
-			
+			this.billView.updateTotals();
 			this.billView.on("focusNext", paymentView.focus);
 			
 			window.onbeforeunload = function() {

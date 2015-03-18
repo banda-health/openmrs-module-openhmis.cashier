@@ -13,13 +13,13 @@
  */
 package org.openmrs.module.openhmis.cashier.api.model;
 
-import org.openmrs.module.openhmis.commons.api.entity.model.BaseCustomizableInstanceType;
+import org.openmrs.module.openhmis.commons.api.entity.model.BaseInstanceCustomizableType;
 
 /**
  * Model class that represents a mode of payment (e.g., cash, check, credit card).
  */
-public class PaymentMode extends BaseCustomizableInstanceType<PaymentModeAttributeType> {
-	private static final long serialVersionUID = 0L;
+public class PaymentMode extends BaseInstanceCustomizableType<PaymentModeAttributeType> {
+	public static final long serialVersionUID = 0L;
 
 	private Integer sortOrder;
 

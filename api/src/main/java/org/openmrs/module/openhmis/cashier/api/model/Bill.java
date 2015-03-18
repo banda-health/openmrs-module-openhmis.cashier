@@ -33,7 +33,7 @@ import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
  * cashier for a patient.
  */
 public class Bill extends BaseOpenmrsData {
-	private static final long serialVersionUID = 0L;
+	public static final long serialVersionUID = 0L;
 	
 	private Integer billId;
 	private String receiptNumber;
