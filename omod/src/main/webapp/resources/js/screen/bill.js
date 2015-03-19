@@ -14,14 +14,13 @@
 curl(
 	{ baseUrl: openhmis.url.resources },
 	[
-		openhmis.url.backboneBase + 'js/lib/jquery',
 		openhmis.url.backboneBase + 'js/view/patient',
 		openhmis.url.backboneBase + 'js/lib/i18n',
 		openhmis.url.cashierBase + 'js/view/bill',
 		openhmis.url.cashierBase + 'js/view/payment',
 		openhmis.url.cashierBase + 'js/model/lineItem'
 	],
-	function($, openhmis, __) {
+	function(openhmis, __) {
 		var Screen = function() {
 			this.billUuid = openhmis.getQueryStringParameter("billUuid");
 			this.patientUuid = openhmis.getQueryStringParameter("patientUuid");
