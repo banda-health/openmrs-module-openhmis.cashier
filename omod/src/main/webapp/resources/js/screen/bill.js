@@ -170,10 +170,11 @@ curl(
 					});
 
 					var confirmMsg = __("Are you sure you want to post this bill?");
+					var confirmPostPrintMsg = __("Are you sure you want to post and print this bill?");
 					$postButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill() }});
 					$postButton.show();
 					$printButton.val(__("Post & Print"));
-					$printButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill({ print: true }) }});
+					$printButton.click(function() { if (confirm(confirmPostPrintMsg)) { self.billView.postBill({ print: true }) }});
 					$printButton.show();
 					
 					if (this.billView.bill.get("billAdjusted")) {
