@@ -312,8 +312,11 @@ define(
              * @param totalPaid
              */
             showAmountPayable: function(total, totalPaid) {
-                var balance = total - totalPaid;
-                $('#amount').val(balance);
+                var $autofill = $('#autofillPaymentAmount');
+                if ($autofill.val() == 'true') {
+                    var balance = total - totalPaid;
+                    $('#amount').val(balance);
+                }
             },
 
             /**
