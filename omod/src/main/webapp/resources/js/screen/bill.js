@@ -161,7 +161,7 @@ curl(
 			$printButton = $("#printReceipt");
 			switch (this.billView.bill.get("status")) {
 				case BillStatus.PENDING:
-					$saveButton.val(__("Save Bill"));
+					$saveButton.val(__(strings['cash.saveBill']));
 
 					var inst = this;
 					$saveButton.click(function() {
@@ -196,7 +196,7 @@ curl(
 				case BillStatus.PAID:
 					var $allowBillAdjustment = $('#allowBillAdjustment');
 					if ($allowBillAdjustment.val() == 'true'){
-						$saveButton.val(__("Adjust Bill"));
+						$saveButton.val(__(strings['cash.adjustBill']))
 						$saveButton.click(this.billView.handleAdjustBill);
 					} else {
 						$saveButton.hide();

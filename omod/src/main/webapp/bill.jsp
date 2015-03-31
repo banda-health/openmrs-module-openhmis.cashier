@@ -21,6 +21,11 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
+<script type="text/javascript">
+	var strings = new Array;
+	strings['cash.saveBill'] = "<spring:message code='openhmis.cashier.bill.saveBill' javaScriptEscape='true' />";
+	strings['cash.adjustBill'] = "<spring:message code='openhmis.cashier.bill.adjustBill' javaScriptEscape='true' />";
+</script>
 <h2>
 	<c:choose>
 		<c:when test="${empty bill}">
