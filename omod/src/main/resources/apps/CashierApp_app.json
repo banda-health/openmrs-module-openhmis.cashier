@@ -1,0 +1,18 @@
+[
+    {
+    "id": "${project.parent.artifactId}",
+    "description": "Module to provide basic cashier functionality",
+    "order": 20,
+    "extensions": [
+      {
+        "id": "coreapps.activeVisitsHomepageLink",
+        "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
+        "type": "link",
+        "label": "Cashier",
+        "url": "module/openhmis/cashier/cashier.form",
+        "icon": "icon-money",
+        "requiredPrivilege": "Manage Cashier Timesheets"
+      }
+    ]
+  }
+]
