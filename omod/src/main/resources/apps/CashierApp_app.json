@@ -11,7 +11,7 @@
         "label": "Cashier",
         "url": "module/openhmis/cashier/cashier.form",
         "icon": "icon-money",
-        "requiredPrivilege": "Manage Cashier Timesheets"
+        "requiredPrivilege": "App: Manage Cashier Timesheets"
       }
     ]
   }
