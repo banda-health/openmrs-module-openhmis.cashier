@@ -13,12 +13,7 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Iterators;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
@@ -27,12 +22,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
-import org.openmrs.module.openhmis.cashier.api.model.Bill;
-import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
-import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
-import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
-import org.openmrs.module.openhmis.cashier.api.model.Payment;
-import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.api.model.*;
 import org.openmrs.module.openhmis.cashier.api.util.RoundingUtil;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -44,10 +34,10 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.springframework.web.client.RestClientException;
 
-import com.google.common.collect.Iterators;
+import java.util.*;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/bill", supportedClass = Bill.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
 public class BillResource extends BaseRestDataResource<Bill> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
