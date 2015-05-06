@@ -66,19 +66,17 @@ public class CashierLogoutFilter implements Filter {
 	}
 	
 	private void clockOutCashier() {
-		if (userIsNotCashier()) {
+		if (!userIsCashier()) {
 			return;
 		}
 		
 		Provider provider = ProviderUtil.getCurrentProvider(providerService);
-		
 		if (provider == null) {
 			LOG.error(PROVIDER_ERROR_LOG_MESSAGE);
 			return;
 		}
 		
 		Timesheet timesheet = timesheetService.getCurrentTimesheet(provider);
-		
 		if (timesheet == null) {
 			LOG.error(TIMESHEET_ERROR_LOG_MESSAGE);
 			return;
@@ -90,14 +88,14 @@ public class CashierLogoutFilter implements Filter {
 		}
 	}
 	
-	private boolean userIsNotCashier() {
-		boolean isNotCashier = true;
+	private boolean userIsCashier() {
+		boolean result = false;
 		User authenticatedUser = Context.getAuthenticatedUser();
 		if (authenticatedUser != null) {
-			isNotCashier =
-			        !authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_TIMESHEETS) || authenticatedUser.isSuperUser();
+			result = authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_TIMESHEETS);
 		}
-		return isNotCashier;
+
+		return result;
 	}
 	
 	private boolean cashierIsClockedIn(Timesheet timesheet) {
