@@ -88,6 +88,9 @@ public class BillAddEditController {
 		boolean allowBillAdjustment = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ALLOW_BILL_ADJUSTMENT));
 		model.addAttribute("allowBillAdjustment", allowBillAdjustment);
 
+		boolean autofillPaymentAmount = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.AUTOFILL_PAYMENT_AMOUNT));
+		model.addAttribute("autofillPaymentAmount", autofillPaymentAmount);
+
 		CashierOptions options = cashOptService.getOptions();
 		String roundingItemUuid = options.getRoundingItemUuid();
 		model.addAttribute("roundingItemUuid", roundingItemUuid);

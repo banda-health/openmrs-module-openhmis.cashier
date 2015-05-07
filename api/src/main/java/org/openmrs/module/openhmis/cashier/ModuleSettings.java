@@ -29,6 +29,7 @@ public class ModuleSettings {
 	public static final String SYSTEM_RECEIPT_NUMBER_GENERATOR = "openhmis.cashier.systemReceiptNumberGenerator";
 	public static final String ADJUSTMENT_REASEON_FIELD = "openhmis.cashier.adjustmentReasonField";
 	public static final String ALLOW_BILL_ADJUSTMENT ="openhmis.cashier.allowBillAdjustments";
+	public static final String AUTOFILL_PAYMENT_AMOUNT ="openhmis.cashier.autofillPaymentAmount";
 	
 	protected ModuleSettings() {}
 	
