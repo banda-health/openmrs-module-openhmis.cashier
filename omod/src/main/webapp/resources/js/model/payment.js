@@ -27,7 +27,7 @@ define(
                 attributeType: { type: "Object", objRef: true },
                 value: { type: "Text" }
             },
-            
+
             parse: function(resp) {
                 if (resp.attributeType) {
                     resp.attributeType =
@@ -36,14 +36,14 @@ define(
                 return resp;
             }
         });
-        
+
         openhmis.Payment = openhmis.GenericModel.extend({
             meta: {
                 name: "Payment",
                 namePlural: "Payments",
                 restUrl: "v2/cashier/payment"
             },
-            
+
             schema: {
                 dateCreated: { type: 'Text', readOnly: true },
                 dateCreatedFmt: { type: 'Text', title: __("Date"), readOnly: true },
@@ -54,7 +54,7 @@ define(
                 instanceType: { type: 'Object', objRef: true, title: __("Payment Mode")},
                 attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute , title: __("Details") }
             },
-            
+
             url: function() {
                 if (this.meta.parentRestUrl) {
                     this.urlRoot = this.meta.parentRestUrl +
@@ -62,7 +62,7 @@ define(
                 }
                 return openhmis.GenericModel.prototype.url.call(this);
             },
-            
+
    			get: function(attr) {
 				switch (attr) {
 					case 'dateCreatedFmt':
@@ -76,7 +76,7 @@ define(
 						return openhmis.GenericModel.prototype.get.call(this, attr);
 				}
 			},
-            
+
             validate: function(goAhead) {
    				// By default, backbone validates every time we try try to alter
 				// the model.  We don't want to be bothered with this until we
@@ -84,7 +84,7 @@ define(
                 if (goAhead !== true) {
                 	return null;
                 }
-                
+
                 if (this.get("amount") === null || this.get("amount") === undefined) {
                 	return { amount: __("Amount is required.") }
                 }
@@ -96,7 +96,7 @@ define(
                 }
                 return null;
             },
-            
+
             parse: function(resp) {
                 if (resp.instanceType) {
                     resp.instanceType = new openhmis.PaymentMode(resp.instanceType);
@@ -115,16 +115,17 @@ define(
                 }
                 return resp;
             },
-            
+
             toJSON: function() {
                 var attrs = openhmis.GenericModel.prototype.toJSON.call(this);
                 return attrs;
             }
         });
-        
+
         openhmis.PaymentModeAttributeType = openhmis.InstanceAttributeTypeBase.extend({
             meta: {
-                restUrl: 'v2/cashier/paymentMode'
+                restUrl: 'v2/cashier/paymentMode',
+                confirmDelete: 'Are you sure you want to delete this Payment Attribute?'
             }
         });
 

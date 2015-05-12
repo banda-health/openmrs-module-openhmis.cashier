@@ -53,6 +53,8 @@
 <input type="hidden" id="showAdjustmentReasonField" value="${showAdjustmentReasonField}">
 <input type="hidden" id="roundingItemUuid" value="${roundingItemUuid}">
 <input type="hidden" id="allowBillAdjustment" value="${allowBillAdjustment}">
+<input type="hidden" id="autofillPaymentAmount" value="${autofillPaymentAmount}">
+
 <ul id="bill-info" class="floating">
 <c:choose>
 	<c:when test="${!empty bill}">

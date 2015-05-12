@@ -14,16 +14,13 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeAttributeTypeService;
-import org.openmrs.module.openhmis.cashier.api.model.Payment;
-import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
-import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentModeAttributeType",
-		supportedClass = PaymentModeAttributeType.class, supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*" })
+		supportedClass = PaymentModeAttributeType.class, supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
 public class PaymentModeAttributeTypeResource extends BaseRestAttributeTypeResource<PaymentModeAttributeType> {
 	@Override
 	public PaymentModeAttributeType newDelegate() {

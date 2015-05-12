@@ -16,24 +16,18 @@ package org.openmrs.module.webservices.rest.resource;
 import org.openmrs.Concept;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.api.IPaymentModeAttributeTypeService;
-import org.openmrs.module.openhmis.cashier.api.impl.PaymentModeAttributeTypeServiceImpl;
-import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
-import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
-import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
-import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass = PaymentAttribute.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
 public class PaymentAttributeResource extends BaseRestAttributeDataResource<PaymentAttribute, PaymentModeAttributeType> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {

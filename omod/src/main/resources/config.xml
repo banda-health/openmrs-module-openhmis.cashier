@@ -76,6 +76,14 @@
 		<defaultValue>true</defaultValue>
 	</globalProperty>
 
+	<globalProperty>
+		<property>${project.parent.artifactId}.autofillPaymentAmount</property>
+		<description>
+			True/false weather or not the payment amount should be automatically filled with the remaining balance.
+		</description>
+		<defaultValue>false</defaultValue>
+	</globalProperty>
+
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
