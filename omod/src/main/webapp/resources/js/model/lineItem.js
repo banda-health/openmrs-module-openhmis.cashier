@@ -44,10 +44,10 @@ define(
 			
 			validate: function(attrs, options) {
 				if (!attrs.item || !attrs.item.id) {
-					return { item: __("Please choose an item") };
+					return { item: __(openhmis.strings['openhmis.cashier.bill.lineitemChooseMessage']) };
 				}
 				if (!attrs.item.get('department')) {
-					return { item: __("Item must belong to a department") };
+					return { item: __(openhmis.strings['openhmis.cashier.bill.lineitemDepartmentMessage']) };
 				}
 				if (!attrs.quantity || isNaN(attrs.quantity) || attrs.quantity === 0) {
 					return { quantity: __("Please enter a quantity") }
