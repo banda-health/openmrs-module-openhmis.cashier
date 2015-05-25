@@ -55,6 +55,20 @@
 		</dependency>
 
 		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>${project.parent.artifactId}-omod_1.x</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>${project.parent.artifactId}-omod_2.x</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>uiframework-api</artifactId>
 		</dependency>
@@ -70,7 +84,6 @@
 			<artifactId>appframework-api</artifactId>
 			<type>jar</type>
 		</dependency>
-
 
 		<!-- End OpenMRS modules -->
 
@@ -130,30 +143,7 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-			<resource>
-				<directory>src/main/webapp</directory>
-				<filtering>false</filtering>
-				<excludes>
-					<exclude>resources</exclude>
-				</excludes>
-				<targetPath>web/module</targetPath>
-			</resource>
-			<resource>
-				<directory>src/main/webapp</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>resources</include>
-				</includes>
-				<targetPath>web/module</targetPath>
-			</resource>
 		</resources>
-
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-		</testResources>
 
 		<pluginManagement>
 			<plugins>
@@ -209,7 +199,7 @@
 			<plugin>
 				<groupId>org.openmrs.maven.plugins</groupId>
 				<artifactId>maven-openmrs-plugin</artifactId>
-				<extensions>true</extensions>
+
 				<executions>
 					<execution>
 						<id>init</id>
@@ -265,7 +255,10 @@
 						<phase>generate-resources</phase>
 						<configuration>
 							<includeGroupIds>${project.parent.groupId}</includeGroupIds>
-							<includeArtifactIds>${project.parent.artifactId}-api</includeArtifactIds>
+							<includeArtifactIds>
+								${project.parent.artifactId}-api, ${project.parent.artifactId}-omod_1.x,
+								${project.parent.artifactId}-omod_2.x
+							</includeArtifactIds>
 							<excludeTransitive>true</excludeTransitive>
 							<includes>**/*</includes>
 							<excludes>**/parent*.xml</excludes>
@@ -274,19 +267,12 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 		        <groupId>com.github.searls</groupId>
 		        <artifactId>jasmine-maven-plugin</artifactId>
 		        <version>1.2.0.0</version>
 		        <extensions>true</extensions>
-<!-- Execution disabled because tests don't run properly outside of a browser -->
-<!-- 		        <executions> -->
-<!-- 		          <execution> -->
-<!-- 		            <goals> -->
-<!-- 		              <goal>test</goal> -->
-<!-- 		            </goals> -->
-<!-- 		          </execution> -->
-<!-- 		        </executions> -->
 		        <configuration>
 		        	<customRunnerTemplate>${project.basedir}/src/test/webapp/resources/js/BlankSpecRunner.htmltemplate</customRunnerTemplate>
 		        	<jsSrcDir>${project.basedir}/src/main/webapp/resources/js</jsSrcDir>
