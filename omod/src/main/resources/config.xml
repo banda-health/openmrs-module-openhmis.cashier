@@ -15,24 +15,16 @@
 	<require_version>${openMRSVersion}</require_version>
 	<!-- / Module Properties -->
 
-	<aware_of_modules>
-		<aware_of_module version="2.8">org.openmrs.module.idgen</aware_of_module>
-		<aware_of_module version="${uiframeworkVersion}">org.openmrs.module.uiframework</aware_of_module>
-		<aware_of_module version="${appframeworkVersion}">org.openmrs.module.appframework</aware_of_module>
-		<aware_of_module version="${providerManagementVersion}">org.openmrs.module.providermanagement</aware_of_module>
-		<aware_of_module version="${uicommonsVersion}">org.openmrs.module.uicommons</aware_of_module>
-	</aware_of_modules>
-
 	<require_modules>
 		<require_module version="2.3">org.openmrs.module.openhmis.backboneforms</require_module>
 		<require_module version="3.0">org.openmrs.module.openhmis.commons</require_module>
 		<require_module version="1.5">org.openmrs.module.openhmis.inventory</require_module>
 		<require_module version="1.5.5">org.openmrs.module.jasperreport</require_module>
 	</require_modules>
-
+	
 	<!-- Module Activator -->
 	<activator>org.openmrs.module.openhmis.cashier.CashierModuleActivator</activator>
-
+	
 	<globalProperty>
 		<property>${project.parent.artifactId}.defaultReceiptReportId</property>
 		<description>ID of the default Jasper report to use for generating a receipt on the Bill page</description>
@@ -62,7 +54,7 @@
 		<property>${project.parent.artifactId}.systemReceiptNumberGenerator</property>
 		<description>Fully qualified class name of the receipt number generator to be used.</description>
 	</globalProperty>
-
+	
 	<globalProperty>
 		<property>${project.parent.artifactId}.roundingItemId</property>
 		<description>ID of the item used to account for bill total rounding.</description>
@@ -72,7 +64,7 @@
 		<property>${project.parent.artifactId}.roundingDeptId</property>
 		<description>ID of the department of the rounding item.</description>
 	</globalProperty>
-
+	
 	<globalProperty>
 		<property>${project.parent.artifactId}.adjustmentReasonField</property>
 		<description>true/false whether or not the adjustment reason field should be used.</description>
@@ -109,7 +101,7 @@
 		<point>org.openmrs.headerFull.userBar</point>
 		<class>org.openmrs.module.openhmis.cashier.extension.html.CashierLinkExt</class>
 	</extension>
-
+	
 	<!-- Privileges -->
 	<!--  Bills  -->
 	<privilege>
@@ -136,12 +128,12 @@
 		<name>Reprint Receipt</name>
 		<description>Able to print bill receipts more than once.</description>
 	</privilege>
-
+		
 	<privilege>
 		<name>Purge Cashier Bills</name>
 		<description>Able to purge bills</description>
 	</privilege>
-
+	
 	<!--  Metadata  -->
 	<privilege>
 		<name>View Cashier Metadata</name>
@@ -173,48 +165,7 @@
 		<name>Purge Cashier Timesheets</name>
 		<description>Able to purge timesheets</description>
 	</privilege>
-
-	<!-- App privileges for OpenMRS 2.x -->
-	<privilege>
-		<name>App: View Cashier App</name>
-		<description>Able to see the Cashier App Icon on the home page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Create new bill</name>
-		<description>Able to access bill page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Cashier Timesheets</name>
-		<description>Able to access timesheets page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Manage Cashier Module</name>
-		<description>Able to access the management page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Cashier Role Creation</name>
-		<description>Able to access cashier role page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Manage Cash Points</name>
-		<description>Able to access the manage cash points page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Manage Payment Modes</name>
-		<description>Able to access manage payment modes page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Manage Receipt Number Generator</name>
-		<description>Able to access manage receipt number generator page</description>
-	</privilege>
-
+	
 	<!-- Maps hibernate files, if present -->
 	<mappingFiles>
 		Bill.hbm.xml
