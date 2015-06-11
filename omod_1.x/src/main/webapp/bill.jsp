@@ -58,7 +58,7 @@
 <ul id="bill-info" class="floating">
 <c:choose>
 	<c:when test="${!empty bill}">
-		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${bill.cashier}</li>
+		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${bill.cashier.person.personName}</li>
 		<li class="date"><span class="label"><openmrs:message code="openhmis.cashier.date"/>: </span> ${bill.dateCreated}</li>		
 	</c:when>
 	<c:otherwise>
