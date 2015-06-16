@@ -19,6 +19,7 @@ curl(
 		openhmis.url.cashierBase + 'js/view/bill',
 		openhmis.url.cashierBase + 'js/view/payment',
 		openhmis.url.cashierBase + 'js/model/lineItem'
+	/** @namespace openhmis.strings */
 	],
 	function(openhmis, __) {
 		var Screen = function() {
