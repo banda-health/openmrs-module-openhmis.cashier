@@ -460,7 +460,7 @@ define(
                         this.adjustBill("");
                     }
                 } else {
-                    $adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
+                    $adjustmentReason = prompt(__(openhmis.getMessage('openhmis.cashier.adjustedReasonMessage')));
                     if ($adjustmentReason != null && $adjustmentReason != "") {
                         this.adjustBill($adjustmentReason);
                     } else if ($adjustmentReason == "") {

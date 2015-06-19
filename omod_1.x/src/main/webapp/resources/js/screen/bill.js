@@ -162,7 +162,7 @@ curl(
 			$printButton = $("#printReceipt");
 			switch (this.billView.bill.get("status")) {
 				case BillStatus.PENDING:
-					$saveButton.val(__(openhmis.strings['openhmis.cashier.bill.saveBill']));
+					$saveButton.val(__(openhmis.getMessage('openhmis.cashier.bill.saveBill')));
 
 					var inst = this;
 					$saveButton.click(function() {
@@ -170,8 +170,8 @@ curl(
 					});
 
 
-					var confirmMsg = __(openhmis.strings['openhmis.cashier.bill.postMessage']);
-					var confirmPostPrintMsg = __(openhmis.strings['openhmis.cashier.bill.postAndPrintMessage']);
+					var confirmMsg = __(openhmis.getMessage('openhmis.cashier.bill.postMessage'));
+					var confirmPostPrintMsg = __(openhmis.getMessage('openhmis.cashier.bill.postAndPrintMessage'));
 					$postButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill() }});
 					$postButton.show();
 					$printButton.val(__("Post & Print"));
@@ -198,7 +198,7 @@ curl(
 				case BillStatus.PAID:
 					var $allowBillAdjustment = $('#allowBillAdjustment');
 					if ($allowBillAdjustment.val() == 'true'){
-						$saveButton.val(__(openhmis.strings['openhmis.cashier.bill.adjustBill']));
+						$saveButton.val(__(openhmis.getMessage('openhmis.cashier.bill.adjustBill')));
 						$saveButton.click(this.billView.handleAdjustBill);
 					} else {
 						$saveButton.hide();
