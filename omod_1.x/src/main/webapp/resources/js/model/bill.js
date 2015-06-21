@@ -142,10 +142,10 @@ define(
                 }
 				var lineItems = this.get("lineItems");
 				if (this.get("patient") === undefined) {
-					return { patient: "A bill needs to be associated with a patient." }
+					return { patient: openhmis.getMessage('openhmis.cashier.bill.choosePatientErrorMessage') }
 				}
 				if (lineItems === undefined || lineItems.length === 0) {
-					return { lineItems: "A bill should contain at least one item." }
+					return { lineItems: openhmis.getMessage('openhmis.cashier.bill.chooseItemErrorMessage') }
 				}
 				if (lineItems !== undefined && lineItems.length > 0) {
 					var errors = false;
@@ -155,7 +155,7 @@ define(
 						}
 					});
 					if (errors === true) {
-						return {lineItems: "Item quantity cannot be zero"}
+						return {lineItems: openhmis.getMessage('openhmis.cashier.bill.zeroItemErrorMessage')}
 					} else {
 						return null;
 					}

@@ -456,7 +456,7 @@ define(
                 var __ = i18n;
                 var $adjustmentReason;
                 if ($('#showAdjustmentReasonField').val() === 'false') {
-                    if (confirm(__("Are you sure you want to adjust this bill?"))) {
+                    if (confirm(__(openhmis.getMessage('openhmis.cashier.adjustedReasonPrompt')))) {
                         this.adjustBill("");
                     }
                 } else {
@@ -464,7 +464,7 @@ define(
                     if ($adjustmentReason != null && $adjustmentReason != "") {
                         this.adjustBill($adjustmentReason);
                     } else if ($adjustmentReason == "") {
-                        alert("Please specify your bill adjustment reason");
+                        alert(openhmis.getMessage('openhmis.cashier.adjustedReasonRequiredPrompt'));
                     }
                 }
             },

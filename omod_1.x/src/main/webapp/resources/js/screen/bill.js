@@ -174,7 +174,7 @@ curl(
 					var confirmPostPrintMsg = __(openhmis.getMessage('openhmis.cashier.bill.postAndPrintMessage'));
 					$postButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill() }});
 					$postButton.show();
-					$printButton.val(__("Post & Print"));
+					$printButton.val(__(openhmis.getMessage('openhmis.cashier.bill.postAndPrint')));
 					$printButton.click(function() { if (confirm(confirmPostPrintMsg)) { self.billView.postBill({ print: true }) }});
 					$printButton.show();
 					
@@ -203,7 +203,7 @@ curl(
 					} else {
 						$saveButton.hide();
 					}
-					$printButton.val(__("Print Receipt"));
+					$printButton.val(__(openhmis.getMessage('openhmis.cashier.bill.printReceipt')));
 					$printButton.click(function (event) {
 						self.billView.printReceipt(event);
 						$(this).attr("disabled", "disabled");
@@ -243,7 +243,7 @@ curl(
 			
 			window.onbeforeunload = function() {
 				if (self.billView.bill.isUnsaved()) {
-					return __("There are unsaved changes.");
+					return __(openhmis.getMessage('openhmis.cashier.bill.unsavedChanges'));
 				}
 				return null;
 			}

@@ -15,11 +15,11 @@ import java.util.ResourceBundle;
 /**
  * Created by dubdabasoduba on 16/04/15.
  */
-@Controller @RequestMapping(CashierWebConstants.MESSAGEPROPERTIES_JS_URI) public class MessageRenderController {
+@Controller @RequestMapping(BackboneWebConstants.MESSAGEPROPERTIES_JS_URI) public class MessageRenderController {
 
 	@RequestMapping(method = RequestMethod.GET) public ModelAndView MessageRenderController(HttpServletRequest request) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", locale);
-		return new ModelAndView(CashierWebConstants.MESSAGE_PAGE, "keys", resourceBundle.getKeys());
+		return new ModelAndView(BackboneWebConstants.MESSAGE_PAGE, "keys", resourceBundle.getKeys());
 	}
 }
