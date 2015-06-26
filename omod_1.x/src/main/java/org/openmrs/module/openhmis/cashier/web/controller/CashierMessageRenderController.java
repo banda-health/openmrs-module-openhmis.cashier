@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 /**
  * Created by dubdabasoduba on 16/04/15.
  */
-@Controller @RequestMapping(CashierWebConstants.MESSAGEPROPERTIES_JS_URI) public class CashierMessageRenderController {
+@Controller @RequestMapping(CashierWebConstants.MESSAGE_PROPERTIES_JS_URI) public class CashierMessageRenderController {
 
 	@RequestMapping(method = RequestMethod.GET) public ModelAndView MessageRenderController(HttpServletRequest request) {
 		Locale locale = RequestContextUtils.getLocale(request);
