@@ -40,6 +40,11 @@
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>jasperreport-api</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>uiframework-api</artifactId>
+		</dependency>
 
 		<!-- Begin OpenMRS core -->
 		
