@@ -44,13 +44,13 @@ define(
 			
 			validate: function(attrs, options) {
 				if (!attrs.item || !attrs.item.id) {
-					return { item: __("Please choose an item") };
+					return { item: __(openhmis.getMessage('openhmis.cashier.bill.lineItems.error.itemChoose')) };
 				}
 				if (!attrs.item.get('department')) {
-					return { item: __("Item must belong to a department") };
+					return { item: __(openhmis.getMessage('openhmis.cashier.bill.lineItems.error.itemDepartment')) };
 				}
 				if (!attrs.quantity || isNaN(attrs.quantity) || attrs.quantity === 0) {
-					return { quantity: __("Please enter a quantity") }
+					return { quantity: __(openhmis.getMessage('openhmis.cashier.bill.lineItems.error.quantityRequired')) }
 				}
 				return null;
 			},
