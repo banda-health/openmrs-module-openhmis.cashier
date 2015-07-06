@@ -97,7 +97,7 @@
         var timesheetId = jQuery("input[name=timesheetId]:checked").val();
 
         if (!timesheetId) {
-            alert("You must select a timesheet to run the report.");
+            alert("<spring:message code="openhmis.cashier.page.reports.error.timesheetRequired" />");
             return false;
         }
 

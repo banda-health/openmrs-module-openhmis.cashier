@@ -456,15 +456,15 @@ define(
                 var __ = i18n;
                 var $adjustmentReason;
                 if ($('#showAdjustmentReasonField').val() === 'false') {
-                    if (confirm(__("Are you sure you want to adjust this bill?"))) {
+                    if (confirm(__(openhmis.getMessage('openhmis.cashier.adjustedReasonPrompt')))) {
                         this.adjustBill("");
                     }
                 } else {
-                    $adjustmentReason = prompt(__("Please enter your adjustment reason * (REQUIRED)"));
+                    $adjustmentReason = prompt(__(openhmis.getMessage('openhmis.cashier.adjustedReasonMessage')));
                     if ($adjustmentReason != null && $adjustmentReason != "") {
                         this.adjustBill($adjustmentReason);
                     } else if ($adjustmentReason == "") {
-                        alert("Please specify your bill adjustment reason");
+                        alert(openhmis.getMessage('openhmis.cashier.adjustedReasonRequiredPrompt'));
                     }
                 }
             },

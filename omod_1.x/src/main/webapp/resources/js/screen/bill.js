@@ -161,18 +161,20 @@ curl(
 			$printButton = $("#printReceipt");
 			switch (this.billView.bill.get("status")) {
 				case BillStatus.PENDING:
-					$saveButton.val(__("Save Bill"));
+					$saveButton.val(__(openhmis.getMessage('openhmis.cashier.bill.saveBill')));
 
 					var inst = this;
 					$saveButton.click(function() {
 						inst.billView.saveBill();
 					});
 
-					var confirmMsg = __("Are you sure you want to post this bill?");
+
+					var confirmMsg = __(openhmis.getMessage('openhmis.cashier.bill.postMessage'));
+					var confirmPostPrintMsg = __(openhmis.getMessage('openhmis.cashier.bill.postAndPrintMessage'));
 					$postButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill() }});
 					$postButton.show();
-					$printButton.val(__("Post & Print"));
-					$printButton.click(function() { if (confirm(confirmMsg)) { self.billView.postBill({ print: true }) }});
+					$printButton.val(__(openhmis.getMessage('openhmis.cashier.bill.postAndPrint')));
+					$printButton.click(function() { if (confirm(confirmPostPrintMsg)) { self.billView.postBill({ print: true }) }});
 					$printButton.show();
 					
 					if (this.billView.bill.get("billAdjusted")) {
@@ -195,12 +197,12 @@ curl(
 				case BillStatus.PAID:
 					var $allowBillAdjustment = $('#allowBillAdjustment');
 					if ($allowBillAdjustment.val() == 'true'){
-						$saveButton.val(__("Adjust Bill"));
+						$saveButton.val(__(openhmis.getMessage('openhmis.cashier.bill.adjustBill')));
 						$saveButton.click(this.billView.handleAdjustBill);
 					} else {
 						$saveButton.hide();
 					}
-					$printButton.val(__("Print Receipt"));
+					$printButton.val(__(openhmis.getMessage('openhmis.cashier.bill.printReceipt')));
 					$printButton.click(function (event) {
 						self.billView.printReceipt(event);
 						$(this).attr("disabled", "disabled");
@@ -240,7 +242,7 @@ curl(
 			
 			window.onbeforeunload = function() {
 				if (self.billView.bill.isUnsaved()) {
-					return __("There are unsaved changes.");
+					return __(openhmis.getMessage('openhmis.cashier.bill.unsavedChanges'));
 				}
 				return null;
 			}

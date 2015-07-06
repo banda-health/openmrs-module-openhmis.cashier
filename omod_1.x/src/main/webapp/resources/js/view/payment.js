@@ -115,7 +115,7 @@ define(
 						var meta = $.parseJSON(this.$attributes.find('#'+attributeForm[i].name+'-meta').text());
 					} catch (e) {}
 					if (meta && meta.required === true && !attributeForm[i].value) {
-						errors[attributeForm[i].name] = "This is a required field.";
+						errors[attributeForm[i].name] = openhmis.getMessage('openhmis.cashier.error.fieldRequired');
 						break;
 					}
 					attributes[i] = new openhmis.PaymentAttribute({
@@ -157,7 +157,7 @@ define(
 				if (!this.commitForm()) {
 					return;
 				}
-				if (confirm(i18n("Are you sure you want to process a %s payment of %s?", this.model.get("instanceType"), this.model.get("amountFmt")))) {
+				if (confirm(i18n(openhmis.getMessage('openhmis.cashier.payment.confirm.paymentProcess'), this.model.get("instanceType"), this.model.get("amountFmt")))) {
 					var self = this;
 					this.processCallback(this.model, { success: function(model, resp) {
 						// Set up new empty Payment
