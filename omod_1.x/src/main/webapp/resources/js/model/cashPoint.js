@@ -42,7 +42,7 @@ define(
             
             validate: function(attrs, options) {
             	if (!attrs.name) {
-            		return { name: __("A name is required") }
+            		return { name: __(openhmis.getMessage('openhmis.cashier.error.nameRequired')) }
             	}
                 return null;
             },

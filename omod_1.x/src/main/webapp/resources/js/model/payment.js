@@ -86,13 +86,13 @@ define(
                 }
 
                 if (this.get("amount") === null || this.get("amount") === undefined) {
-                	return { amount: __("Amount is required.") }
+                	return { amount: __(openhmis.getMessage('openhmis.cashier.payment.error.amountRequired')) }
                 }
                 if (isNaN(this.get("amount"))) {
-                    return { amount: __("Amount needs to be a number") }
+                    return { amount: __(openhmis.getMessage('openhmis.cashier.payment.error.amountType')) }
                 }
                 if (!this.get("instanceType") || !this.get("instanceType").id) {
-                    return { instanceType: __("Payment mode is required.") }
+                    return { instanceType: __(openhmis.getMessage('openhmis.cashier.payment.error.paymentmodeRequired')) }
                 }
                 return null;
             },
@@ -125,7 +125,7 @@ define(
         openhmis.PaymentModeAttributeType = openhmis.InstanceAttributeTypeBase.extend({
             meta: {
                 restUrl: 'v2/cashier/paymentMode',
-                confirmDelete: 'Are you sure you want to delete this Payment Attribute?'
+                confirmDelete: openhmis.getMessage('openhmis.cashier.payment.confirm.paymentAttribute.delete')
             }
         });
 
