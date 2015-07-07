@@ -3,6 +3,7 @@ package org.openmrs.module.openhmis.cashier.page.controller.cashier;
 import java.io.IOException;
 import java.util.List;
 
+import org.openmrs.annotation.OpenmrsProfile;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appframework.domain.Extension;
 import org.openmrs.module.appframework.service.AppFrameworkService;
@@ -13,6 +14,7 @@ import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.stereotype.Controller;
 
 @Controller
+@OpenmrsProfile(modules = { "uiframework:*.*" })
 public class CashierManageModulePageController {
 	/**
 	 * Process requests to show the home page
