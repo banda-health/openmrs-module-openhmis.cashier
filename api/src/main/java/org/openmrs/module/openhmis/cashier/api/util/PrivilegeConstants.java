@@ -22,6 +22,7 @@ import org.openmrs.Privilege;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.util.JasperReportPrivilegeConstants;
+import org.openmrs.module.openhmis.commons.web.PrivilegeConstantsCompatibility;
 
 public class PrivilegeConstants {
 	public static final String MANAGE_BILLS = "Manage Cashier Bills";
@@ -109,8 +110,8 @@ public class PrivilegeConstants {
 		names.add(org.openmrs.util.PrivilegeConstants.VIEW_NAVIGATION_MENU);
 		names.add(org.openmrs.util.PrivilegeConstants.VIEW_OBS);
 		names.add(org.openmrs.util.PrivilegeConstants.VIEW_PATIENTS);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_PROVIDERS);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_VISITS);
+		names.add(new PrivilegeConstantsCompatibility().getProviders());
+		names.add(new PrivilegeConstantsCompatibility().getVisit());
 
 		for (String name : names) {
 			privileges.add(service.getPrivilege(name));
