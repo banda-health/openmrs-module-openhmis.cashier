@@ -1,4 +1,3 @@
-<%@ page import="org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants" %>
 <%@ page import="org.openmrs.module.openhmis.cashier.web.PrivilegeWebConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%--
@@ -17,8 +16,8 @@
 <openmrs:require allPrivileges="<%=PrivilegeWebConstants.BILL_PAGE_PRIVILEDGES%>" otherwise="/login.htm" redirect="/module/openhmis/cashier/bill.form" />
 
 <%-- Force our newer jquery version to load first --%>
-<openmrs:htmlInclude file="/moduleResources/openhmis/backboneforms/js/lib/jquery.js" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
+<openmrs:htmlInclude file="/moduleResources/openhmis/backboneforms/js/lib/jquery.js" />
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
 <h2>
