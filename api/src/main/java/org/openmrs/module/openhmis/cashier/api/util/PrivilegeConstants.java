@@ -22,6 +22,7 @@ import org.openmrs.Privilege;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.util.JasperReportPrivilegeConstants;
+import org.openmrs.module.openhmis.commons.web.PrivilegeConstantsCompatibility;
 
 public class PrivilegeConstants {
 	public static final String MANAGE_BILLS = "Manage Cashier Bills";
@@ -93,24 +94,26 @@ public class PrivilegeConstants {
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_ITEMS);
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_METADATA);
 		names.add(JasperReportPrivilegeConstants.VIEW_JASPER_REPORTS);
+		
+		PrivilegeConstantsCompatibility  privilegeConstantsCompatibility = new PrivilegeConstantsCompatibility();
 
-		names.add(org.openmrs.util.PrivilegeConstants.ADD_ENCOUNTERS);
-		names.add(org.openmrs.util.PrivilegeConstants.ADD_VISITS);
-		names.add(org.openmrs.util.PrivilegeConstants.EDIT_ENCOUNTERS);
-		names.add(org.openmrs.util.PrivilegeConstants.EDIT_PATIENTS);
-		names.add(org.openmrs.util.PrivilegeConstants.EDIT_VISITS);
-		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_SUMMARY);
-		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_DEMOGRAPHICS);
-		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_OVERVIEW);
-		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_VISITS);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_ADMIN_FUNCTIONS);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_CONCEPTS);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_ENCOUNTERS);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_NAVIGATION_MENU);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_OBS);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_PATIENTS);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_PROVIDERS);
-		names.add(org.openmrs.util.PrivilegeConstants.VIEW_VISITS);
+		names.add(privilegeConstantsCompatibility.getAddEncountersPrivilege());
+		names.add(privilegeConstantsCompatibility.getAddVisitsPrivilege());
+		names.add(privilegeConstantsCompatibility.getEditEncountersPrivilege());
+		names.add(privilegeConstantsCompatibility.getEditPatientsPrivilege());
+		names.add(privilegeConstantsCompatibility.getEditVisitsPrivilege());
+		names.add(privilegeConstantsCompatibility.getDashboardSummaryPrivilege());
+		names.add(privilegeConstantsCompatibility.getDashboardDemographicsPrivilege());
+		names.add(privilegeConstantsCompatibility.getDashboardOverviewPrivilege());
+		names.add(privilegeConstantsCompatibility.getDashboardVisitsPrivilege());
+		names.add(privilegeConstantsCompatibility.getViewAdminFunctionsPrivilege());
+		names.add(privilegeConstantsCompatibility.getViewConceptsPrivilege());
+		names.add(privilegeConstantsCompatibility.getViewEncountersPrivilege());
+		names.add(privilegeConstantsCompatibility.getViewNavigationMenuPrivilege());
+		names.add(privilegeConstantsCompatibility.getViewObsPrivilege());
+		names.add(privilegeConstantsCompatibility.getViewPatientsPrivilege());
+		names.add(privilegeConstantsCompatibility.getViewProvidersPrivilege());
+		names.add(privilegeConstantsCompatibility.getViewVisitPrivilege());
 
 		for (String name : names) {
 			privileges.add(service.getPrivilege(name));
