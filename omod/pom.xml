@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>2.3.2</version>
+		<version>2.4.0</version>
 	</parent>
 
 	<artifactId>openhmis.cashier-omod</artifactId>
@@ -31,7 +31,7 @@
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>openhmis.commons-omod</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>openhmis.backboneforms-omod</artifactId>
@@ -53,10 +53,40 @@
 			<artifactId>${project.parent.artifactId}-api</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
-				
+
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>${project.parent.artifactId}-omod_1.x</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>${project.parent.artifactId}-omod_2.x</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>uiframework-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>providermanagement-api</artifactId>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>appframework-api</artifactId>
+			<type>jar</type>
+		</dependency>
+
 		<!-- End OpenMRS modules -->
-		
+
 
 		<!-- Begin OpenMRS core -->
 
@@ -71,7 +101,7 @@
 			<artifactId>openmrs-web</artifactId>
 			<type>jar</type>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
@@ -92,9 +122,9 @@
 			<type>pom</type>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- End OpenMRS core -->
-		
+
 		<!-- Begin webservices.rest -->
 
 		<dependency>
@@ -113,30 +143,7 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-			<resource>
-				<directory>src/main/webapp</directory>
-				<filtering>false</filtering>
-				<excludes>
-					<exclude>resources</exclude>
-				</excludes>
-				<targetPath>web/module</targetPath>
-			</resource>
-			<resource>
-				<directory>src/main/webapp</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>resources</include>
-				</includes>
-				<targetPath>web/module</targetPath>
-			</resource>
 		</resources>
-
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-		</testResources>
 
 		<pluginManagement>
 			<plugins>
@@ -146,7 +153,7 @@
 						<includeEmptyDirs>true</includeEmptyDirs>
 					</configuration>
 				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -192,7 +199,7 @@
 			<plugin>
 				<groupId>org.openmrs.maven.plugins</groupId>
 				<artifactId>maven-openmrs-plugin</artifactId>
-				<extensions>true</extensions>
+
 				<executions>
 					<execution>
 						<id>init</id>
@@ -216,14 +223,14 @@
 				<configuration>
 					<artifactItems>
 						<artifactItem>
-							<groupId>${project.parent.groupId}</groupId>																	
+							<groupId>${project.parent.groupId}</groupId>
 							<artifactId>openhmis.backboneforms-omod</artifactId>
 							<overWrite>true</overWrite>
 							<outputDirectory>${project.build.directory}/jasmine/backboneforms</outputDirectory>
 							<includes>web/module/resources/**</includes>
 						</artifactItem>
 						<artifactItem>
-							<groupId>${project.parent.groupId}</groupId>																	
+							<groupId>${project.parent.groupId}</groupId>
 							<artifactId>openhmis.backboneforms-omod</artifactId>
 							<type>test-jar</type>
 							<overWrite>true</overWrite>
@@ -231,14 +238,14 @@
 							<includes>js/**</includes>
 						</artifactItem>
 						<artifactItem>
-							<groupId>${project.parent.groupId}</groupId>																	
+							<groupId>${project.parent.groupId}</groupId>
 							<artifactId>openhmis.inventory-omod</artifactId>
 							<overWrite>true</overWrite>
 							<outputDirectory>${project.build.directory}/jasmine/inventory</outputDirectory>
 							<includes>web/module/resources/**</includes>
 						</artifactItem>
 					</artifactItems>
-				</configuration>				
+				</configuration>
 				<executions>
 					<execution>
 						<id>Expand moduleApplicationContext and messages</id>
@@ -248,7 +255,10 @@
 						<phase>generate-resources</phase>
 						<configuration>
 							<includeGroupIds>${project.parent.groupId}</includeGroupIds>
-							<includeArtifactIds>${project.parent.artifactId}-api</includeArtifactIds>
+							<includeArtifactIds>
+								${project.parent.artifactId}-api, ${project.parent.artifactId}-omod_1.x,
+								${project.parent.artifactId}-omod_2.x
+							</includeArtifactIds>
 							<excludeTransitive>true</excludeTransitive>
 							<includes>**/*</includes>
 							<excludes>**/parent*.xml</excludes>
@@ -257,19 +267,12 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 		        <groupId>com.github.searls</groupId>
 		        <artifactId>jasmine-maven-plugin</artifactId>
 		        <version>1.2.0.0</version>
 		        <extensions>true</extensions>
-<!-- Execution disabled because tests don't run properly outside of a browser -->
-<!-- 		        <executions> -->
-<!-- 		          <execution> -->
-<!-- 		            <goals> -->
-<!-- 		              <goal>test</goal> -->
-<!-- 		            </goals> -->
-<!-- 		          </execution> -->
-<!-- 		        </executions> -->
 		        <configuration>
 		        	<customRunnerTemplate>${project.basedir}/src/test/webapp/resources/js/BlankSpecRunner.htmltemplate</customRunnerTemplate>
 		        	<jsSrcDir>${project.basedir}/src/main/webapp/resources/js</jsSrcDir>
@@ -294,7 +297,7 @@
                           <goal>compress</goal>
                       </goals>
                   </execution>
-              </executions>        
+              </executions>
               <configuration>
                   <!-- <verbose>true</verbose> -->
                   <nosuffix>true</nosuffix>

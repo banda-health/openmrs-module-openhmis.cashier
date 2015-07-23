@@ -33,4 +33,8 @@ public class CashierWebConstants extends WebConstants {
 	public static final String RECEIPT_NUMBER_GENERATOR_ROOT = ADMIN_MODULE_ROOT + "receiptNumberGenerator";
 	public static final String RECEIPT_NUMBER_GENERATOR_PAGE = RECEIPT_NUMBER_GENERATOR_ROOT + ".form";
 	public static final String OPENHMIS_CASHIER_MODULE_ID = "openhmis.cashier";
+	public static final String LANDING_PAGE_EXTENSION_POINT_ID = "org.openmrs.module.openhmis.cashier.landing";
+	public static final String MANAGE_MODULE_PAGE_EXTENSION_POINT_ID = "org.openmrs.module.openhmis.cashier.manage.module";
+	public static final String MESSAGE_PROPERTIES_JS_URI = MODULE_ROOT + "cashierMessageProperties.js";
+	public static final String MESSAGE_PAGE = MODULE_ROOT + "cashierMessageProperties";
 }

@@ -7,73 +7,97 @@
 		<version>2.4.0</version>
 	</parent>
 
-	<artifactId>openhmis.cashier-api</artifactId>
+	<artifactId>openhmis.cashier-omod_1.x</artifactId>
 	<packaging>jar</packaging>
-	<name>OpenHMIS Cashier Module API</name>
-	<description>API project for the OpenHMIS Cashier module</description>
+	<name>OpenHMIS Cashier Module OMOD_1.x</name>
+	<description>OMOD project for the OpenHMIS Cashier module for 1.x platform</description>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>openhmis.commons-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>openhmis.commons-api</artifactId>
-			<type>test-jar</type>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>openhmis.inventory-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>openhmis.inventory-api</artifactId>
-			<type>test-jar</type>
-		</dependency>
+		<!-- Begin OpenMRS modules -->
 
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>jasperreport-api</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>uiframework-api</artifactId>
+			<type>jar</type>
 		</dependency>
 
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.commons-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.commons-omod</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.backboneforms-omod</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.backboneforms-omod</artifactId>
+			<type>test-jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.inventory-omod</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.inventory-omod_1.x</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>openhmis.inventory-omod_2.x</artifactId>
+		</dependency>
+
+		<dependency>
+			  <groupId>org.openmrs.module</groupId>
+			  <artifactId>webservices.rest-omod</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>${project.parent.artifactId}-api</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
+		<!-- End OpenMRS modules -->
+
 		<!-- Begin OpenMRS core -->
-		
+
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
 			<type>jar</type>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
 			<artifactId>openmrs-web</artifactId>
 			<type>jar</type>
 		</dependency>
-				
+
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
 			<artifactId>openmrs-web</artifactId>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openmrs.test</groupId>
 			<artifactId>openmrs-test</artifactId>
@@ -83,24 +107,30 @@
 
 		<!-- End OpenMRS core -->
 
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4-rule-agent</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
-	
+
 	<build>
+		<finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/webapp</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>resources</exclude>
+				</excludes>
+				<targetPath>web/module</targetPath>
+			</resource>
+			<resource>
+				<directory>src/main/webapp</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>resources</include>
+				</includes>
+				<targetPath>web/module</targetPath>
 			</resource>
 		</resources>
 
@@ -110,6 +140,6 @@
 				<filtering>true</filtering>
 			</testResource>
 		</testResources>
-	</build>
 
+	</build>
 </project>
