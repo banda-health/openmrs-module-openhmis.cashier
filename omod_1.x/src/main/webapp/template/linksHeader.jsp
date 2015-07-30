@@ -1,3 +1,5 @@
+<%@ page import="org.openmrs.module.openhmis.cashier.web.CashierWebConstants" %>
+<%@ page import="org.openmrs.module.openhmis.cashier.web.PrivilegeWebConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
 <%--
@@ -42,6 +44,13 @@
 		<li <c:if test='<%= request.getRequestURI().contains("cashier/admin/receiptNumberGenerator") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/module/openhmis/cashier/admin/receiptNumberGenerator.form">
 				<spring:message code="openhmis.cashier.admin.receiptNumberGenerator"/>
+			</a>
+		</li>
+	</openmrs:hasPrivilege>
+	<openmrs:hasPrivilege privilege="<%= PrivilegeWebConstants.SETTING_PAGE_PRIVILEGE %>">
+		<li <c:if test='<%= request.getRequestURI().contains("cashier/admin/cashierSettings") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/openhmis/cashier/cashierSettings.form">
+				<spring:message code="openhmis.cashier.admin.cashierSettings"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
