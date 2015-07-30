@@ -23,6 +23,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
 import org.openmrs.module.jasperreport.JasperReportService;
 import org.openmrs.module.jasperreport.ReportGenerator;
+import org.openmrs.module.jasperreport.util.JasperReportConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,7 @@ public class JasperReportController {
 	public String render(@RequestParam(value = "reportId", required = true) int reportId, WebRequest request,
 	        HttpServletResponse response) throws IOException {
 		// Currently we only handle the cashier shift report so this method is tailored to it.
-		
+		String message = null;
 		int timesheetId;
 		String temp = request.getParameter("timesheetId");
 		if (!StringUtils.isEmpty(temp) && StringUtils.isNumeric(temp)) {
@@ -51,8 +52,8 @@ public class JasperReportController {
 		JasperReportService jasperService = Context.getService(JasperReportService.class);
 		JasperReport report = jasperService.getJasperReport(reportId);
 		if (report == null) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not find report '" + reportId + "'");
-			return null;
+			message = "Could not find report '" + reportId + "'";
+			return "redirect:" + JasperReportConstants.REPORT_ERROR_PAGE + "?reportId="+reportId+"&message="+message;
 		}
 		
 		report.setName("Cashier Shift Report - " + temp);
@@ -61,9 +62,8 @@ public class JasperReportController {
 		try {
 			ReportGenerator.generate(report, params, false, true);
 		} catch (IOException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating cashier shift report for " +
-					"timesheet '" + temp + "'");
-			return null;
+			message = "Error generating cashier shift report for " + "timesheet '" + temp + "'";
+			return "redirect:" + JasperReportConstants.REPORT_ERROR_PAGE + "?reportId="+reportId+"&message="+message;
 		}
 		
 		return "redirect:" + CashierWebConstants.REPORT_DOWNLOAD_URL + "?reportName="
