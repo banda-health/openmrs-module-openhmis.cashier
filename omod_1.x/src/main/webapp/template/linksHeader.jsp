@@ -48,7 +48,7 @@
 		</li>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="<%= PrivilegeWebConstants.SETTING_PAGE_PRIVILEGE %>">
-		<li <c:if test='<%= request.getRequestURI().contains("cashier/admin/cashierSettings") %>'>class="active"</c:if>>
+		<li <c:if test='<%= request.getRequestURI().contains("cashier/cashierSettings") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/module/openhmis/cashier/cashierSettings.form">
 				<spring:message code="openhmis.cashier.admin.cashierSettings"/>
 			</a>

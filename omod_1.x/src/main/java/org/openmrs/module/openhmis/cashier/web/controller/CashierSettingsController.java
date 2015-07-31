@@ -13,19 +13,41 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import org.openmrs.api.context.Context;
+import org.openmrs.module.jasperreport.JasperReportService;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
+import org.openmrs.module.openhmis.cashier.api.model.CashierSettings;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
 @RequestMapping(value = CashierWebConstants.CASHIER_SETTINGS_ROOT)
 public class CashierSettingsController {
 	@RequestMapping(method = RequestMethod.GET)
-	public void settings(ModelMap modelMap) throws IOException {
+	public void render(ModelMap modelMap) throws IOException {
+		JasperReportService reportService = Context.getService(JasperReportService.class);
 
+		modelMap.addAttribute("reports", reportService.getJasperReports());
+		modelMap.addAttribute("cashierSettings", ModuleSettings.loadSettings());
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public void submit (HttpServletRequest request, CashierSettings cashierSettings, Errors errors,ModelMap modelMap) throws
+			IOException {
+		ModuleSettings.saveSettings(cashierSettings);
+
+		HttpSession session = request.getSession();
+		session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.settings.saved");
+
+		render(modelMap);
 	}
 }

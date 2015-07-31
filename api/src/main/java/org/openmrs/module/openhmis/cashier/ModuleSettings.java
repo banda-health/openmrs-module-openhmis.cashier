@@ -13,10 +13,12 @@
  */
 package org.openmrs.module.openhmis.cashier;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
 import org.openmrs.module.jasperreport.JasperReportService;
+import org.openmrs.module.openhmis.cashier.api.model.CashierSettings;
 
 public class ModuleSettings {
 	public static final String RECEIPT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultReceiptReportId";
@@ -50,5 +52,118 @@ public class ModuleSettings {
 		}
 		
 		return report;
+	}
+
+	public static CashierSettings loadSettings() {
+		CashierSettings cashierSettings = new CashierSettings();
+		AdministrationService administrationService = Context.getAdministrationService();
+
+		String property = administrationService.getGlobalProperty(ADJUSTMENT_REASEON_FIELD);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setAdjustmentReasonField(Boolean.parseBoolean(property));
+		} else {
+			cashierSettings.setAdjustmentReasonField(Boolean.FALSE);
+		}
+
+		property = administrationService.getGlobalProperty(ALLOW_BILL_ADJUSTMENT);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setAllowBillAdjustment(Boolean.parseBoolean(property));
+		} else {
+			cashierSettings.setAllowBillAdjustment(Boolean.FALSE);
+		}
+
+		property = administrationService.getGlobalProperty(AUTOFILL_PAYMENT_AMOUNT);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setAutoFillPaymentAmount(Boolean.parseBoolean(property));
+		} else {
+			cashierSettings.setAutoFillPaymentAmount(Boolean.FALSE);
+		}
+
+		property = administrationService.getGlobalProperty(CASHIER_SHIFT_REPORT_ID_PROPERTY);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setDefaultShitReportId(Integer.parseInt(property));
+		}
+
+		property = administrationService.getGlobalProperty(ROUND_TO_NEAREST_PROPERTY);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setCashierRoundingToNearest(Integer.parseInt(property));
+		}
+
+		property = administrationService.getGlobalProperty(RECEIPT_REPORT_ID_PROPERTY);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setDefaultReceiptReportId(Integer.parseInt(property));
+		}
+
+		property = administrationService.getGlobalProperty(ROUNDING_MODE_PROPERTY);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setCashierRoundingMode(property);
+		}
+
+		property = administrationService.getGlobalProperty(TIMESHEET_REQUIRED_PROPERTY);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setCashierTimesheetRequired(Boolean.parseBoolean(property));
+		}
+		return cashierSettings;
+	}
+
+	public static void saveSettings(CashierSettings cashierSettings) {
+		if (cashierSettings == null) {
+			throw new IllegalArgumentException("The settings to save must be defined.");
+		}
+
+		AdministrationService adminService = Context.getAdministrationService();
+		Boolean generate = cashierSettings.getAdjustmentReasonField();
+		if (Boolean.TRUE.equals(generate)) {
+			adminService.setGlobalProperty(ADJUSTMENT_REASEON_FIELD, Boolean.TRUE.toString());
+		} else {
+			adminService.setGlobalProperty(ADJUSTMENT_REASEON_FIELD, Boolean.FALSE.toString());
+		}
+
+		if (Boolean.TRUE.equals(generate)) {
+			adminService.setGlobalProperty(ADJUSTMENT_REASEON_FIELD, Boolean.TRUE.toString());
+		} else {
+			adminService.setGlobalProperty(ADJUSTMENT_REASEON_FIELD, Boolean.FALSE.toString());
+		}
+
+		if (Boolean.TRUE.equals(generate)) {
+			adminService.setGlobalProperty(AUTOFILL_PAYMENT_AMOUNT, Boolean.FALSE.toString());
+		} else {
+			adminService.setGlobalProperty(AUTOFILL_PAYMENT_AMOUNT, Boolean.FALSE.toString());
+		}
+
+		Integer shiftReportId = cashierSettings.getDefaultShitReportId();
+		if (shiftReportId != null) {
+			adminService.setGlobalProperty(CASHIER_SHIFT_REPORT_ID_PROPERTY, shiftReportId.toString());
+		} else {
+			adminService.setGlobalProperty(CASHIER_SHIFT_REPORT_ID_PROPERTY, "");
+		}
+
+		Integer roundToNearest = cashierSettings.getCashierRoundingToNearest();
+		if (roundToNearest != null) {
+			adminService.setGlobalProperty(ROUND_TO_NEAREST_PROPERTY, roundToNearest.toString());
+		} else {
+			adminService.setGlobalProperty(ROUND_TO_NEAREST_PROPERTY, "");
+		}
+
+		Integer receiptReport = cashierSettings.getDefaultReceiptReportId();
+		if (receiptReport != null) {
+			adminService.setGlobalProperty(RECEIPT_REPORT_ID_PROPERTY, receiptReport.toString());
+		} else {
+			adminService.setGlobalProperty(RECEIPT_REPORT_ID_PROPERTY, "");
+		}
+
+		String roundingMode = cashierSettings.getCashierRoundingMode();
+		if (roundingMode != null) {
+			adminService.setGlobalProperty(ROUNDING_MODE_PROPERTY, roundingMode);
+		} else {
+			adminService.setGlobalProperty(ROUNDING_MODE_PROPERTY, "");
+		}
+
+		if (Boolean.TRUE.equals(generate)) {
+			adminService.setGlobalProperty(TIMESHEET_REQUIRED_PROPERTY, Boolean.FALSE.toString());
+		} else {
+			adminService.setGlobalProperty(TIMESHEET_REQUIRED_PROPERTY, Boolean.FALSE.toString());
+		}
+
 	}
 }
