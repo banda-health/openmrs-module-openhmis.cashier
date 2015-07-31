@@ -62,7 +62,7 @@ public class JasperReportController {
 		try {
 			ReportGenerator.generate(report, params, false, true);
 		} catch (IOException e) {
-			message = "Error generating cashier shift report for " + "timesheet " + temp + ". The Following Error Occured "
+			message = "Error generating cashier shift report for " + "timesheet " + temp + ". The Following Error Occurred "
 					+ ""+e+"";
 			return "redirect:" + JasperReportConstants.REPORT_ERROR_PAGE + "?reportId="+reportId+"&message="+message;
 		}
