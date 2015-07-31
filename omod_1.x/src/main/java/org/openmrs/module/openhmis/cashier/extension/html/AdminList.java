@@ -21,6 +21,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.Extension;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.cashier.web.PrivilegeWebConstants;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 /**
@@ -62,6 +63,10 @@ public class AdminList extends AdministrationSectionExt {
 		
 		if (authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_BILLS)) {
 			map.put(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_PAGE, "openhmis.cashier.admin.receiptNumberGenerator");
+		}
+
+		if (authenticatedUser.hasPrivilege(PrivilegeWebConstants.SETTING_PAGE_PRIVILEGE)) {
+			map.put(CashierWebConstants.CASHIER_SETTINGS_PAGE, "openhmis.cashier.admin.cashierSettings");
 		}
 		
 		return map;
