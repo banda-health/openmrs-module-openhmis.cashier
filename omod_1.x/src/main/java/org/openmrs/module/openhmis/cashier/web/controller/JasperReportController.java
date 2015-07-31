@@ -52,7 +52,7 @@ public class JasperReportController {
 		JasperReportService jasperService = Context.getService(JasperReportService.class);
 		JasperReport report = jasperService.getJasperReport(reportId);
 		if (report == null) {
-			message = "Could not find report '" + reportId + "'";
+			message = "No Jasper Report with an ID of" +reportId+ "could be found.";
 			return "redirect:" + JasperReportConstants.REPORT_ERROR_PAGE + "?reportId="+reportId+"&message="+message;
 		}
 		
@@ -62,7 +62,8 @@ public class JasperReportController {
 		try {
 			ReportGenerator.generate(report, params, false, true);
 		} catch (IOException e) {
-			message = "Error generating cashier shift report for " + "timesheet '" + temp + "'";
+			message = "Error generating cashier shift report for " + "timesheet " + temp + ". The Following Error Occured "
+					+ ""+e+"";
 			return "redirect:" + JasperReportConstants.REPORT_ERROR_PAGE + "?reportId="+reportId+"&message="+message;
 		}
 		
