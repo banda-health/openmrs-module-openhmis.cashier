@@ -41,8 +41,8 @@ public class CashierSettingsController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void submit (HttpServletRequest request, CashierSettings cashierSettings, Errors errors,ModelMap modelMap) throws
-			IOException {
+	public void submit (HttpServletRequest request, CashierSettings cashierSettings, Errors errors,ModelMap modelMap)
+			throws IOException {
 		ModuleSettings.saveSettings(cashierSettings);
 
 		HttpSession session = request.getSession();

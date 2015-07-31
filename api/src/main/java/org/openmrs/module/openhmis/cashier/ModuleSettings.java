@@ -126,7 +126,7 @@ public class ModuleSettings {
 		}
 
 		if (Boolean.TRUE.equals(generate)) {
-			adminService.setGlobalProperty(AUTOFILL_PAYMENT_AMOUNT, Boolean.FALSE.toString());
+			adminService.setGlobalProperty(AUTOFILL_PAYMENT_AMOUNT, Boolean.TRUE.toString());
 		} else {
 			adminService.setGlobalProperty(AUTOFILL_PAYMENT_AMOUNT, Boolean.FALSE.toString());
 		}
@@ -160,7 +160,7 @@ public class ModuleSettings {
 		}
 
 		if (Boolean.TRUE.equals(generate)) {
-			adminService.setGlobalProperty(TIMESHEET_REQUIRED_PROPERTY, Boolean.FALSE.toString());
+			adminService.setGlobalProperty(TIMESHEET_REQUIRED_PROPERTY, Boolean.TRUE.toString());
 		} else {
 			adminService.setGlobalProperty(TIMESHEET_REQUIRED_PROPERTY, Boolean.FALSE.toString());
 		}
