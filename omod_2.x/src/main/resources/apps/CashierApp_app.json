@@ -82,6 +82,16 @@
         "url": "module/openhmis/cashier/admin/receiptNumberGenerator.form",
         "icon": "icon-tasks",
         "requiredPrivilege": "Task: Manage Receipt Number Generator"
+      },
+
+      {
+        "id": "openhmis.cashier.settingsLink",
+        "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
+        "type": "link",
+        "label": "Cashier Settings",
+        "url": "module/openhmis/cashier/cashierSettings.form",
+        "icon": "icon-cogs",
+        "requiredPrivilege": "Task: Manage Cashier Metadata"
       }
     ]
   }
