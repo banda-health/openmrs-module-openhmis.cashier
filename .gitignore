@@ -17,7 +17,7 @@
 
 # idea conf files
 # .idea
-# *.iml
+*.iml
 *.ipr
 *.iws
 .idea/workspace.xml
