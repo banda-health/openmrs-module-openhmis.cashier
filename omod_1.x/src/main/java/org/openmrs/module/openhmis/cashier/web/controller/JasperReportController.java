@@ -59,7 +59,11 @@ public class JasperReportController {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("timesheetId", timesheetId);
 		try {
-			ReportGenerator.generate(report, params, false, true);
+			if (Context.getAuthenticatedUser() == null) {
+				return "redirect:/login.htm";
+			} else {
+				ReportGenerator.generate(report, params, false, true);
+			}
 		} catch (IOException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating cashier shift report for " +
 					"timesheet '" + temp + "'");
