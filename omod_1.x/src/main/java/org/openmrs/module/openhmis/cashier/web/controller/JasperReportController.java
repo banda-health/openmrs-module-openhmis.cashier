@@ -37,40 +37,39 @@ public class JasperReportController {
 	public String render(@RequestParam(value = "reportId", required = true) int reportId, WebRequest request,
 	        HttpServletResponse response) throws IOException {
 		// Currently we only handle the cashier shift report so this method is tailored to it.
-		
-		int timesheetId;
-		String temp = request.getParameter("timesheetId");
-		if (!StringUtils.isEmpty(temp) && StringUtils.isNumeric(temp)) {
-			timesheetId = Integer.parseInt(temp);
-		} else {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "The timesheet id ('" + temp + "') must be " +
-					"defined and be numeric.");
-			return null;
-		}
-		
-		JasperReportService jasperService = Context.getService(JasperReportService.class);
-		JasperReport report = jasperService.getJasperReport(reportId);
-		if (report == null) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not find report '" + reportId + "'");
-			return null;
-		}
-		
-		report.setName("Cashier Shift Report - " + temp);
-		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("timesheetId", timesheetId);
-		try {
-			if (Context.getAuthenticatedUser() == null) {
-				return "redirect:/login.htm";
+
+		if (Context.getAuthenticatedUser() == null) {
+			return "redirect:/login.htm";
+		} else  {
+			int timesheetId;
+			String temp = request.getParameter("timesheetId");
+			if (!StringUtils.isEmpty(temp) && StringUtils.isNumeric(temp)) {
+				timesheetId = Integer.parseInt(temp);
 			} else {
-				ReportGenerator.generate(report, params, false, true);
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "The timesheet id ('" + temp + "') must be " +
+						"defined and be numeric.");
+				return null;
 			}
-		} catch (IOException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating cashier shift report for " +
-					"timesheet '" + temp + "'");
-			return null;
+
+			JasperReportService jasperService = Context.getService(JasperReportService.class);
+			JasperReport report = jasperService.getJasperReport(reportId);
+			if (report == null) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not find report '" + reportId + "'");
+				return null;
+			}
+
+			report.setName("Cashier Shift Report - " + temp);
+			HashMap<String, Object> params = new HashMap<String, Object>();
+			params.put("timesheetId", timesheetId);
+			try {
+				ReportGenerator.generate(report, params, false, true);
+			} catch (IOException e) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating cashier shift report for " +
+						"timesheet '" + temp + "'");
+				return null;
+			}
+			return "redirect:" + CashierWebConstants.REPORT_DOWNLOAD_URL + "?reportName="
+					+ report.getName().replaceAll("\\W", "") + ".pdf";
 		}
-		
-		return "redirect:" + CashierWebConstants.REPORT_DOWNLOAD_URL + "?reportName="
-		        + report.getName().replaceAll("\\W", "") + ".pdf";
 	}
 }
