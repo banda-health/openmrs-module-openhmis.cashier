@@ -63,7 +63,6 @@ public class CashierRoleController {
 			session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.add");
 		} else if (action.equals("remove")) {
 			removeCashierPrivileges(viewModel.getRemoveFromRole());
-			
 			session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.remove");
 		} else if (action.equals("new") && newRoleValidated(viewModel, errors)) {
 			createRole(viewModel, session);
