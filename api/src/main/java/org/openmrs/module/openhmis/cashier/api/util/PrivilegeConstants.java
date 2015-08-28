@@ -49,7 +49,7 @@ public class PrivilegeConstants {
 	public static final String TASK_MANAGE_CASH_POINTS_PAGE = "Task: Manage Cash Points";
 	public static final String TASK_MANAGE_PAYMENT_MODES_PAGE = "Task: Manage Payment Modes";
 	public static final String TASK_MANAGE_RECEIPT_NUMBER_GENERATOR_PAGE = "Task: Manage Receipt Number Generator";
-	public static final String TASK_MANAGE_SETTINGS_PAGE = "Task: Manage Cashier Metadata";
+	public static final String TASK_MANAGE_SETTINGS_PAGE = "Task: Access Cashier Settings";
 
 	public static final String[] PRIVILEGE_NAMES = new String[] { MANAGE_BILLS, ADJUST_BILLS, VIEW_BILLS, PURGE_BILLS,
 	        REFUND_MONEY, REPRINT_RECEIPT, MANAGE_TIMESHEETS, VIEW_TIMESHEETS, PURGE_TIMESHEETS, MANAGE_METADATA,
