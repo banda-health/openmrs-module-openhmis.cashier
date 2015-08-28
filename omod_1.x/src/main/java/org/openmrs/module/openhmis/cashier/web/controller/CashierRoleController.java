@@ -63,7 +63,6 @@ public class CashierRoleController {
 			session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.add");
 		} else if (action.equals("remove")) {
 			removeCashierPrivileges(viewModel.getRemoveFromRole());
-			
 			session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.remove");
 		} else if (action.equals("new") && newRoleValidated(viewModel, errors)) {
 			createRole(viewModel, session);
@@ -92,7 +91,7 @@ public class CashierRoleController {
 		if (role == null) {
 			throw new APIException("The role '" + roleUuid + "' could not be found.");
 		}
-		
+
 		for (Privilege priv : PrivilegeConstants.getDefaultPrivileges()) {
 			if (role.hasPrivilege(priv.getName())) {
 				role.removePrivilege(priv);

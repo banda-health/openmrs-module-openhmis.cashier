@@ -91,7 +91,7 @@
         "label": "Cashier Settings",
         "url": "module/openhmis/cashier/cashierSettings.form",
         "icon": "icon-cogs",
-        "requiredPrivilege": "Task: Manage Cashier Metadata"
+        "requiredPrivilege": "Task: Access Cashier Settings"
       }
     ]
   }
