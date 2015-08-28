@@ -91,7 +91,7 @@ public class CashierRoleController {
 		if (role == null) {
 			throw new APIException("The role '" + roleUuid + "' could not be found.");
 		}
-		
+
 		for (Privilege priv : PrivilegeConstants.getDefaultPrivileges()) {
 			if (role.hasPrivilege(priv.getName())) {
 				role.removePrivilege(priv);

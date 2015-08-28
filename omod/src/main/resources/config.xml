@@ -215,6 +215,11 @@
 		<description>Able to access manage receipt number generator page</description>
 	</privilege>
 
+	<privilege>
+		<name>Task: Access Cashier Settings</name>
+		<description>Able to access the cashier settings page</description>
+	</privilege>
+
 	<!-- Maps hibernate files, if present -->
 	<mappingFiles>
 		Bill.hbm.xml
