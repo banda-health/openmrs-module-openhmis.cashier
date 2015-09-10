@@ -26,10 +26,20 @@
 			<spring:message code="openhmis.cashier.newBill" />
 		</c:when>
 		<c:when test='${bill.status == "PENDING" }'>
-			<spring:message code="openhmis.cashier.editBill" />	${bill.receiptNumber}
+			<c:when test="${bill.receiptNumber != null}">
+				<spring:message code="openhmis.cashier.editBill" />	${bill.receiptNumber}
+			</c:when>
+			<c:otherwise>
+				<spring:message code="openhmis.cashier.editBill" />	${bill.id}
+			</c:otherwise>
 		</c:when>
 		<c:otherwise>
-			<spring:message code="openhmis.cashier.viewBill" /> ${bill.receiptNumber}
+			<c:when test="${bill.receiptNumber != null}">
+				<spring:message code="openhmis.cashier.viewBill" /> ${bill.receiptNumber}
+			</c:when>
+			<c:otherwise>
+				<spring:message code="openhmis.cashier.viewBill" /> ${bill.id}
+			</c:otherwise>
 		</c:otherwise>
 	</c:choose>
 	<c:if test="${!empty billAdjusted }">
