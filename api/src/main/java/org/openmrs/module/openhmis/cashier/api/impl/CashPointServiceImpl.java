@@ -30,8 +30,13 @@ import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthoriz
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Data service implementation class for {@link CashPoint}s.
+ */
 @Transactional
 public class CashPointServiceImpl extends BaseMetadataDataServiceImpl<CashPoint> implements ICashPointService {
+	private static final Integer MAX_CASHPOINT_NAME_CHARACTERS = 255;
+
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
@@ -77,7 +82,7 @@ public class CashPointServiceImpl extends BaseMetadataDataServiceImpl<CashPoint>
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("The Cashpoint name must be defined.");
 		}
-		if (name.length() > 255) {
+		if (name.length() > MAX_CASHPOINT_NAME_CHARACTERS) {
 			throw new IllegalArgumentException("The Cashpoint name must be less than 256 characters.");
 		}
 		

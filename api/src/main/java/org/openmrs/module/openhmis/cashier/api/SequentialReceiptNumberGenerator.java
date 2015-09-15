@@ -26,6 +26,9 @@ import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGene
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.patient.impl.LuhnIdentifierValidator;
 
+/**
+ * Implements {@link IReceiptNumberGenerator} to generate sequential receipt numbers
+ */
 public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator {
 	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
 	

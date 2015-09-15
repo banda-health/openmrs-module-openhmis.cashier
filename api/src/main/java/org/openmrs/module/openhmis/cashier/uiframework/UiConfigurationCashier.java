@@ -5,6 +5,9 @@ import org.openmrs.ui.framework.StandardModuleUiConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * The OpenMRS UI Framework configuration settings.
+ */
 @Configuration
 @OpenmrsProfile(modules = { "uiframework:*.*" })
 public class UiConfigurationCashier {

@@ -20,6 +20,9 @@ import org.openmrs.module.jasperreport.JasperReport;
 import org.openmrs.module.jasperreport.JasperReportService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierSettings;
 
+/**
+ * Helper class to load and save the inventory module global settings.
+ */
 public class ModuleSettings {
 	public static final String RECEIPT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultReceiptReportId";
 	public static final String CASHIER_SHIFT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultShiftReportId";

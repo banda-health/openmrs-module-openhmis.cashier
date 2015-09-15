@@ -39,7 +39,10 @@ public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
 	private static final String CLOCK_IN = "clockIn";
 	private static final String CLOCK_OUT = "clockOut";
 	private static final Integer BATCH_SIZE = 50;
-	
+	private static final Integer END_DATE_HOUR_OF_DAY =23;
+	private static final Integer END_DATE_MINUTE =59;
+	private static final Integer END_DATE_SECOND =59;
+
 	@Override
 	protected IEntityAuthorizationPrivileges getPrivileges() {
 		return this;
@@ -108,9 +111,9 @@ public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
 		calendar.set(Calendar.SECOND, 0);
 		Date startDate = calendar.getTime();
 		
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 59);
-		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.HOUR_OF_DAY, END_DATE_HOUR_OF_DAY);
+		calendar.set(Calendar.MINUTE, END_DATE_MINUTE);
+		calendar.set(Calendar.SECOND, END_DATE_SECOND);
 		Date endDate = calendar.getTime();
 		
 		Criteria criteria = getRepository().createCriteria(Timesheet.class);

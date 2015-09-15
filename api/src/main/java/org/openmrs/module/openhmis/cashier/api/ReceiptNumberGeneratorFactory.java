@@ -27,6 +27,9 @@ import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.reflections.Reflections;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implements {@link IReceiptNumberGenerator}
+ */
 @Transactional
 public class ReceiptNumberGeneratorFactory {
 	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);

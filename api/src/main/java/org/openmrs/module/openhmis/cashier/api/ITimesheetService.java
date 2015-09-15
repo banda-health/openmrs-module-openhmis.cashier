@@ -20,6 +20,9 @@ import org.openmrs.Provider;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 
+/**
+ * Interface that represents classes which perform data operations for {@link Timesheet}s.
+ */
 public interface ITimesheetService extends IEntityDataService<Timesheet> {
 	/**
 	 * Gets the current {@link Timesheet} that the specified {@link Provider}.

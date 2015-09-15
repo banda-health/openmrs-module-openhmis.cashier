@@ -18,12 +18,16 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.openhmis.cashier.api.ISequentialReceiptNumberGeneratorService;
+import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.model.GroupSequence;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
 import org.openmrs.module.openhmis.cashier.api.security.BasicEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseObjectDataServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Data service implementation class for {@link SequentialReceiptNumberGeneratorModel}s.
+ * */
 @Transactional
 public class SequentialReceiptNumberGeneratorServiceImpl
         extends BaseObjectDataServiceImpl<SequentialReceiptNumberGeneratorModel, BasicEntityAuthorizationPrivileges>

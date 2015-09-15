@@ -18,6 +18,9 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.commons.api.entity.search.BaseDataTemplateSearch;
 
+/**
+ * A search template class for the {@link Bill} model.
+ */
 public class BillSearch extends BaseDataTemplateSearch<Bill> {
 	public BillSearch() {
 		this(new Bill(), false);

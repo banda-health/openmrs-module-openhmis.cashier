@@ -25,6 +25,9 @@ import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Interface that represents classes which perform data operations for {@link Bill}s.
+ */
 @Transactional
 public interface IBillService extends IEntityDataService<Bill> {
 	/**

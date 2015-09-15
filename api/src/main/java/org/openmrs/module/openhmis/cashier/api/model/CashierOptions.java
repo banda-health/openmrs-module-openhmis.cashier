@@ -15,6 +15,9 @@ package org.openmrs.module.openhmis.cashier.api.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Model class that give the options a {@link org.openmrs.Person} (Cashier) has.
+ */
 public class CashierOptions {
 	public static final long serialVersionUID = 0L;
 
@@ -65,7 +68,10 @@ public class CashierOptions {
 	public void setTimesheetRequired(boolean timesheetRequired) {
 		this.timesheetRequired = timesheetRequired;
 	}
-	
+
+	/**
+	 * Defines the collection of constants to be used for setting the rounding mode
+	 * */
 	public enum RoundingMode {
 		FLOOR(1), MID(2), CEILING(3);
 

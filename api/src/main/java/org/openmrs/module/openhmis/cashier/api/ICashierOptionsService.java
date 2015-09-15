@@ -15,6 +15,9 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
 
+/**
+ * Interface that represents classes which perform data operations for {@link CashierOptions}s.
+ */
 public interface ICashierOptionsService {
 	/**
 	 * Load cashier options from wherever

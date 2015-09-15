@@ -16,6 +16,9 @@ package org.openmrs.module.openhmis.cashier.api.security;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 
+/**
+ * Default authorization privileges for {@link org.openmrs.OpenmrsMetadata} data services.
+ */
 public class BasicMetadataAuthorizationPrivileges extends BasicEntityAuthorizationPrivileges
         implements IMetadataAuthorizationPrivileges {
 	@Override
