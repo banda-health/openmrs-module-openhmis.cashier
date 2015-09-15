@@ -25,6 +25,9 @@ import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.commons.api.ProviderUtil;
 
+/**
+ * Utility class fo {@link Timesheet}
+ * */
 public class TimesheetUtil {
 	private static final Log LOG = LogFactory.getLog(TimesheetUtil.class);
 	

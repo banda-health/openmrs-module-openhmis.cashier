@@ -13,6 +13,9 @@
  */
 package org.openmrs.module.openhmis.cashier.api.util;
 
+/**
+ * Constants class for module constants.
+ */
 public class CashierModuleConstants {
 	public static final String MODULE_NAME = "cashier";
 	

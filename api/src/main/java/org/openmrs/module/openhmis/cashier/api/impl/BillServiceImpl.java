@@ -37,8 +37,12 @@ import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizat
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Data service implementation class for {@link Bill}s.
+ */
 @Transactional
-public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements IEntityAuthorizationPrivileges, IBillService {
+public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements IEntityAuthorizationPrivileges
+		, IBillService {
 	
 	private static final int MAX_LENGTH_RECEIPT_NUMBER = 255;
 	private static final Log LOG = LogFactory.getLog(BillServiceImpl.class);
@@ -75,7 +79,8 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 		}
 		IReceiptNumberGenerator generator = ReceiptNumberGeneratorFactory.getGenerator();
 		if (generator == null) {
-			LOG.warn("No receipt number generator has been defined.  Bills will not be given a receipt number until one is defined.");
+			LOG.warn("No receipt number generator has been defined.  Bills will not be given a receipt number until one is"
+					+" defined.");
 		} else {
 			if (StringUtils.isEmpty(bill.getReceiptNumber())) {
 				bill.setReceiptNumber(generator.generateNumber(bill));

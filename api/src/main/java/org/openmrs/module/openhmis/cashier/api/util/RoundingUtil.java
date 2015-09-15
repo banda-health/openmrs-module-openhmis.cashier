@@ -33,6 +33,9 @@ import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
 
+/**
+ * Utility class for Rounding off bill values
+ * */
 public class RoundingUtil {
 	protected RoundingUtil() {}
 	

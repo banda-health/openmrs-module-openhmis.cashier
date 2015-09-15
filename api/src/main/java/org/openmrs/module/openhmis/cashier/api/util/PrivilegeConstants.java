@@ -24,6 +24,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.util.JasperReportPrivilegeConstants;
 import org.openmrs.module.openhmis.commons.web.PrivilegeConstantsCompatibility;
 
+/**
+ * Constants class for module privilege constants.
+ */
 public class PrivilegeConstants {
 	public static final String MANAGE_BILLS = "Manage Cashier Bills";
 	public static final String ADJUST_BILLS = "Adjust Cashier Bills";

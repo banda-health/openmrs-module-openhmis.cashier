@@ -19,7 +19,11 @@ import org.openmrs.module.openhmis.cashier.api.model.GroupSequence;
 import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataService;
 import org.springframework.transaction.annotation.Transactional;
-
+/**
+ * Represents classes that provide data access services to model types that
+ * implement {@link SequentialReceiptNumberGeneratorModel}.
+ * The {@link SequentialReceiptNumberGeneratorModel} model class.
+ */
 public interface ISequentialReceiptNumberGeneratorService extends IObjectDataService<SequentialReceiptNumberGeneratorModel> {
 	/**
 	 * Gets the first {@link SequentialReceiptNumberGeneratorModel} or creates a new model if none

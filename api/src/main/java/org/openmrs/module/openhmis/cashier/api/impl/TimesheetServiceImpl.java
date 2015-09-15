@@ -29,6 +29,9 @@ import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataService
 import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Data service implementation class for {@link Timesheet}s.
+ */
 @Transactional
 public class TimesheetServiceImpl extends BaseEntityDataServiceImpl<Timesheet>
         implements ITimesheetService, IEntityAuthorizationPrivileges {
