@@ -46,13 +46,13 @@ define(
 
             schema: {
                 dateCreated: { type: 'Text', readOnly: true },
-                dateCreatedFmt: { type: 'Text', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.Date')), readOnly: true },
+                dateCreatedFmt: { type: 'Text', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.date')), readOnly: true },
                 amount: { type: 'BasicNumber' },
-                amountFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.Amount')), readOnly: true },
+                amountFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.dmount')), readOnly: true },
                 amountTendered: { type: 'BasicNumber' },
-                amountTenderedFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.Tendered')), readOnly: true },
+                amountTenderedFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.tendered')), readOnly: true },
                 instanceType: { type: 'Object', objRef: true, title: __(openhmis.getMessage('openhmis.cashier.paymentModes.name'))},
-                attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute , title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.Details')) }
+                attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute , title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.details')) }
             },
 
             url: function() {
@@ -92,7 +92,7 @@ define(
                     return { amount: __(openhmis.getMessage('openhmis.cashier.payment.error.amountType')) }
                 }
                 if (!this.get("instanceType") || !this.get("instanceType").id) {
-                    return { instanceType: __(openhmis.getMessage('openhmis.cashier.payment.error.paymentmodeRequired')) }
+                    return { instanceType: __(openhmis.getMessage('openhmis.cashier.payment.error.paymentMode.required')) }
                 }
                 return null;
             },
