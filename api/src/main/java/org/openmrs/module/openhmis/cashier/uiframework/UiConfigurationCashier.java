@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenmrsProfile(modules = { "uiframework:*.*" })
 public class UiConfigurationCashier {
-	
+
 	@Bean
 	public StandardModuleUiConfiguration createUiConfigurationBean() {
-			StandardModuleUiConfiguration standardModuleUiConfiguration = new StandardModuleUiConfiguration();
-			standardModuleUiConfiguration.setModuleId("openhmis.cashier");
-			return standardModuleUiConfiguration;
+		StandardModuleUiConfiguration standardModuleUiConfiguration = new StandardModuleUiConfiguration();
+		standardModuleUiConfiguration.setModuleId("openhmis.cashier");
+		return standardModuleUiConfiguration;
 	}
 }

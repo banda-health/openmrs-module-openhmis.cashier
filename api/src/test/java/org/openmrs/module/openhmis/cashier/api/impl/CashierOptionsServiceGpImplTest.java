@@ -58,19 +58,19 @@ public class CashierOptionsServiceGpImplTest {
 	@Test
 	public void getOptions_shouldLoadCashierOptionsFromTheDatabase() throws Exception {
 		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
-				.thenReturn("1");
+		        .thenReturn("1");
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
-				.thenReturn(CashierOptions.RoundingMode.MID.toString());
+		        .thenReturn(CashierOptions.RoundingMode.MID.toString());
 		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
-				.thenReturn("5");
+		        .thenReturn("5");
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
-				.thenReturn("1");
+		        .thenReturn("1");
 		when(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY))
-				.thenReturn("true");
+		        .thenReturn("true");
 
 		Item item = new Item();
 		when(itemService.getById(1))
-				.thenReturn(item);
+		        .thenReturn(item);
 
 		CashierOptions options = optionsService.getOptions();
 
@@ -89,15 +89,15 @@ public class CashierOptionsServiceGpImplTest {
 	@Test
 	public void getOptions_shouldNotThrowExceptionIfNumericOptionsAreNull() throws Exception {
 		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
-				.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
-				.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
-				.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
-				.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY))
-				.thenReturn(null);
+		        .thenReturn(null);
 
 		CashierOptions options = optionsService.getOptions();
 
@@ -111,15 +111,15 @@ public class CashierOptionsServiceGpImplTest {
 	@Test
 	public void getOptions_shouldDefaultToFalseIfTimesheetRequiredIsNotSpecified() throws Exception {
 		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
-				.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
-				.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
-				.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
-				.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY))
-				.thenReturn(null);
+		        .thenReturn(null);
 
 		CashierOptions options = optionsService.getOptions();
 
@@ -135,29 +135,29 @@ public class CashierOptionsServiceGpImplTest {
 	public void getOptions_shouldLogErrorIfRoundingItemIdCannotBeParsed() throws Exception {
 
 		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
-				.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
-				.thenReturn(CashierOptions.RoundingMode.FLOOR.toString());
+		        .thenReturn(CashierOptions.RoundingMode.FLOOR.toString());
 		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
-				.thenReturn("5");
+		        .thenReturn("5");
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
-				.thenReturn("HELP");
+		        .thenReturn("HELP");
 
 		Logger logger = Logger.getLogger(CashierOptionsServiceGpImpl.class);
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        Layout layout = new SimpleLayout();
-        Appender appender = new WriterAppender(layout, out);
-        logger.addAppender(appender);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		Layout layout = new SimpleLayout();
+		Appender appender = new WriterAppender(layout, out);
+		logger.addAppender(appender);
 
-        try {
-        	optionsService.getOptions();
-            String logMsg = out.toString();
-            assertNotNull(logMsg);
-            assertFalse((logMsg.trim()).equals(""));
-        } finally {
-            logger.removeAppender(appender);
-        }
+		try {
+			optionsService.getOptions();
+			String logMsg = out.toString();
+			assertNotNull(logMsg);
+			assertFalse((logMsg.trim()).equals(""));
+		} finally {
+			logger.removeAppender(appender);
+		}
 	}
 
 	/**
@@ -168,31 +168,31 @@ public class CashierOptionsServiceGpImplTest {
 	public void getOptions_shouldLogErrorIfRoundingItemIsNullDespiteIdGiven() throws Exception {
 
 		when(adminService.getGlobalProperty(ModuleSettings.RECEIPT_REPORT_ID_PROPERTY))
-			.thenReturn(null);
+		        .thenReturn(null);
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY))
-			.thenReturn(CashierOptions.RoundingMode.FLOOR.toString());
+		        .thenReturn(CashierOptions.RoundingMode.FLOOR.toString());
 		when(adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY))
-			.thenReturn("5");
+		        .thenReturn("5");
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID))
-			.thenReturn("273423");
+		        .thenReturn("273423");
 		when(adminService.getGlobalProperty(ModuleSettings.TIMESHEET_REQUIRED_PROPERTY))
-			.thenReturn(null);
+		        .thenReturn(null);
 
 		Logger logger = Logger.getLogger(CashierOptionsServiceGpImpl.class);
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        Layout layout = new SimpleLayout();
-        Appender appender = new WriterAppender(layout, out);
-        logger.addAppender(appender);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		Layout layout = new SimpleLayout();
+		Appender appender = new WriterAppender(layout, out);
+		logger.addAppender(appender);
 
-        try {
-        	optionsService.getOptions();
-            String logMsg = out.toString();
-            assertNotNull(logMsg);
-            assertFalse((logMsg.trim()).equals(""));
-        } finally {
-            logger.removeAppender(appender);
-        }
+		try {
+			optionsService.getOptions();
+			String logMsg = out.toString();
+			assertNotNull(logMsg);
+			assertFalse((logMsg.trim()).equals(""));
+		} finally {
+			logger.removeAppender(appender);
+		}
 	}
 
 }

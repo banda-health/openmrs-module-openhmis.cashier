@@ -20,6 +20,6 @@ public class HibernateCriteriaConstants {
 	public static final String LOCATION = "location";
 	public static final String NAME = "name";
 	public static final String RETIRED = "retired";
-	
+
 	protected HibernateCriteriaConstants() {}
 }

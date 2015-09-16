@@ -17,8 +17,7 @@ import org.openmrs.module.openhmis.cashier.api.IReceiptNumberGenerator;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 
 public class InvalidReceiptNumberGenerator implements IReceiptNumberGenerator {
-	public InvalidReceiptNumberGenerator(String name) {
-	}
+	public InvalidReceiptNumberGenerator(String name) {}
 
 	@Override
 	public String getName() {
@@ -31,8 +30,7 @@ public class InvalidReceiptNumberGenerator implements IReceiptNumberGenerator {
 	}
 
 	@Override
-	public void load() {
-	}
+	public void load() {}
 
 	@Override
 	public String generateNumber(Bill bill) {

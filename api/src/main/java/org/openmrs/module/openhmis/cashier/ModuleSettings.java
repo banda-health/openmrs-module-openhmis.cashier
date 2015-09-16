@@ -33,27 +33,27 @@ public class ModuleSettings {
 	public static final String ROUNDING_DEPT_ID = "openhmis.cashier.roundingDeptId";
 	public static final String SYSTEM_RECEIPT_NUMBER_GENERATOR = "openhmis.cashier.systemReceiptNumberGenerator";
 	public static final String ADJUSTMENT_REASEON_FIELD = "openhmis.cashier.adjustmentReasonField";
-	public static final String ALLOW_BILL_ADJUSTMENT ="openhmis.cashier.allowBillAdjustments";
-	public static final String AUTOFILL_PAYMENT_AMOUNT ="openhmis.cashier.autofillPaymentAmount";
-	
+	public static final String ALLOW_BILL_ADJUSTMENT = "openhmis.cashier.allowBillAdjustments";
+	public static final String AUTOFILL_PAYMENT_AMOUNT = "openhmis.cashier.autofillPaymentAmount";
+
 	protected ModuleSettings() {}
-	
+
 	public static Integer getReceiptReportId() {
 		AdministrationService administrationService = Context.getAdministrationService();
 		String property = administrationService.getGlobalProperty(RECEIPT_REPORT_ID_PROPERTY);
-		
+
 		return Integer.parseInt(property);
 	}
 
 	public static JasperReport getReceiptReport() {
 		JasperReport report = null;
-		
+
 		Integer reportId = getReceiptReportId();
 		if (reportId != null) {
 			JasperReportService reportService = Context.getService(JasperReportService.class);
 			report = reportService.getJasperReport(reportId);
 		}
-		
+
 		return report;
 	}
 

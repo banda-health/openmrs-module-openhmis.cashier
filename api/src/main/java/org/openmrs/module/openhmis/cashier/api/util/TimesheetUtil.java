@@ -27,12 +27,12 @@ import org.openmrs.module.openhmis.commons.api.ProviderUtil;
 
 /**
  * Utility class fo {@link Timesheet}
- * */
+ */
 public class TimesheetUtil {
 	private static final Log LOG = LogFactory.getLog(TimesheetUtil.class);
-	
+
 	protected TimesheetUtil() {}
-	
+
 	public static Timesheet getCurrentTimesheet() throws TimesheetRequiredException {
 		Provider provider = null;
 		Timesheet timesheet = null;
@@ -42,7 +42,7 @@ public class TimesheetUtil {
 		} catch (Exception e) {
 			throw new APIException("Error retrieving provider for current user.", e);
 		}
-		
+
 		ITimesheetService tsService = Context.getService(ITimesheetService.class);
 		try {
 			timesheet = tsService.getCurrentTimesheet(provider);
@@ -50,10 +50,10 @@ public class TimesheetUtil {
 			LOG.error("Error occured while trying to get the current timesheet" + e);
 			return null;
 		}
-		
+
 		return timesheet;
 	}
-	
+
 	public static boolean isTimesheetRequired() {
 		AdministrationService adminService = Context.getAdministrationService();
 		boolean timesheetRequired;

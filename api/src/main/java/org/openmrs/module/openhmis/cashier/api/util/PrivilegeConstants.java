@@ -58,7 +58,7 @@ public class PrivilegeConstants {
 	        REFUND_MONEY, REPRINT_RECEIPT, MANAGE_TIMESHEETS, VIEW_TIMESHEETS, PURGE_TIMESHEETS, MANAGE_METADATA,
 	        VIEW_METADATA, PURGE_METADATA, APP_VIEW_CASHIER_APP, TASK_CREATE_NEW_BILL_PAGE, TASK_CASHIER_TIMESHEETS_PAGE,
 	        TASK_MANAGE_CASHIER_MODULE_PAGE, TASK_CASHIER_ROLE_CREATION_PAGE, TASK_MANAGE_CASH_POINTS_PAGE,
-	        TASK_MANAGE_PAYMENT_MODES_PAGE, TASK_MANAGE_RECEIPT_NUMBER_GENERATOR_PAGE,TASK_MANAGE_SETTINGS_PAGE};
+	        TASK_MANAGE_PAYMENT_MODES_PAGE, TASK_MANAGE_RECEIPT_NUMBER_GENERATOR_PAGE, TASK_MANAGE_SETTINGS_PAGE };
 
 	protected PrivilegeConstants() {}
 
@@ -98,8 +98,8 @@ public class PrivilegeConstants {
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_ITEMS);
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_METADATA);
 		names.add(JasperReportPrivilegeConstants.VIEW_JASPER_REPORTS);
-		
-		PrivilegeConstantsCompatibility  privilegeConstantsCompatibility = new PrivilegeConstantsCompatibility();
+
+		PrivilegeConstantsCompatibility privilegeConstantsCompatibility = new PrivilegeConstantsCompatibility();
 
 		names.add(privilegeConstantsCompatibility.getAddEncountersPrivilege());
 		names.add(privilegeConstantsCompatibility.getAddVisitsPrivilege());

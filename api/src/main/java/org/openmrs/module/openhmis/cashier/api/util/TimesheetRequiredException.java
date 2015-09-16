@@ -15,12 +15,12 @@ package org.openmrs.module.openhmis.cashier.api.util;
 
 /**
  * Utility class to handle exception errors from {@link TimesheetUtil}
- * */
+ */
 public class TimesheetRequiredException extends Exception {
 	private static final long serialVersionUID = 2440375803625380589L;
-	
+
 	public TimesheetRequiredException() {}
-	
+
 	public TimesheetRequiredException(Throwable cause) {
 		super(cause);
 	}

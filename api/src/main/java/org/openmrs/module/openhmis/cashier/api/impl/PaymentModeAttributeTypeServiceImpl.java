@@ -21,15 +21,15 @@ import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthoriz
 
 /**
  * Data service implementation class for {@link PaymentModeAttributeType}s.
- * */
+ */
 public class PaymentModeAttributeTypeServiceImpl extends BaseMetadataDataServiceImpl<PaymentModeAttributeType>
         implements IPaymentModeAttributeTypeService {
-	
+
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
 	}
-	
+
 	@Override
 	protected void validate(PaymentModeAttributeType entity) {}
 }

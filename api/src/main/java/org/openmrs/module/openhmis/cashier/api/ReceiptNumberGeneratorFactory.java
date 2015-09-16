@@ -34,9 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReceiptNumberGeneratorFactory {
 	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorFactory.class);
 	private static volatile IReceiptNumberGenerator generator;
-	
+
 	protected ReceiptNumberGeneratorFactory() {}
-	
+
 	/**
 	 * Returns the currently defined {@link IReceiptNumberGenerator} for the system.
 	 * @return The {@link IReceiptNumberGenerator}.
@@ -62,7 +62,7 @@ public class ReceiptNumberGeneratorFactory {
 
 		return generator;
 	}
-	
+
 	/**
 	 * Sets the system-wide {@link IReceiptNumberGenerator}.
 	 * @param generator The generator.
@@ -77,7 +77,7 @@ public class ReceiptNumberGeneratorFactory {
 
 		ReceiptNumberGeneratorFactory.generator = generator;
 	}
-	
+
 	private static IReceiptNumberGenerator createGeneratorInstance() {
 		Class<? super IReceiptNumberGenerator> cls = null;
 		try {
@@ -85,8 +85,9 @@ public class ReceiptNumberGeneratorFactory {
 			if (cls == null) {
 				return null;
 			}
-			
-			return generator = (IReceiptNumberGenerator)cls.newInstance();
+
+			generator = (IReceiptNumberGenerator)cls.newInstance();
+			return generator;
 		} catch (ClassNotFoundException classEx) {
 			LOG.warn("Attempt to load unknown receipt number generator type", classEx);
 			throw new APIException("Could not locate receipt number generator class.", classEx);
@@ -96,10 +97,9 @@ public class ReceiptNumberGeneratorFactory {
 			throw new APIException("Could not access the '" + cls.getClass().getName() + "' class.", accessEx);
 		}
 	}
-	
+
 	/**
-	 * Locates and instantiates all classes that implement {@link IReceiptNumberGenerator} in the
-	 * current classpath.
+	 * Locates and instantiates all classes that implement {@link IReceiptNumberGenerator} in the current classpath.
 	 * @return The instantiated receipt number generators.
 	 * @should Locate all classes that implement IReceiptNumberGenerator
 	 * @should Not throw an exception if the class instantiation fails
@@ -137,15 +137,15 @@ public class ReceiptNumberGeneratorFactory {
 
 		return results;
 	}
-	
+
 	/**
-	 * Resets this factory, effectively creating a new instance. If you are using this for anything
-	 * other than testing you are likely doing something wrong.
+	 * Resets this factory, effectively creating a new instance. If you are using this for anything other than testing you
+	 * are likely doing something wrong.
 	 */
 	static void reset() {
 		generator = null;
 	}
-	
+
 	/**
 	 * Singleton implementation for storing and retrieving the generator in the database.
 	 */
