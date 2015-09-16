@@ -43,58 +43,61 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
+/**
+ * Controller to manage the Bill page.
+ */
 @Controller
 @RequestMapping(value = CashierWebConstants.BILL_PAGE)
 public class BillAddEditController {
-	
+
 	private static final Log LOG = LogFactory.getLog(BillAddEditController.class);
-	
+
 	private AdministrationService adminService;
 	private ICashierOptionsService cashOptService;
-	
+
 	@Autowired
 	public BillAddEditController(AdministrationService adminService, ICashierOptionsService cashOptService) {
 		this.adminService = adminService;
 		this.cashOptService = cashOptService;
-    }
-	
+	}
+
 	@RequestMapping(method = RequestMethod.GET)
 	public String bill(ModelMap model, @RequestParam(value = "billUuid", required = false) String billUuid,
 	        @RequestParam(value = "patientUuid", required = false) String patientUuid, HttpServletRequest request) {
 		Timesheet timesheet = null;
 		try {
 			timesheet = TimesheetUtil.getCurrentTimesheet();
-		} catch (RuntimeException e) {
+		} catch (Exception e) {
 			LOG.error("Error retrieving provider for current user. ", e);
 			timesheet = null;
 			return "redirect:/login.htm";
-			
-		} catch (Exception e) {
-			LOG.error("An exception occured: ", e);
-			timesheet = null;
+
 		}
-		
+
 		if (timesheet == null && TimesheetUtil.isTimesheetRequired()) {
 			return buildRedirectUrl(request);
 		}
-		
+
 		model.addAttribute("timesheet", timesheet);
 		model.addAttribute("user", Context.getAuthenticatedUser());
 		model.addAttribute("url", buildUrlModelAttribute(request));
-		
-		boolean showAdjustmentReasonField = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ADJUSTMENT_REASEON_FIELD));
+
+		boolean showAdjustmentReasonField = Boolean.parseBoolean(adminService.getGlobalProperty(
+		        ModuleSettings.ADJUSTMENT_REASEON_FIELD));
 		model.addAttribute("showAdjustmentReasonField", showAdjustmentReasonField);
 
-		boolean allowBillAdjustment = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.ALLOW_BILL_ADJUSTMENT));
+		boolean allowBillAdjustment = Boolean.parseBoolean(adminService.getGlobalProperty(
+		        ModuleSettings.ALLOW_BILL_ADJUSTMENT));
 		model.addAttribute("allowBillAdjustment", allowBillAdjustment);
 
-		boolean autofillPaymentAmount = Boolean.parseBoolean(adminService.getGlobalProperty(ModuleSettings.AUTOFILL_PAYMENT_AMOUNT));
+		boolean autofillPaymentAmount = Boolean.parseBoolean(adminService.getGlobalProperty(
+		        ModuleSettings.AUTOFILL_PAYMENT_AMOUNT));
 		model.addAttribute("autofillPaymentAmount", autofillPaymentAmount);
 
 		CashierOptions options = cashOptService.getOptions();
 		String roundingItemUuid = options.getRoundingItemUuid();
 		model.addAttribute("roundingItemUuid", roundingItemUuid);
-		
+
 		if (billUuid != null) {
 			handleExistingBill(model, billUuid);
 		} else {
@@ -102,10 +105,10 @@ public class BillAddEditController {
 			model.addAttribute("showPrint", true);
 			model.addAttribute("cashPoint", timesheet != null ? timesheet.getCashPoint() : null);
 		}
-		
+
 		return CashierWebConstants.BILL_PAGE;
 	}
-	
+
 	private void handleExistingBill(ModelMap model, String billUuid) {
 		Bill bill = getBillFromService(billUuid);
 		if (bill != null) {
@@ -113,11 +116,11 @@ public class BillAddEditController {
 			addBillAttributes(model, bill, patient);
 		}
 	}
-	
+
 	private void addPatientAttributes(ModelMap model, String patientUuid) {
 		if (patientUuid != null) {
 			Patient patient = getPatientFromService(patientUuid);
-			
+
 			String patientIdentifier = null;
 			if (patient != null) {
 				patientIdentifier = getPreferedPatientIdentifier(patient);
@@ -126,20 +129,20 @@ public class BillAddEditController {
 			model.addAttribute("patientIdentifier", patientIdentifier);
 		}
 	}
-	
+
 	private String getPreferedPatientIdentifier(Patient patient) {
 		String patientIdentifier = null;
-		
+
 		Set<PatientIdentifier> identifiers = patient.getIdentifiers();
 		for (PatientIdentifier id : identifiers) {
 			if (id.getPreferred()) {
 				patientIdentifier = id.getIdentifier();
 			}
 		}
-		
+
 		return patientIdentifier;
 	}
-	
+
 	private Patient getPatientFromService(String patientUuid) {
 		PatientService service = Context.getPatientService();
 		Patient patient;
@@ -149,10 +152,10 @@ public class BillAddEditController {
 			LOG.error("Error when trying to get Patient with ID <" + patientUuid + ">", e);
 			throw new APIException("Error when trying to get Patient with ID <" + patientUuid + ">");
 		}
-		
+
 		return patient;
 	}
-	
+
 	private void addBillAttributes(ModelMap model, Bill bill, Patient patient) {
 		model.addAttribute("bill", bill);
 		model.addAttribute("billAdjusted", bill.getBillAdjusted());
@@ -165,38 +168,38 @@ public class BillAddEditController {
 			model.addAttribute("showPrint", true);
 		}
 	}
-	
+
 	private Bill getBillFromService(String billUuid) {
 		IBillService service = Context.getService(IBillService.class);
 		Bill bill;
-		
+
 		try {
 			bill = service.getByUuid(billUuid);
 		} catch (APIException e) {
 			LOG.error("Error when trying to get bill with ID <" + billUuid + ">", e);
 			throw new APIException("Error when trying to get bill with ID <" + billUuid + ">");
 		}
-		
+
 		return bill;
 	}
-	
+
 	private String buildUrlModelAttribute(HttpServletRequest request) {
-		return UrlUtil.formUrl(CashierWebConstants.BILL_PAGE) + ((request.getQueryString() != null) ?
-		        "?" + request.getQueryString() : "");
+		return UrlUtil.formUrl(CashierWebConstants.BILL_PAGE) + ((request.getQueryString() != null)
+		        ? "?" + request.getQueryString() : "");
 	}
-	
+
 	private String buildRedirectUrl(HttpServletRequest request) {
 		String redirectUrl = "redirect:" + UrlUtil.formUrl(CashierWebConstants.CASHIER_PAGE);
 		String returnUrlParam = "?returnUrl=" + UrlUtil.formUrl(CashierWebConstants.BILL_PAGE);
 		String requestQueryParam = "";
-		
+
 		if (request.getQueryString() != null) {
 			requestQueryParam = encodeRequestQuery(request);
 		}
-		
+
 		return redirectUrl + returnUrlParam + requestQueryParam;
 	}
-	
+
 	private String encodeRequestQuery(HttpServletRequest request) {
 		String requestQueryParam = "";
 		try {
@@ -204,7 +207,7 @@ public class BillAddEditController {
 		} catch (UnsupportedEncodingException e) {
 			LOG.error("UnsupportedEncodingException occured when trying to encode request query", e);
 		}
-		
+
 		return requestQueryParam;
 	}
 }

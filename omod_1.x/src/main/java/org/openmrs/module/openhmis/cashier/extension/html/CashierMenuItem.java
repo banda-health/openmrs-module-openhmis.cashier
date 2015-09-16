@@ -16,25 +16,28 @@ package org.openmrs.module.openhmis.cashier.extension.html;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.web.extension.LinkExt;
 
+/**
+ * Link extension class to add a {@link CashierMenuItem} link to OpenMRS.
+ */
 public class CashierMenuItem extends LinkExt {
 	@Override
 	public MEDIA_TYPE getMediaType() {
 		return MEDIA_TYPE.html;
 	}
-	
+
 	@Override
 	public String getLabel() {
 		return "openhmis.cashier.menuItem";
 	}
-	
+
 	@Override
 	public String getRequiredPrivilege() {
 		return PrivilegeConstants.MANAGE_BILLS;
 	}
-	
+
 	@Override
 	public String getUrl() {
 		return "module/openhmis/cashier/bill.form";
 	}
-	
+
 }

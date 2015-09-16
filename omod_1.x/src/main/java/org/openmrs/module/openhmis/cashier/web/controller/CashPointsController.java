@@ -20,6 +20,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * Controller to manage the Cashpoints page.
+ */
 @Controller
 @RequestMapping("/module/openhmis/cashier/cashPoints")
 public class CashPointsController {

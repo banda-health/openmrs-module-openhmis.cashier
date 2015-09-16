@@ -29,6 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Controller to manage the Cashier Settings page.
+ */
 @Controller
 @RequestMapping(value = CashierWebConstants.CASHIER_SETTINGS_ROOT)
 public class CashierSettingsController {
@@ -41,8 +44,8 @@ public class CashierSettingsController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void submit (HttpServletRequest request, CashierSettings cashierSettings, Errors errors,ModelMap modelMap)
-			throws IOException {
+	public void submit(HttpServletRequest request, CashierSettings cashierSettings, Errors errors, ModelMap modelMap)
+	        throws IOException {
 		ModuleSettings.saveSettings(cashierSettings);
 
 		HttpSession session = request.getSession();

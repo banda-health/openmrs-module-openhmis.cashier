@@ -19,6 +19,9 @@ import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+/**
+ * Validates the Timesheet entry. Implents {@link Validator}
+ */
 public class TimesheetEntryValidator implements Validator {
 	@Override
 	public boolean supports(Class<?> clazz) {

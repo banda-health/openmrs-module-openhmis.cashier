@@ -28,28 +28,31 @@ import org.openmrs.module.openhmis.commons.api.ProviderUtil;
 import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.openmrs.module.web.extension.LinkExt;
 
+/**
+ * Link extension class to add a cashier link to OpenMRS.
+ */
 public class CashierLinkExt extends LinkExt {
 	private static final Log LOG = LogFactory.getLog(CashierLinkExt.class);
-	
+
 	private ITimesheetService timesheetService;
 	private ProviderService providerService;
-	
+
 	private Timesheet currentTimesheet;
 	private boolean isProviderUser = false;
-	
+
 	@Override
 	public void initialize(Map<String, String> parameterMap) {
 		super.initialize(parameterMap);
-		
+
 		isProviderUser = false;
 		currentTimesheet = null;
-		
+
 		if (Context.getAuthenticatedUser() != null
 		        && Context.getAuthenticatedUser().hasPrivilege(org.openmrs.util.PrivilegeConstants.VIEW_PROVIDERS)) {
 			try {
 				this.timesheetService = Context.getService(ITimesheetService.class);
 				this.providerService = Context.getProviderService();
-				
+
 				isProviderUser = false;
 				if (Context.isAuthenticated()) {
 					Provider provider = ProviderUtil.getCurrentProvider(providerService);
@@ -64,31 +67,31 @@ public class CashierLinkExt extends LinkExt {
 				}
 			} catch (Exception ex) {
 				LOG.error("An error occurred while attempting to load the cashier extension point", ex);
-				
+
 				isProviderUser = false;
 				currentTimesheet = null;
 			}
 		}
 	}
-	
+
 	@Override
 	public String getLabel() {
 		if (isProviderUser) {
 			return "openhmis.cashier.page";
 		}
-		
+
 		return null;
 	}
-	
+
 	public String getPortletUrl() {
 		return null;
 	}
-	
+
 	@Override
 	public String getUrl() {
 		return UrlUtil.formUrl(CashierWebConstants.CASHIER_PAGE);
 	}
-	
+
 	@Override
 	public String getRequiredPrivilege() {
 		return PrivilegeConstants.MANAGE_BILLS;

@@ -24,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Controller to manage the Jasper Reports page.
+ */
 @Controller
 @RequestMapping(value = CashierWebConstants.JASPER_REPORT_PAGE)
 public class JasperReportController extends ReportsControllerBase {
@@ -34,8 +37,8 @@ public class JasperReportController extends ReportsControllerBase {
 		if (!StringUtils.isEmpty(temp) && StringUtils.isNumeric(temp)) {
 			timesheetId = Integer.parseInt(temp);
 		} else {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "The timesheet id ('" + temp + "') must be " +
-					"defined and be numeric.");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "The timesheet id ('" + temp + "') must be "
+			        + "defined and be numeric.");
 			return null;
 		}
 

@@ -16,6 +16,7 @@ package org.openmrs.module.webservices.rest.resource;
 import org.openmrs.Concept;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
@@ -26,30 +27,33 @@ import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
+/**
+ * REST resource representing a {@link PaymentAttribute}.
+ */
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass = PaymentAttribute.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
 public class PaymentAttributeResource extends BaseRestAttributeDataResource<PaymentAttribute, PaymentModeAttributeType> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-		
+
 		if (!(rep instanceof RefRepresentation)) {
 			description.addProperty("valueName", findMethod("getValueName"));
 		}
-		
+
 		return description;
 	}
-	
+
 	@Override
 	public String getDisplayString(PaymentAttribute instance) {
 		return instance.getAttributeType().getName() + ": " + instance.getValue();
 	}
-	
+
 	public String getValueName(PaymentAttribute instance) {
 		if (instance.getAttributeType().getFormat().contains("Concept")) {
 			ConceptService service = Context.getService(ConceptService.class);
 			Concept concept = service.getConcept(instance.getValue());
-			
+
 			return concept == null ? "" : concept.getDisplayString();
 		} else {
 			return instance.getValue();
@@ -65,7 +69,7 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 	public PaymentAttribute newDelegate() {
 		return new PaymentAttribute();
 	}
-	
+
 	@Override
 	public Class<? extends IEntityDataService<PaymentAttribute>> getServiceClass() {
 		return null;

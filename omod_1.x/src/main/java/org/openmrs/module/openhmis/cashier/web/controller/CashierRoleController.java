@@ -37,27 +37,30 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * Controller to manage the Cashier Role Creation page.
+ */
 @Controller
 @RequestMapping(CashierWebConstants.CASHIER_ROLE_ROOT)
 public class CashierRoleController {
 	private UserService userService;
-	
+
 	@Autowired
 	public CashierRoleController(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	public void render(ModelMap model) {
 		List<Role> roles = userService.getAllRoles();
 		model.addAttribute("roles", roles);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	public void submit(HttpServletRequest request, RoleCreationViewModel viewModel, Errors errors, ModelMap model) {
 		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
-		
+
 		if (action.equals("add")) {
 			addCashierPrivileges(viewModel.getAddToRole());
 			session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.add");
@@ -67,25 +70,25 @@ public class CashierRoleController {
 		} else if (action.equals("new") && newRoleValidated(viewModel, errors)) {
 			createRole(viewModel, session);
 		}
-		
+
 		render(model);
 	}
-	
+
 	private void addCashierPrivileges(String roleUuid) {
 		Role role = userService.getRoleByUuid(roleUuid);
 		if (role == null) {
 			throw new APIException("The role '" + roleUuid + "' could not be found.");
 		}
-		
+
 		for (Privilege priv : PrivilegeConstants.getDefaultPrivileges()) {
 			if (!role.hasPrivilege(priv.getName())) {
 				role.addPrivilege(priv);
 			}
 		}
-		
+
 		userService.saveRole(role);
 	}
-	
+
 	private void removeCashierPrivileges(String roleUuid) {
 		Role role = userService.getRoleByUuid(roleUuid);
 		if (role == null) {
@@ -100,23 +103,23 @@ public class CashierRoleController {
 
 		userService.saveRole(role);
 	}
-	
+
 	private void createRole(RoleCreationViewModel viewModel, HttpSession session) {
 		Role newRole = new Role();
 		newRole.setRole(viewModel.getNewRoleName());
 		newRole.setDescription("Users who creates and manage patient bills");
 		newRole.setPrivileges(PrivilegeConstants.getDefaultPrivileges());
-		
+
 		Role inheritedRole = userService.getRole(RoleConstants.PROVIDER);
 		Set<Role> inheritedRoles = new HashSet<Role>();
 		inheritedRoles.add(inheritedRole);
 		newRole.setInheritedRoles(inheritedRoles);
-		
+
 		userService.saveRole(newRole);
-		
+
 		session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.new");
 	}
-	
+
 	private boolean newRoleValidated(RoleCreationViewModel viewModel, Errors errors) {
 		if (viewModel.getNewRoleName().equals(StringUtils.EMPTY)) {
 			errors.rejectValue("role", "openhmis.cashier.roleCreation.page.feedback.error.blankRole");
@@ -128,7 +131,7 @@ public class CashierRoleController {
 
 		return true;
 	}
-	
+
 	private Boolean checkForDuplicateRole(String role) {
 		for (Role name : userService.getAllRoles()) {
 			if (name.getRole().equals(role)) {
