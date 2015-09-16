@@ -129,7 +129,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 				                + model.getCashPointPrefix() + bill.getCashPoint().getId();
 				break;
 			default:
-				result = "Could not create group";
+				break;
 		}
 
 		return result;
@@ -160,7 +160,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 
 				break;
 			default:
-				sequence = "Sequence was not created";
+				break;
 		}
 
 		return sequence;
