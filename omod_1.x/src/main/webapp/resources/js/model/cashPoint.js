@@ -21,8 +21,8 @@ define(
     function(openhmis, __) {
         openhmis.CashPoint = openhmis.GenericModel.extend({
             meta: {
-                name: __("Cash Point"),
-                namePlural: __("Cash Points"),
+                name: __(openhmis.getMessage('openhmis.cashier.cashpoints')),
+                namePlural: __(openhmis.getMessage('openhmis.cashier.cashpointsPlural')),
                 openmrsType: 'metadata',
                 restUrl: 'v2/cashier/cashPoint'
             },
