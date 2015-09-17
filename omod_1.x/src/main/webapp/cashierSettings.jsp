@@ -24,75 +24,75 @@
 </h2>
 
 <form:form method="POST" modelAttribute="cashierSettings">
-	<b class="boxHeader">Cashier Settings</b>
+	<b class="boxHeader"><spring:message code="openhmis.cashier.setting.header" /></b>
 
 	<div class="box">
 		<table>
 			<tr>
 				<td style="width: 70%;">
-					Require Adjustment Reason
+					<spring:message code="openhmis.cashier.setting.adjustmentReason.field.header"/>
 					<br/>
-					<span class="description">True/false whether or not the adjustment reason field should be used.</span>
+					<span class="description"><spring:message code="openhmis.cashier.setting.adjustmentReason.field.description"/></span>
 				</td>
 				<td>
 					<spring:bind path="adjustmentReasonField">
 					<input id="adjustmentReasonField" name="adjustmentReasonField" type="checkbox"
 					       value="${cashierSettings.adjustmentReasonField}" <c:if
 							       test="${cashierSettings.adjustmentReasonField}">checked</c:if> />
-						<label for="adjustmentReasonField">Require Adjustment Reason</label>
+						<label for="adjustmentReasonField"><spring:message code="openhmis.cashier.setting.adjustmentReason.field.header"/></label>
 					</spring:bind>
 				</td>
 			</tr>
 			<tr>
 				<td style="width: 70%;">
-					Allow Bill Adjustments
+					<spring:message code="openhmis.cashier.setting.billAdjustment.field.header"/>
 					<br/>
-					<span class="description">True/false weather or not the adjustment field feature should be turned on.</span>
+					<span class="description"><spring:message code="openhmis.cashier.setting.billAdjustment.field.description"/></span>
 				</td>
 				<td>
 					<spring:bind path="allowBillAdjustment">
 						<input id="allowBillAdjustment" name="allowBillAdjustment" type="checkbox"
 						       value="${cashierSettings.allowBillAdjustment}" <c:if
 								       test="${cashierSettings.allowBillAdjustment}">checked</c:if> />
-						<label for="allowBillAdjustment">Allow Bill Adjustments</label>
+						<label for="allowBillAdjustment"><spring:message code="openhmis.cashier.setting.billAdjustment.field.header"/></label>
 					</spring:bind>
 				</td>
 			</tr>
 			<tr>
 				<td style="width: 70%;">
-					Autofill Payment Amount
+					<spring:message code="openhmis.cashier.setting.autofillPaymentAmount.field.header"/>
 					<br/>
-					<span class="description">True/false weather or not the payment amount should be automatically filled with the remaining balance.</span>
+					<span class="description"><spring:message code="openhmis.cashier.setting.autofillPaymentAmount.field.description"/> </span>
 				</td>
 				<td>
 					<spring:bind path="autoFillPaymentAmount">
 						<input id="autoFillPaymentAmount" name="autoFillPaymentAmount" type="checkbox"
 						       value="${cashierSettings.autoFillPaymentAmount}" <c:if
 								       test="${cashierSettings.autoFillPaymentAmount}">checked</c:if> />
-						<label for="autoFillPaymentAmount">Autofill Payment Amount</label>
+						<label for="autoFillPaymentAmount"><spring:message code="openhmis.cashier.setting.autofillPaymentAmount.field.header"/></label>
 					</spring:bind>
 				</td>
 			</tr>
 			<tr>
 				<td style="width: 70%;">
-					Require Timesheet
+					<spring:message code="openhmis.cashier.setting.timesheet.field.header"/>
 					<br/>
-					<span class="description">Whether or not to require an active timesheet when creating a new bill. True or false.</span>
+					<span class="description"><spring:message code="openhmis.cashier.setting.timesheet.field.description"/></span>
 				</td>
 				<td>
 					<spring:bind path="cashierTimesheetRequired">
 						<input id="cashierTimesheetRequired" name="cashierTimesheetRequired" type="checkbox"
 						       value="${cashierSettings.cashierTimesheetRequired}" <c:if
 								       test="${cashierSettings.cashierTimesheetRequired}">checked</c:if> />
-						<label for="cashierTimesheetRequired">Require Timesheet</label>
+						<label for="cashierTimesheetRequired"><spring:message code="openhmis.cashier.setting.timesheet.field.header"/></label>
 					</spring:bind>
 				</td>
 			</tr>
 			<tr>
 				<td style="width: 70%;">
-					Default Receipt Report Id
+					<spring:message code="openhmis.cashier.setting.receiptReportId.field.header"/>
 					<br/>
-					<span class="description">ID of the default Jasper report to use for generating a receipt on the Bill page.</span>
+					<span class="description"><spring:message code="openhmis.cashier.setting.receiptReportId.field.description"/></span>
 				</td>
 				<td>
 					<spring:bind path="defaultReceiptReportId">
@@ -110,9 +110,9 @@
 			</tr>
 			<tr>
 				<td style="width: 70%;">
-					Default Shift Report Id
+					<spring:message code="openhmis.cashier.setting.shiftReportId.field.header"/>
 					<br/>
-					<span class="description">ID of the Jasper Cashier Shift report.</span>
+					<span class="description"><spring:message code="openhmis.cashier.setting.shiftReportId.field.description"/></span>
 				</td>
 				<td>
 					<spring:bind path="defaultShitReportId">
@@ -130,9 +130,9 @@
 			</tr>
 			<tr>
 				<td style="width: 70%;">
-					Round To Nearest
+					<spring:message code="openhmis.cashier.setting.nearestRounding.field.header"/>
 					<br/>
-					<span class="description">Nearest unit to round to. Can be a decimal number.</span>
+					<span class="description"><spring:message code="openhmis.cashier.setting.nearestRounding.field.description"/></span>
 				</td>
 				<td>
 					<spring:bind path="cashierRoundingToNearest">
@@ -144,9 +144,9 @@
 			</tr>
 			<tr>
 				<td style="width: 70%;">
-					Rounding Mode
+					<spring:message code="openhmis.cashier.setting.roundingMode.field.header"/>
 					<br/>
-					<span class="description">How to do rounding to bill totals (FLOOR, MID, CEILING)</span>
+					<span class="description"><spring:message code="openhmis.cashier.setting.roundingMode.field.description"/></span>
 				</td>
 				<td>
 					<spring:bind path="cashierRoundingMode">
