@@ -23,7 +23,7 @@ define(
 		openhmis.Bill = openhmis.GenericModel.extend({
 			trackUnsaved: true,
 			meta: {
-				name: openhmis.getMessage('openhmis.cashier.Bill'),
+				name: openhmis.getMessage('openhmis.cashier.bill'),
 				namePlural: openhmis.getMessage('openhmis.cashier.billPlural'),
 				openmrsType: 'data',
 				restUrl: "v2/cashier/bill"
