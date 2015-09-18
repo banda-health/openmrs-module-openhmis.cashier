@@ -19,7 +19,7 @@
 		            <li>
 		            	<span class="billId"><b><a href='/${ui.contextPath()}/module/openhmis/cashier/bill.form?billUuid=${bill.uuid}'>${bill.billId}</a></b> <i class="icon-double-angle-right"></i> </span>
 		            	<span class="billStatus">${bill.status} <i class="icon-double-angle-right"></i> </span>
-		            	<span class="billDue">${bill.getTotalPayments()}/${bill.getTotal()} ${bill.getCurrencyName()}</span>
+		            	<span class="billDue">${bill.getTotalPayments()} / ${bill.getTotal()}</span>
 		            </li>
 	            <% } %>
             </ul>

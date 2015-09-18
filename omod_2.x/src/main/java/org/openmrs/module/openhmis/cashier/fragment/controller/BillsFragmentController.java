@@ -13,17 +13,31 @@
  */
 package org.openmrs.module.openhmis.cashier.fragment.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.ui.framework.annotation.FragmentParam;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 
 public class BillsFragmentController {
 	public void controller(FragmentModel model, @FragmentParam("patientId") Patient patient) {
 		IBillService iBillService = Context.getService(IBillService.class);
-		
-		model.addAttribute("bills", iBillService.getBillsByPatient(patient, null));
+		List<Bill> bills = iBillService.getBillsByPatient(patient, null);
+		List<Bill> billsToReturn = new ArrayList<Bill>();
+		Integer numberConfiguredToShow =
+		        Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		            "openhmis.cashier.numberOfBillsFor2xPatientDashboard"));
+		Integer numberToShow = numberConfiguredToShow >= bills.size() ? bills.size() : numberConfiguredToShow;
+
+		for (int i = 0; i < numberToShow; i++) {
+			billsToReturn.add(bills.get(i));
+		}
+
+		model.addAttribute("bills", billsToReturn);
 		model.addAttribute("patientId", patient.getPatientId());
 	}
 }
