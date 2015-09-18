@@ -92,6 +92,22 @@ public class Bill extends BaseOpenmrsData {
 		return total;
 	}
 	
+	public String getCurrencyName() {
+		String currency = "";
+		
+		if (payments != null) {
+			for (Payment payment : payments) {
+				if (payment != null && !payment.getVoided() && payment.getAttributes() != null) {
+					for(PaymentAttribute pa : payment.getAttributes()) {
+						currency = pa.getAttributeType().getName() == null ? "" : pa.getAttributeType().getName();
+					}
+				}
+			}
+		}
+		
+		return currency;
+	}
+	
 	public BigDecimal getAmountPaid() {
 		BigDecimal total = getTotal();
 		BigDecimal totalPayments = getTotalPayments();

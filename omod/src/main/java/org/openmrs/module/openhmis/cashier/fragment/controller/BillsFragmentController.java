@@ -24,5 +24,6 @@ public class BillsFragmentController {
 		IBillService iBillService = Context.getService(IBillService.class);
 		
 		model.addAttribute("bills", iBillService.getBillsByPatient(patient, null));
+		model.addAttribute("patientId", patient.getPatientId());
 	}
 }
