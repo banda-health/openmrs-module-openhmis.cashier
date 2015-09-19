@@ -1,5 +1,9 @@
 <style type="text/css">
 	.billDue {
+		color: #00463f;
+	}
+	
+	.billDate {
 		color: #7b7b7b;
 	}
 </style>	
@@ -19,7 +23,8 @@
 		            <li>
 		            	<span class="billId"><b><a href='/${ui.contextPath()}/module/openhmis/cashier/bill.form?billUuid=${bill.uuid}'>${bill.billId}</a></b> <i class="icon-double-angle-right"></i> </span>
 		            	<span class="billStatus">${bill.status} <i class="icon-double-angle-right"></i> </span>
-		            	<span class="billDue">${bill.getTotalPayments()} / ${bill.getTotal()}</span>
+		            	<span class="billDue">${bill.getTotalPayments()} / ${bill.getTotal()} <i class="icon-double-angle-right"></i> </span>
+		            	<span class="billDate">${bill.getLastUpdated()}</span>
 		            </li>
 	            <% } %>
             </ul>
