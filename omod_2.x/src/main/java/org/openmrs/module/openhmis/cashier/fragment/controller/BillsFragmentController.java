@@ -25,8 +25,6 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 
 public class BillsFragmentController {
 	public void controller(FragmentModel model, @FragmentParam("patientId") Patient patient) {
-		model.addAttribute("patient", patient);
-		
 		IBillService iBillService = Context.getService(IBillService.class);
 		List<Bill> bills = iBillService.getBillsByPatient(patient, null);
 		List<Bill> billsToReturn = new ArrayList<Bill>();
