@@ -24,6 +24,7 @@ import org.openmrs.module.openhmis.cashier.api.ICashPointService;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.web.CashierRestConstants;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.webservices.rest.resource.AlreadyPagedWithLength;
 import org.openmrs.module.webservices.rest.resource.PagingUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -33,28 +34,31 @@ import org.openmrs.module.webservices.rest.web.resource.api.SearchHandler;
 import org.openmrs.module.webservices.rest.web.resource.api.SearchQuery;
 import org.springframework.stereotype.Component;
 
+/**
+ * Search handler for {@link CashPoint}s.
+ */
 @Component
 public class CashPointSearchHandler implements SearchHandler {
 	private final SearchConfig searchConfig = new SearchConfig("default", CashierRestConstants.CASH_POINT_RESOURCE,
 	        Arrays.asList("*"), Arrays.asList(new SearchQuery.Builder(
 	                "Find a cashpoint by its name, optionally filtering by location").withRequiredParameters("q")
 	                .withOptionalParameters("location_uuid").build()));
-	
+
 	@Override
 	public PageableResult search(RequestContext context) {
 		String query = context.getParameter("q");
 		String locationUuid = context.getParameter("location_uuid");
 		query = query.isEmpty() ? null : query;
 		locationUuid = StringUtils.isEmpty(locationUuid) ? null : locationUuid;
-		
+
 		ICashPointService service = Context.getService(ICashPointService.class);
 		LocationService locationService = Context.getLocationService();
 		Location location = locationService.getLocationByUuid(locationUuid);
 		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
-		
+
 		List<CashPoint> cashpoints = null;
 		PageableResult results = null;
-		
+
 		if (locationUuid == null) {
 			// Do a name search
 			cashpoints = service.getByNameFragment(query, context.getIncludeAll(), pagingInfo);
@@ -65,13 +69,13 @@ public class CashPointSearchHandler implements SearchHandler {
 			// Do a name & location search
 			cashpoints = service.getCashPointsByLocationAndName(location, query, context.getIncludeAll(), pagingInfo);
 		}
-		
+
 		results =
 		        new AlreadyPagedWithLength<CashPoint>(context, cashpoints, pagingInfo.hasMoreResults(),
 		                pagingInfo.getTotalRecordCount());
 		return results;
 	}
-	
+
 	@Override
 	public SearchConfig getSearchConfig() {
 		return searchConfig;

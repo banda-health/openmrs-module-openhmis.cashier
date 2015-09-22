@@ -25,6 +25,9 @@ import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Interface that represents classes which perform data operations for {@link Bill}s.
+ */
 @Transactional
 public interface IBillService extends IEntityDataService<Bill> {
 	/**
@@ -40,7 +43,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	Bill getBillByReceiptNumber(String receiptNumber);
-	
+
 	/**
 	 * Returns all {@link Bill}s for the specified patient with the specified paging.
 	 * @param patient The {@link Patient}.
@@ -51,7 +54,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should return an empty list if the specified patient has no bills
 	 */
 	List<Bill> getBillsByPatient(Patient patient, PagingInfo paging);
-	
+
 	/**
 	 * Returns all {@link Bill}s for the specified patient with the specified paging.
 	 * @param patientId The patient id.
@@ -63,7 +66,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 * @should return an empty list if the specified patient has no bills
 	 */
 	List<Bill> getBillsByPatientId(int patientId, PagingInfo paging);
-	
+
 	/**
 	 * Gets all bills using the specified {@link BillSearch} settings.
 	 * @param billSearch The bill search settings.
@@ -72,7 +75,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	List<Bill> getBills(BillSearch billSearch);
-	
+
 	/**
 	 * Gets all bills using the specified {@link BillSearch} settings.
 	 * @param billSearch The bill search settings.
@@ -92,7 +95,7 @@ public interface IBillService extends IEntityDataService<Bill> {
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	List<Bill> getBills(BillSearch billSearch, PagingInfo pagingInfo);
-	
+
 	@Override
 	@Authorized(PrivilegeConstants.VIEW_BILLS)
 	Bill getByUuid(String uuid);

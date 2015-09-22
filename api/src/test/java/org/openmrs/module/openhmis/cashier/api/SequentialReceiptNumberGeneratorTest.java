@@ -37,7 +37,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Context.class, SequentialReceiptNumberGenerator.class})
+@PrepareForTest({ Context.class, SequentialReceiptNumberGenerator.class })
 public class SequentialReceiptNumberGeneratorTest {
 	private ISequentialReceiptNumberGeneratorService service;
 	private SequentialReceiptNumberGenerator generator;
@@ -48,7 +48,7 @@ public class SequentialReceiptNumberGeneratorTest {
 		mockStatic(Context.class);
 		service = mock(ISequentialReceiptNumberGeneratorService.class);
 		when(Context.getService(ISequentialReceiptNumberGeneratorService.class))
-				.thenReturn(service);
+		        .thenReturn(service);
 
 		mockStatic(Calendar.class);
 		calendar = mock(Calendar.class);

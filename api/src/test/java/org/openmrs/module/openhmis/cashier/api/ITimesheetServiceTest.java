@@ -146,7 +146,8 @@ public class ITimesheetServiceTest extends IEntityDataServiceTest<ITimesheetServ
 	 * @see ITimesheetService#getCurrentTimesheet(org.openmrs.Provider)
 	 */
 	@Test
-	public void getCurrentTimesheet_shouldReturnTheMostRecentTimesheetIfTheCashierIsClockedIntoMultipleTimesheets() throws Exception {
+	public void getCurrentTimesheet_shouldReturnTheMostRecentTimesheetIfTheCashierIsClockedIntoMultipleTimesheets()
+	        throws Exception {
 		Provider cashier = providerService.getProvider(0);
 		Timesheet original = service.getCurrentTimesheet(cashier);
 
@@ -215,7 +216,7 @@ public class ITimesheetServiceTest extends IEntityDataServiceTest<ITimesheetServ
 
 		Assert.assertNotNull(results);
 		Assert.assertEquals(1, results.size());
-		Assert.assertEquals(4, (int) results.get(0).getId());
+		Assert.assertEquals(4, (int)results.get(0).getId());
 	}
 
 	/**
@@ -229,7 +230,7 @@ public class ITimesheetServiceTest extends IEntityDataServiceTest<ITimesheetServ
 
 		Assert.assertNotNull(results);
 		Assert.assertEquals(1, results.size());
-		Assert.assertEquals(5, (int) results.get(0).getId());
+		Assert.assertEquals(5, (int)results.get(0).getId());
 	}
 
 	/**
@@ -243,7 +244,7 @@ public class ITimesheetServiceTest extends IEntityDataServiceTest<ITimesheetServ
 
 		Assert.assertNotNull(results);
 		Assert.assertEquals(1, results.size());
-		Assert.assertEquals(6, (int) results.get(0).getId());
+		Assert.assertEquals(6, (int)results.get(0).getId());
 	}
 
 	/**
@@ -257,6 +258,6 @@ public class ITimesheetServiceTest extends IEntityDataServiceTest<ITimesheetServ
 
 		Assert.assertNotNull(results);
 		Assert.assertEquals(1, results.size());
-		Assert.assertEquals(7, (int) results.get(0).getId());
+		Assert.assertEquals(7, (int)results.get(0).getId());
 	}
 }

@@ -25,6 +25,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.commons.api.ProviderUtil;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.webservices.rest.resource.AlreadyPagedWithLength;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -34,12 +35,15 @@ import org.openmrs.module.webservices.rest.web.resource.api.SearchHandler;
 import org.openmrs.module.webservices.rest.web.resource.api.SearchQuery;
 import org.springframework.stereotype.Component;
 
+/**
+ * Search handler for {@link Timesheet}s.
+ */
 @Component
 public class TimesheetSearchHandler implements SearchHandler {
 	private final SearchConfig searchConfig = new SearchConfig("default", RestConstants.VERSION_2 + "/cashier/timesheet",
 	        Arrays.asList("*"), new SearchQuery.Builder("Find a timesheet by date").withRequiredParameters("date")
 	                .build());
-	
+
 	@Override
 	public PageableResult search(RequestContext context) {
 		ITimesheetService service = Context.getService(ITimesheetService.class);
@@ -57,7 +61,7 @@ public class TimesheetSearchHandler implements SearchHandler {
 		PageableResult results = new AlreadyPagedWithLength<Timesheet>(context, timesheets, false, timesheets.size());
 		return results;
 	}
-	
+
 	@Override
 	public SearchConfig getSearchConfig() {
 		return searchConfig;

@@ -22,13 +22,17 @@ import org.openmrs.OpenmrsObject;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataService;
 
+/**
+ * Support class to build property editors for entities.
+ * @param <E> The model class
+ */
 public class EntityPropertyEditor<E extends OpenmrsObject> extends PropertyEditorSupport {
 	private IObjectDataService<E> service;
-	
+
 	public EntityPropertyEditor(Class<? extends IObjectDataService<E>> service) {
 		this.service = Context.getService(service);
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public String getAsText() {
@@ -40,7 +44,7 @@ public class EntityPropertyEditor<E extends OpenmrsObject> extends PropertyEdito
 			return entity.getId().toString();
 		}
 	}
-	
+
 	@Override
 	public void setAsText(String text) {
 		if (StringUtils.isEmpty(text)) {
@@ -59,11 +63,11 @@ public class EntityPropertyEditor<E extends OpenmrsObject> extends PropertyEdito
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected Class<E> getEntityClass() {
 		ParameterizedType parameterizedType = (ParameterizedType)getClass().getGenericSuperclass();
-		
+
 		return (Class)parameterizedType.getActualTypeArguments()[0];
 	}
 }
