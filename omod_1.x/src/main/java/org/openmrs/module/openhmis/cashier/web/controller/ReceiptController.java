@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
 import org.openmrs.module.jasperreport.ReportGenerator;
@@ -65,7 +66,7 @@ public class ReceiptController {
 	private boolean generateReport(Integer billId, HttpServletResponse response, Bill bill, JasperReport report)
 	        throws IOException {
 		String name = report.getName();
-		if (bill.getReceiptNumber() != null) {
+		if (StringUtils.isEmpty(bill.getReceiptNumber())) {
 			report.setName(bill.getReceiptNumber());
 		} else {
 			report.setName(String.valueOf(billId));
@@ -77,7 +78,7 @@ public class ReceiptController {
 		try {
 			ReportGenerator.generateHtmlAndWriteToResponse(report, params, response);
 		} catch (IOException e) {
-			if (bill.getReceiptNumber() != null) {
+			if (StringUtils.isEmpty(bill.getReceiptNumber())) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating report for receipt '" +
 						bill.getReceiptNumber() + "'");
 			} else {
@@ -103,7 +104,7 @@ public class ReceiptController {
 		}
 		
 		if (bill.isReceiptPrinted() && !Context.hasPrivilege(PrivilegeConstants.REPRINT_RECEIPT)) {
-			if (bill.getReceiptNumber() != null) {
+			if (StringUtils.isEmpty(bill.getReceiptNumber())) {
 				response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to reprint receipt '" +
 						bill.getReceiptNumber() + "'");
 			} else {
