@@ -498,8 +498,7 @@ define(
 
             printReceipt: function(event) {
                 var url = openhmis.url.getPage("cashierBase")
-                    + "receipt.form?billId=" + encodeURIComponent(this.bill.get("id") + "&receiptNumber=" +
-		                encodeURIComponent(this.bill.get("receiptNumber")));
+                    + "receipt.form?billId=" + encodeURIComponent(this.bill.get("id"));
                 // Remove if print has been clicked before?
                 $("#receiptDownload").remove();
                 $iframe = $('<iframe id="receiptDownload" src="' + url + '" width="1" height="1"></iframe>');
