@@ -14,6 +14,7 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.module.openhmis.cashier.api.IPaymentModeService;
+import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
@@ -26,6 +27,9 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 
 import java.util.List;
 
+/**
+ * REST resource representing a {@link PaymentMode}.
+ */
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentMode", supportedClass = PaymentMode.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
 public class PaymentModeResource extends BaseRestInstanceTypeResource<PaymentMode, PaymentModeAttributeType> {
@@ -33,7 +37,7 @@ public class PaymentModeResource extends BaseRestInstanceTypeResource<PaymentMod
 	public PaymentMode newDelegate() {
 		return new PaymentMode();
 	}
-	
+
 	@Override
 	public Class<? extends IMetadataDataService<PaymentMode>> getServiceClass() {
 		return IPaymentModeService.class;

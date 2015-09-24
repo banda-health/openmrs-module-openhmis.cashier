@@ -18,6 +18,9 @@ import org.openmrs.module.webservices.rest.web.v1_0.controller.MainResourceContr
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * REST controller for cashier resources.
+ */
 @Controller
 @RequestMapping("/rest/" + RestConstants.VERSION_2 + "/cashier")
 public class CashierResourceController extends MainResourceController {

@@ -33,16 +33,16 @@ public class PaymentMode extends BaseInstanceCustomizableType<PaymentModeAttribu
 
 	public PaymentModeAttributeType addAttributeType(String name, String format, String regExp, boolean required) {
 		PaymentModeAttributeType attributeType = new PaymentModeAttributeType();
-		
+
 		attributeType.setOwner(this);
-		
+
 		attributeType.setName(name);
 		attributeType.setFormat(format);
 		attributeType.setRegExp(regExp);
 		attributeType.setRequired(required);
-		
+
 		addAttributeType(attributeType);
-		
+
 		return attributeType;
 	}
 }

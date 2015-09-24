@@ -47,7 +47,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 
 		mockStatic(Context.class);
 		when(Context.getAdministrationService())
-			.thenReturn(administrationService);
+		        .thenReturn(administrationService);
 	}
 
 	@After
@@ -63,7 +63,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	public void getGenerator_shouldReturnTheCurrentlyDefinedReceiptNumberGenerator() throws Exception {
 		// Configure system generator
 		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
-				.thenReturn(TestReceiptNumberGenerator.class.getName());
+		        .thenReturn(TestReceiptNumberGenerator.class.getName());
 
 		// Get the generator from the factory
 		IReceiptNumberGenerator generator = ReceiptNumberGeneratorFactory.getGenerator();
@@ -79,7 +79,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 
 		// Ensure that the admin service was only called once
 		verify(administrationService, times(1))
-				.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR);
+		        .getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	@Test
 	public void getGenerator_shouldLoadTheGeneratorIfItHasNotBeenLoaded() throws Exception {
 		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
-				.thenReturn(TestReceiptNumberGenerator.class.getName());
+		        .thenReturn(TestReceiptNumberGenerator.class.getName());
 
 		TestReceiptNumberGenerator generator = (TestReceiptNumberGenerator)ReceiptNumberGeneratorFactory.getGenerator();
 
@@ -124,7 +124,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	@Test
 	public void getGenerator_shouldReturnNullIfNoGeneratorHasBeenDefined() throws Exception {
 		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
-				.thenReturn(null);
+		        .thenReturn(null);
 
 		IReceiptNumberGenerator generator = ReceiptNumberGeneratorFactory.getGenerator();
 		Assert.assertNull(generator);
@@ -137,7 +137,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	@Test(expected = APIException.class)
 	public void getGenerator_shouldThrowAPIExceptionIfGeneratorClassCannotBeFound() throws Exception {
 		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
-				.thenReturn("org.openmrs.module.openhmis.cashier.NotAValidClass");
+		        .thenReturn("org.openmrs.module.openhmis.cashier.NotAValidClass");
 
 		ReceiptNumberGeneratorFactory.getGenerator();
 	}
@@ -149,7 +149,7 @@ public class ReceiptNumberGeneratorFactoryTest {
 	@Test(expected = APIException.class)
 	public void getGenerator_shouldThrowAPIExceptionIfGeneratorClassCannotBeInstantiated() throws Exception {
 		when(administrationService.getGlobalProperty(ModuleSettings.SYSTEM_RECEIPT_NUMBER_GENERATOR))
-				.thenReturn(InvalidReceiptNumberGenerator.class.getName());
+		        .thenReturn(InvalidReceiptNumberGenerator.class.getName());
 
 		ReceiptNumberGeneratorFactory.getGenerator();
 	}
@@ -226,7 +226,8 @@ public class ReceiptNumberGeneratorFactoryTest {
 			}
 		}
 
-		Assert.assertTrue("A new generator instance was created when the existing should have been reused.", foundGeneratorInstance);
+		Assert.assertTrue("A new generator instance was created when the existing should have been reused.",
+		    foundGeneratorInstance);
 	}
 
 	/**
@@ -273,6 +274,5 @@ public class ReceiptNumberGeneratorFactoryTest {
 		generator = ReceiptNumberGeneratorFactory.getGenerator();
 		Assert.assertNull(generator);
 	}
-
 
 }

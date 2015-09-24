@@ -1,5 +1,8 @@
 package org.openmrs.module.openhmis.cashier.api.model;
 
+/**
+ * The allowable settings for the cashier module.
+ */
 public class CashierSettings {
 	public static final long serialVersionUID = 1L;
 

@@ -196,17 +196,20 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 				if (expectedPayments[i].getAttributes() == null) {
 					Assert.assertNull(actualPayments[i].getAttributes());
 				} else {
-					Assert.assertEquals(expectedPayments[i].getAttributes().size(), actualPayments[i].getAttributes().size());
+					Assert.assertEquals(expectedPayments[i].getAttributes().size(), actualPayments[i].getAttributes()
+					        .size());
 					if (expectedPayments[i].getAttributes().size() > 0) {
-						PaymentAttribute[] expectedAttributes = new PaymentAttribute[expectedPayments[i].getAttributes().size()];
+						PaymentAttribute[] expectedAttributes =
+						        new PaymentAttribute[expectedPayments[i].getAttributes().size()];
 						expectedPayments[i].getAttributes().toArray(expectedAttributes);
-						PaymentAttribute[] actualAttributes = new PaymentAttribute[actualPayments[i].getAttributes().size()];
+						PaymentAttribute[] actualAttributes =
+						        new PaymentAttribute[actualPayments[i].getAttributes().size()];
 						actualPayments[i].getAttributes().toArray(actualAttributes);
 						for (int j = 0; j < expectedAttributes.length; j++) {
 							Assert.assertEquals(expectedAttributes[j].getId(), actualAttributes[j].getId());
 							Assert.assertEquals(expectedAttributes[j].getValue(), actualAttributes[j].getValue());
 							Assert.assertEquals(expectedAttributes[j].getAttributeType(),
-									actualAttributes[j].getAttributeType());
+							    actualAttributes[j].getAttributeType());
 							Assert.assertEquals(expectedAttributes[j].getUuid(), actualAttributes[j].getUuid());
 						}
 					}
@@ -238,7 +241,8 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 	 * @see IBillService#getBillByReceiptNumber(String)
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void getBillByReceiptNumber_shouldThrowIllegalArgumentExceptionIfTheReceiptNumberIsLongerThan255Characters() throws Exception {
+	public void getBillByReceiptNumber_shouldThrowIllegalArgumentExceptionIfTheReceiptNumberIsLongerThan255Characters()
+	        throws Exception {
 		service.getBillByReceiptNumber(StringUtils.repeat("A", 256));
 	}
 
@@ -349,19 +353,21 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 	public void getBillsByPatientId_shouldThrowIllegalArgumentExceptionIfThePatientIdIsLessThanZero() throws Exception {
 		service.getBillsByPatientId(-1, null);
 	}
-	
+
 	/**
 	 * @verifies throw NullPointerException if bill search is null
-	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch,
+	 *      org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test(expected = NullPointerException.class)
 	public void getBills_throwNullPointerExceptionIfBillSearchIsNull() throws Exception {
 		service.getBills(null, null);
 	}
-	
+
 	/**
 	 * @verifies throw NullPointerException if bill search template object is null
-	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch,
+	 *      org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test(expected = NullPointerException.class)
 	public void getBills_throwNullPointerExceptionIfBillSearchTemplateObjectIsNull() throws Exception {
@@ -372,7 +378,8 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies return an empty list if no bills are found via the search
-	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch,
+	 *      org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
 	public void getBills_returnAnEmptyListIfNoBillsAreFoundViaTheSearch() throws Exception {
@@ -385,10 +392,11 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 		List<Bill> results = service.getBills(billSearch, null);
 		Assert.assertTrue(results.isEmpty());
 	}
-	
+
 	/**
 	 * @verifies return bills filtered by cashier
-	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch,
+	 *      org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
 	public void getBills_returnBillsFilteredByCashier() throws Exception {
@@ -400,7 +408,8 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies return bills filtered by cash point
-	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch,
+	 *      org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
 	public void getBills_returnBillsFilteredByCashPoint() throws Exception {
@@ -409,10 +418,11 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 		List<Bill> results = service.getBills(new BillSearch(bill), null);
 		Assert.assertEquals(1, results.size());
 	}
-	
+
 	/**
 	 * @verifies return bills filtered by patient
-	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch,
+	 *      org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
 	public void getBills_returnBillsFilteredByPatient() throws Exception {
@@ -424,7 +434,8 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies return bills filtered by status
-	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch,
+	 *      org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
 	public void getBills_returnBillsFilteredByStatus() throws Exception {
@@ -433,10 +444,11 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 		List<Bill> results = service.getBills(new BillSearch(bill), null);
 		Assert.assertEquals(1, results.size());
 	}
-	
+
 	/**
 	 * @verifies return all bills if paging is null
-	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch,
+	 *      org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
 	public void getBills_returnAllBillsIfPagingIsNull() throws Exception {
@@ -446,13 +458,14 @@ public abstract class IBillServiceTest extends IEntityDataServiceTest<IBillServi
 
 	/**
 	 * @verifies return paged bills if paging is specified
-	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch, org.openmrs.module.openhmis.commons.api.PagingInfo)
+	 * @see IBillService#getBills(org.openmrs.module.openhmis.cashier.api.search.BillSearch,
+	 *      org.openmrs.module.openhmis.commons.api.PagingInfo)
 	 */
 	@Test
 	public void getBills_returnPagedBillsIfPagingIsSpecified() throws Exception {
 		PagingInfo pagingInfo = new PagingInfo(1, 100);
 		List<Bill> results = service.getBills(new BillSearch(), pagingInfo);
-		
+
 		Assert.assertNotNull(results);
 		Assert.assertEquals(1, results.size());
 		Assert.assertEquals(1, (long)pagingInfo.getTotalRecordCount());

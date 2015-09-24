@@ -21,6 +21,9 @@ import org.openmrs.Provider;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 
+/**
+ * Property editor for {@link org.openmrs.Provider}s
+ */
 public class ProviderPropertyEditor extends PropertyEditorSupport {
 	@Override
 	public String getAsText() {
@@ -32,7 +35,7 @@ public class ProviderPropertyEditor extends PropertyEditorSupport {
 			return provider.getId().toString();
 		}
 	}
-	
+
 	@Override
 	public void setAsText(String text) {
 		ProviderService service = Context.getProviderService();

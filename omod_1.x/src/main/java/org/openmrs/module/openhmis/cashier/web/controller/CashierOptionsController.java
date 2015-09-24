@@ -27,29 +27,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * Controller to manage the Cashier Options page.
+ */
 @Controller
 @RequestMapping("/module/openhmis/cashier/options")
 public class CashierOptionsController {
 	private AdministrationService adminService;
 	private ICashierOptionsService cashierOptionsService;
-	
+
 	@Autowired
 	public CashierOptionsController(AdministrationService adminService, ICashierOptionsService cashierOptionsService) {
 		this.adminService = adminService;
 		this.cashierOptionsService = cashierOptionsService;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public CashierOptions options() {
 		CashierOptions options = cashierOptionsService.getOptions();
-		
+
 		String roundingModeProperty = adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY);
 		String roundingItemId = adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID);
 		if (StringUtils.isNotEmpty(roundingModeProperty)) {
 			if (StringUtils.isEmpty(options.getRoundingItemUuid()) && StringUtils.isNotEmpty(roundingItemId)) {
-				throw new APIException("Rounding item ID set in options but item not found. Make sure your user has the " +
-						"required rights and the item has the set ID in the database");
+				throw new APIException("Rounding item ID set in options but item not found. Make sure your user has the "
+				        + "required rights and the item has the set ID in the database");
 			}
 
 			// Check to see if rounding has been enabled and throw exception if it has as a rounding item must be set

@@ -19,14 +19,17 @@ import org.openmrs.module.openhmis.cashier.api.security.BasicMetadataAuthorizati
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 
+/**
+ * Data service implementation class for {@link PaymentModeAttributeType}s.
+ */
 public class PaymentModeAttributeTypeServiceImpl extends BaseMetadataDataServiceImpl<PaymentModeAttributeType>
         implements IPaymentModeAttributeTypeService {
-	
+
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
 	}
-	
+
 	@Override
 	protected void validate(PaymentModeAttributeType entity) {}
 }

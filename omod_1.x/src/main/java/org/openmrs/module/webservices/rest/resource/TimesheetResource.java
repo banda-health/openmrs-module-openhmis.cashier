@@ -14,6 +14,7 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
+import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -22,6 +23,9 @@ import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
+/**
+ * REST resource representing a {@link Timesheet}.
+ */
 @Resource(name = RestConstants.VERSION_2 + "/cashier/timesheet", supportedClass = Timesheet.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
 public class TimesheetResource extends BaseRestDataResource<Timesheet> {
@@ -29,22 +33,22 @@ public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 	public Timesheet newDelegate() {
 		return new Timesheet();
 	}
-	
+
 	@Override
 	public Class<? extends IEntityDataService<Timesheet>> getServiceClass() {
 		return ITimesheetService.class;
 	}
-	
+
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		if (rep instanceof RefRepresentation) {
 			description.addProperty("id");
 		}
-		
+
 		return description;
 	}
-	
+
 	public String getDisplayString(Timesheet instance) {
 		return instance.getClockIn().toString() + " to "
 		        + (instance.getClockOut() != null ? instance.getClockOut() : " open");

@@ -27,37 +27,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
+/**
+ * Contorller to manage the Sequential Receipt Number Generation
+ */
 @Controller
 @RequestMapping(value = CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_PAGE)
 public class SequentialReceiptNumberGeneratorController {
 	private ISequentialReceiptNumberGeneratorService service;
-	
+
 	@Autowired
 	public SequentialReceiptNumberGeneratorController(ISequentialReceiptNumberGeneratorService service) {
 		this.service = service;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	public void render(ModelMap modelMap) {
 		SequentialReceiptNumberGeneratorModel model = service.getOnly();
-		
+
 		modelMap.addAttribute("generator", model);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(@ModelAttribute("generator") SequentialReceiptNumberGeneratorModel generator, WebRequest request) {
 		if (generator.getSeparator().equals("<space>")) {
 			generator.setSeparator(" ");
 		}
-		
+
 		// The check digit checkbox value is only bound if checked
 		if (request.getParameter("includeCheckDigit") == null) {
 			generator.setIncludeCheckDigit(false);
 		}
-		
+
 		// Save the generator settings
 		service.save(generator);
-		
+
 		// Set the system generator
 		ReceiptNumberGeneratorFactory.setGenerator(new SequentialReceiptNumberGenerator());
 		return UrlUtil.redirectUrl("/" + CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT);
