@@ -42,7 +42,6 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 	
 	@Override
 	public String getDisplayString(PaymentAttribute instance) {
-		String instanceName = instance.getAttributeType().getName();
 		String instanceFormat = instance.getAttributeType().getFormat();
 		String names = null;
 
@@ -78,7 +77,7 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 			names = instance.getValue();
 		}
 
-		return instanceName + ": " + names;
+		return instance.getAttributeType().getName() + ": " + names;
 	}
 	
 	public String getValueName(PaymentAttribute instance) {
