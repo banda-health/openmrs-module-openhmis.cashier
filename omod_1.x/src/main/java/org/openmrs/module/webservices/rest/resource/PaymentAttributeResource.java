@@ -43,36 +43,39 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 	@Override
 	public String getDisplayString(PaymentAttribute instance) {
 		String instanceName = instance.getAttributeType().getName();
+		String instanceFormat = instance.getAttributeType().getFormat();
 		String names = null;
 
-		if (instanceName.equals("User")) {
+		if (instanceFormat.contains("User")) {
 			UserService userService = Context.getUserService();
 			String userId = instance.getValue();
 			names = String.valueOf(userService.getUser(Integer.valueOf(userId)).getPersonName());
-		} else if (instanceName.equals("Location")) {
+		} else if (instanceFormat.contains("Location")) {
 			LocationService locationService = Context.getLocationService();
 			String locationId = instance.getValue();
 			names= String.valueOf(locationService.getLocation(Integer.valueOf(locationId)).getDisplayString());
-		} else if (instanceName.equals("Provider")) {
+		} else if (instanceFormat.contains("Provider")) {
 			ProviderService providerService = Context.getProviderService();
 			String providerId = instance.getValue();
-			names = String.valueOf(providerService.getProvider(Integer.valueOf(providerId)).getPerson().getPersonName());
-		} else if (instanceName.equals("Patient")) {
-			PatientService patientService = Context.getPatientService();
-			String patientId = instance.getValue();
-			names = String.valueOf(patientService.getPatient(Integer.valueOf(patientId)).getNames());
-		} else if (instanceName.equals("Encounter")) {
-			EncounterService encounterService = Context.getEncounterService();
-			String encounterId = instance.getValue();
-			names = String.valueOf(encounterService.getEncounter(Integer.valueOf(encounterId)).getPatient().getNames());
-		} else if (instanceName.equals("ProgramWorkflow")) {
-			ProgramWorkflowService programWorkflowService  = Context.getProgramWorkflowService();
-			String programWorkflowId = instance.getValue();
-			names = String.valueOf(programWorkflowService.getProgram(Integer.valueOf(programWorkflowId)).getName());
-		} else if (instanceName.equals("Concept")) {
+			names = String.valueOf(providerService.getProvider(Integer.valueOf(providerId)).getName());
+		} else if (instanceFormat.contains("Concept")) {
 			ConceptService conceptService = Context.getConceptService();
 			String conceptId = instance.getValue();
 			names = String.valueOf(conceptService.getConcept(Integer.valueOf(conceptId)).getName());
+		} else if (instanceFormat.contains("Patient")) {
+			PatientService patientService = Context.getPatientService();
+			String patientId = instance.getValue();
+			names = String.valueOf(patientService.getPatient(Integer.valueOf(patientId)).getNames());
+		} else if (instanceFormat.contains("Encounter")) {
+			EncounterService encounterService = Context.getEncounterService();
+			String encounterId = instance.getValue();
+			names = String.valueOf(encounterService.getEncounter(Integer.valueOf(encounterId)));
+		} else if (instanceFormat.contains("ProgramWorkflow")) {
+			ProgramWorkflowService programWorkflowService  = Context.getProgramWorkflowService();
+			String programWorkflowId = instance.getValue();
+			names = programWorkflowService.getProgram(Integer.valueOf(programWorkflowId)).getName();
+		} else {
+			names = instance.getValue();
 		}
 
 		return instanceName + ": " + names;
