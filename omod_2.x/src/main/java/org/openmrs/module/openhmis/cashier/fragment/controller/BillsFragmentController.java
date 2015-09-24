@@ -17,20 +17,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openmrs.Patient;
-import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.ui.framework.annotation.FragmentParam;
+import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 
+/**
+ * Spring OpenMRS 2.x Controller for Bills (bills.gsp) page
+ */
 public class BillsFragmentController {
-	public void controller(FragmentModel model, @FragmentParam("patientId") Patient patient) {
-		IBillService iBillService = Context.getService(IBillService.class);
-		List<Bill> bills = iBillService.getBillsByPatient(patient, null);
+	public void controller(FragmentModel model, @FragmentParam("patientId") Patient patient,
+	        @SpringBean("cashierBillService") IBillService billService) {
+		Integer numberConfiguredToShow = ModuleSettings.loadSettings().getNumberOfBillsToShowOnEachPage();
+		List<Bill> bills = billService.getBillsByPatient(patient, new PagingInfo(1, numberConfiguredToShow));
 		List<Bill> billsToReturn = new ArrayList<Bill>();
-		Integer numberConfiguredToShow =
-		        Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		            "openhmis.cashier.numberOfBillsFor2xPatientDashboard"));
 		Integer numberToShow = numberConfiguredToShow >= bills.size() ? bills.size() : numberConfiguredToShow;
 
 		for (int i = 0; i < numberToShow; i++) {

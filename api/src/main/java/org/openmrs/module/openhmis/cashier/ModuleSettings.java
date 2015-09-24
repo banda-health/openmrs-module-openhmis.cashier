@@ -35,6 +35,8 @@ public class ModuleSettings {
 	public static final String ADJUSTMENT_REASEON_FIELD = "openhmis.cashier.adjustmentReasonField";
 	public static final String ALLOW_BILL_ADJUSTMENT = "openhmis.cashier.allowBillAdjustments";
 	public static final String AUTOFILL_PAYMENT_AMOUNT = "openhmis.cashier.autofillPaymentAmount";
+	public static final String NUMBER_OF_BILLS_TO_DISPLAY_ON_EACH_PAGE =
+	        "openhmis.cashier.numberOfBillsFor2xPatientDashboard";
 
 	protected ModuleSettings() {}
 
@@ -106,6 +108,12 @@ public class ModuleSettings {
 		if (!StringUtils.isEmpty(property)) {
 			cashierSettings.setCashierTimesheetRequired(Boolean.parseBoolean(property));
 		}
+
+		property = administrationService.getGlobalProperty(NUMBER_OF_BILLS_TO_DISPLAY_ON_EACH_PAGE);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setNumberOfBillsToShowOnEachPage(Integer.parseInt(property));
+		}
+
 		return cashierSettings;
 	}
 

@@ -331,13 +331,12 @@ public class Bill extends BaseOpenmrsData {
 			lineItem.setLineItemOrder(orderCounter++);
 		}
 	}
-	
+
 	public String getLastUpdated() {
 		SimpleDateFormat ft = Context.getDateTimeFormat();
 		String changedStr = (this.getDateChanged() != null) ? ft.format(this.getDateChanged()) : null;
 		String createdStr = (this.getDateCreated() != null) ? ft.format(this.getDateCreated()) : "";
-		String dateString = (changedStr != null) ? changedStr
-		        : createdStr;
+		String dateString = (changedStr != null) ? changedStr : createdStr;
 
 		return dateString;
 	}

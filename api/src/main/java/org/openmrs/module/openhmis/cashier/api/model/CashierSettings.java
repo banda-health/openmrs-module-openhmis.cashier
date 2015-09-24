@@ -15,6 +15,7 @@ public class CashierSettings {
 	private Integer cashierRoundingToNearest;
 	private String cashierRoundingMode;
 	private Boolean cashierTimesheetRequired;
+	private Integer numberOfBillsToShowOnEachPage;
 
 	public Boolean getAdjustmentReasonField() {
 		return adjustmentReasonField;
@@ -86,5 +87,13 @@ public class CashierSettings {
 
 	public void setCashierTimesheetRequired(Boolean cashierTimesheetRequired) {
 		this.cashierTimesheetRequired = cashierTimesheetRequired;
+	}
+
+	public Integer getNumberOfBillsToShowOnEachPage() {
+		return numberOfBillsToShowOnEachPage;
+	}
+
+	public void setNumberOfBillsToShowOnEachPage(Integer numberOfBillsToShowOnEachPage) {
+		this.numberOfBillsToShowOnEachPage = numberOfBillsToShowOnEachPage;
 	}
 }
