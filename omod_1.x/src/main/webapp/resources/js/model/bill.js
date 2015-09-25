@@ -210,7 +210,13 @@ define(
 			},
 			
 			toString: function() {
-				var str = this.get("receiptNumber");
+				var receiptNumber = this.get("receiptNumber");
+				var str = null;
+				if (receiptNumber == null) {
+					str = this.get("id");
+				} else{
+					str = receiptNumber;
+				}
 				return str ? str : openhmis.GenericModel.prototype.toString.call(this);
 			}
 		});
