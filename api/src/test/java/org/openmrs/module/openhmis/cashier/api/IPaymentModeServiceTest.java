@@ -78,14 +78,14 @@ public class IPaymentModeServiceTest extends IMetadataDataServiceTest<IPaymentMo
 	protected void assertEntity(PaymentMode expected, PaymentMode actual) {
 		super.assertEntity(expected, actual);
 
-		Assert.assertEquals(expected.getName(),  actual.getName());
+		Assert.assertEquals(expected.getName(), actual.getName());
 		Assert.assertEquals(expected.getDescription(), actual.getDescription());
 
 		List<PaymentModeAttributeType> expectedTypes = expected.getAttributeTypes();
 		List<PaymentModeAttributeType> actualTypes = actual.getAttributeTypes();
 		Assert.assertEquals(expectedTypes.size(), actualTypes.size());
 
-		for (int i = 0; i <expectedTypes.size(); i++) {
+		for (int i = 0; i < expectedTypes.size(); i++) {
 			PaymentModeAttributeType expectedType = expectedTypes.get(i);
 			PaymentModeAttributeType actualType = actualTypes.get(i);
 

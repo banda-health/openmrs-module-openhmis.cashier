@@ -56,7 +56,7 @@ public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
 	 */
 	@Test
 	public void getOptions_shouldRevertToDefaultsIfThereAreProblemsLoadingOptions()
-			throws Exception {
+	        throws Exception {
 		executeDataSet(OPTIONS_DATASET_INVALID);
 		CashierOptions reference = new CashierOptions();
 		CashierOptions options = cashierOptionsService.getOptions();

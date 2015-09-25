@@ -22,7 +22,12 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
-import org.openmrs.module.openhmis.cashier.api.model.*;
+import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
+import org.openmrs.module.openhmis.cashier.api.model.BillStatus;
+import org.openmrs.module.openhmis.cashier.api.model.Payment;
+import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
+import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.RoundingUtil;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -34,8 +39,15 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.springframework.web.client.RestClientException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+/**
+ * REST resource representing a {@link Bill}.
+ */
 @Resource(name = RestConstants.VERSION_2 + "/cashier/bill", supportedClass = Bill.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
 public class BillResource extends BaseRestDataResource<Bill> {
@@ -57,12 +69,12 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		}
 		return description;
 	}
-	
+
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		return getRepresentationDescription(new DefaultRepresentation());
 	}
-	
+
 	@PropertySetter("lineItems")
 	public void setBillLineItems(Bill instance, List<BillLineItem> lineItems) {
 		if (instance.getLineItems() == null) {
@@ -73,7 +85,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			item.setBill(instance);
 		}
 	}
-	
+
 	@PropertySetter("payments")
 	public void setBillPayments(Bill instance, Set<Payment> payments) {
 		if (instance.getPayments() == null) {
@@ -84,13 +96,13 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			instance.addPayment(payment);
 		}
 	}
-	
+
 	@PropertySetter("billAdjusted")
 	public void setBillAdjusted(Bill instance, Bill billAdjusted) {
 		billAdjusted.addAdjustedBy(instance);
 		instance.setBillAdjusted(billAdjusted);
 	}
-	
+
 	@PropertySetter("status")
 	public void setBillStatus(Bill instance, BillStatus status) {
 		if (instance.getStatus() == null) {
@@ -102,7 +114,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			RoundingUtil.handleRoundingLineItem(instance);
 		}
 	}
-	
+
 	@PropertySetter("adjustmentReason")
 	public void setAdjustReason(Bill instance, String adjustReason) {
 		if (instance.getBillAdjusted().getUuid() != null) {
@@ -113,7 +125,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	@Override
 	public Bill save(Bill bill) {
 		//TODO: Test all the ways that this could fail
-		
+
 		if (bill.getId() == null) {
 			if (bill.getCashier() == null) {
 				Provider cashier = getCurrentCashier(bill);
@@ -121,14 +133,14 @@ public class BillResource extends BaseRestDataResource<Bill> {
 					throw new RestClientException("Couldn't find Provider for the current user ("
 					        + Context.getAuthenticatedUser().getName() + ")");
 				}
-				
+
 				bill.setCashier(cashier);
 			}
-			
+
 			if (bill.getCashPoint() == null) {
 				loadBillCashPoint(bill);
 			}
-			
+
 			// Now that all all attributes have been set (i.e., payments and bill status) we can check to see if the bill
 			// is fully paid.
 			bill.checkPaidAndUpdateStatus();
@@ -136,33 +148,33 @@ public class BillResource extends BaseRestDataResource<Bill> {
 				bill.setStatus(BillStatus.PENDING);
 			}
 		}
-		
+
 		return super.save(bill);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<IEntityDataService<Bill>> getServiceClass() {
 		return (Class<IEntityDataService<Bill>>)(Object)IBillService.class;
 	}
-	
+
 	public String getDisplayString(Bill instance) {
 		return instance.getReceiptNumber();
 	}
-	
+
 	@Override
 	public Bill newDelegate() {
 		return new Bill();
 	}
-	
+
 	private Provider getCurrentCashier(Bill bill) {
 		User currentUser = Context.getAuthenticatedUser();
 		ProviderService service = Context.getProviderService();
 		Collection<Provider> providers = service.getProvidersByPerson(currentUser.getPerson());
-		
+
 		return Iterators.get(providers.iterator(), 0, null);
 	}
-	
+
 	private void loadBillCashPoint(Bill bill) {
 		ITimesheetService service = Context.getService(ITimesheetService.class);
 		Timesheet timesheet = service.getCurrentTimesheet(bill.getCashier());
@@ -175,7 +187,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			} catch (Exception e) {
 				timesheetRequired = false;
 			}
-			
+
 			if (timesheetRequired) {
 				throw new RestClientException("A current timesheet does not exist for cashier " + bill.getCashier());
 			} else if (bill.getBillAdjusted() != null) {
