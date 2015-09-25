@@ -13,8 +13,6 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
-import java.awt.*;
-
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -49,7 +47,6 @@ public class ReceiptController {
 			return;
 		}
 
-
 		IBillService service = Context.getService(IBillService.class);
 		Bill bill = service.getById(billId);
 		if (!validateBill(billId, bill, response)) {
@@ -78,7 +75,6 @@ public class ReceiptController {
 			report.setName(String.valueOf(billId));
 		}
 
-
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("billId", bill.getId());
 
@@ -86,11 +82,11 @@ public class ReceiptController {
 			ReportGenerator.generateHtmlAndWriteToResponse(report, params, response);
 		} catch (IOException e) {
 			if (StringUtils.isEmpty(bill.getReceiptNumber())) {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating report for receipt '" +
-						bill.getReceiptNumber() + "'");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating report for receipt '"
+				        + bill.getReceiptNumber() + "'");
 			} else {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating report for bill '" +
-						billId + "'");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating report for bill '"
+				        + billId + "'");
 			}
 
 			return false;
@@ -104,19 +100,19 @@ public class ReceiptController {
 
 	private boolean validateBill(Integer billId, Bill bill, HttpServletResponse response) throws IOException {
 		if (bill == null) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find bill with bill Id '" +
-					billId + "'");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find bill with bill Id '"
+			        + billId + "'");
 
 			return false;
 		}
 
 		if (bill.isReceiptPrinted() && !Context.hasPrivilege(PrivilegeConstants.REPRINT_RECEIPT)) {
 			if (StringUtils.isEmpty(bill.getReceiptNumber())) {
-				response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to reprint receipt '" +
-						bill.getReceiptNumber() + "'");
+				response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to reprint receipt '"
+				        + bill.getReceiptNumber() + "'");
 			} else {
-				response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to reprint bill '" +
-						billId + "'");
+				response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to reprint bill '"
+				        + billId + "'");
 			}
 
 			return false;

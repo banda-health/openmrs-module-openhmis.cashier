@@ -122,7 +122,6 @@ public class BillResource extends BaseRestDataResource<Bill> {
 		}
 	}
 
-
 	@Override
 	public Bill save(Bill bill) {
 		//TODO: Test all the ways that this could fail
