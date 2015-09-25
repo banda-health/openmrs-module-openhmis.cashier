@@ -37,7 +37,7 @@ public class ModuleSettings {
 	public static final String AUTOFILL_PAYMENT_AMOUNT = "openhmis.cashier.autofillPaymentAmount";
 	public static final String NUMBER_OF_BILLS_TO_DISPLAY_ON_EACH_PAGE =
 	        "openhmis.cashier.patientDashboard2BillCount";
-	private static final Integer PATIENTDASHBOARD2BILLCOUNT = 10;//avoids '10' is a magic number.
+	private static final Integer DEFAULT_NUMBER_OF_BILLS_TO_DISPLAY_ON_EACH_PAGE = 10;//avoids '10' is a magic number.
 
 	protected ModuleSettings() {}
 
@@ -114,7 +114,7 @@ public class ModuleSettings {
 		if (!StringUtils.isEmpty(property)) {
 			cashierSettings.setPatientDashboard2BillCount(Integer.parseInt(property));
 		} else {
-			cashierSettings.setPatientDashboard2BillCount(PATIENTDASHBOARD2BILLCOUNT);
+			cashierSettings.setPatientDashboard2BillCount(DEFAULT_NUMBER_OF_BILLS_TO_DISPLAY_ON_EACH_PAGE);
 		}
 
 		return cashierSettings;
