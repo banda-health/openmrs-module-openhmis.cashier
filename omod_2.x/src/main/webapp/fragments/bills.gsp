@@ -11,7 +11,7 @@
 <div class="info-section bills">
     <div class="info-header">
         <i class="icon-money"></i>
-        <h3>${ ui.message("openhmis.cashier.patient.bill.history").toUpperCase() } +${ ui.globalProperty("openhmis.cashier.patientDashboard2BillCount") }+</h3>
+        <h3>${ ui.message("openhmis.cashier.patient.bill.history").toUpperCase() }</h3>
         <i class="icon-plus edit-action right" title='${ ui.message("openhmis.cashier.addBill") }' onclick="location.href='/${ui.contextPath()}/module/openhmis/cashier/bill.form?patientUuid=${param.patientId[0]}'"></i>
     </div>
     <div class="info-body">
