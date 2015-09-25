@@ -65,6 +65,7 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			description.addProperty("receiptNumber");
 			description.addProperty("status");
 			description.addProperty("adjustmentReason");
+			description.addProperty("id");
 		}
 		return description;
 	}
