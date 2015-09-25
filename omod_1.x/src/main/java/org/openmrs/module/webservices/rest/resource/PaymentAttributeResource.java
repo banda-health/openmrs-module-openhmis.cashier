@@ -14,7 +14,13 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.Concept;
-import org.openmrs.api.*;
+import org.openmrs.api.ConceptService;
+import org.openmrs.api.LocationService;
+import org.openmrs.api.ProviderService;
+import org.openmrs.api.UserService;
+import org.openmrs.api.PatientService;
+import org.openmrs.api.EncounterService;
+import org.openmrs.api.ProgramWorkflowService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
@@ -48,15 +54,15 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 		if (instanceFormat.contains("User")) {
 			UserService userService = Context.getUserService();
 			String userId = instance.getValue();
-			names = String.valueOf(userService.getUser(Integer.valueOf(userId)).getPersonName());
+			names = (userService.getUser(Integer.valueOf(userId)).getDisplayString());
 		} else if (instanceFormat.contains("Location")) {
 			LocationService locationService = Context.getLocationService();
 			String locationId = instance.getValue();
-			names= String.valueOf(locationService.getLocation(Integer.valueOf(locationId)).getDisplayString());
+			names= locationService.getLocation(Integer.valueOf(locationId)).getDisplayString();
 		} else if (instanceFormat.contains("Provider")) {
 			ProviderService providerService = Context.getProviderService();
 			String providerId = instance.getValue();
-			names = String.valueOf(providerService.getProvider(Integer.valueOf(providerId)).getName());
+			names = providerService.getProvider(Integer.valueOf(providerId)).getName();
 		} else if (instanceFormat.contains("Concept")) {
 			ConceptService conceptService = Context.getConceptService();
 			String conceptId = instance.getValue();
@@ -64,11 +70,11 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 		} else if (instanceFormat.contains("Patient")) {
 			PatientService patientService = Context.getPatientService();
 			String patientId = instance.getValue();
-			names = String.valueOf(patientService.getPatient(Integer.valueOf(patientId)).getNames());
+			names = String.valueOf(patientService.getPatient(Integer.valueOf(patientId)).getPersonName());
 		} else if (instanceFormat.contains("Encounter")) {
 			EncounterService encounterService = Context.getEncounterService();
 			String encounterId = instance.getValue();
-			names = String.valueOf(encounterService.getEncounter(Integer.valueOf(encounterId)));
+			names = encounterService.getEncounter(Integer.valueOf(encounterId)).toString();
 		} else if (instanceFormat.contains("ProgramWorkflow")) {
 			ProgramWorkflowService programWorkflowService  = Context.getProgramWorkflowService();
 			String programWorkflowId = instance.getValue();
