@@ -93,7 +93,7 @@
 	</globalProperty>
 	
 	<globalProperty>
-		<property>${project.parent.artifactId}.numberOfBillsFor2xPatientDashboard</property>
+		<property>${project.parent.artifactId}.patientDashboard2BillCount</property>
 		<description>
 			Number of Bills to show up on the OpenMRS 2.x patientDashboard.
 		</description>

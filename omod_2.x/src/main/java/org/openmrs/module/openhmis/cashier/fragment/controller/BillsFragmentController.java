@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.openhmis.cashier.fragment.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openmrs.Patient;
@@ -29,17 +28,12 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
  * Spring OpenMRS 2.x Controller for Bills (bills.gsp) page
  */
 public class BillsFragmentController {
+
 	public void controller(FragmentModel model, @FragmentParam("patientId") Patient patient,
 	        @SpringBean("cashierBillService") IBillService billService) {
-		Integer numberConfiguredToShow = ModuleSettings.loadSettings().getNumberOfBillsToShowOnEachPage();
+		Integer numberConfiguredToShow = ModuleSettings.loadSettings().getPatientDashboard2BillCount();
 		List<Bill> bills = billService.getBillsByPatient(patient, new PagingInfo(1, numberConfiguredToShow));
-		List<Bill> billsToReturn = new ArrayList<Bill>();
-		Integer numberToShow = numberConfiguredToShow >= bills.size() ? bills.size() : numberConfiguredToShow;
 
-		for (int i = 0; i < numberToShow; i++) {
-			billsToReturn.add(bills.get(i));
-		}
-
-		model.addAttribute("bills", billsToReturn);
+		model.addAttribute("bills", bills);
 	}
 }
