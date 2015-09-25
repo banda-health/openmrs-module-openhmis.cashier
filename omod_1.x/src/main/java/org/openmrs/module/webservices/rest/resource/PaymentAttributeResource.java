@@ -66,11 +66,11 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 		} else if (instanceFormat.contains("Concept")) {
 			ConceptService conceptService = Context.getConceptService();
 			String conceptId = instance.getValue();
-			names = String.valueOf(conceptService.getConcept(Integer.valueOf(conceptId)).getName());
+			names = conceptService.getConcept(Integer.valueOf(conceptId)).getDisplayString();
 		} else if (instanceFormat.contains("Patient")) {
 			PatientService patientService = Context.getPatientService();
 			String patientId = instance.getValue();
-			names = String.valueOf(patientService.getPatient(Integer.valueOf(patientId)).getPersonName());
+			names = patientService.getPatient(Integer.valueOf(patientId)).getPersonName().getFullName();
 		} else if (instanceFormat.contains("Encounter")) {
 			EncounterService encounterService = Context.getEncounterService();
 			String encounterId = instance.getValue();
