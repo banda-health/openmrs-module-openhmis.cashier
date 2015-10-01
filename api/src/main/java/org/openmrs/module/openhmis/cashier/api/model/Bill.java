@@ -15,6 +15,7 @@ package org.openmrs.module.openhmis.cashier.api.model;
 
 import java.math.BigDecimal;
 import java.security.AccessControlException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -331,4 +332,12 @@ public class Bill extends BaseOpenmrsData {
 		}
 	}
 
+	public String getLastUpdated() {
+		SimpleDateFormat ft = Context.getDateTimeFormat();
+		String changedStr = (this.getDateChanged() != null) ? ft.format(this.getDateChanged()) : null;
+		String createdStr = (this.getDateCreated() != null) ? ft.format(this.getDateCreated()) : "";
+		String dateString = (changedStr != null) ? changedStr : createdStr;
+
+		return dateString;
+	}
 }
