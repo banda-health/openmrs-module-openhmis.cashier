@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import org.apache.log4j.Logger;
 import org.openmrs.Concept;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
@@ -35,6 +36,8 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass = PaymentAttribute.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
 public class PaymentAttributeResource extends BaseRestAttributeDataResource<PaymentAttribute, PaymentModeAttributeType> {
+	private static final Logger log = Logger.getLogger(PaymentAttributeResource.class);
+
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
@@ -53,32 +56,61 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 
 		if (instanceFormat.contains("User")) {
 			UserService userService = Context.getUserService();
-			String userId = instance.getValue();
-			names = (userService.getUser(Integer.valueOf(userId)).getDisplayString());
+			try {
+				Integer userId = Integer.valueOf(instance.getValue());
+				names = (userService.getUser(userId).getDisplayString());
+			} catch (NumberFormatException ex) {
+				log.error("The user Id should be a number  " + ex);
+			}
+
 		} else if (instanceFormat.contains("Location")) {
 			LocationService locationService = Context.getLocationService();
-			String locationId = instance.getValue();
-			names= locationService.getLocation(Integer.valueOf(locationId)).getDisplayString();
+			try {
+				Integer locationId = Integer.valueOf(instance.getValue());
+				names= locationService.getLocation(locationId).getDisplayString();
+			} catch (NumberFormatException ex) {
+				log.error("The location Id should be a number " + ex);
+			}
 		} else if (instanceFormat.contains("Provider")) {
 			ProviderService providerService = Context.getProviderService();
-			String providerId = instance.getValue();
-			names = providerService.getProvider(Integer.valueOf(providerId)).getName();
+			try {
+				Integer providerId = Integer.valueOf(instance.getValue());
+				names = providerService.getProvider(providerId).getName();
+			} catch (NumberFormatException ex) {
+				log.error("The Provider Id should be a number " + ex);
+			}
 		} else if (instanceFormat.contains("Concept")) {
 			ConceptService conceptService = Context.getConceptService();
-			String conceptId = instance.getValue();
-			names = conceptService.getConcept(Integer.valueOf(conceptId)).getDisplayString();
+			try {
+				Integer conceptId = Integer.valueOf(instance.getValue());
+				names = conceptService.getConcept(conceptId).getDisplayString();
+			} catch (NumberFormatException ex) {
+				log.error("The Concept Id should be a number " + ex);
+			}
 		} else if (instanceFormat.contains("Patient")) {
 			PatientService patientService = Context.getPatientService();
-			String patientId = instance.getValue();
-			names = patientService.getPatient(Integer.valueOf(patientId)).getPersonName().getFullName();
+			try {
+				Integer patientId = Integer.valueOf(instance.getValue());
+				names = patientService.getPatient(patientId).getPersonName().getFullName();
+			} catch (NumberFormatException ex) {
+				log.error("The Patient Id should be a number " +ex);
+			}
 		} else if (instanceFormat.contains("Encounter")) {
 			EncounterService encounterService = Context.getEncounterService();
-			String encounterId = instance.getValue();
-			names = encounterService.getEncounter(Integer.valueOf(encounterId)).toString();
+			try {
+				Integer encounterId = Integer.valueOf(instance.getValue());
+				names = encounterService.getEncounter(encounterId).toString();
+			} catch (NumberFormatException ex) {
+				log.error("Encounter Id Should be a number " +ex);
+			}
 		} else if (instanceFormat.contains("ProgramWorkflow")) {
 			ProgramWorkflowService programWorkflowService  = Context.getProgramWorkflowService();
-			String programWorkflowId = instance.getValue();
-			names = programWorkflowService.getProgram(Integer.valueOf(programWorkflowId)).getName();
+			try {
+				Integer programWorkflowId = Integer.valueOf(instance.getValue());
+				names = programWorkflowService.getProgram(programWorkflowId).getName();
+			} catch (NumberFormatException ex) {
+				log.error("The Program WorkFlow should be a number " + ex);
+			}
 		} else {
 			names = instance.getValue();
 		}
