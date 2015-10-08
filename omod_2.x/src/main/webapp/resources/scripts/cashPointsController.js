@@ -1,4 +1,5 @@
 var cashPointsApp = angular.module('cashPointsApp', ['ngResource', 'ngSanitize']);
+var loadedCashPointuuid = window.location.search.split("=")[0] === "?uuid" ? window.location.search.split("=")[1] : ""; //search looks like; '?uuid=09404'
 
 cashPointsApp.factory('CashPointsService', ['$resource',
     function($resource) {
@@ -16,7 +17,7 @@ cashPointsApp.factory('CashPointsService', ['$resource',
         "uuid": emr.message('Location.hierarchy.heading') === "Location.hierarchy.heading" ? "All Locations" : emr.message('Location.hierarchy.heading'),
         "display": emr.message('Location.hierarchy.heading') === "Location.hierarchy.heading" ? "All Locations" : emr.message('Location.hierarchy.heading')
     };
-    
+
     $scope.locations = [allLocationSelectOption];
 
     $scope.triggerIncludeRetiredcashPoints = function() {
@@ -28,7 +29,9 @@ cashPointsApp.factory('CashPointsService', ['$resource',
     }
     $scope.strikeThrough = function(retired) {
         if (retired) {
-            return { "text-decoration": "line-through" };
+            return {
+                "text-decoration": "line-through"
+            };
         } else {
             return {};
         }
@@ -37,21 +40,21 @@ cashPointsApp.factory('CashPointsService', ['$resource',
         CashPointsService.query({
             "includeAll": true
         }, function(response) {
-            initialize($scope, response, true);
+            initializeForManagePage($scope, response, true);
             $scope.originalCashPointsResponse = response;
         });
     }
     $scope.fetchNonRetiredCashPoints = function() {
         CashPointsService.query(function(response) {
-            initialize($scope, response, false);
+            initializeForManagePage($scope, response, false);
             $scope.originalCashPointsResponse = response;
         });
     }
     $scope.setLocationFilter = function() {
         if ($scope.selectedLocation === (emr.message('Location.hierarchy.heading') === "Location.hierarchy.heading" ? "All Locations" : emr.message('Location.hierarchy.heading'))) {
-            initialize($scope, $scope.originalCashPointsResponse, $scope.includeRetired === undefined ? false : $scope.includeRetired);
+            initializeForManagePage($scope, $scope.originalCashPointsResponse, $scope.includeRetired === undefined ? false : $scope.includeRetired);
         } else {
-            initialize($scope, $scope.originalCashPointsResponse, $scope.includeRetired === undefined ? false : $scope.includeRetired, $scope.selectedLocation);
+            initializeForManagePage($scope, $scope.originalCashPointsResponse, $scope.includeRetired === undefined ? false : $scope.includeRetired, $scope.selectedLocation);
         }
     }
     $scope.fetchNonRetiredCashPoints();
@@ -68,9 +71,135 @@ cashPointsApp.factory('CashPointsService', ['$resource',
     }
 
     $scope.populateLocationsSelect();
+
+    /*start support for new/edit cash point page*/
+    $scope.updateExistingcashPointNames = function() {
+        CashPointsService.query({
+            "includeAll": true
+        }, function(resp) {
+            $scope.fetchedcashPointsNames = [];
+
+            for (i = 0; i < resp.results.length; i++) {
+                $scope.fetchedcashPointsNames.push(resp.results[i].name.toLowerCase());
+            }
+        });
+    }
+    $scope.getAndInitialize = function(uuid) {
+        CashPointsService.get({
+            "uuid": uuid
+        }, function(cashPoint) {
+            initializeEditPage(emr, $scope, cashPoint);
+        }, function(responseError) {
+            initializeEditPage(emr, $scope, undefined);
+            emr.errorMessage(emr.message("openhmis.cashier.cashPoint.error.notFound"));
+        });
+    }
+
+    $scope.save = function() {
+        CashPointsService.save({
+            "name": $scope.cashPoint.name,
+            "description": $scope.cashPoint.description,
+            "location": $scope.cashPoint.location
+        }, function(data) {
+            initializeEditPage(emr, $scope, data);
+            emr.successMessage(emr.message("openhmis.cashier.cashPoint.created.success"));
+        });
+    }
+
+    $scope.update = function() {
+        CashPointsService.save({
+            "uuid": $scope.cashPoint.uuid,
+            "name": $scope.cashPoint.name,
+            "description": $scope.cashPoint.description,
+            "location": $scope.cashPoint.location
+        }, function(data) {
+            initializeEditPage(emr, $scope, data);
+            emr.successMessage(emr.message("openhmis.cashier.cashPoint.updated.success"));
+        });
+    }
+
+    $scope.retire = function() {
+        CashPointsService.remove({
+            "uuid": $scope.cashPoint.uuid,
+            "reason": $scope.cashPoint.retireReason
+        }, function() {
+            $scope.getAndInitialize($scope.cashPoint.uuid);
+            emr.successMessage(emr.message("openhmis.cashier.cashPoint.retired.success"));
+        });
+    }
+
+    $scope.unretire = function() {
+        CashPointsService.save({
+                "uuid": $scope.cashPoint.uuid,
+                "retired": false
+            },
+            function(data) {
+                $scope.getAndInitialize($scope.cashPoint.uuid);
+                emr.successMessage(emr.message("openhmis.cashier.cashPoint.unretired.success"));
+            });
+    }
+    $scope.purge = function() {
+        if (confirm(emr.message("openhmis.cashier.cashPoint.confirm.delete"))) {
+            CashPointsService.remove({
+                "uuid": $scope.cashPoint.uuid,
+                "purge": ""
+            }, function() {
+                window.location = "manageCashPoints.page";
+                emr.successMessage(emr.message("openhmis.cashier.cashPoint.deleted.success"));
+            });
+        }
+    }
+
+    $scope.saveOrUpdate = function() {
+        if ($scope.cashPoint.name === undefined || $scope.cashPoint.name === "") {
+            emr.errorMessage(emr.message("openhmis.cashier.cashPoint.name.required"));
+            $scope.nameIsRequiredMsg = emr.message("openhmis.cashier.cashPoint.name.required");
+        } else if ($scope.cashPoint.location === "All Locations") {
+            emr.errorMessage(emr.message("openhmis.cashier.cashPoint.location.required"));
+            $scope.locationIsRequiredMsg = emr.message("openhmis.cashier.cashPoint.location.required");
+        } else {
+            $scope.nameIsRequiredMsg = "";
+            $scope.locationIsRequiredMsg = "";
+            if ($scope.cashPoint.uuid === "" || $scope.cashPoint.uuid === undefined) {
+                if ($scope.fetchedcashPointsNames.indexOf($scope.cashPoint.name.toLowerCase()) === -1) {
+                    $scope.nameIsRequiredMsg = "";
+                    $scope.save();
+                } else {
+                    emr.errorMessage(emr.message("openhmis.cashier.cashPoint.error.duplicate"));
+                    $scope.nameIsRequiredMsg = emr.message("openhmis.cashier.cashPoint.error.duplicate");
+                }
+            } else {
+                $scope.update();
+            }
+        }
+    }
+
+    $scope.cancel = function() {
+        window.location = "manageCashPoints.page";
+    }
+
+    $scope.retireOrUnretireFunction = function() {
+        if ($scope.cashPoint.retired === true) {
+            $scope.unretire();
+        } else {
+            if ($scope.cashPoint.retireReason === "") {
+                emr.errorMessage(emr.message("openhmis.cashier.cashPoint.retireReason.required"));
+                $scope.retireReasonIsRequiredMsg = emr.message("openhmis.cashier.cashPoint.retireReason.required");
+            } else {
+                $scope.retireReasonIsRequiredMsg = "";
+                $scope.retire();
+            }
+        }
+    }
+
+    if (loadedCashPointuuid === "") {
+        initializeEditPage(emr, $scope, undefined);
+    } else {
+        $scope.getAndInitialize(loadedCashPointuuid);
+    }
 });
 
-/*Adds a new a-disabled directive to povide the same functionality as ng-disabled for anchors/links(<a>)*/
+/*Adds a new a-disabled directive to provide the same functionality as ng-disabled for anchors/links(<a>)*/
 cashPointsApp.directive('aDisabled', function() {
     return {
         compile: function(tElement, tAttrs, transclude) {
@@ -98,7 +227,7 @@ cashPointsApp.directive('aDisabled', function() {
     };
 });
 
-//initialize a new startFrom filter
+//initializeForManagePage a new startFrom filter
 cashPointsApp.filter('startFrom', function() {
     return function(input, start) {
         if (!input || !input.length) {
@@ -109,7 +238,7 @@ cashPointsApp.filter('startFrom', function() {
     }
 });
 
-function initialize(scopeObj, response, includeRetired, location) {
+function initializeForManagePage(scopeObj, response, includeRetired, location) {
     scopeObj.includeRetired = includeRetired;
     scopeObj.currentPage = 0;
     scopeObj.cashPoints = location === undefined ? response.results : getMactchedCashPoints(location, response);
@@ -151,6 +280,20 @@ function initialize(scopeObj, response, includeRetired, location) {
     }
 }
 
+function initializeEditPage(emr, scope, cashPoint) {
+    scope.updateExistingcashPointNames();
+
+    scope.h2SubString = (cashPoint === undefined) ? ((emr.message("general.new") === "general.new") ? "New" : emr.message("general.new")) : emr.message("general.edit");
+    scope.cashPoint = {};
+    scope.cashPoint.name = (cashPoint === undefined) ? "" : cashPoint.name;
+    scope.cashPoint.uuid = (cashPoint === undefined) ? "" : cashPoint.uuid;
+    scope.cashPoint.description = (cashPoint === undefined) ? "" : cashPoint.description;
+    scope.cashPoint.retired = (cashPoint === undefined) ? false : cashPoint.retired;
+    scope.cashPoint.retireReason = (cashPoint === undefined || !scope.cashPoint.retired) ? "" : cashPoint.retireReason;
+    scope.retireOrUnretire = (scope.cashPoint.retired === true) ? emr.message("openhmis.cashier.cashPoint.unretire") : emr.message("openhmis.cashier.cashPoint.retire");
+    scope.cashPoint.location = (cashPoint === undefined) ? (emr.message('Location.hierarchy.heading') === "Location.hierarchy.heading" ? "All Locations" : emr.message('Location.hierarchy.heading')) : cashPoint.location.uuid;
+}
+
 function getMactchedCashPoints(uuid, response) {
     var cashPointsArr = [];
 
@@ -162,17 +305,17 @@ function getMactchedCashPoints(uuid, response) {
         }
     }
     return cashPointsArr;
-};
+}
 
 function reOrderLocations(locations, scopeObj, allLocationSelectOption) {
     var reorderedLocations = [allLocationSelectOption];
-
+    
     for (i = 0; i < locations.length; i++) {
         var location = locations[i];
 
         if (location.display !== "All Locations" && location.display !== "All Locations") {
             $.ajax({
-            	url: location.links[0].uri,
+                url: location.links[0].uri,
                 success: function(fetchedLocation) {
                     if (fetchedLocation !== null && fetchedLocation !== undefined &&
                         (fetchedLocation.parentLocation === null ||
@@ -201,7 +344,7 @@ function reOrderLocations(locations, scopeObj, allLocationSelectOption) {
 
 function loadChildLocations(location, reorderedLocations, depth) {
     $.ajax({
-    	async:false,
+        async: false,
         url: location.links[0].uri,
         success: function(fetchedLocation) {
             if (fetchedLocation !== undefined && fetchedLocation !== null) {

@@ -52,11 +52,11 @@
 		<div id="cashPoints">
 			<div class="btn-group">
 				<span style="float:left;">
-					<select class="locations-select" style="height: 2.1em;" ng-model="selectedLocation" ng-change="setLocationFilter()">
+					<select class="locations-select" ng-model="selectedLocation" ng-change="setLocationFilter()">
 						<option ng-repeat="location in locations" value="{{location.uuid}}" ng-bind-html="location.display"></option>
 					</select>
 				</span>
-				&nbsp;&nbsp
+				&nbsp;&nbsp;
 				<span style="float:right;">
 					<input type="text" ng-model="searchByName" class="field-display ui-autocomplete-input form-control searchinput" placeholder="${ ui.message('openhmis.cashier.cashPoint.enterSearchPhrase') }" size="40" autofocus>
 					<span id="searchclear" class="searchclear icon-remove-circle"></span>

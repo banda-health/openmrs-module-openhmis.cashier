@@ -72,3 +72,7 @@ a.disabled {
 .successfulMessage {
 	color:green;
 }
+
+.locations-select {
+	height: 2.1em;
+}
