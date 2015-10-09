@@ -59,7 +59,7 @@
         "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
         "type": "link",
         "label": "Manage Cash Points",
-        "url": "module/openhmis/cashier/cashPoints.form",
+        "url": "openhmis.cashier/manageCashPoints.page",
         "icon": "icon-money",
         "requiredPrivilege": "Task: Manage Cash Points"
       },
