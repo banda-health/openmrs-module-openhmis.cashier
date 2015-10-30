@@ -126,20 +126,22 @@ public class ModuleSettings {
 		}
 
 		AdministrationService adminService = Context.getAdministrationService();
-		Boolean generate = cashierSettings.getAdjustmentReasonField();
-		if (Boolean.TRUE.equals(generate)) {
+		Boolean adjustmentReasonField = cashierSettings.getAdjustmentReasonField();
+		if (Boolean.TRUE.equals(adjustmentReasonField)) {
 			adminService.setGlobalProperty(ADJUSTMENT_REASEON_FIELD, Boolean.TRUE.toString());
 		} else {
 			adminService.setGlobalProperty(ADJUSTMENT_REASEON_FIELD, Boolean.FALSE.toString());
 		}
 
-		if (Boolean.TRUE.equals(generate)) {
-			adminService.setGlobalProperty(ADJUSTMENT_REASEON_FIELD, Boolean.TRUE.toString());
+		Boolean allowBillAdjustment = cashierSettings.getAllowBillAdjustment();
+		if (Boolean.TRUE.equals(allowBillAdjustment)) {
+			adminService.setGlobalProperty(ALLOW_BILL_ADJUSTMENT, Boolean.TRUE.toString());
 		} else {
-			adminService.setGlobalProperty(ADJUSTMENT_REASEON_FIELD, Boolean.FALSE.toString());
+			adminService.setGlobalProperty(ALLOW_BILL_ADJUSTMENT, Boolean.FALSE.toString());
 		}
 
-		if (Boolean.TRUE.equals(generate)) {
+		Boolean autofillPaymentAmount = cashierSettings.getAutoFillPaymentAmount();
+		if (Boolean.TRUE.equals(autofillPaymentAmount)) {
 			adminService.setGlobalProperty(AUTOFILL_PAYMENT_AMOUNT, Boolean.TRUE.toString());
 		} else {
 			adminService.setGlobalProperty(AUTOFILL_PAYMENT_AMOUNT, Boolean.FALSE.toString());
@@ -173,7 +175,8 @@ public class ModuleSettings {
 			adminService.setGlobalProperty(ROUNDING_MODE_PROPERTY, "");
 		}
 
-		if (Boolean.TRUE.equals(generate)) {
+		Boolean timesheetRequiredProperty = cashierSettings.getCashierTimesheetRequired();
+		if (Boolean.TRUE.equals(timesheetRequiredProperty)) {
 			adminService.setGlobalProperty(TIMESHEET_REQUIRED_PROPERTY, Boolean.TRUE.toString());
 		} else {
 			adminService.setGlobalProperty(TIMESHEET_REQUIRED_PROPERTY, Boolean.FALSE.toString());
