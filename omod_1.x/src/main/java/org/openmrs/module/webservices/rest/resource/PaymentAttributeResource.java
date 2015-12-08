@@ -13,9 +13,10 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
 import org.openmrs.Concept;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
@@ -58,37 +59,73 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 	public String getDisplayString(PaymentAttribute instance) {
 		String instanceFormat = instance.getAttributeType().getFormat();
 		String names = null;
-		Integer instanceId = null;
-		try {
-			instanceId = Integer.valueOf(instance.getValue());
-		} catch (NumberFormatException ex) {
-			LOG.error("The instance Id should be a number  " + ex);
-		}
-
-		if (instanceFormat != null) {
-			if (instanceFormat.contains("User")) {
-				UserService userService = Context.getUserService();
-				names = (userService.getUser(instanceId).getDisplayString());
-			} else if (instanceFormat.contains("Location")) {
-				LocationService locationService = Context.getLocationService();
-				names = locationService.getLocation(instanceId).getDisplayString();
-			} else if (instanceFormat.contains("Provider")) {
-				ProviderService providerService = Context.getProviderService();
-				names = providerService.getProvider(instanceId).getName();
-			} else if (instanceFormat.contains("Concept")) {
-				ConceptService conceptService = Context.getConceptService();
-				names = conceptService.getConcept(instanceId).getDisplayString();
-			} else if (instanceFormat.contains("Patient")) {
-				PatientService patientService = Context.getPatientService();
-				names = patientService.getPatient(instanceId).getPersonName().getFullName();
-			} else if (instanceFormat.contains("Encounter")) {
-				EncounterService encounterService = Context.getEncounterService();
-				names = encounterService.getEncounter(instanceId).toString();
-			} else if (instanceFormat.contains("ProgramWorkflow")) {
-				ProgramWorkflowService programWorkflowService = Context.getProgramWorkflowService();
-				names = programWorkflowService.getProgram(instanceId).getName();
+		Integer instanceId = NumberUtils.toInt(instance.getValue());
+		if (StringUtils.isEmpty(instanceFormat)) {
+			if (instanceId > 0) {
+				if (instanceFormat.contains("User")) {
+					UserService userService = Context.getUserService();
+					if (userService.getUser(instanceId).getId() != null) {
+						names = (userService.getUser(instanceId).getDisplayString());
+					} else {
+						LOG.error("The user with Id " + userService.getUser(instanceId).getId() + " could not be found");
+					}
+				} else if (instanceFormat.contains("Location")) {
+					LocationService locationService = Context.getLocationService();
+					if (locationService.getLocation(instanceId).getId() != null) {
+						names = locationService.getLocation(instanceId).getDisplayString();
+					} else {
+						LOG.error("The location with Id " + locationService.getLocation(instanceId).getId()
+						        + " could not be found");
+					}
+				} else if (instanceFormat.contains("Provider")) {
+					ProviderService providerService = Context.getProviderService();
+					if (providerService.getProvider(instanceId).getId() != null) {
+						names = providerService.getProvider(instanceId).getName();
+					} else {
+						LOG.error("The Provider with Id " + providerService.getProvider(instanceId).getId()
+						        + " could not be found");
+					}
+				} else if (instanceFormat.contains("Concept")) {
+					ConceptService conceptService = Context.getConceptService();
+					if (conceptService.getConcept(instanceId) != null) {
+						names = conceptService.getConcept(instanceId).getDisplayString();
+					} else {
+						LOG.error(
+						        "The Concept with Id " + conceptService.getConcept(instanceId).getId()
+						                + " could not be found");
+					}
+				} else if (instanceFormat.contains("Patient")) {
+					PatientService patientService = Context.getPatientService();
+					if (patientService.getPatient(instanceId) != null) {
+						names = patientService.getPatient(instanceId).getPersonName().getFullName();
+					} else {
+						LOG.error(
+						        "The Patient with Id " + patientService.getPatient(instanceId).getId()
+						                + " could not be found");
+					}
+				} else if (instanceFormat.contains("Encounter")) {
+					EncounterService encounterService = Context.getEncounterService();
+					if (encounterService.getEncounter(instanceId) != null) {
+						names = encounterService.getEncounter(instanceId).toString();
+					} else {
+						LOG.error(
+						        "The Encounter with Id " + encounterService.getEncounter(instanceId).getId()
+						                + " could not be "
+						                + "found");
+					}
+				} else if (instanceFormat.contains("ProgramWorkflow")) {
+					ProgramWorkflowService programWorkflowService = Context.getProgramWorkflowService();
+					if (programWorkflowService.getProgram(instanceId).getId() != null) {
+						names = programWorkflowService.getProgram(instanceId).getName();
+					} else {
+						LOG.error("The Program with Id " + programWorkflowService.getProgram(instanceId).getId()
+						        + " could not be found");
+					}
+				} else {
+					names = instance.getValue();
+				}
 			} else {
-				names = instance.getValue();
+				LOG.error("The instance cannot be null or empty");
 			}
 		} else {
 			LOG.error("The Instance Format should not be empty");
