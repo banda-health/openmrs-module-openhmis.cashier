@@ -13,9 +13,17 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.openmrs.Concept;
-import org.openmrs.api.*;
+import org.openmrs.api.ConceptService;
+import org.openmrs.api.LocationService;
+import org.openmrs.api.ProviderService;
+import org.openmrs.api.UserService;
+import org.openmrs.api.PatientService;
+import org.openmrs.api.EncounterService;
+import org.openmrs.api.ProgramWorkflowService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentAttribute;
 import org.openmrs.module.openhmis.cashier.api.model.PaymentModeAttributeType;
@@ -27,10 +35,13 @@ import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
+/**
+ * REST resource representing a {@link PaymentAttribute}.
+ */
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass = PaymentAttribute.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
 public class PaymentAttributeResource extends BaseRestAttributeDataResource<PaymentAttribute, PaymentModeAttributeType> {
-	private static final Logger log = Logger.getLogger(PaymentAttributeResource.class);
+	private static final Log LOG = LogFactory.getLog(PaymentAttributeResource.class);
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
@@ -51,7 +62,7 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 		try {
 			instanceId = Integer.valueOf(instance.getValue());
 		} catch (NumberFormatException ex) {
-			log.error("The instance Id should be a number  " + ex);
+			LOG.error("The instance Id should be a number  " + ex);
 		}
 
 		if (instanceFormat != null) {
@@ -80,7 +91,7 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 				names = instance.getValue();
 			}
 		} else {
-			log.error("The Instance Format should not be empty");
+			LOG.error("The Instance Format should not be empty");
 		}
 
 		return instance.getAttributeType().getName() + ": " + names;
