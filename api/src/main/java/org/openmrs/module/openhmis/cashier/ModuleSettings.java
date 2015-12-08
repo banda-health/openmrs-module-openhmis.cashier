@@ -20,6 +20,9 @@ import org.openmrs.module.jasperreport.JasperReport;
 import org.openmrs.module.jasperreport.JasperReportService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierSettings;
 
+/**
+ * Helper class to load and save the inventory module global settings.
+ */
 public class ModuleSettings {
 	public static final String RECEIPT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultReceiptReportId";
 	public static final String CASHIER_SHIFT_REPORT_ID_PROPERTY = "openhmis.cashier.defaultShiftReportId";
@@ -30,27 +33,30 @@ public class ModuleSettings {
 	public static final String ROUNDING_DEPT_ID = "openhmis.cashier.roundingDeptId";
 	public static final String SYSTEM_RECEIPT_NUMBER_GENERATOR = "openhmis.cashier.systemReceiptNumberGenerator";
 	public static final String ADJUSTMENT_REASEON_FIELD = "openhmis.cashier.adjustmentReasonField";
-	public static final String ALLOW_BILL_ADJUSTMENT ="openhmis.cashier.allowBillAdjustments";
-	public static final String AUTOFILL_PAYMENT_AMOUNT ="openhmis.cashier.autofillPaymentAmount";
-	
+	public static final String ALLOW_BILL_ADJUSTMENT = "openhmis.cashier.allowBillAdjustments";
+	public static final String AUTOFILL_PAYMENT_AMOUNT = "openhmis.cashier.autofillPaymentAmount";
+	public static final String PATIENT_DASHBOARD_2_BILL_COUNT =
+	        "openhmis.cashier.patientDashboard2BillCount";
+	private static final Integer DEFAULT_PATIENT_DASHBOARD_2_BILL_COUNT = 10;//avoids '10' is a magic number.
+
 	protected ModuleSettings() {}
-	
+
 	public static Integer getReceiptReportId() {
 		AdministrationService administrationService = Context.getAdministrationService();
 		String property = administrationService.getGlobalProperty(RECEIPT_REPORT_ID_PROPERTY);
-		
+
 		return Integer.parseInt(property);
 	}
 
 	public static JasperReport getReceiptReport() {
 		JasperReport report = null;
-		
+
 		Integer reportId = getReceiptReportId();
 		if (reportId != null) {
 			JasperReportService reportService = Context.getService(JasperReportService.class);
 			report = reportService.getJasperReport(reportId);
 		}
-		
+
 		return report;
 	}
 
@@ -103,6 +109,14 @@ public class ModuleSettings {
 		if (!StringUtils.isEmpty(property)) {
 			cashierSettings.setCashierTimesheetRequired(Boolean.parseBoolean(property));
 		}
+
+		property = administrationService.getGlobalProperty(PATIENT_DASHBOARD_2_BILL_COUNT);
+		if (!StringUtils.isEmpty(property)) {
+			cashierSettings.setPatientDashboard2BillCount(Integer.parseInt(property));
+		} else {
+			cashierSettings.setPatientDashboard2BillCount(DEFAULT_PATIENT_DASHBOARD_2_BILL_COUNT);
+		}
+
 		return cashierSettings;
 	}
 

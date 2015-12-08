@@ -1,5 +1,8 @@
 package org.openmrs.module.openhmis.cashier.api.model;
 
+/**
+ * The allowable settings for the cashier module.
+ */
 public class CashierSettings {
 	public static final long serialVersionUID = 1L;
 
@@ -12,6 +15,7 @@ public class CashierSettings {
 	private Integer cashierRoundingToNearest;
 	private String cashierRoundingMode;
 	private Boolean cashierTimesheetRequired;
+	private Integer patientDashboard2BillCount;
 
 	public Boolean getAdjustmentReasonField() {
 		return adjustmentReasonField;
@@ -83,5 +87,13 @@ public class CashierSettings {
 
 	public void setCashierTimesheetRequired(Boolean cashierTimesheetRequired) {
 		this.cashierTimesheetRequired = cashierTimesheetRequired;
+	}
+
+	public Integer getPatientDashboard2BillCount() {
+		return patientDashboard2BillCount;
+	}
+
+	public void setPatientDashboard2BillCount(Integer numberOfBillsToShowOnEachPage) {
+		this.patientDashboard2BillCount = numberOfBillsToShowOnEachPage;
 	}
 }

@@ -30,28 +30,33 @@ import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthoriz
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Data service implementation class for {@link CashPoint}s.
+ */
 @Transactional
 public class CashPointServiceImpl extends BaseMetadataDataServiceImpl<CashPoint> implements ICashPointService {
+	private static final Integer MAX_CASHPOINT_NAME_CHARACTERS = 255;
+
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
 	}
-	
+
 	@Override
 	protected void validate(CashPoint entity) {}
-	
+
 	@Override
 	public List<CashPoint> getCashPointsByLocation(Location location, boolean includeRetired) {
 		return getCashPointsByLocation(location, includeRetired, null);
 	}
-	
+
 	@Override
 	public List<CashPoint> getCashPointsByLocation(final Location location, final boolean includeRetired,
 	        PagingInfo pagingInfo) {
 		if (location == null) {
 			throw new IllegalArgumentException("The location must be defined");
 		}
-		
+
 		return executeCriteria(CashPoint.class, pagingInfo, new Action1<Criteria>() {
 			@Override
 			public void apply(Criteria criteria) {
@@ -62,12 +67,12 @@ public class CashPointServiceImpl extends BaseMetadataDataServiceImpl<CashPoint>
 			}
 		});
 	}
-	
+
 	@Override
 	public List<CashPoint> getCashPointsByLocationAndName(Location location, String name, boolean includeRetired) {
 		return getCashPointsByLocationAndName(location, name, includeRetired, null);
 	}
-	
+
 	@Override
 	public List<CashPoint> getCashPointsByLocationAndName(final Location location, final String name,
 	        final boolean includeRetired, PagingInfo pagingInfo) {
@@ -77,16 +82,16 @@ public class CashPointServiceImpl extends BaseMetadataDataServiceImpl<CashPoint>
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("The Cashpoint name must be defined.");
 		}
-		if (name.length() > 255) {
+		if (name.length() > MAX_CASHPOINT_NAME_CHARACTERS) {
 			throw new IllegalArgumentException("The Cashpoint name must be less than 256 characters.");
 		}
-		
+
 		return executeCriteria(CashPoint.class, pagingInfo, new Action1<Criteria>() {
 			@Override
 			public void apply(Criteria criteria) {
 				criteria.add(Restrictions.eq(HibernateCriteriaConstants.LOCATION, location)).add(
-						Restrictions.ilike(HibernateCriteriaConstants.NAME, name, MatchMode.START));
-				
+				    Restrictions.ilike(HibernateCriteriaConstants.NAME, name, MatchMode.START));
+
 				if (!includeRetired) {
 					criteria.add(Restrictions.eq(HibernateCriteriaConstants.RETIRED, false));
 				}

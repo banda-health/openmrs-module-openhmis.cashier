@@ -21,8 +21,8 @@ define(
 	function(Backbone, openhmis, __) {
 		openhmis.LineItem = openhmis.GenericModel.extend({
 			meta: {
-				name: 'Line Item',
-				namePlural: 'Line Items'
+				name: openhmis.getMessage('openhmis.cashier.bill.lineItems'),
+				namePlural: openhmis.getMessage('openhmis.cashier.bill.lineItemsPlural')
 			},
 			schema: {
 				item: { type: 'NestedModel', model: openhmis.Item, objRef: true },

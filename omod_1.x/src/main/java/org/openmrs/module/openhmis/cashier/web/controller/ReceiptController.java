@@ -18,6 +18,8 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
 import org.openmrs.module.jasperreport.ReportGenerator;
@@ -31,72 +33,91 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller to manage the Receipt Generation Page
+ */
 @Controller
 @RequestMapping(value = CashierWebConstants.RECEIPT)
 public class ReceiptController {
 	@RequestMapping(method = RequestMethod.GET)
-	public void get(@RequestParam(value = "receiptNumber", required = false) String receiptNumber,
+	public void get(@RequestParam(value = "billId", required = false) Integer billId,
 	        HttpServletResponse response) throws IOException {
-		if (receiptNumber == null) {
+		if (billId == null) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
-		
+
 		IBillService service = Context.getService(IBillService.class);
-		Bill bill = service.getBillByReceiptNumber(receiptNumber);
-		if (!validateBill(receiptNumber, bill, response)) {
+		Bill bill = service.getById(billId);
+		if (!validateBill(billId, bill, response)) {
 			return;
 		}
-		
+
 		JasperReport report = ModuleSettings.getReceiptReport();
 		if (report == null) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Configuration error: need to specify global " +
-					"option for default report ID.");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Configuration error: need to specify global "
+			        + "option for default report ID.");
 			return;
 		}
-		
-		if (generateReport(receiptNumber, response, bill, report)) {
+
+		if (generateReport(billId, response, bill, report)) {
 			bill.setReceiptPrinted(true);
 			service.save(bill);
 		}
 	}
-	
-	private boolean generateReport(String receiptNumber, HttpServletResponse response, Bill bill, JasperReport report)
+
+	private boolean generateReport(Integer billId, HttpServletResponse response, Bill bill, JasperReport report)
 	        throws IOException {
 		String name = report.getName();
-		report.setName(receiptNumber);
-		
+		if (StringUtils.isEmpty(bill.getReceiptNumber())) {
+			report.setName(bill.getReceiptNumber());
+		} else {
+			report.setName(String.valueOf(billId));
+		}
+
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("billId", bill.getId());
-		
+
 		try {
 			ReportGenerator.generateHtmlAndWriteToResponse(report, params, response);
 		} catch (IOException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating report for receipt '" +
-					receiptNumber + "'");
+			if (StringUtils.isEmpty(bill.getReceiptNumber())) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating report for receipt '"
+				        + bill.getReceiptNumber() + "'");
+			} else {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating report for bill '"
+				        + billId + "'");
+			}
+
 			return false;
 		} finally {
 			// Reset the report name
 			report.setName(name);
 		}
-		
+
 		return true;
 	}
-	
-	private boolean validateBill(String receiptNumber, Bill bill, HttpServletResponse response) throws IOException {
+
+	private boolean validateBill(Integer billId, Bill bill, HttpServletResponse response) throws IOException {
 		if (bill == null) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find bill with receipt number '" +
-					receiptNumber  + "'");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find bill with bill Id '"
+			        + billId + "'");
 
 			return false;
 		}
-		
+
 		if (bill.isReceiptPrinted() && !Context.hasPrivilege(PrivilegeConstants.REPRINT_RECEIPT)) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to reprint receipt '" +
-					receiptNumber + "'");
+			if (StringUtils.isEmpty(bill.getReceiptNumber())) {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to reprint receipt '"
+				        + bill.getReceiptNumber() + "'");
+			} else {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to reprint bill '"
+				        + billId + "'");
+			}
+
 			return false;
 		}
-		
+
 		return true;
 	}
 }
