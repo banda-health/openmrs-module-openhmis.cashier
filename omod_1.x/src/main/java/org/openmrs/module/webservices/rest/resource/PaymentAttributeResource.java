@@ -60,7 +60,7 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 		String instanceFormat = instance.getAttributeType().getFormat();
 		String names = null;
 		Integer instanceId = NumberUtils.toInt(instance.getValue());
-		if (StringUtils.isEmpty(instanceFormat)) {
+		if (StringUtils.isNotEmpty(instanceFormat)) {
 			if (instanceId > 0) {
 				if (instanceFormat.contains("User")) {
 					UserService userService = Context.getUserService();
