@@ -64,26 +64,25 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 			if (instanceId > 0) {
 				if (instanceFormat.contains("User")) {
 					UserService userService = Context.getUserService();
-					if (userService.getUser(instanceId).getId() != null) {
+					if (userService.getUser(instanceId) != null) {
 						names = (userService.getUser(instanceId).getDisplayString());
 					} else {
-						LOG.error("The user with Id " + userService.getUser(instanceId).getId() + " could not be found");
+						LOG.error("The user " + userService.getUser(instanceId) + " could not be found");
 					}
 				} else if (instanceFormat.contains("Location")) {
 					LocationService locationService = Context.getLocationService();
-					if (locationService.getLocation(instanceId).getId() != null) {
+					if (locationService.getLocation(instanceId) != null) {
 						names = locationService.getLocation(instanceId).getDisplayString();
 					} else {
-						LOG.error("The location with Id " + locationService.getLocation(instanceId).getId()
-						        + " could not be found");
+						LOG.error("The location  " + locationService.getLocation(instanceId) + " could not be "
+						        + "found");
 					}
 				} else if (instanceFormat.contains("Provider")) {
 					ProviderService providerService = Context.getProviderService();
-					if (providerService.getProvider(instanceId).getId() != null) {
+					if (providerService.getProvider(instanceId) != null) {
 						names = providerService.getProvider(instanceId).getName();
 					} else {
-						LOG.error("The Provider with Id " + providerService.getProvider(instanceId).getId()
-						        + " could not be found");
+						LOG.error("The Provider " + providerService.getProvider(instanceId) + " could not be found");
 					}
 				} else if (instanceFormat.contains("Concept")) {
 					ConceptService conceptService = Context.getConceptService();
@@ -91,8 +90,7 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 						names = conceptService.getConcept(instanceId).getDisplayString();
 					} else {
 						LOG.error(
-						        "The Concept with Id " + conceptService.getConcept(instanceId).getId()
-						                + " could not be found");
+						        "The Concept  " + conceptService.getConcept(instanceId) + " could not be found");
 					}
 				} else if (instanceFormat.contains("Patient")) {
 					PatientService patientService = Context.getPatientService();
@@ -100,8 +98,7 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 						names = patientService.getPatient(instanceId).getPersonName().getFullName();
 					} else {
 						LOG.error(
-						        "The Patient with Id " + patientService.getPatient(instanceId).getId()
-						                + " could not be found");
+						        "The Patient " + patientService.getPatient(instanceId) + " could not be found");
 					}
 				} else if (instanceFormat.contains("Encounter")) {
 					EncounterService encounterService = Context.getEncounterService();
@@ -109,17 +106,14 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 						names = encounterService.getEncounter(instanceId).toString();
 					} else {
 						LOG.error(
-						        "The Encounter with Id " + encounterService.getEncounter(instanceId).getId()
-						                + " could not be "
-						                + "found");
+						        "The Encounter " + encounterService.getEncounter(instanceId) + " could not be found");
 					}
 				} else if (instanceFormat.contains("ProgramWorkflow")) {
 					ProgramWorkflowService programWorkflowService = Context.getProgramWorkflowService();
-					if (programWorkflowService.getProgram(instanceId).getId() != null) {
+					if (programWorkflowService.getProgram(instanceId) != null) {
 						names = programWorkflowService.getProgram(instanceId).getName();
 					} else {
-						LOG.error("The Program with Id " + programWorkflowService.getProgram(instanceId).getId()
-						        + " could not be found");
+						LOG.error("The Program " + programWorkflowService.getProgram(instanceId) + " could not be found");
 					}
 				} else {
 					names = instance.getValue();
