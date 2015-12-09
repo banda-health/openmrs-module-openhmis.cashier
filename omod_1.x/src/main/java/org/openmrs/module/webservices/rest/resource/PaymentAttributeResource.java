@@ -18,6 +18,12 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
+import org.openmrs.Location;
+import org.openmrs.Provider;
+import org.openmrs.User;
+import org.openmrs.Patient;
+import org.openmrs.Encounter;
+import org.openmrs.Program;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.ProviderService;
@@ -59,61 +65,64 @@ public class PaymentAttributeResource extends BaseRestAttributeDataResource<Paym
 	public String getDisplayString(PaymentAttribute instance) {
 		String instanceFormat = instance.getAttributeType().getFormat();
 		String names = null;
-		Integer instanceId = NumberUtils.toInt(instance.getValue());
+		int instanceId = NumberUtils.toInt(instance.getValue(), -1);
 		if (StringUtils.isNotEmpty(instanceFormat)) {
-			if (instanceId > 0) {
+			if (instanceId > -1) {
 				if (instanceFormat.contains("User")) {
 					UserService userService = Context.getUserService();
-					if (userService.getUser(instanceId) != null) {
-						names = (userService.getUser(instanceId).getDisplayString());
+					User user = userService.getUser(instanceId);
+					if (user != null) {
+						names = (user.getDisplayString());
 					} else {
-						LOG.error("The user " + userService.getUser(instanceId) + " could not be found");
+						LOG.error("The user could not be found");
 					}
 				} else if (instanceFormat.contains("Location")) {
 					LocationService locationService = Context.getLocationService();
-					if (locationService.getLocation(instanceId) != null) {
-						names = locationService.getLocation(instanceId).getDisplayString();
+					Location location = locationService.getLocation(instanceId);
+					if (location != null) {
+						names = location.getDisplayString();
 					} else {
-						LOG.error("The location  " + locationService.getLocation(instanceId) + " could not be "
-						        + "found");
+						LOG.error("The location could not be found");
 					}
 				} else if (instanceFormat.contains("Provider")) {
 					ProviderService providerService = Context.getProviderService();
-					if (providerService.getProvider(instanceId) != null) {
-						names = providerService.getProvider(instanceId).getName();
+					Provider provider = providerService.getProvider(instanceId);
+					if (provider != null) {
+						names = provider.getName();
 					} else {
-						LOG.error("The Provider " + providerService.getProvider(instanceId) + " could not be found");
+						LOG.error("The Provider could not be found");
 					}
 				} else if (instanceFormat.contains("Concept")) {
 					ConceptService conceptService = Context.getConceptService();
-					if (conceptService.getConcept(instanceId) != null) {
-						names = conceptService.getConcept(instanceId).getDisplayString();
+					Concept concept = conceptService.getConcept(instanceId);
+					if (concept != null) {
+						names = concept.getDisplayString();
 					} else {
-						LOG.error(
-						        "The Concept  " + conceptService.getConcept(instanceId) + " could not be found");
+						LOG.error("The Concept could not be found");
 					}
 				} else if (instanceFormat.contains("Patient")) {
 					PatientService patientService = Context.getPatientService();
-					if (patientService.getPatient(instanceId) != null) {
-						names = patientService.getPatient(instanceId).getPersonName().getFullName();
+					Patient patient = patientService.getPatient(instanceId);
+					if (patient != null) {
+						names = patient.getPersonName().getFullName();
 					} else {
-						LOG.error(
-						        "The Patient " + patientService.getPatient(instanceId) + " could not be found");
+						LOG.error("The Patient could not be found");
 					}
 				} else if (instanceFormat.contains("Encounter")) {
 					EncounterService encounterService = Context.getEncounterService();
-					if (encounterService.getEncounter(instanceId) != null) {
-						names = encounterService.getEncounter(instanceId).toString();
+					Encounter encounter = encounterService.getEncounter(instanceId);
+					if (encounter != null) {
+						names = encounter.toString();
 					} else {
-						LOG.error(
-						        "The Encounter " + encounterService.getEncounter(instanceId) + " could not be found");
+						LOG.error("The Encounter could not be found");
 					}
 				} else if (instanceFormat.contains("ProgramWorkflow")) {
 					ProgramWorkflowService programWorkflowService = Context.getProgramWorkflowService();
-					if (programWorkflowService.getProgram(instanceId) != null) {
-						names = programWorkflowService.getProgram(instanceId).getName();
+					Program program = programWorkflowService.getProgram(instanceId);
+					if (program != null) {
+						names = program.getName();
 					} else {
-						LOG.error("The Program " + programWorkflowService.getProgram(instanceId) + " could not be found");
+						LOG.error("The Program could not be found");
 					}
 				} else {
 					names = instance.getValue();
