@@ -48,7 +48,7 @@ define(
                 dateCreated: { type: 'Text', readOnly: true },
                 dateCreatedFmt: { type: 'Text', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.date')), readOnly: true },
                 amount: { type: 'BasicNumber' },
-                amountFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.dmount')), readOnly: true },
+                amountFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.amount')), readOnly: true },
                 amountTendered: { type: 'BasicNumber' },
                 amountTenderedFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.tendered')), readOnly: true },
                 instanceType: { type: 'Object', objRef: true, title: __(openhmis.getMessage('openhmis.cashier.paymentModes.name'))},
