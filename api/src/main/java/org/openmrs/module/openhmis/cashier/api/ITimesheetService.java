@@ -20,6 +20,9 @@ import org.openmrs.Provider;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 
+/**
+ * Interface that represents classes which perform data operations for {@link Timesheet}s.
+ */
 public interface ITimesheetService extends IEntityDataService<Timesheet> {
 	/**
 	 * Gets the current {@link Timesheet} that the specified {@link Provider}.
@@ -31,7 +34,7 @@ public interface ITimesheetService extends IEntityDataService<Timesheet> {
 	 * @should return null if the timesheet is clocked out
 	 */
 	Timesheet getCurrentTimesheet(Provider cashier);
-	
+
 	/**
 	 * Gets all the {@link Timesheet}'s for the specified user on the specified day.
 	 * @param cashier The cashier.
@@ -45,7 +48,7 @@ public interface ITimesheetService extends IEntityDataService<Timesheet> {
 	 * @should return timesheets that start before date and have not ended
 	 */
 	List<Timesheet> getTimesheetsByDate(Provider cashier, Date date);
-	
+
 	/**
 	 * Closes all open {@link Timesheet}'s.
 	 * @should return close all open timesheets

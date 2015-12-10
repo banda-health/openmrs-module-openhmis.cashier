@@ -28,27 +28,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller to manage the Receipt Number Generation
+ */
 @Controller
 @RequestMapping(value = CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT)
 public class ReceiptNumberGeneratorController {
 	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorController.class);
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	@Authorized(PrivilegeConstants.MANAGE_BILLS)
 	public void render(ModelMap model) {
 		IReceiptNumberGenerator currentGenerator = ReceiptNumberGeneratorFactory.getGenerator();
 		IReceiptNumberGenerator[] generators = ReceiptNumberGeneratorFactory.locateGenerators();
-		
+
 		model.addAttribute("currentGenerator", currentGenerator);
 		model.addAttribute("generators", generators);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	@Authorized(PrivilegeConstants.MANAGE_BILLS)
 	public String submit(ModelMap model, @RequestParam(value = "selectedGenerator", required = true) String generatorName) {
 		IReceiptNumberGenerator[] generators = ReceiptNumberGeneratorFactory.locateGenerators();
 		IReceiptNumberGenerator selectedGenerator = null;
-		
+
 		// If no generator has been defined then remove the current one
 		if (StringUtils.isEmpty(generatorName)) {
 			ReceiptNumberGeneratorFactory.setGenerator(null);
@@ -59,7 +62,7 @@ public class ReceiptNumberGeneratorController {
 					selectedGenerator = generator;
 				}
 			}
-			
+
 			// Load the generator configuration page, if defined
 			if (selectedGenerator == null) {
 				LOG.warn("Could not locate a receipt number generator named '" + generatorName + "'.");
@@ -71,11 +74,11 @@ public class ReceiptNumberGeneratorController {
 				return UrlUtil.redirectUrl(selectedGenerator.getConfigurationPage());
 			}
 		}
-		
+
 		// By default, the page will simply reload with the selected generator
 		model.addAttribute("currentGenerator", selectedGenerator);
 		model.addAttribute("generators", generators);
-		
+
 		return UrlUtil.redirectUrl(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT);
 	}
 }

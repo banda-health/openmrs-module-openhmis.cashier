@@ -24,11 +24,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-@Controller @RequestMapping(CashierWebConstants.MESSAGE_PROPERTIES_JS_URI)
+/**
+ * Controller to manage the Message Render page.
+ */
+@Controller
+@RequestMapping(CashierWebConstants.MESSAGE_PROPERTIES_JS_URI)
 public class CashierMessageRenderController {
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView MessageRenderController(HttpServletRequest request) {
+	public ModelAndView render(HttpServletRequest request) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", locale);
 		return new ModelAndView(CashierWebConstants.MESSAGE_PAGE, "keys", resourceBundle.getKeys());

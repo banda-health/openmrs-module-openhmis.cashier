@@ -21,33 +21,33 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.Extension;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
+import org.openmrs.module.openhmis.cashier.web.PrivilegeWebConstants;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 /**
- * This class defines the links that will appear on the administration page under the
- * "openhmis.cashier.title" heading.
+ * This class defines the links that will appear on the administration page under the "openhmis.cashier.title" heading.
  */
 public class AdminList extends AdministrationSectionExt {
-	
+
 	/**
 	 * @see AdministrationSectionExt#getMediaType()
 	 */
 	public Extension.MEDIA_TYPE getMediaType() {
 		return Extension.MEDIA_TYPE.html;
 	}
-	
+
 	/**
 	 * @see AdministrationSectionExt#getTitle()
 	 */
 	public String getTitle() {
 		return "openhmis.cashier.title";
 	}
-	
+
 	@Override
 	public String getRequiredPrivilege() {
 		return PrivilegeConstants.MANAGE_BILLS;
 	}
-	
+
 	/**
 	 * @see AdministrationSectionExt#getLinks()
 	 */
@@ -59,12 +59,16 @@ public class AdminList extends AdministrationSectionExt {
 			map.put(CashierWebConstants.CASH_POINTS_PAGE, "openhmis.cashier.admin.cashPoints");
 			map.put(CashierWebConstants.PAYMENT_MODES_PAGE, "openhmis.cashier.admin.paymentModes");
 		}
-		
+
 		if (authenticatedUser.hasPrivilege(PrivilegeConstants.MANAGE_BILLS)) {
 			map.put(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_PAGE, "openhmis.cashier.admin.receiptNumberGenerator");
 		}
-		
+
+		if (authenticatedUser.hasPrivilege(PrivilegeWebConstants.SETTING_PAGE_PRIVILEGE)) {
+			map.put(CashierWebConstants.CASHIER_SETTINGS_PAGE, "openhmis.cashier.admin.cashierSettings");
+		}
+
 		return map;
 	}
-	
+
 }

@@ -26,9 +26,9 @@ import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGene
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataServiceTest;
 
 public class ISequentialReceiptNumberGeneratorServiceTest
-		extends IObjectDataServiceTest<ISequentialReceiptNumberGeneratorService, SequentialReceiptNumberGeneratorModel> {
+        extends IObjectDataServiceTest<ISequentialReceiptNumberGeneratorService, SequentialReceiptNumberGeneratorModel> {
 	public static final String SEQUENTIAL_RECEIPT_NUMBER_GENERATOR_DATASET =
-			TestConstants.BASE_DATASET_DIR + "SequentialReceiptNumberGenerator.xml";
+	        TestConstants.BASE_DATASET_DIR + "SequentialReceiptNumberGenerator.xml";
 
 	@Override
 	public Properties getRuntimeProperties() {
@@ -349,7 +349,6 @@ public class ISequentialReceiptNumberGeneratorServiceTest
 
 		Assert.assertNull(sequence);
 	}
-
 
 	/**
 	 * @verifies return the first model.

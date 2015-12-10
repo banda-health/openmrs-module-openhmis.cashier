@@ -18,5 +18,8 @@ import org.openmrs.module.openhmis.cashier.api.model.PaymentMode;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Interface that represents classes which perform data operations for {@link PaymentMode}s.
+ */
 @Transactional
 public interface IPaymentModeService extends IMetadataDataService<PaymentMode> {}

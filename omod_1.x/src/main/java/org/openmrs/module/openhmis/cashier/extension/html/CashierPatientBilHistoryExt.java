@@ -16,22 +16,25 @@ package org.openmrs.module.openhmis.cashier.extension.html;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.web.extension.PatientDashboardTabExt;
 
+/**
+ * Link extension class to add a patient's bill history on to the patient dashboard
+ */
 public class CashierPatientBilHistoryExt extends PatientDashboardTabExt {
 	@Override
 	public String getTabName() {
 		return "openhmis.cashier.patient.bill.history";
 	}
-	
+
 	@Override
 	public String getTabId() {
 		return "openhmis.cashier.bill.history";
 	}
-	
+
 	@Override
 	public String getRequiredPrivilege() {
 		return PrivilegeConstants.VIEW_BILLS;
 	}
-	
+
 	@Override
 	public String getPortletUrl() {
 		return "patientBillHistory";

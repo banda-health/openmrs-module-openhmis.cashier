@@ -55,7 +55,7 @@ public class BillServiceImplTest extends IBillServiceTest {
 		receiptNumberGenerator = mock(IReceiptNumberGenerator.class);
 
 		when(ReceiptNumberGeneratorFactory.getGenerator())
-				.thenReturn(receiptNumberGenerator);
+		        .thenReturn(receiptNumberGenerator);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class BillServiceImplTest extends IBillServiceTest {
 
 		String receiptNumber = "Test Number";
 		when(receiptNumberGenerator.generateNumber(bill))
-				.thenReturn(receiptNumber);
+		        .thenReturn(receiptNumber);
 
 		service.save(bill);
 		Context.flushSession();
@@ -114,7 +114,7 @@ public class BillServiceImplTest extends IBillServiceTest {
 		bill.setReceiptNumber(null);
 
 		when(receiptNumberGenerator.generateNumber(bill))
-				.thenThrow(new APIException("Test exception"));
+		        .thenThrow(new APIException("Test exception"));
 
 		service.save(bill);
 	}

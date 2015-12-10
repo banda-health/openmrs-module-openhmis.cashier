@@ -91,6 +91,14 @@
 		</description>
 		<defaultValue>false</defaultValue>
 	</globalProperty>
+	
+	<globalProperty>
+		<property>${project.parent.artifactId}.patientDashboard2BillCount</property>
+		<description>
+			Number of Bills to show up on the OpenMRS 2.x patientDashboard.
+		</description>
+		<defaultValue>10</defaultValue>
+	</globalProperty>
 
 	<!-- Extensions -->
 	<extension>
@@ -213,6 +221,11 @@
 	<privilege>
 		<name>Task: Manage Receipt Number Generator</name>
 		<description>Able to access manage receipt number generator page</description>
+	</privilege>
+
+	<privilege>
+		<name>Task: Access Cashier Settings</name>
+		<description>Able to access the cashier settings page</description>
 	</privilege>
 
 	<!-- Maps hibernate files, if present -->

@@ -23,8 +23,8 @@ define(
 		openhmis.Bill = openhmis.GenericModel.extend({
 			trackUnsaved: true,
 			meta: {
-				name: "Bill",
-				namePlural: "Bills",
+				name: openhmis.getMessage('openhmis.cashier.bill'),
+				namePlural: openhmis.getMessage('openhmis.cashier.billPlural'),
 				openmrsType: 'data',
 				restUrl: "v2/cashier/bill"
 			},
@@ -210,7 +210,13 @@ define(
 			},
 			
 			toString: function() {
-				var str = this.get("receiptNumber");
+				var receiptNumber = this.get("receiptNumber");
+				var str = null;
+				if (receiptNumber == null) {
+					str = this.get("id");
+				} else{
+					str = receiptNumber;
+				}
 				return str ? str : openhmis.GenericModel.prototype.toString.call(this);
 			}
 		});

@@ -27,7 +27,7 @@ import org.openmrs.module.web.WebModuleUtil;
  */
 public class CashierModuleActivator extends BaseModuleActivator {
 	private static final Log LOG = LogFactory.getLog(CashierModuleActivator.class);
-	
+
 	/**
 	 * @see BaseModuleActivator#contextRefreshed()
 	 */
@@ -35,7 +35,7 @@ public class CashierModuleActivator extends BaseModuleActivator {
 	public void contextRefreshed() {
 		LOG.info("OpenHMIS Cashier Module Module refreshed");
 	}
-	
+
 	/**
 	 * @see BaseModuleActivator#started()
 	 */
@@ -45,7 +45,7 @@ public class CashierModuleActivator extends BaseModuleActivator {
 
 		LOG.info("OpenHMIS Cashier Module Module started");
 	}
-	
+
 	/**
 	 * @see BaseModuleActivator#stopped()
 	 */

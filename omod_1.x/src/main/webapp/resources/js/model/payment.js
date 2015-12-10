@@ -39,20 +39,20 @@ define(
 
         openhmis.Payment = openhmis.GenericModel.extend({
             meta: {
-                name: "Payment",
-                namePlural: "Payments",
+                name: openhmis.getMessage('openhmis.cashier.payment'),
+                namePlural: openhmis.getMessage('openhmis.cashier.paymentPlural'),
                 restUrl: "v2/cashier/payment"
             },
 
             schema: {
                 dateCreated: { type: 'Text', readOnly: true },
-                dateCreatedFmt: { type: 'Text', title: __("Date"), readOnly: true },
+                dateCreatedFmt: { type: 'Text', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.date')), readOnly: true },
                 amount: { type: 'BasicNumber' },
-                amountFmt: { type: 'BasicNumber', title: __("Amount"), readOnly: true },
+                amountFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.amount')), readOnly: true },
                 amountTendered: { type: 'BasicNumber' },
-                amountTenderedFmt: { type: 'BasicNumber', title: __("Tendered"), readOnly: true },
-                instanceType: { type: 'Object', objRef: true, title: __("Payment Mode")},
-                attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute , title: __("Details") }
+                amountTenderedFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.tendered')), readOnly: true },
+                instanceType: { type: 'Object', objRef: true, title: __(openhmis.getMessage('openhmis.cashier.paymentModes.name'))},
+                attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute , title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.details')) }
             },
 
             url: function() {
@@ -92,7 +92,7 @@ define(
                     return { amount: __(openhmis.getMessage('openhmis.cashier.payment.error.amountType')) }
                 }
                 if (!this.get("instanceType") || !this.get("instanceType").id) {
-                    return { instanceType: __(openhmis.getMessage('openhmis.cashier.payment.error.paymentmodeRequired')) }
+                    return { instanceType: __(openhmis.getMessage('openhmis.cashier.payment.error.paymentMode.required')) }
                 }
                 return null;
             },
@@ -133,8 +133,8 @@ define(
             attributeTypeClass: openhmis.PaymentModeAttributeType,
 
             meta: {
-                name: "Payment Mode",
-                namePlural: "Payment Modes",
+                name: openhmis.getMessage('openhmis.cashier.paymentModes.name'),
+                namePlural: openhmis.getMessage('openhmis.cashier.paymentModes.namePlural'),
                 restUrl: 'v2/cashier/paymentMode'
             },
 

@@ -28,8 +28,7 @@ public class AnotherTestReceiptNumberGenerator implements IReceiptNumberGenerato
 	}
 
 	@Override
-	public void load() {
-	}
+	public void load() {}
 
 	@Override
 	public String generateNumber(Bill bill) {

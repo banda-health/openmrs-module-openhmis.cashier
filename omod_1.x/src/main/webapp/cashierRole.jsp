@@ -15,10 +15,11 @@
 
 <%--@elvariable id="roles" type="java.util.List<org.openmrs.Role>"--%>
 
-<%@ include file="/WEB-INF/template/include.jsp"%>
-<openmrs:require allPrivileges="<%=PrivilegeConstants.MANAGE_METADATA %>" otherwise="/login.htm" redirect="/module/openhmis/cashier/cashierRole.form" />
-<%@ include file="/WEB-INF/template/header.jsp"%>
-<%@ include file="template/linksHeader.jsp"%>
+<%@ include file="/WEB-INF/template/include.jsp" %>
+<openmrs:require allPrivileges="<%=PrivilegeConstants.MANAGE_METADATA %>" otherwise="/login.htm"
+                 redirect="/module/openhmis/cashier/cashierRole.form"/>
+<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="template/linksHeader.jsp" %>
 
 <script type="text/javascript">
 	function enableDisable() {
@@ -30,81 +31,81 @@
 		var newRole = $j('#newRoleName');
 
 		if (radioAdd.checked) {
-			add.disabled=false;
-			remove.disabled=true;
-			newRole.value='';
-			newRole.disabled=true;
+			add.disabled = false;
+			remove.disabled = true;
+			newRole.value = '';
+			newRole.disabled = true;
 		} else if (radioRemove.checked) {
-			add.disabled=true;
-			remove.disabled=false;
-			newRole.value='';
-			newRole.disabled=true;
+			add.disabled = true;
+			remove.disabled = false;
+			newRole.value = '';
+			newRole.disabled = true;
 		} else if (radioNew.checked) {
-			add.disabled=true;
-			remove.disabled=true;
-			newRole.disabled=false;
+			add.disabled = true;
+			remove.disabled = true;
+			newRole.disabled = false;
 		}
 	}
 </script>
 
 <spring:hasBindErrors name="cashierRole">
-    <openmrs:message code="fix.error" htmlEscape="false"/>
-    <div class="error">
-        <c:forEach items="${errors.allErrors}" var="error">
-            <openmrs:message code="${error.code}" text="${error.defaultMessage}"/><br/>
-        </c:forEach>
-    </div>
-    <br />
+	<openmrs:message code="fix.error" htmlEscape="false"/>
+	<div class="error">
+		<c:forEach items="${errors.allErrors}" var="error">
+			<openmrs:message code="${error.code}" text="${error.defaultMessage}"/><br/>
+		</c:forEach>
+	</div>
+	<br/>
 </spring:hasBindErrors>
 
 <h2>
-	<spring:message code="openhmis.cashier.admin.role" />
+	<spring:message code="openhmis.cashier.admin.role"/>
 </h2>
 
-<p>
-<spring:message code="openhmis.cashier.roleCreation.page.instruction" />
-</p>
-
 <form method="post">
-	<table>
-		<tr>
-			<td>
-				<input id="addPriv" type="radio" value="add" name="action" onClick="enableDisable();" />
-				<label for="addPriv"><spring:message code="openhmis.cashier.roleCreation.page.label.add" /></label>
-			</td>
-			<td>
-				<select id="addToRole" name="addToRole">
-					<c:forEach items="${roles}" var="role">
-						<option value="${role.uuid}">${role.name}</option>
-					</c:forEach>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="removePriv" type="radio" value="remove" name="action" onClick="enableDisable();" />
-				<label for="removePriv"><spring:message code="openhmis.cashier.roleCreation.page.label.remove" /></label>
-			</td>
-			<td>
-				<select id="removeFromRole" name="removeFromRole">
-					<c:forEach items="${roles}" var="role">
-						<option value="${role.uuid}">${role.name}</option>
-					</c:forEach>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="newRole" type="radio" value="new" name="action" checked onClick="enableDisable();" />
-				<label for="newRole"><spring:message code="openhmis.cashier.roleCreation.page.label.new" /></label>
-			</td>
-			<td>
-				<input id="newRoleName" name="newRoleName" type="text" />
-			</td>
-		</tr>
-	</table>
+	<b class="boxHeader"><spring:message code="openhmis.cashier.roleCreation.page.instruction"/></b>
 
-<p><input type="submit" value="<openmrs:message code="Role.save"/>"></p>
+	<div class="box">
+		<table>
+			<tr>
+				<td>
+					<input id="addPriv" type="radio" value="add" name="action" onClick="enableDisable();"/>
+					<label for="addPriv"><spring:message code="openhmis.cashier.roleCreation.page.label.add"/></label>
+				</td>
+				<td>
+					<select id="addToRole" name="addToRole">
+						<c:forEach items="${roles}" var="role">
+							<option value="${role.uuid}">${role.name}</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="removePriv" type="radio" value="remove" name="action" onClick="enableDisable();"/>
+					<label for="removePriv"><spring:message code="openhmis.cashier.roleCreation.page.label.remove"/></label>
+				</td>
+				<td>
+					<select id="removeFromRole" name="removeFromRole">
+						<c:forEach items="${roles}" var="role">
+							<option value="${role.uuid}">${role.name}</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="newRole" type="radio" value="new" name="action" checked onClick="enableDisable();"/>
+					<label for="newRole"><spring:message code="openhmis.cashier.roleCreation.page.label.new"/></label>
+				</td>
+				<td>
+					<input id="newRoleName" name="newRoleName" type="text"/>
+				</td>
+			</tr>
+			<tr>
+				<p><input type="submit" value="<openmrs:message code="Role.save"/>"></p></tr>
+		</table>
+	</div>
 </form>
 
-<%@ include file="/WEB-INF/template/footer.jsp"%>
+<%@ include file="/WEB-INF/template/footer.jsp" %>

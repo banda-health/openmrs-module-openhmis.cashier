@@ -20,6 +20,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * The controller that manages the Payment Modes page.
+ */
 @Controller
 @RequestMapping("/module/openhmis/cashier/paymentModes")
 public class PaymentModesController {
