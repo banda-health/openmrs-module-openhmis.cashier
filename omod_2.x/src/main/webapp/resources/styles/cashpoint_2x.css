@@ -76,3 +76,9 @@ a.disabled {
 .locations-select {
 	height: 2.1em;
 }
+
+@media (min-width: 1200px) {
+	.container {
+		width: auto;
+	}
+}
