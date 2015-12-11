@@ -37,8 +37,7 @@
 				<td>
 					<spring:bind path="adjustmentReasonField">
 					<input id="adjustmentReasonField" name="adjustmentReasonField" type="checkbox"
-					       value="${cashierSettings.adjustmentReasonField}" <c:if
-							       test="${cashierSettings.adjustmentReasonField}">checked</c:if> />
+					       <c:if test="${cashierSettings.adjustmentReasonField}">checked</c:if> />
 						<label for="adjustmentReasonField"><spring:message code="openhmis.cashier.setting.adjustmentReason.field.header"/></label>
 					</spring:bind>
 				</td>
@@ -52,8 +51,7 @@
 				<td>
 					<spring:bind path="allowBillAdjustment">
 						<input id="allowBillAdjustment" name="allowBillAdjustment" type="checkbox"
-						       value="${cashierSettings.allowBillAdjustment}" <c:if
-								       test="${cashierSettings.allowBillAdjustment}">checked</c:if> />
+						       <c:if test="${cashierSettings.allowBillAdjustment}">checked</c:if> />
 						<label for="allowBillAdjustment"><spring:message code="openhmis.cashier.setting.billAdjustment.field.header"/></label>
 					</spring:bind>
 				</td>
@@ -67,8 +65,7 @@
 				<td>
 					<spring:bind path="autoFillPaymentAmount">
 						<input id="autoFillPaymentAmount" name="autoFillPaymentAmount" type="checkbox"
-						       value="${cashierSettings.autoFillPaymentAmount}" <c:if
-								       test="${cashierSettings.autoFillPaymentAmount}">checked</c:if> />
+						       <c:if test="${cashierSettings.autoFillPaymentAmount}">checked</c:if> />
 						<label for="autoFillPaymentAmount"><spring:message code="openhmis.cashier.setting.autofillPaymentAmount.field.header"/></label>
 					</spring:bind>
 				</td>
@@ -82,8 +79,7 @@
 				<td>
 					<spring:bind path="cashierTimesheetRequired">
 						<input id="cashierTimesheetRequired" name="cashierTimesheetRequired" type="checkbox"
-						       value="${cashierSettings.cashierTimesheetRequired}" <c:if
-								       test="${cashierSettings.cashierTimesheetRequired}">checked</c:if> />
+						       <c:if test="${cashierSettings.cashierTimesheetRequired}">checked</c:if> />
 						<label for="cashierTimesheetRequired"><spring:message code="openhmis.cashier.setting.timesheet.field.header"/></label>
 					</spring:bind>
 				</td>
