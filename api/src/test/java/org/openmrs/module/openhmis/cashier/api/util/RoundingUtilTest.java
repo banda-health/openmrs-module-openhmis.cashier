@@ -20,11 +20,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsServiceTest;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
 import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
+import org.openmrs.module.openhmis.cashier.api.model.CashierSettings;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
@@ -50,7 +52,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	public void addRoundingLineItem_shouldAddARoundingLineItemWithTheAppropriateValue()
 	        throws Exception {
 		CashierOptions cashierOptions = cashOptService.getOptions();
-		Assert.assertEquals(new BigDecimal(5), cashierOptions.getRoundToNearest());
+		Assert.assertEquals(5, (int)cashierOptions.getRoundToNearest());
 
 		// Test bill
 		Bill bill = new Bill();
@@ -72,7 +74,109 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 		BillLineItem rounding = bill.getLineItems().get(1);
 		Assert.assertEquals(new BigDecimal(2), rounding.getTotal());
 		// Assert evenly divisible by nearest
-		Assert.assertEquals(new BigDecimal(0), bill.getTotal().remainder(cashierOptions.getRoundToNearest()));
+		Assert.assertEquals(new BigDecimal(0), bill.getTotal().remainder(
+		    new BigDecimal(cashierOptions.getRoundToNearest())));
+	}
+
+	/**
+	 * @verifies round bills with a non zero amount correctly for MID
+	 * @see RoundingUtil#handleRoundingLineItem(Bill)
+	 */
+	@Test
+	public void handleRoundingLineItem_shouldRoundBillsWithANonZeroAmountCorrectlyForMID() throws Exception {
+		CashierOptions cashierOptions = cashOptService.getOptions();
+		Assert.assertEquals(5, (int)cashierOptions.getRoundToNearest());
+		Assert.assertEquals(CashierOptions.RoundingMode.MID, cashierOptions.getRoundingMode());
+
+		// Test bill
+		Bill bill = new Bill();
+		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
+		item.setPrice(new BigDecimal(3.5));
+		item.setQuantity(1);
+		bill.addLineItem(item);
+
+		// One line item
+		Assert.assertEquals(1, bill.getLineItems().size());
+		// Do rounding
+		RoundingUtil.handleRoundingLineItem(bill);
+		// Now two line items
+		Assert.assertEquals(2, bill.getLineItems().size());
+		// Assert rounding item's price
+		BillLineItem rounding = bill.getLineItems().get(1);
+		Assert.assertEquals(new BigDecimal(1.5), rounding.getTotal());
+	}
+
+	/**
+	 * @verifies round bills with a non zero amount correctly for CEILING
+	 * @see RoundingUtil#handleRoundingLineItem(Bill)
+	 */
+	@Test
+	public void handleRoundingLineItem_shouldRoundBillsWithANonZeroAmountCorrectlyForCEILING() throws Exception {
+		CashierSettings settings = ModuleSettings.loadSettings();
+		settings.setCashierRoundingMode(CashierOptions.RoundingMode.CEILING.toString());
+		ModuleSettings.saveSettings(settings);
+
+		settings = ModuleSettings.loadSettings();
+		Assert.assertEquals(5, (int)settings.getCashierRoundingToNearest());
+		Assert.assertEquals(CashierOptions.RoundingMode.CEILING.toString(), settings.getCashierRoundingMode());
+
+		// Test bill
+		Bill bill = new Bill();
+		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
+		item.setPrice(new BigDecimal(3.5));
+		item.setQuantity(1);
+		bill.addLineItem(item);
+
+		// One line item
+		Assert.assertEquals(1, bill.getLineItems().size());
+		// Do rounding
+		RoundingUtil.handleRoundingLineItem(bill);
+		// Now two line items
+		Assert.assertEquals(2, bill.getLineItems().size());
+		// Assert rounding item's price
+		BillLineItem rounding = bill.getLineItems().get(1);
+		Assert.assertEquals(new BigDecimal(1.5), rounding.getTotal());
+	}
+
+	/**
+	 * @verifies round bills with a non zero amount correctly for FLOOR
+	 * @see RoundingUtil#handleRoundingLineItem(Bill)
+	 */
+	@Test
+	public void handleRoundingLineItem_shouldRoundBillsWithANonZeroAmountCorrectlyForFLOOR() throws Exception {
+		CashierSettings settings = ModuleSettings.loadSettings();
+		settings.setCashierRoundingMode(CashierOptions.RoundingMode.FLOOR.toString());
+		ModuleSettings.saveSettings(settings);
+
+		settings = ModuleSettings.loadSettings();
+		Assert.assertEquals(5, (int)settings.getCashierRoundingToNearest());
+		Assert.assertEquals(CashierOptions.RoundingMode.FLOOR.toString(), settings.getCashierRoundingMode());
+
+		// Test bill
+		Bill bill = new Bill();
+		BillLineItem item = new BillLineItem();
+		Item lineItemItem = new Item(1);
+		item.setItem(lineItemItem);
+		item.setLineItemOrder(0);
+		item.setPrice(new BigDecimal(3.5));
+		item.setQuantity(1);
+		bill.addLineItem(item);
+
+		// One line item
+		Assert.assertEquals(1, bill.getLineItems().size());
+		// Do rounding
+		RoundingUtil.handleRoundingLineItem(bill);
+		// Now two line items
+		Assert.assertEquals(2, bill.getLineItems().size());
+		// Assert rounding item's price
+		BillLineItem rounding = bill.getLineItems().get(1);
+		Assert.assertEquals(new BigDecimal(-3.5), rounding.getTotal());
 	}
 
 	/**
@@ -83,7 +187,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	public void addRoundingLineItem_shouldNotModifyABillThatNeedsNoRounding()
 	        throws Exception {
 		CashierOptions cashierOptions = cashOptService.getOptions();
-		Assert.assertEquals(new BigDecimal(5), cashierOptions.getRoundToNearest());
+		Assert.assertEquals(5, (int)cashierOptions.getRoundToNearest());
 
 		// Test bill
 		Bill bill = new Bill();
@@ -224,7 +328,7 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void roundingInAdjustedBill_shouldConsiderRoundingOfPreviousBill() throws Exception {
 		CashierOptions cashierOptions = cashOptService.getOptions();
-		Assert.assertEquals(new BigDecimal(5), cashierOptions.getRoundToNearest());
+		Assert.assertEquals(5, (int)cashierOptions.getRoundToNearest());
 
 		// Test bill
 		Bill bill = new Bill();
@@ -269,10 +373,8 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	 */
 	@Test
 	public void roundBillTotal_shouldRoundToNearest() throws Exception {
-		Assert.assertEquals(new BigDecimal(5),
-		    RoundingUtil.round(new BigDecimal(3), new BigDecimal(5), CashierOptions.RoundingMode.MID));
-		Assert.assertEquals(new BigDecimal(10),
-		    RoundingUtil.round(new BigDecimal(12), new BigDecimal(5), CashierOptions.RoundingMode.MID));
+		Assert.assertEquals(new BigDecimal(5), RoundingUtil.round(new BigDecimal(3), 5, CashierOptions.RoundingMode.MID));
+		Assert.assertEquals(new BigDecimal(10), RoundingUtil.round(new BigDecimal(12), 5, CashierOptions.RoundingMode.MID));
 	}
 
 	/**
@@ -281,11 +383,10 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	 */
 	@Test
 	public void roundBillTotal_shouldRoundToNearestCeiling() throws Exception {
-		Assert.assertEquals(new BigDecimal(5),
-		    RoundingUtil.round(new BigDecimal(1), new BigDecimal(5), CashierOptions.RoundingMode.CEILING));
+		Assert.assertEquals(new BigDecimal(5), RoundingUtil.round(new BigDecimal(1), 5,
+		    CashierOptions.RoundingMode.CEILING));
 		BigDecimal decimal = new BigDecimal(BigInteger.ONE, 2); // 0.01
-		Assert.assertEquals(new BigDecimal(1),
-		    RoundingUtil.round(decimal, new BigDecimal(1), CashierOptions.RoundingMode.CEILING));
+		Assert.assertEquals(new BigDecimal(1), RoundingUtil.round(decimal, 1, CashierOptions.RoundingMode.CEILING));
 	}
 
 	/**
@@ -294,10 +395,8 @@ public class RoundingUtilTest extends BaseModuleContextSensitiveTest {
 	 */
 	@Test
 	public void roundBillTotal_shouldRoundToNearestFloor() throws Exception {
-		Assert.assertEquals(new BigDecimal(5),
-		    RoundingUtil.round(new BigDecimal(9), new BigDecimal(5), CashierOptions.RoundingMode.FLOOR));
+		Assert.assertEquals(new BigDecimal(5), RoundingUtil.round(new BigDecimal(9), 5, CashierOptions.RoundingMode.FLOOR));
 		BigDecimal decimal = new BigDecimal(BigInteger.valueOf(199), 2); // 1.99
-		Assert.assertEquals(new BigDecimal(1),
-		    RoundingUtil.round(decimal, new BigDecimal(1), CashierOptions.RoundingMode.FLOOR));
+		Assert.assertEquals(new BigDecimal(1), RoundingUtil.round(decimal, 1, CashierOptions.RoundingMode.FLOOR));
 	}
 }

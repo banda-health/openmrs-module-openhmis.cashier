@@ -67,7 +67,7 @@ public class CashierOptionsControllerTest {
 		expectedEx.expect(APIException.class);
 		expectedEx.expectMessage("Rounding enabled ");
 		options = new CashierOptions();
-		options.setRoundToNearest(BigDecimal.TEN);
+		options.setRoundToNearest(10);
 		when(cashierOptionsService.getOptions()).thenReturn(options);
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID)).thenReturn(null);
 		cashierOptionsController.options();
