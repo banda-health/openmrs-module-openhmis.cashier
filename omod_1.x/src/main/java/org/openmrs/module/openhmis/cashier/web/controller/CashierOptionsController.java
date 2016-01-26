@@ -58,7 +58,7 @@ public class CashierOptionsController {
 			// Check to see if rounding has been enabled and throw exception if it has as a rounding item must be set
 			if (StringUtils.isEmpty(roundingItemId) && options.getRoundToNearest() != null
 			        && !options.getRoundToNearest().equals(BigDecimal.ZERO)) {
-				throw new APIException("Rounding enabled (nearest " + options.getRoundToNearest().toPlainString()
+				throw new APIException("Rounding enabled (nearest " + options.getRoundToNearest().toString()
 				        + ") but no rounding item ID specified in options.");
 			}
 		}

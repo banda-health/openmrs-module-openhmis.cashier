@@ -46,7 +46,7 @@ public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
 		Assert.assertEquals("4028814B399565AA01399681B1B5000E", options.getRoundingItemUuid());
 		Assert.assertEquals(3, options.getDefaultReceiptReportId());
 		Assert.assertEquals(CashierOptions.RoundingMode.MID, options.getRoundingMode());
-		Assert.assertTrue(new BigDecimal(5).equals(options.getRoundToNearest()));
+		Assert.assertEquals(5, (int)options.getRoundToNearest());
 		Assert.assertEquals(true, options.isTimesheetRequired());
 	}
 
