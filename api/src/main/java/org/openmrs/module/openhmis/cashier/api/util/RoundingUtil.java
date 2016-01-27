@@ -53,8 +53,10 @@ public class RoundingUtil {
 				return new BigDecimal(nearest * (Math.floor(Math.abs(valueD / nearest))));
 			case CEILING:
 				return new BigDecimal(nearest * (Math.ceil(Math.abs(valueD / nearest))));
-			default:
+			case MID:
 				return new BigDecimal(nearest * (Math.round(valueD / nearest)));
+			default:
+				return value;
 		}
 	}
 
