@@ -14,6 +14,8 @@
 package org.openmrs.module.openhmis.cashier.api.util;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -21,6 +23,7 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
+import org.openmrs.logic.op.In;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
@@ -39,22 +42,21 @@ import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
 public class RoundingUtil {
 	protected RoundingUtil() {}
 
-	public static BigDecimal round(BigDecimal value, BigDecimal nearest, CashierOptions.RoundingMode mode) {
-		if (nearest.equals(BigDecimal.ZERO)) {
+	public static BigDecimal round(BigDecimal value, Integer nearest, CashierOptions.RoundingMode mode) {
+		if (nearest == null || nearest.equals(0)) {
 			return value;
 		}
-		BigDecimal factor = BigDecimal.ONE.divide(nearest);
-		int scale = nearest.scale();
+
+		double valueD = value.doubleValue();
 		switch (mode) {
 			case FLOOR:
-				return value.multiply(factor).setScale(value.scale(), BigDecimal.ROUND_FLOOR).divide(factor)
-				        .setScale(scale, BigDecimal.ROUND_FLOOR);
+				return new BigDecimal(nearest * (Math.floor(Math.abs(valueD / nearest))));
 			case CEILING:
-				return value.multiply(factor).setScale(value.scale(), BigDecimal.ROUND_CEILING).divide(factor)
-				        .setScale(scale, BigDecimal.ROUND_CEILING);
+				return new BigDecimal(nearest * (Math.ceil(Math.abs(valueD / nearest))));
+			case MID:
+				return new BigDecimal(nearest * (Math.round(valueD / nearest)));
 			default:
-				return value.multiply(factor).setScale(value.scale(), BigDecimal.ROUND_HALF_UP).divide(factor)
-				        .setScale(scale, BigDecimal.ROUND_HALF_UP);
+				return value;
 		}
 	}
 
@@ -109,6 +111,9 @@ public class RoundingUtil {
 	 * @param bill
 	 * @should handle a rounding line item (add/update/delete with the appropriate value)
 	 * @should not modify a bill that needs no rounding
+	 * @should round bills with a non zero amount correctly for MID
+	 * @should round bills with a non zero amount correctly for CEILING
+	 * @should round bills with a non zero amount correctly for FLOOR
 	 */
 	public static void handleRoundingLineItem(Bill bill) {
 		ICashierOptionsService cashOptService = Context.getService(ICashierOptionsService.class);

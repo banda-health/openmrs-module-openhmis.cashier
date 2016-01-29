@@ -72,7 +72,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 
 				String roundToNearestProperty = adminService.getGlobalProperty(ModuleSettings.ROUND_TO_NEAREST_PROPERTY);
 				if (StringUtils.isNotEmpty(roundToNearestProperty)) {
-					options.setRoundToNearest(new BigDecimal(roundToNearestProperty));
+					options.setRoundToNearest(new Integer(roundToNearestProperty));
 
 					String roundingItemId = adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID);
 					if (StringUtils.isNotEmpty(roundingItemId)) {
@@ -114,7 +114,7 @@ public class CashierOptionsServiceGpImpl implements ICashierOptionsService {
 
 	private void setRoundingOptionsForEmptyUuid(CashierOptions options) {
 		options.setRoundingMode(CashierOptions.RoundingMode.MID);
-		options.setRoundToNearest(BigDecimal.ZERO);
+		options.setRoundToNearest(0);
 	}
 
 	private void setTimesheetOptions(CashierOptions options) {

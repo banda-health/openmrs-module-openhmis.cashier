@@ -77,7 +77,7 @@ public class CashierOptionsServiceGpImplTest {
 		Assert.assertNotNull(options);
 		Assert.assertEquals(1, options.getDefaultReceiptReportId());
 		Assert.assertEquals(CashierOptions.RoundingMode.MID, options.getRoundingMode());
-		Assert.assertEquals(new BigDecimal(5), options.getRoundToNearest());
+		Assert.assertEquals(5, (int)options.getRoundToNearest());
 		Assert.assertEquals(item.getUuid(), options.getRoundingItemUuid());
 		Assert.assertEquals(true, options.isTimesheetRequired());
 	}

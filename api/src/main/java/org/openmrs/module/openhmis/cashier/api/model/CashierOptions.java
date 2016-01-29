@@ -21,8 +21,7 @@ import java.math.BigDecimal;
 public class CashierOptions {
 	public static final long serialVersionUID = 0L;
 
-	private static final BigDecimal DEFAULT_NO_ROUNDING = BigDecimal.ZERO;
-	private BigDecimal roundToNearest = DEFAULT_NO_ROUNDING;
+	private Integer roundToNearest = 0;
 	private RoundingMode roundingMode = RoundingMode.MID;
 	private String roundingItemUuid;
 	private int defaultReceiptReportId;
@@ -37,11 +36,11 @@ public class CashierOptions {
 	}
 
 	// Getters & setters
-	public BigDecimal getRoundToNearest() {
+	public Integer getRoundToNearest() {
 		return roundToNearest;
 	}
 
-	public void setRoundToNearest(BigDecimal roundToNearest) {
+	public void setRoundToNearest(Integer roundToNearest) {
 		this.roundToNearest = roundToNearest;
 	}
 
