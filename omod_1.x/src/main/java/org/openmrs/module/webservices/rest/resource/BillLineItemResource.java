@@ -92,6 +92,11 @@ public class BillLineItemResource extends BaseRestDataResource<BillLineItem> {
 	}
 
 	@Override
+	public BillLineItem getByUniqueId(String uuid) {
+		return null;
+	}
+
+	@Override
 	public BillLineItem newDelegate() {
 		return new BillLineItem();
 	}
