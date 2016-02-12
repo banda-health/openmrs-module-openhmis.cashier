@@ -17,7 +17,6 @@
 
 <%-- Force our newer jquery version to load first --%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<openmrs:htmlInclude file="/moduleResources/openhmis/backboneforms/js/lib/jquery.js" />
 <%@ include file="template/localHeader.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/screen/bill.js" />
 <h2>
