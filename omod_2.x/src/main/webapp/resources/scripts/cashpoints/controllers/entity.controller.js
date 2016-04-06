@@ -19,13 +19,11 @@
     base.controller("CashpointController", CashpointController);
     CashpointController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory', 'CashpointModel', 'CashpointRestfulService'];
 
-    var ENTITY_NAME = "cashPoint";
-
     function CashpointController($stateParams, $injector, $scope, $filter, EntityRestFactory, CashpointModel, CashpointRestfulService) {
         var self = this;
 
         var module_name = 'cashier';
-        var entity_name_message_key = "openhmis.cashier." + ENTITY_NAME + ".name";
+        var entity_name_message_key = "openhmis.cashier.cashPoint.name";
         var cancel_page = 'entities.page';
         var rest_entity_name = emr.message("openhmis.cashier.cashPoint.rest_name");
 
