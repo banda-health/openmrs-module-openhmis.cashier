@@ -63,19 +63,6 @@
                 CashpointRestfulService.loadLocations(module_name, self.onLoadLocationsSuccessful);
             }
 
-        /**
-         * All post-submit validations are done here.
-         * @return boolean
-         */
-            // @Override
-        self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function() {
-                if (!angular.isDefined($scope.entity.name) || $scope.entity.name === '') {
-                    $scope.submitted = true;
-                    return false;
-                }
-                return true;
-            };
-
         //callback
         self.onLoadLocationsSuccessful = self.onLoadLocationsSuccessful || function(data){
                 $scope.locations = data.results;
