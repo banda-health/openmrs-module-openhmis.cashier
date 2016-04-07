@@ -40,23 +40,6 @@ a.disabled {
     font-size: 1.5em;;
 }
 
-/*Supplements bootstrap.css*/
-.searchinput {
-    width: 625px;
-}
-.searchclear {
-    position:absolute;
-    right:5px;
-    top:0;
-    bottom:0;
-    height:14px;
-    margin:auto;
-    font-size:24px;
-    cursor:pointer;
-    color:#ccc;
-    margin-top:7px;
-}
-
 .checkRequired {
 	color:red;
 }
@@ -81,4 +64,33 @@ a.disabled {
 	.container {
 		width: auto;
 	}
+}
+
+ul.search-area{
+    text-align: left;
+}
+
+ul.search-area li{
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 2px;
+}
+
+.search-area{
+    height: 27px;
+}
+
+ul.search-area-input{
+    text-align: left;
+}
+table.manage-cashpoints-table th:first-child, td:first-child {
+    width: 30%;
+}
+
+table.manage-cashpoints-table th:nth-child(2), td:nth-child(2) {
+    width: 45%;
+}
+
+.not-found{
+    margin-left:300px;
 }
