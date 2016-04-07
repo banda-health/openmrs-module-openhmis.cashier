@@ -86,7 +86,7 @@
                 <span class="not-found" ng-if="searchField === ''">
                     ${ui.message('openhmis.cashier.cashpoint.notFound')}
                 </span>
-                <br/>
+                <br/><br />
                 <span>
                     <input type="checkbox" ng-checked="includeRetired" ng-model="includeRetired"
                              ng-change="searchCashpoints(currentPage)" />
