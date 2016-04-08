@@ -69,7 +69,7 @@
         "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
         "type": "link",
         "label": "Manage Payment Modes",
-        "url": "module/openhmis/cashier/paymentModes.form",
+        "url": "openhmis.cashier/paymentMode/entities.page",
         "icon": "icon-tasks",
         "requiredPrivilege": "Task: Manage Payment Modes"
       },

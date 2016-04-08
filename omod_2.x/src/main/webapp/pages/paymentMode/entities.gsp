@@ -16,16 +16,16 @@
     /* load re-usables/common modules */
     ui.includeFragment("openhmis.commons", "load.reusable.modules")
 
-    /* load item modules */
-    ui.includeJavascript("openhmis.cashier", "cashPoint/models/entity.model.js")
-    ui.includeJavascript("openhmis.cashier", "cashPoint/services/entity.restful.services.js")
-    ui.includeJavascript("openhmis.cashier", "cashPoint/controllers/entity.controller.js")
-    ui.includeJavascript("openhmis.cashier", "cashPoint/controllers/manage-entity.controller.js")
-    ui.includeJavascript("openhmis.cashier", "cashPoint/services/entity.functions.js")
+    /* load Payment Mode modules */
+    ui.includeJavascript("openhmis.cashier", "paymentMode/models/entity.model.js")
+    ui.includeJavascript("openhmis.cashier", "paymentMode/services/entity.restful.services.js")
+    ui.includeJavascript("openhmis.cashier", "paymentMode/controllers/entity.controller.js")
+    ui.includeJavascript("openhmis.cashier", "paymentMode/controllers/manage-entity.controller.js")
+    ui.includeJavascript("openhmis.cashier", "paymentMode/services/entity.functions.js")
 
 %>
 
-<script data-main="cashPoint/configs/entity.main" src="/${ ui.contextPath() }/moduleResources/uicommons/scripts/require/require.js"></script>
+<script data-main="paymentMode/configs/entity.main" src="/${ ui.contextPath() }/moduleResources/uicommons/scripts/require/require.js"></script>
 
 <div id="entitiesApp">
     <div ui-view></div>
