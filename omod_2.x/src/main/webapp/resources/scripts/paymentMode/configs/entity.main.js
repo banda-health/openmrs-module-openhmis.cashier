@@ -26,6 +26,7 @@ emr.loadMessages([
     "openhmis.cashier.paymentMode.name.required",
     "openhmis.cashier.paymentMode.sortOrder.required",
     "openhmis.cashier.paymentMode.attributeTypes.required",
+    "openhmis.cashier.general.attributeTypeInUse.error",
     "general.edit",
     "general.new",
     "general.name",

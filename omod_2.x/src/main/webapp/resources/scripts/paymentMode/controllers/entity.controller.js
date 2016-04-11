@@ -94,6 +94,16 @@
                 return true;
             }
 
+        // @Override
+        self.onChangeEntityError = self.onChangeEntityError || function (error) {
+                if(error.indexOf("cashier_payment_mode_attribute_type") != -1){
+                    emr.errorAlert("openhmis.cashier.general.attributeTypeInUse.error");
+                }
+                else{
+                    emr.errorAlert(error);
+                }
+            }
+
         // callbacks..
         self.onLoadFormatFieldsSuccessful = self.onLoadFormatFieldsSuccessful || function (data) {
                 $scope.formatFields = data.results;
