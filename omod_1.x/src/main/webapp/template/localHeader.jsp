@@ -12,7 +12,6 @@
   ~ Copyright (C) OpenHMIS.  All Rights Reserved.
   --%>
 <spring:htmlEscape defaultHtmlEscape="true" />
-<openmrs:htmlInclude file="/moduleResources/openhmis/backboneforms/js/lib/jquery.js" />
 <openmrs:htmlInclude file="/ws/module/openhmis/backboneforms/init.js" />
 <openmrs:htmlInclude file="/ws/module/openhmis/cashier/cashierMessageProperties.js" />
 <openmrs:htmlInclude file="/moduleResources/openhmis/cashier/js/init.js" />

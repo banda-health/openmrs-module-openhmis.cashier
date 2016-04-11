@@ -20,10 +20,11 @@
 		<aware_of_module version="${uiframeworkVersion}">org.openmrs.module.uiframework</aware_of_module>
 		<aware_of_module version="${appframeworkVersion}">org.openmrs.module.appframework</aware_of_module>
 		<aware_of_module version="${providerManagementVersion}">org.openmrs.module.providermanagement</aware_of_module>
-		<aware_of_module version="${uicommonsVersion}">org.openmrs.module.uicommons</aware_of_module>
+		<aware_of_module version="1.7">org.openmrs.module.uicommons</aware_of_module>
 	</aware_of_modules>
 
 	<require_modules>
+		<require_module version="2.9">org.openmrs.module.webservices.rest</require_module>
 		<require_module version="2.3">org.openmrs.module.openhmis.backboneforms</require_module>
 		<require_module version="3.0">org.openmrs.module.openhmis.commons</require_module>
 		<require_module version="1.5">org.openmrs.module.openhmis.inventory</require_module>
