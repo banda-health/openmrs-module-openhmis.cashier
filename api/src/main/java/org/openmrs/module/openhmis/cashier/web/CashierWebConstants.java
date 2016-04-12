@@ -21,10 +21,19 @@ import org.openmrs.module.openhmis.commons.web.WebConstants;
  */
 public class CashierWebConstants extends WebConstants {
 	public static final String MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_NAME + "/";
+	public static final String MODULE_RESOURCE_ROOT =
+	        WebConstants.MODULE_RESOURCE_BASE + CashierModuleConstants.MODULE_NAME + "/";
+
+	public static final String MODULE_COMMONS_RESOURCE_ROOT = "/moduleResources/openhmis/commons/";
+
 	public static final String CASHIER_PAGE = MODULE_ROOT + "cashier";
 	public static final String JASPER_REPORT_PAGE = MODULE_ROOT + "jasperReport";
 	public static final String CASHIER_ROLE_ROOT = MODULE_ROOT + "cashierRole";
 	public static final String CASHIER_ROLE_PAGE = CASHIER_ROLE_ROOT + ".form";
+
+	public static final String CASHIER_ROLE_2X_ROOT = MODULE_ROOT + "cashierRole2x";
+	public static final String CASHIER_ROLE_2X_PAGE = CASHIER_ROLE_ROOT + ".page";
+
 	public static final String CASH_POINTS_ROOT = MODULE_ROOT + "cashPoints";
 	public static final String CASH_POINTS_PAGE = CASH_POINTS_ROOT + ".form";
 	public static final String PAYMENT_MODES_ROOT = MODULE_ROOT + "paymentModes";
