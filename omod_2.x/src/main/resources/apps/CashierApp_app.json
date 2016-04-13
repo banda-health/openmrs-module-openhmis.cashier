@@ -79,7 +79,7 @@
         "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
         "type": "link",
         "label": "Manage Receipt Number Generator ",
-        "url": "module/openhmis/cashier/admin/receiptNumberGenerator.form",
+        "url": "module/openhmis/cashier/admin/receiptNumberGenerator2x.page",
         "icon": "icon-tasks",
         "requiredPrivilege": "Task: Manage Receipt Number Generator"
       },

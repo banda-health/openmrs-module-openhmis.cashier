@@ -32,10 +32,10 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Controller to manage the Receipt Number Generation
  */
 @Controller
-@RequestMapping(value = ReceiptNumberGeneratorController.RECEIPT_NUMBER_GENERATOR_URL)
-public class ReceiptNumberGeneratorController extends AbstractReceiptNumberGenerator {
+@RequestMapping(value = ReceiptNumberGenerator2xController.RECEIPT_NUMBER_GENERATOR_URL)
+public class ReceiptNumberGenerator2xController extends AbstractReceiptNumberGenerator {
 
-	public static final String RECEIPT_NUMBER_GENERATOR_URL = CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT;
+	public static final String RECEIPT_NUMBER_GENERATOR_URL = CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT_2X;
 
 	@Override
 	public String getReceiptNumberGeneratorUrl() {

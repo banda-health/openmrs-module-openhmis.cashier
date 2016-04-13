@@ -23,15 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Contorller to manage the Sequential Receipt Number Generation
  */
 @Controller
-@RequestMapping(value = SequentialReceiptNumberGeneratorController.SEQ_RECEIPT_NUMBER_GENERATOR_URL)
-public class SequentialReceiptNumberGeneratorController extends AbstractSequentialReceiptNumberGenerator {
+@RequestMapping(value = SequentialReceiptNumberGenerator2xController.SEQ_RECEIPT_NUMBER_GENERATOR_URL)
+public class SequentialReceiptNumberGenerator2xController extends AbstractSequentialReceiptNumberGenerator {
 
-	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_URL = CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_PAGE;
+	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_URL = CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_PAGE_2X;
 
 	private ISequentialReceiptNumberGeneratorService service;
 
 	@Autowired
-	public SequentialReceiptNumberGeneratorController(ISequentialReceiptNumberGeneratorService service) {
+	public SequentialReceiptNumberGenerator2xController(ISequentialReceiptNumberGeneratorService service) {
 		this.service = service;
 	}
 

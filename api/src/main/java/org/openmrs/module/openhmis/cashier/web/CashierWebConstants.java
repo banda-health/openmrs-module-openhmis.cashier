@@ -21,6 +21,8 @@ import org.openmrs.module.openhmis.commons.web.WebConstants;
  */
 public class CashierWebConstants extends WebConstants {
 	public static final String MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_NAME + "/";
+	public static final String MODULE_RESOURCE_ROOT = WebConstants.MODULE_RESOURCE_BASE
+	        + CashierModuleConstants.MODULE_NAME + "/";
 	public static final String CASHIER_PAGE = MODULE_ROOT + "cashier";
 	public static final String JASPER_REPORT_PAGE = MODULE_ROOT + "jasperReport";
 	public static final String CASHIER_ROLE_ROOT = MODULE_ROOT + "cashierRole";
@@ -36,11 +38,15 @@ public class CashierWebConstants extends WebConstants {
 	public static final String ADMIN_MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_NAME
 	        + "/admin/";
 	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_PAGE = ADMIN_MODULE_ROOT + "seqReceiptNumberGenerator";
+	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_PAGE_2X = ADMIN_MODULE_ROOT + "seqReceiptNumberGenerator2x";
 	public static final String RECEIPT_NUMBER_GENERATOR_ROOT = ADMIN_MODULE_ROOT + "receiptNumberGenerator";
+	public static final String RECEIPT_NUMBER_GENERATOR_ROOT_2X = ADMIN_MODULE_ROOT + "receiptNumberGenerator2x";
 	public static final String RECEIPT_NUMBER_GENERATOR_PAGE = RECEIPT_NUMBER_GENERATOR_ROOT + ".form";
+	public static final String RECEIPT_NUMBER_GENERATOR_PAGE_2X = RECEIPT_NUMBER_GENERATOR_ROOT_2X + ".page";
 	public static final String OPENHMIS_CASHIER_MODULE_ID = "openhmis.cashier";
 	public static final String LANDING_PAGE_EXTENSION_POINT_ID = "org.openmrs.module.openhmis.cashier.landing";
 	public static final String MANAGE_MODULE_PAGE_EXTENSION_POINT_ID = "org.openmrs.module.openhmis.cashier.manage.module";
 	public static final String MESSAGE_PROPERTIES_JS_URI = MODULE_ROOT + "cashierMessageProperties.js";
 	public static final String MESSAGE_PAGE = MODULE_ROOT + "cashierMessageProperties";
+	public static final String MODULE_COMMONS_RESOURCE_ROOT = "/moduleResources/openhmis/commons/";
 }
