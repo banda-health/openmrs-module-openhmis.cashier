@@ -112,6 +112,6 @@
 				</td>
 			</tr>
 		</table>
-		<p><input class="submitButton confirm right" value="Save" type="submit" value="<openmrs:message code="Role.save"/>"></p>
+		<p><input class="submitButton confirm right" type="submit" value="<openmrs:message code="Role.save"/>"></p>
 	</form>
 </div>
