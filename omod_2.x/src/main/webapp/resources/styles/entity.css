@@ -94,3 +94,13 @@ table.manage-cashpoints-table th:nth-child(2), td:nth-child(2) {
 .not-found{
     margin-left:300px;
 }
+#attribute-types-dialog {
+    width: 500px;
+}
+#dialog-bottom ul {
+    margin-bottom: 0;
+}
+ul.dialog-table-layout li {
+    width: 150px;
+    margin: 0 0;
+}

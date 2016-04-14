@@ -51,75 +51,73 @@
                             <input type="radio" name="groupingType" value="<%= GroupingType.NONE %>"
                                    id="groupingType_NONE" <c:if test="${generator.groupingType == gtNone}">checked="true"</c:if>
                             />
-                            <label for="groupingType_NONE">No Grouping</label>
+                            <label for="groupingType_NONE">
+                                <spring:message code="openhmis.cashier.receiptGenerator.noGrouping" />
+                            </label>
                         </td></tr>
-                        <tr><td width="5%"></td><td style="font-style: italic;">No sequence grouping will be done
-                            resulting in a single sequence of receipt numbers.
+                        <tr><td width="5%"></td><td style="font-style: italic;"><spring:message code="openhmis.cashier.receiptGenerator.noSequence" />
                         </td></tr>
                         <tr><td colspan="2">
                             <input type="radio" name="groupingType" value="<%= GroupingType.CASHIER %>"
                                    id="groupingType_CASHIER" <c:if test="${generator.groupingType == gtCashier}">checked="true"</c:if>
                             />
-                            <label for="groupingType_CASHIER">Group by Cashier</label>
+                            <label for="groupingType_CASHIER"><spring:message code="openhmis.cashier.receiptGenerator.groupByCashier" /></label>
                         </td></tr>
-                        <tr><td width="5%"></td><td style="font-style: italic;">Each cashier has their own sequence
-                            of receipt numbers that are incremented independently.
+                        <tr><td width="5%"></td><td style="font-style: italic;"><spring:message code="openhmis.cashier.receiptGenerator.eachCashierSequence" />
                         </td></tr>
                         <tr><td colspan="2">
                             <input type="radio" name="groupingType" value="<%= GroupingType.CASH_POINT %>"
                                    id="groupingType_CASH_POINT" <c:if test="${generator.groupingType == gtCashPoint}">checked="true"</c:if>
                             />
-                            <label for="groupingType_CASH_POINT">Group by Cash Point</label>
+                            <label for="groupingType_CASH_POINT"><spring:message code="openhmis.cashier.receiptGenerator.groupByCashPoint" /></label>
                         </td></tr>
-                        <tr><td width="5%"></td><td style="font-style: italic;">Each cash point has its own sequence
-                            of receipt numbers that are incremented independently.
+                        <tr><td width="5%"></td><td style="font-style: italic;"><spring:message code="openhmis.cashier.receiptGenerator.eachCashPointSequence" />
                         </td></tr>
                         <tr><td colspan="2">
                             <input type="radio" name="groupingType" value="<%= GroupingType.CASHIER_AND_CASH_POINT %>"
                                    id="groupingType_CASHIER_AND_CASH_POINT" <c:if test="${generator.groupingType == gtCasherCashPoint}">checked="true"</c:if>
                             />
-                            <label for="groupingType_CASHIER_AND_CASH_POINT">Group by Cashier and Cash Point</label>
+                            <label for="groupingType_CASHIER_AND_CASH_POINT"><spring:message code="openhmis.cashier.receiptGenerator.groupByCashierCashPoint" /></label>
                         </td></tr>
-                        <tr><td width="5%"></td><td style="font-style: italic;">Each cashier-cash point pair has a
-                            distinct sequence of receipt numbers that are incremented independently.
+                        <tr><td width="5%"></td><td style="font-style: italic;"><spring:message code="openhmis.cashier.receiptGenerator.eachCashierCashPointSequence" />
                         </td></tr>
                     </table>
                 </div>
             </li>
             <li class="bbf-field field-description">
-                <label>Sequence Type</label>
+                <label><spring:message code="openhmis.cashier.receiptGenerator.sequenceType"/></label>
                 <div class="bbf-editor">
                     <table>
                         <tr><td colspan="2">
                             <input type="radio" name="sequenceType" value="<%= SequenceType.COUNTER %>"
                                    id="sequenceType_COUNTER" <c:if test="${generator.sequenceType == stCounter}">checked="true"</c:if>
                                     />
-                            <label for="sequenceType_COUNTER">Simple Counter</label>
+                            <label for="sequenceType_COUNTER"><spring:message code="openhmis.cashier.receiptGenerator.simpleCounter" /></label>
                         </td></tr>
-                        <tr><td width="5%"></td><td style="font-style: italic;">A sequence that simply contains a counter.
+                        <tr><td width="5%"></td><td style="font-style: italic;"><spring:message code="openhmis.cashier.receiptGenerator.sequenceCounter" />
                         </td></tr>
                         <tr><td colspan="2">
                             <input type="radio" name="sequenceType" value="<%= SequenceType.DATE_COUNTER %>"
                                    id="sequenceType_DATE_COUNTER" <c:if test="${generator.sequenceType == stDate}">checked="true"</c:if>
                                     />
-                            <label for="sequenceType_DATE_COUNTER">Date and Counter</label>
+                            <label for="sequenceType_DATE_COUNTER"><spring:message code="openhmis.cashier.receiptGenerator.dateAndCounter" /></label>
                         </td></tr>
-                        <tr><td width="5%"></td><td style="font-style: italic;">A sequence that includes the date and a counter.
+                        <tr><td width="5%"></td><td style="font-style: italic;"><spring:message code="openhmis.cashier.receiptGenerator.sequenceDateAndCounter" />
                         </td></tr>
                         <tr><td colspan="2">
                             <input type="radio" name="sequenceType" value="<%= SequenceType.DATE_TIME_COUNTER %>"
                                    id="sequenceType_DATE_TIME_COUNTER" <c:if test="${generator.sequenceType == stDateTime}">checked="true"</c:if>
                                     />
-                            <label for="sequenceType_DATE_TIME_COUNTER">Date and Time and Counter</label>
+                            <label for="sequenceType_DATE_TIME_COUNTER"><spring:message code="openhmis.cashier.receiptGenerator.dateTimeCounter" /></label>
                         </td></tr>
-                        <tr><td width="5%"></td><td style="font-style: italic;">A sequence that include the date, time, and a counter.
+                        <tr><td width="5%"></td><td style="font-style: italic;"><spring:message code="openhmis.cashier.receiptGenerator.sequenceDateTimeAndCounter" />
                         </td></tr>
                     </table>
                 </div>
             </li>
 
             <li class="bbf-field field-description">
-                <label for="separator">Separator</label>
+                <label for="separator"><spring:message code="openhmis.cashier.receiptGenerator.selector" /></label>
                 <div class="bbf-editor">
                     <select id="separator" name="separator">
                         <option value="-" <c:if test="${generator.separator == '-'}">selected="true"</c:if>>-</option>
@@ -130,25 +128,25 @@
                 </div>
             </li>
             <li class="bbf-field field-description">
-                <label for="cashierPrefix">Cashier Grouping Prefix</label>
+                <label for="cashierPrefix"><spring:message code="openhmis.cashier.receiptGenerator.cashierGroupingPrefix" /></label>
                 <div class="bbf-editor">
                     <input id="cashierPrefix" name="cashierPrefix" type="text" value="${generator.cashierPrefix}">
                 </div>
             </li>
             <li class="bbf-field field-description">
-                <label for="cashPointPrefix">Cash Point Grouping Prefix</label>
+                <label for="cashPointPrefix"><spring:message code="openhmis.cashier.receiptGenerator.cashpointGroupingPrefix" /></label>
                 <div class="bbf-editor">
                     <input id="cashPointPrefix" name="cashPointPrefix" type="text" value="${generator.cashPointPrefix}">
                 </div>
             </li>
             <li class="bbf-field field-description">
-                <label for="sequencePadding">Sequence Padding</label>
+                <label for="sequencePadding"><spring:message code="openhmis.cashier.receiptGenerator.sequencePadding" /></label>
                 <div class="bbf-editor">
                     <input id="sequencePadding" name="sequencePadding" type="number" value="${generator.sequencePadding}">
                 </div>
             </li>
             <li class="bbf-field field-description">
-                <label for="includeCheckDigit">Include Check Digit</label>
+                <label for="includeCheckDigit"><spring:message code="openhmis.cashier.receiptGenerator.includeCheckDigit" /></label>
                 <div class="bbf-editor">
                     <input id="includeCheckDigit" name="includeCheckDigit" type="checkbox"
                         <c:if test="${generator.includeCheckDigit}"> checked="true"</c:if>>
