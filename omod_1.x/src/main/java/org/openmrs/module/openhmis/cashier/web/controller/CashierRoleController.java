@@ -13,36 +13,23 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Privilege;
-import org.openmrs.Role;
-import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
-import org.openmrs.module.openhmis.commons.model.RoleCreationViewModel;
-import org.openmrs.util.RoleConstants;
-import org.openmrs.web.WebConstants;
+import org.openmrs.module.openhmis.commons.web.controller.RoleCreationControllerBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Set;
 
 /**
  * Controller to manage the Cashier Role Creation page.
  */
 @Controller
 @RequestMapping(CashierWebConstants.CASHIER_ROLE_ROOT)
-public class CashierRoleController {
+public class CashierRoleController extends RoleCreationControllerBase {
 	private UserService userService;
 
 	@Autowired
@@ -50,95 +37,13 @@ public class CashierRoleController {
 		this.userService = userService;
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
-	public void render(ModelMap model) {
-		List<Role> roles = userService.getAllRoles();
-		model.addAttribute("roles", roles);
+	@Override
+	public UserService getUserService() {
+		return this.userService;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public void submit(HttpServletRequest request, RoleCreationViewModel viewModel, Errors errors, ModelMap model) {
-		HttpSession session = request.getSession();
-		String action = request.getParameter("action");
-
-		if (action.equals("add")) {
-			addCashierPrivileges(viewModel.getAddToRole());
-			session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.add");
-		} else if (action.equals("remove")) {
-			removeCashierPrivileges(viewModel.getRemoveFromRole());
-			session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.remove");
-		} else if (action.equals("new") && newRoleValidated(viewModel, errors)) {
-			createRole(viewModel, session);
-		}
-
-		render(model);
-	}
-
-	private void addCashierPrivileges(String roleUuid) {
-		Role role = userService.getRoleByUuid(roleUuid);
-		if (role == null) {
-			throw new APIException("The role '" + roleUuid + "' could not be found.");
-		}
-
-		for (Privilege priv : PrivilegeConstants.getDefaultPrivileges()) {
-			if (!role.hasPrivilege(priv.getName())) {
-				role.addPrivilege(priv);
-			}
-		}
-
-		userService.saveRole(role);
-	}
-
-	private void removeCashierPrivileges(String roleUuid) {
-		Role role = userService.getRoleByUuid(roleUuid);
-		if (role == null) {
-			throw new APIException("The role '" + roleUuid + "' could not be found.");
-		}
-
-		for (Privilege priv : PrivilegeConstants.getDefaultPrivileges()) {
-			if (role.hasPrivilege(priv.getName())) {
-				role.removePrivilege(priv);
-			}
-		}
-
-		userService.saveRole(role);
-	}
-
-	private void createRole(RoleCreationViewModel viewModel, HttpSession session) {
-		Role newRole = new Role();
-		newRole.setRole(viewModel.getNewRoleName());
-		newRole.setDescription("Users who creates and manage patient bills");
-		newRole.setPrivileges(PrivilegeConstants.getDefaultPrivileges());
-
-		Role inheritedRole = userService.getRole(RoleConstants.PROVIDER);
-		Set<Role> inheritedRoles = new HashSet<Role>();
-		inheritedRoles.add(inheritedRole);
-		newRole.setInheritedRoles(inheritedRoles);
-
-		userService.saveRole(newRole);
-
-		session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.roleCreation.page.feedback.new");
-	}
-
-	private boolean newRoleValidated(RoleCreationViewModel viewModel, Errors errors) {
-		if (viewModel.getNewRoleName().equals(StringUtils.EMPTY)) {
-			errors.rejectValue("role", "openhmis.cashier.roleCreation.page.feedback.error.blankRole");
-			return false;
-		} else if (checkForDuplicateRole(viewModel.getNewRoleName())) {
-			errors.rejectValue("role", "openhmis.cashier.roleCreation.page.feedback.error.existingRole");
-			return false;
-		}
-
-		return true;
-	}
-
-	private Boolean checkForDuplicateRole(String role) {
-		for (Role name : userService.getAllRoles()) {
-			if (name.getRole().equals(role)) {
-				return true;
-			}
-		}
-
-		return false;
+	@Override
+	public Set<Privilege> privileges() {
+		return PrivilegeConstants.getDefaultPrivileges();
 	}
 }
