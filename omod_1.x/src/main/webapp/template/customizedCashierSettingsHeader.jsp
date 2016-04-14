@@ -40,6 +40,6 @@
 	</li>
 	<li>
 		<i class="glyphicon glyphicon-menu-right link"></i>
-		<openmrs:message code="openhmis.cashier.admin.role" />
+		<openmrs:message code="openhmis.cashier.admin.cashierSettings" />
 	</li>
 </ul>
