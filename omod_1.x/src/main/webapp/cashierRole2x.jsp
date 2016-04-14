@@ -112,6 +112,6 @@
 				</td>
 			</tr>
 		</table>
-		<p><input class="submitButton confirm right" type="submit" value="<openmrs:message code="Role.save"/>"></p>
+		<p><input class="submitButton confirm right" type="submit" value="<openmrs:message code="openhmis.cashier.roleCreation.page.role.save"/>"></p>
 	</form>
 </div>
