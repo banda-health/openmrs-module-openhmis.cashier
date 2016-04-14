@@ -38,6 +38,10 @@ public class CashierWebConstants extends WebConstants {
 	public static final String PAYMENT_MODES_PAGE = PAYMENT_MODES_ROOT + ".form";
 	public static final String CASHIER_SETTINGS_ROOT = MODULE_ROOT + "cashierSettings";
 	public static final String CASHIER_SETTINGS_PAGE = CASHIER_SETTINGS_ROOT + ".form";
+
+	public static final String CASHIER_SETTINGS_2X_ROOT = MODULE_ROOT + "cashierSettings2x";
+	public static final String CASHIER_SETTINGS_2X_PAGE = CASHIER_SETTINGS_2X_ROOT + ".page";
+
 	public static final String BILL_PAGE = MODULE_ROOT + "bill";
 	public static final String RECEIPT = MODULE_ROOT + "receipt";
 	public static final String ADMIN_MODULE_ROOT = WebConstants.MODULE_BASE + CashierModuleConstants.MODULE_NAME
