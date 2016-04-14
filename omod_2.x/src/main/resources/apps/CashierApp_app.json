@@ -81,7 +81,7 @@
 				"extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
 				"type": "link",
 				"label": "Cashier Settings",
-				"url": "module/openhmis/cashier/cashierSettings.form",
+				"url": "module/openhmis/cashier/cashierSettings2x.page",
 				"icon": "icon-cogs",
 				"requiredPrivilege": "Task: Access Cashier Settings"
 			}
