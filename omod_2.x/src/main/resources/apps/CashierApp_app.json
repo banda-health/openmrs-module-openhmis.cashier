@@ -49,7 +49,7 @@
         "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
         "type": "link",
         "label": "Cashier Role Creation",
-        "url": "module/openhmis/cashier/cashierRole.form",
+        "url": "module/openhmis/cashier/cashierRole2x.page",
         "icon": "icon-user",
         "requiredPrivilege": "Task: Cashier Role Creation"
       },
@@ -79,7 +79,7 @@
         "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
         "type": "link",
         "label": "Manage Receipt Number Generator ",
-        "url": "module/openhmis/cashier/admin/receiptNumberGenerator.form",
+        "url": "module/openhmis/cashier/admin/receiptNumberGenerator2x.page",
         "icon": "icon-tasks",
         "requiredPrivilege": "Task: Manage Receipt Number Generator"
       },
@@ -89,7 +89,7 @@
         "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
         "type": "link",
         "label": "Cashier Settings",
-        "url": "module/openhmis/cashier/cashierSettings.form",
+        "url": "module/openhmis/cashier/cashierSettings2x.page",
         "icon": "icon-cogs",
         "requiredPrivilege": "Task: Access Cashier Settings"
       }
