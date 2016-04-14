@@ -1,98 +1,90 @@
 [
-    {
-    "id": "${project.parent.artifactId}",
-    "description": "Module to provide basic cashier functionality",
-    "order": 20,
-    "extensions": [
-      {
-        "id": "openhmis.cashier.cashierLandingPageLink",
-        "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
-        "type": "link",
-        "label": "Cashier",
-        "url": "openhmis.cashier/cashierLanding.page",
-        "icon": "icon-money",
-        "requiredPrivilege": "App: View Cashier App"
-      },
-
-      {
-        "id": "openhmis.cashier.createBillLink",
-        "extensionPointId": "org.openmrs.module.openhmis.cashier.landing",
-        "type": "link",
-        "label": "Create new bill",
-        "url": "module/openhmis/cashier/cashier.form?returnUrl=/module/openhmis/cashier/bill.form",
-        "icon": "icon-money",
-        "requiredPrivilege": "Task: Create new bill"
-      },
-
-      {
-        "id": "openhmis.cashier.timesheetEntryLink",
-        "extensionPointId": "org.openmrs.module.openhmis.cashier.landing",
-        "type": "link",
-        "label": "Timesheet Entry",
-        "url": "module/openhmis/cashier/cashier.form",
-        "icon": "icon-edit",
-        "requiredPrivilege": "Task: Cashier Timesheets"
-      },
-
-      {
-        "id": "openhmis.cashier.manageCashierModuleLink",
-        "extensionPointId": "org.openmrs.module.openhmis.cashier.landing",
-        "type": "link",
-        "label": "Manage Cashier Module",
-        "url": "openhmis.cashier/cashier/cashierManageModule.page",
-        "icon": "icon-cogs",
-        "requiredPrivilege": "Task: Manage Cashier Module"
-      },
-
-      {
-        "id": "openhmis.cashier.manageCashierRoleCreationLink",
-        "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
-        "type": "link",
-        "label": "Cashier Role Creation",
-        "url": "module/openhmis/cashier/cashierRole.form",
-        "icon": "icon-user",
-        "requiredPrivilege": "Task: Cashier Role Creation"
-      },
-
-      {
-        "id": "openhmis.cashier.manageCashPointsLink",
-        "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
-        "type": "link",
-        "label": "Manage Cash Points",
-        "url": "module/openhmis/cashier/cashPoints.form",
-        "icon": "icon-money",
-        "requiredPrivilege": "Task: Manage Cash Points"
-      },
-
-      {
-        "id": "openhmis.cashier.managePaymentModesLink",
-        "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
-        "type": "link",
-        "label": "Manage Payment Modes",
-        "url": "module/openhmis/cashier/paymentModes.form",
-        "icon": "icon-tasks",
-        "requiredPrivilege": "Task: Manage Payment Modes"
-      },
-
-      {
-        "id": "openhmis.cashier.manageReceiptNumberGeneratorLink",
-        "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
-        "type": "link",
-        "label": "Manage Receipt Number Generator ",
-        "url": "module/openhmis/cashier/admin/receiptNumberGenerator.form",
-        "icon": "icon-tasks",
-        "requiredPrivilege": "Task: Manage Receipt Number Generator"
-      },
-
-      {
-        "id": "openhmis.cashier.settingsLink",
-        "extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
-        "type": "link",
-        "label": "Cashier Settings",
-        "url": "module/openhmis/cashier/cashierSettings.form",
-        "icon": "icon-cogs",
-        "requiredPrivilege": "Task: Access Cashier Settings"
-      }
-    ]
-  }
+	{
+		"id": "${project.parent.artifactId}",
+		"description": "Module to provide basic cashier functionality",
+		"order": 20,
+		"extensions": [
+			{
+				"id": "openhmis.cashier.cashierLandingPageLink",
+				"extensionPointId": "org.openmrs.referenceapplication.homepageLink",
+				"type": "link",
+				"label": "Cashier",
+				"url": "openhmis.cashier/cashierLanding.page",
+				"icon": "icon-money",
+				"requiredPrivilege": "App: View Cashier App"
+			},
+			{
+				"id": "openhmis.cashier.createBillLink",
+				"extensionPointId": "org.openmrs.module.openhmis.cashier.landing",
+				"type": "link",
+				"label": "Create new bill",
+				"url": "module/openhmis/cashier/cashier.form?returnUrl=/module/openhmis/cashier/bill.form",
+				"icon": "icon-money",
+				"requiredPrivilege": "Task: Create new bill"
+			},
+			{
+				"id": "openhmis.cashier.timesheetEntryLink",
+				"extensionPointId": "org.openmrs.module.openhmis.cashier.landing",
+				"type": "link",
+				"label": "Timesheet Entry",
+				"url": "module/openhmis/cashier/cashier.form",
+				"icon": "icon-edit",
+				"requiredPrivilege": "Task: Cashier Timesheets"
+			},
+			{
+				"id": "openhmis.cashier.manageCashierModuleLink",
+				"extensionPointId": "org.openmrs.module.openhmis.cashier.landing",
+				"type": "link",
+				"label": "Manage Cashier Module",
+				"url": "openhmis.cashier/cashier/cashierManageModule.page",
+				"icon": "icon-cogs",
+				"requiredPrivilege": "Task: Manage Cashier Module"
+			},
+			{
+				"id": "openhmis.cashier.manageCashierRoleCreationLink",
+				"extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
+				"type": "link",
+				"label": "Cashier Role Creation",
+				"url": "module/openhmis/cashier/cashierRole2x.page",
+				"icon": "icon-user",
+				"requiredPrivilege": "Task: Cashier Role Creation"
+			},
+			{
+				"id": "openhmis.cashier.manageCashPointsLink",
+				"extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
+				"type": "link",
+				"label": "Manage Cash Points",
+				"url": "module/openhmis/cashier/cashPoints.form",
+				"icon": "icon-money",
+				"requiredPrivilege": "Task: Manage Cash Points"
+			},
+			{
+				"id": "openhmis.cashier.managePaymentModesLink",
+				"extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
+				"type": "link",
+				"label": "Manage Payment Modes",
+				"url": "module/openhmis/cashier/paymentModes.form",
+				"icon": "icon-tasks",
+				"requiredPrivilege": "Task: Manage Payment Modes"
+			},
+			{
+				"id": "openhmis.cashier.manageReceiptNumberGeneratorLink",
+				"extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
+				"type": "link",
+				"label": "Manage Receipt Number Generator ",
+				"url": "module/openhmis/cashier/admin/receiptNumberGenerator.form",
+				"icon": "icon-tasks",
+				"requiredPrivilege": "Task: Manage Receipt Number Generator"
+			},
+			{
+				"id": "openhmis.cashier.settingsLink",
+				"extensionPointId": "org.openmrs.module.openhmis.cashier.manage.module",
+				"type": "link",
+				"label": "Cashier Settings",
+				"url": "module/openhmis/cashier/cashierSettings.form",
+				"icon": "icon-cogs",
+				"requiredPrivilege": "Task: Access Cashier Settings"
+			}
+		]
+	}
 ]
