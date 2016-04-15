@@ -43,7 +43,7 @@
                 <ul class="search-area">
                     <li>
                         ${ui.message('openhmis.cashier.location.name')}:
-                        <select ng-model="location" ng-change="searchCashpoints(currentPage)"
+                        <select ng-model="location" ng-change="searchCashpoints(currentPage)" style="height:33px;"
                                 ng-options='location.display for location in locations track by location.uuid'>
                             <option value="" selected="selected">${ui.message('openhmis.commons.general.any')}</option>
                         </select>
