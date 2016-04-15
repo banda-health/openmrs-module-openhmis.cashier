@@ -1,5 +1,5 @@
 <%
-    ui.decorateWith("appui", "standardEmrPage", [ title: ui.message("openhmis.cashier.admin.cashPoints") ])
+    ui.decorateWith("appui", "standardEmrPage", [ title: ui.message("openhmis.cashier.admin.paymentModes") ])
 
     ui.includeJavascript("uicommons", "angular.min.js")
     ui.includeJavascript("uicommons", "angular-ui/angular-ui-router.min.js")
