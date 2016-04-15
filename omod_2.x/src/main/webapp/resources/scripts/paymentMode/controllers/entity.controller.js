@@ -81,8 +81,8 @@
                 }
 
                 // validate attribute types.
-                if($scope.entity.attributeTypes !== undefined && $scope.entity.attributeTypes.length === 0){
-                    delete $scope.entity.attributeTypes;
+                if($scope.entity.attributeTypes === ''){
+                    $scope.entity.attributeTypes = null;
                 }
 
                 if($scope.submitted){
