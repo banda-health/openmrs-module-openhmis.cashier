@@ -104,3 +104,6 @@ ul.dialog-table-layout li {
     width: 150px;
     margin: 0 0;
 }
+#attribute-types-dialog select option {
+    font-size: 1.1em;
+}
