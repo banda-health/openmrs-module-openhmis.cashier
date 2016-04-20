@@ -105,7 +105,7 @@
                                         <span>${ui.message('PersonAttributeType.format')}</span>
                                     </li>
                                     <li>
-                                        <select id="formatSelect" class="form-control" style="font-size: 11px" ng-model="attributeType.format"
+                                        <select id="formatSelect" class="form-control" style="font-size: 14px" ng-model="attributeType.format"
                                                 ng-options="field for field in formatFields track by field">
                                             <option value="0"></option>
                                             <option ng-selected="attributeType.format == field"></option>
