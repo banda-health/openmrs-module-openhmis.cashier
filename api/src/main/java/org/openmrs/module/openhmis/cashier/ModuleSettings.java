@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.openhmis.cashier;
 
+import org.apache.commons.beanutils.converters.IntegerArrayConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
@@ -180,6 +181,13 @@ public class ModuleSettings {
 			adminService.setGlobalProperty(TIMESHEET_REQUIRED_PROPERTY, Boolean.TRUE.toString());
 		} else {
 			adminService.setGlobalProperty(TIMESHEET_REQUIRED_PROPERTY, Boolean.FALSE.toString());
+		}
+
+		Integer patientDashboard2BillCount = cashierSettings.getPatientDashboard2BillCount();
+		if (patientDashboard2BillCount != null) {
+			adminService.setGlobalProperty(PATIENT_DASHBOARD_2_BILL_COUNT, patientDashboard2BillCount.toString());
+		} else {
+			adminService.setGlobalProperty(PATIENT_DASHBOARD_2_BILL_COUNT, "");
 		}
 
 	}

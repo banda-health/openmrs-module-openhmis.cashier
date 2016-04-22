@@ -183,6 +183,20 @@
 					</spring:bind>
 				</td>
 			</tr>
+			<tr>
+				<td style="width: 70%;">
+					<spring:message code="openhmis.cashier.setting.patientDashboard2BillCount.feild.header"/>
+					<br/>
+					<span class="description"><spring:message code="openhmis.cashier.setting.patientDashboard2BillCount.feild.description"/></span>
+				</td>
+				<td>
+					<spring:bind path="patientDashboard2BillCount">
+						<input id="patientDashboard2BillCount" name="patientDashboard2BillCount" type="text" value="${cashierSettings.patientDashboard2BillCount}"
+						       size="50"
+						       maxlength="4000">
+					</spring:bind>
+				</td>
+			</tr>
 		</table>
 		<br/>
 		<p><input class="submitButton confirm right" type="submit" value="<openmrs:message code="openhmis.cashier.settings.page.settings.save"/>"></p>
