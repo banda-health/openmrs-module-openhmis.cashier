@@ -13,7 +13,7 @@
         },
         {
             label: "${ ui.message("openhmis.cashier.admin.paymentModes")}",
-            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/paymentMode/entities.page#/'
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/paymentMode/entities.page##/'
         },
         {
             label: "${ ui.message("openhmis.cashier.paymentMode.edit")}"
