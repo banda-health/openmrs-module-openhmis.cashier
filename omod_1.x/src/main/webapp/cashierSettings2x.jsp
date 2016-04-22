@@ -185,9 +185,9 @@
 			</tr>
 			<tr>
 				<td style="width: 70%;">
-					<spring:message code="openhmis.cashier.setting.patientDashboard2BillCount.feild.header"/>
+					<spring:message code="openhmis.cashier.setting.patientDashboard2BillCount.field.header"/>
 					<br/>
-					<span class="description"><spring:message code="openhmis.cashier.setting.patientDashboard2BillCount.feild.description"/></span>
+					<span class="description"><spring:message code="openhmis.cashier.setting.patientDashboard2BillCount.field.description"/></span>
 				</td>
 				<td>
 					<spring:bind path="patientDashboard2BillCount">
