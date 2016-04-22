@@ -191,7 +191,7 @@
 				</td>
 				<td>
 					<spring:bind path="patientDashboard2BillCount">
-						<input id="patientDashboard2BillCount" name="patientDashboard2BillCount" type="text" value="${cashierSettings.patientDashboard2BillCount}"
+						<input class="form-control" id="patientDashboard2BillCount" name="patientDashboard2BillCount" type="text" value="${cashierSettings.patientDashboard2BillCount}"
 						       size="50"
 						       maxlength="4000">
 					</spring:bind>
