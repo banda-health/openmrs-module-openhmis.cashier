@@ -13,7 +13,7 @@
         },
         {
             label: "${ ui.message("openhmis.cashier.admin.cashPoints")}",
-            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashPoint/entities.page#/'
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashPoint/entities.page##/'
         },
         {
             label: "${ ui.message("openhmis.cashier.cashPoint.edit")}"
