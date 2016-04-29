@@ -37,7 +37,7 @@
     </div>
     <br/><br/><br/>
 
-    <div ng-controller="ManageCashpointsController">
+    <div>
         <div id="entities">
             <div class="btn-group">
                 ${ui.message('openhmis.cashier.location.name')}:
