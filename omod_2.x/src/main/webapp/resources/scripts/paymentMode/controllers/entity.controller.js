@@ -44,17 +44,21 @@
 
                 // open dialog box to add an attribute type
                 $scope.addAttributeType = function () {
-                    PaymentModeFunctions.addAttributeType($scope);
+	                $scope.editAttributeTypeTitle = '';
+	                $scope.addAttributeTypeTitle = emr.message('openhmis.cashier.paymentMode.add.attributeType');
+                    EntityFunctions.addAttributeType($scope);
                 }
 
                 // deletes an attribute type
                 $scope.removeAttributeType = function (attributeType) {
-                    PaymentModeFunctions.removeAttributeType(attributeType, $scope.entity.attributeTypes);
+	                EntityFunctions.removeAttributeType(attributeType, $scope.entity.attributeTypes);
                 }
 
                 // open dialog box to edit an attribute type
                 $scope.editAttributeType = function (attributeType) {
-                    PaymentModeFunctions.editAttributeType(attributeType, $scope);
+	                $scope.editAttributeTypeTitle = emr.message('openhmis.cashier.paymentMode.edit.attributeType');
+	                $scope.addAttributeTypeTitle = '';
+	                EntityFunctions.editAttributeType(attributeType, $scope);
                 }
 
                 // retrieve and load format fields..
@@ -89,10 +93,19 @@
                     return false;
                 }
 
-                PaymentModeFunctions.removeAttributeTypesTemporaryId($scope.entity.attributeTypes);
+		        // remove temporarily assigned ids from the attribute type array lists.
+		        self.removeTemporaryIds();
 
                 return true;
             }
+
+	    /**
+	     * Removes the temporarily assigned unique ids before POSTing data
+	     * @type {Function}
+	     */
+	    self.removeTemporaryIds = self.removeTemporaryIds || function () {
+			    EntityFunctions.removeTemporaryId($scope.entity.attributeTypes);
+		    }
 
         // @Override
         self.onChangeEntityError = self.onChangeEntityError || function (error) {
