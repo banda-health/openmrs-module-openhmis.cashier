@@ -98,7 +98,7 @@
 		<description>
 			Number of Bills to show up on the OpenMRS 2.x patientDashboard.
 		</description>
-		<defaultValue>10</defaultValue>
+		<defaultValue>5</defaultValue>
 	</globalProperty>
 
 	<!-- Extensions -->
