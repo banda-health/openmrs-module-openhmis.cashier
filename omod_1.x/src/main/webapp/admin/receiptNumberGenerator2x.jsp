@@ -56,18 +56,19 @@
                     </td>
                 </tr>
                 <tr>
+                   <td>
+	            <table>
+                   <tr>
                    <td style="font-style: italic;" class="indent">${generator.description}</td>
+                    <td>
+	                    <c:if test="${currentGenerator.name == generator.name && not empty generator.configurationPage}">
+	                    <a class="btn btn-info" href="${pageContext.request.contextPath}/${generator.configurationPage}2x.page">
+                       <spring:message code="openhmis.cashier.receiptGenerator.configure"/></a>
+	                    </c:if>
+                </td>
                 </tr>
-                <c:if test="${currentGenerator.name == generator.name && not empty generator.configurationPage}">
-                    <tr>
-                        <td class="indent">
-                          <a href="${pageContext.request.contextPath}/${generator.configurationPage}2x.page">
-                             <spring:message code="openhmis.cashier.receiptGenerator.configure" />
-                          </a>
-                        </td>
-                    </tr>
-                </c:if>
-
+		            </table></td>
+                </tr>
             </c:forEach>
         </table>
         <input class="submitButton confirm right" value="<openmrs:message code="openhmis.cashier.receiptGenerator.save"/>" type="submit" />
