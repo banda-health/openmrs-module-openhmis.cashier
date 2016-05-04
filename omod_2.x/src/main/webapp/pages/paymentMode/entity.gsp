@@ -39,7 +39,7 @@
             </li>
         </ul>
         <ul class="table-layout">
-            <li style="vertical-align: top" class="not-required">
+            <li class="not-required valign">
                 <span>${ui.message('general.description')}</span>
             </li>
             <li>
@@ -58,7 +58,7 @@
             </li>
         </ul>
         <ul class="table-layout">
-            <li class="not-required">
+            <li class="not-required valign">
                 <span>${ui.message('openhmis.cashier.paymentMode.attributeTypes')}</span>
             </li>
             <li>

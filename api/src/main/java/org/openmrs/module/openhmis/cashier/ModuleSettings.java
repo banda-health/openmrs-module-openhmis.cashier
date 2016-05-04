@@ -15,6 +15,7 @@ package org.openmrs.module.openhmis.cashier;
 
 import org.apache.commons.beanutils.converters.IntegerArrayConverter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
@@ -38,7 +39,7 @@ public class ModuleSettings {
 	public static final String AUTOFILL_PAYMENT_AMOUNT = "openhmis.cashier.autofillPaymentAmount";
 	public static final String PATIENT_DASHBOARD_2_BILL_COUNT =
 	        "openhmis.cashier.patientDashboard2BillCount";
-	private static final Integer DEFAULT_PATIENT_DASHBOARD_2_BILL_COUNT = 10;//avoids '10' is a magic number.
+	private static final Integer DEFAULT_PATIENT_DASHBOARD_2_BILL_COUNT = 4;
 
 	protected ModuleSettings() {}
 
@@ -112,9 +113,10 @@ public class ModuleSettings {
 		}
 
 		property = administrationService.getGlobalProperty(PATIENT_DASHBOARD_2_BILL_COUNT);
-		if (!StringUtils.isEmpty(property)) {
+		if (!StringUtils.isEmpty(property) && NumberUtils.isNumber(property)) {
 			cashierSettings.setPatientDashboard2BillCount(Integer.parseInt(property));
-		} else {
+		}
+		else {
 			cashierSettings.setPatientDashboard2BillCount(DEFAULT_PATIENT_DASHBOARD_2_BILL_COUNT);
 		}
 
