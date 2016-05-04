@@ -47,6 +47,7 @@
 	                $scope.editAttributeTypeTitle = '';
 	                $scope.addAttributeTypeTitle = emr.message('openhmis.cashier.paymentMode.add.attributeType');
                     EntityFunctions.addAttributeType($scope);
+                    EntityFunctions.disableBackground();
                 }
 
                 // deletes an attribute type
@@ -59,6 +60,7 @@
 	                $scope.editAttributeTypeTitle = emr.message('openhmis.cashier.paymentMode.edit.attributeType');
 	                $scope.addAttributeTypeTitle = '';
 	                EntityFunctions.editAttributeType(attributeType, $scope);
+                    EntityFunctions.disableBackground();
                 }
 
                 // retrieve and load format fields..
