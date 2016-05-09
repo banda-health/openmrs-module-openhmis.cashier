@@ -39,4 +39,5 @@ emr.loadMessages([
     "general.unretire",
     "openhmis.commons.general.postSearchMessage",
     "openhmis.commons.general.anyLocation",
+    "openhmis.commons.general.confirm"
 ]);

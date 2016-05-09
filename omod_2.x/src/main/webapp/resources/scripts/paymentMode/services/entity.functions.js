@@ -37,6 +37,8 @@
          */
         function addMessageLabels(){
             var messages = {};
+            messages['openhmis.commons.general.confirm'] = emr
+                .message("openhmis.commons.general.confirm");
             return messages;
         }
     }
