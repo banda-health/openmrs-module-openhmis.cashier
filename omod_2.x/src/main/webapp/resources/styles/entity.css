@@ -107,3 +107,10 @@ ul.dialog-table-layout li {
 #attribute-types-dialog select option {
     font-size: 1.1em;
 }
+.timesheet legend{
+        font-size:16px;
+        width:150px;
+        color: #00463f  ;
+        text-transform: none;
+        font-weight: bold;
+}

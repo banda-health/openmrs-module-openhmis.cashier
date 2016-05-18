@@ -29,7 +29,7 @@
         "extensionPointId": "org.openmrs.module.openhmis.cashier.landing",
         "type": "link",
         "label": "Timesheet Entry",
-        "url": "module/openhmis/cashier/cashier.form",
+        "url": "openhmis.cashier/timesheet/entities.page",
         "icon": "icon-edit",
         "requiredPrivilege": "Task: Cashier Timesheets"
       },
