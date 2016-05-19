@@ -25,6 +25,7 @@
 		
 		service = {
 			loadCashpoints : loadCashpoints,
+			loadCurrentTimesheet: loadCurrentTimesheet,
 		};
 		
 		return service;
@@ -41,6 +42,15 @@
 				errorCallback
 			);
 
+			//reset base url..
+			EntityRestFactory.setBaseUrl(module_name);
+		}
+
+		function loadCurrentTimesheet(module_name, onLoadTimesheetSuccessful, timesheetDate) {
+			var requestParams = [];
+			requestParams['rest_entity_name'] = 'timesheet?date=' + timesheetDate +'&v=full';
+			EntityRestFactory.loadEntities(requestParams, onLoadTimesheetSuccessful, errorCallback);
+			
 			//reset base url..
 			EntityRestFactory.setBaseUrl(module_name);
 		}

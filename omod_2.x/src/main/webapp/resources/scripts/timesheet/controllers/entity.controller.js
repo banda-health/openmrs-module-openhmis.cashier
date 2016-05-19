@@ -31,6 +31,10 @@
 		self.setRequiredInitParameters = self.setRequiredInitParameters || function () {
 				self.bindBaseParameters(module_name, rest_entity_name, entity_name_message_key);
 			};
+		// @Override
+		self.getModelAndEntityName = self.getModelAndEntityName || function() {
+				self.bindBaseParameters(module_name, rest_entity_name, entity_name_message_key);
+			};
 		
 		/**
 		 * Initializes and binds any required variable and/or function specific to entity.page
@@ -40,6 +44,7 @@
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function (uuid) {
 				self.loadCashpoints();
+				self.loadTimesheets();
 			};
 		
 		/**
@@ -49,10 +54,25 @@
 		self.loadCashpoints = self.loadCashpoints || function(){
 				TimesheetRestfulService.loadCashpoints(module_name, self.onLoadCashpointsSuccessful);
 			}
+		var timesheetDate = "05/20/2016 14:53";
+		self.loadTimesheets = self.loadTimesheets || function() {
+				TimesheetRestfulService.loadCurrentTimesheet(module_name, self.onLoadTimesheetSuccessful,timesheetDate);
+			}
 		
 		//callback
 		self.onLoadCashpointsSuccessful = self.onLoadCashpointsSuccessful || function(data){
 				$scope.cashpoints = data.results;
+			}
+
+		self.onLoadTimesheetSuccessful = self.onLoadTimesheetSuccessful || function(data) {
+				$scope.timesheets = data.results;
+				console.log("#########################################################");
+				console.log(data.results);
+				var dates = data.results[0].display;
+				var clockIn = dates.split(" to", 1);
+				var clockOut = dates.split(" to ");
+				$scope.entity.clockIn = new Date(clockIn);
+				$scope.entity.clockOut = new Date(clockOut[clockOut.length-1]);
 			}
 		
 		// @Override
