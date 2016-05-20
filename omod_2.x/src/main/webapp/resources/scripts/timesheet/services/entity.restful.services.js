@@ -48,7 +48,7 @@
 
 		function loadCurrentTimesheet(module_name, onLoadTimesheetSuccessful, timesheetDate) {
 			var requestParams = [];
-			requestParams['rest_entity_name'] = 'timesheet?date=' + timesheetDate +'&v=full';
+			requestParams['rest_entity_name'] = 'timesheet?date=' + timesheetDate;
 			EntityRestFactory.loadEntities(requestParams, onLoadTimesheetSuccessful, errorCallback);
 			
 			//reset base url..

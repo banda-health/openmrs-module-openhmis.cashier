@@ -42,10 +42,22 @@ public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		description.addProperty("cashier", Representation.REF);
+		description.addProperty("cashPoint", Representation.REF);
+		description.addProperty("clockIn");
+		description.addProperty("clockOut");
 		if (rep instanceof RefRepresentation) {
 			description.addProperty("id");
 		}
 
+		return description;
+	}
+
+	@Override
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = super.getCreatableProperties();
+		description.addProperty("cashier");
+		description.addProperty("cashpoint");
 		return description;
 	}
 

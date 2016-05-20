@@ -29,8 +29,10 @@
 				<div class="row">
 					<div class="col-sm-10">
 						<select class="form-control" ng-model="entity.cashPoint"
-						        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.uuid'>
+						        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.name'>
+							<option ng-selected="cashpointUuid == cashpoint.name"></option>
 						</select>
+						<p>{{cashpointUuid}}</p>
 					</div>
 				</div>
 			</li>
@@ -42,10 +44,10 @@
 			<li>
 				<div class="row">
 					<div class="col-sm-10">
-						<input type="datetime-local" class="form-control" ng-model="entity.clockIn" style="min-width: 50%;"
-						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}" required />
+						<input type="datetime" class="form-control" ng-model="entity.clockIn" style="min-width: 50%;"
+						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}" required value={{clockIn}} />
 					</div>
-					<div class="col-sm-1 " ng-show="timesheets != null">
+					<div class="col-sm-1 " ng-show="timesheets == null">
 						<input type="button" class="btn-sm"
 						       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"
 						       ng-click=""/>
@@ -53,16 +55,16 @@
 				</div>
 			</li>
 		</ul>
-		<ul class="table-layout" ng-show="timesheets == null">
+		<ul class="table-layout" ng-show="timesheets != null">
 			<li class="required">
 				<span>${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}</span>
 			</li>
 			<li>
 				<div class="row">
 					<div class="col-sm-10 ">
-						<input type="date" id="clockOut" name="clockOut" class="form-control" ng-model="entity.clockOut" style="min-width: 50%;"
+						<input type="datetime" id="clockOut" name="clockOut" class="form-control" ng-model="entity.clockOut" style="min-width: 50%;"
 						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"
-						       required/>
+						       required value="{{clockOut}}"/>
 					</div>
 					<div class="col-sm-1 ">
 						<input type="button" class="btn-sm"
@@ -71,7 +73,6 @@
 					</div>
 				</div>
 			</li>
-		</li>
 		</ul>
 		<br/>
 	</fieldset>
@@ -93,7 +94,7 @@
 			<li>
 				<div class="row">
 					<div class="col-sm-10 ">
-						<input type="datetime-local" class="form-control" ng-model="entity.name" style="min-width: 50%;"
+						<input type="datetime" class="form-control" ng-model="entity.shiftDate" style="min-width: 50%;"
 						       placeholder="${ui.message('openhmis.cashier.page.reports.box.timesheets.shift.date')}"
 						       required/>
 					</div>

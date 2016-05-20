@@ -16,25 +16,21 @@
 (function () {
 	'use strict';
 	
-	var base = angular.module('app.genericEntityController');
+	var base = angular.module('app.genericManageController');
 	base.controller("TimesheetController", TimesheetController);
-	TimesheetController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory', 'TimesheetModel', 'TimesheetRestfulService'];
+	TimesheetController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory', 'TimesheetModel', 'TimesheetRestfulService', 'TimesheetFunctions'];
 	
-	function TimesheetController($stateParams, $injector, $scope, $filter, EntityRestFactory, TimesheetModel, TimesheetRestfulService) {
+	function TimesheetController($stateParams, $injector, $scope, $filter, EntityRestFactory, TimesheetModel, TimesheetRestfulService, TimesheetFunctions) {
 		var self = this;
-		
+
 		var module_name = 'cashier';
-		var entity_name_message_key = "openhmis.cashier.page.timesheet";
+		var entity_name = emr.message("openhmis.cashier.page.timesheet");
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
-		
-		// @Override
-		self.setRequiredInitParameters = self.setRequiredInitParameters || function () {
-				self.bindBaseParameters(module_name, rest_entity_name, entity_name_message_key);
-			};
+
 		// @Override
 		self.getModelAndEntityName = self.getModelAndEntityName || function() {
-				self.bindBaseParameters(module_name, rest_entity_name, entity_name_message_key);
-			};
+				self.bindBaseParameters(module_name, rest_entity_name, entity_name);
+			}
 		
 		/**
 		 * Initializes and binds any required variable and/or function specific to entity.page
@@ -44,7 +40,7 @@
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function (uuid) {
 				self.loadCashpoints();
-				self.loadTimesheets();
+				self.loadCurrentTimesheets();
 			};
 		
 		/**
@@ -54,9 +50,9 @@
 		self.loadCashpoints = self.loadCashpoints || function(){
 				TimesheetRestfulService.loadCashpoints(module_name, self.onLoadCashpointsSuccessful);
 			}
-		var timesheetDate = "05/20/2016 14:53";
-		self.loadTimesheets = self.loadTimesheets || function() {
-				TimesheetRestfulService.loadCurrentTimesheet(module_name, self.onLoadTimesheetSuccessful,timesheetDate);
+		self.loadCurrentTimesheets = self.loadCurrentTimesheets || function() {
+				var timesheetDate = TimesheetFunctions.formatDate(new Date());
+				TimesheetRestfulService.loadCurrentTimesheet(module_name, self.onloadCurrentTimesheetsuccessful,timesheetDate);
 			}
 		
 		//callback
@@ -64,16 +60,15 @@
 				$scope.cashpoints = data.results;
 			}
 
-		self.onLoadTimesheetSuccessful = self.onLoadTimesheetSuccessful || function(data) {
+		self.onloadCurrentTimesheetsuccessful = self.onloadCurrentTimesheetsuccessful || function(data) {
 				$scope.timesheets = data.results;
-				console.log("#########################################################");
-				console.log(data.results);
-				var dates = data.results[0].display;
-				var clockIn = dates.split(" to", 1);
-				var clockOut = dates.split(" to ");
-				$scope.entity.clockIn = new Date(clockIn);
-				$scope.entity.clockOut = new Date(clockOut[clockOut.length-1]);
+
+				/*Get the latest timesheet for the day if multiple*/
+				$scope.clockIn = TimesheetFunctions.formatDate(new Date(data.results[0].clockIn));
+				$scope.clockOut = TimesheetFunctions.formatDate(new Date(data.results[0].clockOut));
+				$scope.cashpointUuid = data.results[0].cashPoint.name;
 			}
+
 		
 		// @Override
 		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
@@ -82,7 +77,7 @@
 			}
 		
 		/* ENTRY POINT: Instantiate the base controller which loads the page */
-		$injector.invoke(base.GenericEntityController, self, {
+		$injector.invoke(base.GenericManageController, self, {
 			$scope: $scope,
 			$filter: $filter,
 			$stateParams: $stateParams,
