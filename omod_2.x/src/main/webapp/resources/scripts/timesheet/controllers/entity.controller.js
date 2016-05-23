@@ -41,6 +41,18 @@
 			|| function (uuid) {
 				self.loadCashpoints();
 				self.loadCurrentTimesheets();
+				
+				$scope.loadClockOutTime = function() {
+						if ($scope.timesheets != null && $scope.timesheets[0].clockOut == null ) {
+							$scope.clockOut = TimesheetFunctions.formatDate(new Date);
+						}
+						
+					}
+
+				$scope.loadClockInTime = function () {
+						$scope.clockIn = TimesheetFunctions.formatDate(new Date());
+				}
+				
 			};
 		
 		/**
@@ -64,11 +76,20 @@
 				$scope.timesheets = data.results;
 
 				/*Get the latest timesheet for the day if multiple*/
-				$scope.clockIn = TimesheetFunctions.formatDate(new Date(data.results[0].clockIn));
-				$scope.clockOut = TimesheetFunctions.formatDate(new Date(data.results[0].clockOut));
-				$scope.cashpointUuid = data.results[0].cashPoint.name;
+				if ($scope.timesheets) {
+					$scope.clockIn = TimesheetFunctions.formatDate(new Date(data.results[0].clockIn));
+					if (data.results[0].clockOut == null) {
+						$scope.clockOut = "";
+					} else {
+						$scope.clockOut = TimesheetFunctions.formatDate(new Date(data.results[0].clockOut));
+					}
+					$scope.cashpointUuid = data.results[0].cashPoint.uuid;
+				} else {
+					$scope.clockIn = TimesheetFunctions.formatDate(new Date());
+					$scope.clockOut = "";
+					$scope.cashpointUuid = "";
+				}
 			}
-
 		
 		// @Override
 		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {

@@ -30,9 +30,8 @@
 					<div class="col-sm-10">
 						<select class="form-control" ng-model="entity.cashPoint"
 						        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.name'>
-							<option ng-selected="cashpointUuid == cashpoint.name"></option>
+							<option ng-selected="cashpointUuid == cashpoint.uuid"></option>
 						</select>
-						<p>{{cashpointUuid}}</p>
 					</div>
 				</div>
 			</li>
@@ -45,17 +44,17 @@
 				<div class="row">
 					<div class="col-sm-10">
 						<input type="datetime" class="form-control" ng-model="entity.clockIn" style="min-width: 50%;"
-						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}" required value={{clockIn}} />
+						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}" value={{clockIn}} />
 					</div>
-					<div class="col-sm-1 " ng-show="timesheets == null">
+					<div class="col-sm-1 " ng-show="timesheets == null || clockOut != null">
 						<input type="button" class="btn-sm"
 						       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"
-						       ng-click=""/>
+						       ng-click="loadClockInTime()"/>
 					</div>
 				</div>
 			</li>
 		</ul>
-		<ul class="table-layout" ng-show="timesheets != null">
+		<ul class="table-layout" ng-show="timesheets != null && clockOut == null">
 			<li class="required">
 				<span>${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}</span>
 			</li>
@@ -64,12 +63,12 @@
 					<div class="col-sm-10 ">
 						<input type="datetime" id="clockOut" name="clockOut" class="form-control" ng-model="entity.clockOut" style="min-width: 50%;"
 						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"
-						       required value="{{clockOut}}"/>
+						       value="{{clockOut}}" required />
 					</div>
 					<div class="col-sm-1 ">
 						<input type="button" class="btn-sm"
 						       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"
-						       ng-click=""/>
+						       ng-click="loadClockOutTime()"/>
 					</div>
 				</div>
 			</li>
@@ -78,7 +77,7 @@
 	</fieldset>
 	<fieldset class="format">
 		<span>
-			<input type="button" class="confirm" value="${ui.message('general.save')}" ng-click="saveOrUpdate()"/>
+			<input type="submit" class="confirm" value="${ui.message('general.save')}" ng-click="saveOrUpdate()"/>
 		</span>
 	</fieldset>
 </form>
@@ -100,7 +99,7 @@
 					</div>
 
 					<div class="col-sm-1 ">
-						<input type="button" class="btn-sm"
+						<input type="submit" class="btn-sm"
 						       value="${ui.message('openhmis.cashier.page.reports.box.generate.report')}"
 						       ng-click=""/>
 					</div>
