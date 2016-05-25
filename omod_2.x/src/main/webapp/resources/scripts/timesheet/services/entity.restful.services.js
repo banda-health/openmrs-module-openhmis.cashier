@@ -25,7 +25,7 @@
 		
 		service = {
 			loadCashpoints : loadCashpoints,
-			loadCurrentTimesheet: loadCurrentTimesheet,
+			loadTimesheet: loadTimesheet,
 		};
 		
 		return service;
@@ -46,7 +46,7 @@
 			EntityRestFactory.setBaseUrl(module_name);
 		}
 
-		function loadCurrentTimesheet(module_name, onLoadTimesheetSuccessful, timesheetDate) {
+		function loadTimesheet(module_name, onLoadTimesheetSuccessful, timesheetDate) {
 			var requestParams = [];
 			requestParams['rest_entity_name'] = 'timesheet?date=' + timesheetDate;
 			EntityRestFactory.loadEntities(requestParams, onLoadTimesheetSuccessful, errorCallback);

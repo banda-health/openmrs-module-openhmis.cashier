@@ -16,7 +16,7 @@
 (function () {
 	'use strict';
 	
-	var base = angular.module('app.genericManageController');
+	var base = angular.module('app.genericEntityController');
 	base.controller("TimesheetController", TimesheetController);
 	TimesheetController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory', 'TimesheetModel', 'TimesheetRestfulService', 'TimesheetFunctions'];
 	
@@ -24,12 +24,15 @@
 		var self = this;
 
 		var module_name = 'cashier';
-		var entity_name = emr.message("openhmis.cashier.page.timesheet");
+		var entity_name_message_key = emr.message("openhmis.cashier.page.timesheet");
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
+		var cancel_page = '#';
 
 		// @Override
-		self.getModelAndEntityName = self.getModelAndEntityName || function() {
-				self.bindBaseParameters(module_name, rest_entity_name, entity_name);
+		self.setRequiredInitParameters = self.setRequiredInitParameters
+			|| function () {
+				self.bindBaseParameters(module_name, rest_entity_name,
+					entity_name_message_key, cancel_page);
 			}
 		
 		/**
@@ -44,14 +47,17 @@
 				
 				$scope.loadClockOutTime = function() {
 						if ($scope.timesheets != null && $scope.timesheets[0].clockOut == null ) {
-							$scope.clockOut = TimesheetFunctions.formatDate(new Date);
+							$scope.entity.clockOut = TimesheetFunctions.formatDate(new Date);
 						}
-						
 					}
 
 				$scope.loadClockInTime = function () {
-						$scope.clockIn = TimesheetFunctions.formatDate(new Date());
+						$scope.entity.clockIn = TimesheetFunctions.formatDate(new Date());
 				}
+				
+				$scope.getTimesheets = function(){
+						$scope.shiftDate = document.getElementById('shiftDate').val();
+					}
 				
 			};
 		
@@ -64,7 +70,7 @@
 			}
 		self.loadCurrentTimesheets = self.loadCurrentTimesheets || function() {
 				var timesheetDate = TimesheetFunctions.formatDate(new Date());
-				TimesheetRestfulService.loadCurrentTimesheet(module_name, self.onloadCurrentTimesheetsuccessful,timesheetDate);
+				TimesheetRestfulService.loadTimesheet(module_name, self.onloadCurrentTimesheetSuccessful,timesheetDate);
 			}
 		
 		//callback
@@ -72,24 +78,29 @@
 				$scope.cashpoints = data.results;
 			}
 
-		self.onloadCurrentTimesheetsuccessful = self.onloadCurrentTimesheetsuccessful || function(data) {
+		self.onloadCurrentTimesheetSuccessful = self.onloadCurrentTimesheetSuccessful || function(data) {
 				$scope.timesheets = data.results;
-
-				/*Get the latest timesheet for the day if multiple*/
+				/*Get the latest timesheet for the day if multiple exist*/
 				if ($scope.timesheets) {
-					$scope.clockIn = TimesheetFunctions.formatDate(new Date(data.results[0].clockIn));
-					if (data.results[0].clockOut == null) {
-						$scope.clockOut = "";
+					//check if the timesheet exists and has a clockOut time filled
+					if (data.results[0].clockOut != null) {
+						$scope.entity.clockIn = TimesheetFunctions.formatDate(new Date);
+						$scope.entity.clockOut = "";
 					} else {
-						$scope.clockOut = TimesheetFunctions.formatDate(new Date(data.results[0].clockOut));
+						$scope.entity.clockIn = TimesheetFunctions.formatDate(new Date(data.results[0].clockIn));
+						$scope.entity.clockOut = "";
 					}
-					$scope.cashpointUuid = data.results[0].cashPoint.uuid;
+					$scope.entity.cashPoint = data.results[0].cashPoint;
 				} else {
-					$scope.clockIn = TimesheetFunctions.formatDate(new Date());
-					$scope.clockOut = "";
-					$scope.cashpointUuid = "";
+					$scope.entity.clockIn = TimesheetFunctions.formatDate(new Date());
+					$scope.entity.clockOut = "";
 				}
 			}
+		
+		self.onloadTimesheetWithGivenDateSuccessfull = self.onloadTimesheetWithGivenDateSuccessfull || function(data) {
+				
+			}
+		
 		
 		// @Override
 		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
@@ -98,7 +109,7 @@
 			}
 		
 		/* ENTRY POINT: Instantiate the base controller which loads the page */
-		$injector.invoke(base.GenericManageController, self, {
+		$injector.invoke(base.GenericEntityController, self, {
 			$scope: $scope,
 			$filter: $filter,
 			$stateParams: $stateParams,
