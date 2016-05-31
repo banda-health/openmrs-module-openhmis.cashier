@@ -19,14 +19,16 @@
 	var app = angular.module('app.timesheetFunctionsFactory', []);
 	app.service('TimesheetFunctions', TimesheetFunctions);
 	
-	TimesheetFunctions.$inject = [];
+	TimesheetFunctions.$inject = ['$filter'];
 	
-	function TimesheetFunctions() {
+	function TimesheetFunctions($filter) {
 		var service;
 		
 		service = {
 			addMessageLabels: addMessageLabels,
 			formatDate: formatDates,
+			convertToDate: convertToDate,
+			onChangeDatePicker: onChangeDatePicker,
 		};
 		
 		return service;
@@ -37,13 +39,34 @@
 		 */
 		function addMessageLabels() {
 			var messages = {};
+			messages['openhmis.cashier.page.timesheet.box.clock.in.message'] = emr
+				.message('openhmis.cashier.page.timesheet.box.clock.in.message');
+			messages['openhmis.cashier.page.timesheet.box.clock.out.message'] = emr
+				.message('openhmis.cashier.page.timesheet.box.clock.out.message');
 			return messages;
 		}
 		
+		/*Converts the date to what to what rest accepts for timesheet lookup*/
 		function formatDates(date) {
-			var formattedDate = ("0"+(date.getMonth()+1)).slice(-2) + "/" + ("0" + date.getDate()).slice(-2) + "/" +
-				date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
+			var formattedDate = ($filter('date')(new Date(date), 'MM/dd/yyyy HH:mm'));
 			return formattedDate;
+		}
+		
+		/*converts the date to what the service accepts to save the timesheet.*/
+		function convertToDate(date) {
+			var convertedDate = ($filter('date')(new Date(date), "yyyy-MM-dd'T'HH:mm:ss"));
+			return convertedDate;
+		}
+		
+		/**
+		 * 
+		 * */
+		function onChangeDatePicker(id, successfulCallback){
+			var picker = angular.element(document.getElementById(id));
+			picker.bind('keyup change select', function(){
+				var input = this.value;
+				successfulCallback(input);
+			});
 		}
 	}
 })();

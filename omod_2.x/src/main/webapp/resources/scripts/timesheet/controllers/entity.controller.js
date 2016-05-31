@@ -18,9 +18,11 @@
 	
 	var base = angular.module('app.genericEntityController');
 	base.controller("TimesheetController", TimesheetController);
-	TimesheetController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory', 'TimesheetModel', 'TimesheetRestfulService', 'TimesheetFunctions'];
+	TimesheetController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory', 'TimesheetModel',
+		'TimesheetRestfulService', 'TimesheetFunctions'];
 	
-	function TimesheetController($stateParams, $injector, $scope, $filter, EntityRestFactory, TimesheetModel, TimesheetRestfulService, TimesheetFunctions) {
+	function TimesheetController($stateParams, $injector, $scope, $filter, EntityRestFactory, TimesheetModel,
+	                             TimesheetRestfulService, TimesheetFunctions) {
 		var self = this;
 
 		var module_name = 'cashier';
@@ -44,67 +46,113 @@
 			|| function (uuid) {
 				self.loadCashpoints();
 				self.loadCurrentTimesheets();
+				self.loadCurrentProvider();
 				
-				$scope.loadClockOutTime = function() {
-						if ($scope.timesheets != null && $scope.timesheets[0].clockOut == null ) {
-							$scope.entity.clockOut = TimesheetFunctions.formatDate(new Date);
-						}
+				$scope.loadClockOutTime = function () {
+					if ($scope.timesheets != null && $scope.timesheets.clockOut == null) {
+						$scope.clockOut = TimesheetFunctions.formatDate(new Date);
 					}
+				}
 
 				$scope.loadClockInTime = function () {
-						$scope.entity.clockIn = TimesheetFunctions.formatDate(new Date());
+					$scope.clockIn = TimesheetFunctions.formatDate(new Date());
 				}
 				
-				$scope.getTimesheets = function(){
-						$scope.shiftDate = document.getElementById('shiftDate').val();
-					}
+				$scope.loadReportTimesheets = function () {
+					var shiftDate = angular.element(document.getElementById('shiftDate-display').val);
+					console.log(shiftDate);
+				}
 				
+				TimesheetFunctions.onChangeDatePicker('shiftDate-display',
+					self.onTimesheetShiftReportDateSuccessCallback);
+
 			};
 		
 		/**
 		 * All post-submit validations are done here.
 		 * @return boolean
 		 */
-		self.loadCashpoints = self.loadCashpoints || function(){
+		self.onTimesheetShiftReportDateSuccessCallback = self.onTimesheetShiftReportDateSuccessCallback || function (data) {
+				var selectedReportDate = TimesheetFunctions.formatDate(data);
+				TimesheetRestfulService.loadTimesheet(module_name, self.onLoadSelectedReportDateTimesheetSuccessful, selectedReportDate);
+			}
+
+		self.onLoadSelectedReportDateTimesheetSuccessful  = self.onLoadSelectedReportDateTimesheetSuccessful || function (data) {
+				$scope.selectedDatesReports = data.results;
+				if (data.results == null) {
+
+				}
+			}
+
+		self.loadCashpoints = self.loadCashpoints || function () {
 				TimesheetRestfulService.loadCashpoints(module_name, self.onLoadCashpointsSuccessful);
 			}
-		self.loadCurrentTimesheets = self.loadCurrentTimesheets || function() {
+		self.loadCurrentProvider = self.loadCurrentProvider || function () {
+				TimesheetRestfulService.loadProvider(module_name, self.onLoadProviderSuccessful);
+			}
+		self.loadCurrentTimesheets = self.loadCurrentTimesheets || function () {
 				var timesheetDate = TimesheetFunctions.formatDate(new Date());
-				TimesheetRestfulService.loadTimesheet(module_name, self.onloadCurrentTimesheetSuccessful,timesheetDate);
+				TimesheetRestfulService.loadTimesheet(module_name, self.onloadCurrentTimesheetSuccessful, timesheetDate);
 			}
 		
 		//callback
-		self.onLoadCashpointsSuccessful = self.onLoadCashpointsSuccessful || function(data){
+		self.onLoadCashpointsSuccessful = self.onLoadCashpointsSuccessful || function (data) {
 				$scope.cashpoints = data.results;
 			}
 
-		self.onloadCurrentTimesheetSuccessful = self.onloadCurrentTimesheetSuccessful || function(data) {
-				$scope.timesheets = data.results;
+		self.onLoadProviderSuccessful = self.onLoadProviderSuccessful || function (data) {
+				$scope.cashier = data.currentProvider.uuid;
+			}
+
+		self.onloadCurrentTimesheetSuccessful = self.onloadCurrentTimesheetSuccessful || function (data) {
+				$scope.timesheets = data.results[0];
 				/*Get the latest timesheet for the day if multiple exist*/
 				if ($scope.timesheets) {
 					//check if the timesheet exists and has a clockOut time filled
-					if (data.results[0].clockOut != null) {
-						$scope.entity.clockIn = TimesheetFunctions.formatDate(new Date);
-						$scope.entity.clockOut = "";
+					if ($scope.timesheets.clockOut != null) {
+						$scope.clockIn = TimesheetFunctions.formatDate(new Date);
+						$scope.showClockOutSection = TimesheetFunctions.formatDate(new Date(data.results[0].clockOut));
+						$scope.clockOut = "";
 					} else {
-						$scope.entity.clockIn = TimesheetFunctions.formatDate(new Date(data.results[0].clockIn));
-						$scope.entity.clockOut = "";
+						$scope.clockIn = TimesheetFunctions.formatDate(new Date(data.results[0].clockIn));
+						$scope.clockOut = "";
+						$scope.showClockOutSection = "";
+						$scope.entity.cashPoint = data.results[0].cashPoint;
+						$scope.entity.uuid = data.results[0].uuid;
+						$scope.entity.id = data.results[0].id;
 					}
-					$scope.entity.cashPoint = data.results[0].cashPoint;
 				} else {
-					$scope.entity.clockIn = TimesheetFunctions.formatDate(new Date());
-					$scope.entity.clockOut = "";
+					$scope.clockIn = TimesheetFunctions.formatDate(new Date());
+					$scope.showClockOutSection = "";
 				}
 			}
-		
-		self.onloadTimesheetWithGivenDateSuccessfull = self.onloadTimesheetWithGivenDateSuccessfull || function(data) {
-				
-			}
-		
 		
 		// @Override
 		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
 				$scope.submitted = false;
+					if (!angular.isDefined($scope.clockOut) || $scope.clockOut == "") {
+						$scope.entity.clockOut = null;
+						emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockIn.message"));
+					} else {
+						$scope.entity.clockOut = TimesheetFunctions.convertToDate($scope.clockOut);
+						emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockOut.message"));
+					}
+
+					/**
+					 * Performs checks to either get the current logged in cashier
+					 * or the cashier the started the timesheet.
+					 * */
+					if ($scope.timesheets) {
+						if ($scope.timesheets.clockOut != null) {
+							$scope.entity.cashier = $scope.cashier;
+						} else {
+							$scope.entity.cashier = $scope.timesheets.cashier;
+						}
+					} else {
+						$scope.entity.cashier = $scope.cashier;
+					}
+
+					$scope.entity.clockIn = TimesheetFunctions.convertToDate($scope.clockIn);
 				return true;
 			}
 		

@@ -31,4 +31,7 @@ emr.loadMessages([
 	"general.retire",
 	"general.unretire",
 	"openhmis.cashier.page.timesheet.rest_name",
+	"openhmis.cashier.page.timesheet.box.clockIn.message",
+	"openhmis.cashier.page.timesheet.box.clockOut.message",
+	"openhmis.cashier.page.reports.box.timesheets.shift.date.error",
 ]);

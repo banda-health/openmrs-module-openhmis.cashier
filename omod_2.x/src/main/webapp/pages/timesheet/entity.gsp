@@ -42,10 +42,11 @@
 			<li>
 				<div class="row">
 					<div class="col-sm-10">
-						<input type="datetime" class="form-control" ng-model="entity.clockIn" style="min-width: 50%;"
-						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}" />
+						<input type="datetime" class="form-control" ng-model="clockIn" style="min-width: 50%;"
+						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"/>
 					</div>
-					<div class="col-sm-1 " ng-show="timesheets == null || clockOut.length != 0">
+
+					<div class="col-sm-1 " ng-show="timesheets == null || showClockOutSection.length != 0">
 						<input type="button" class="btn-sm"
 						       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"
 						       ng-click="loadClockInTime()"/>
@@ -53,23 +54,30 @@
 				</div>
 			</li>
 		</ul>
-		<ul class="table-layout" ng-show="timesheets != null && clockOut.length == 0">
+		<ul class="table-layout" ng-show="timesheets != null && showClockOutSection.length == 0">
 			<li class="required">
 				<span>${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}</span>
 			</li>
 			<li>
 				<div class="row">
 					<div class="col-sm-10 ">
-						<input type="datetime" id="clockOut" name="clockOut" class="form-control" ng-model="entity.clockOut" style="min-width: 50%;"
-						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"
-						       value="{{clockOut}}" required />
+						<input type="datetime" class="form-control" ng-model="clockOut" style="min-width: 50%;"
+						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"/>
 					</div>
+
 					<div class="col-sm-1 ">
 						<input type="button" class="btn-sm"
 						       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"
 						       ng-click="loadClockOutTime()"/>
 					</div>
 				</div>
+			</li>
+		</ul>
+		<ul class="table-layout">
+			<li>
+				<input type="text" name="cashier" class="form-control hidden" ng-model="entity.cashier"/>
+				<input type="text" name="uuid" class="form-control hidden" ng-model="entity.uuid"/>
+				<input type="text" name="id" class="form-control hidden" ng-model="entity.id"/>
 			</li>
 		</ul>
 		<br/>
@@ -82,18 +90,25 @@
 </form>
 <br/>
 <hr/>
+
 <form name="entityForm" class="entity-form" ng-class="{'submitted': submitted}" style="font-size:inherit">
 	<fieldset class="format timesheet">
 		<legend>${ui.message('openhmis.cashier.page.reports')}</legend>
 		<ul class="table-layout">
 			<li>
-				${ ui.includeFragment("uicommons", "field/datetimepicker", [ id: 'shiftDate',label:'Select Shift Date', required:'required', formFieldName: 'shiftDatepicker', useTime: true ]) }
+				${ui.includeFragment("uicommons", "field/datetimepicker",
+						[id           : 'shiftDate',
+						 label        : 'Select Shift Date',
+						 required     : 'required',
+						 formFieldName: 'shiftDatepicker',
+						 useTime      : false
+						])}
 			</li>
 			<li>
 				<br/>
 				<input type="submit" class="btn-sm"
 				       value="${ui.message('openhmis.cashier.page.reports.box.generate.report')}"
-				       ng-click="getTimesheets()"/>
+				       ng-click="loadReportTimesheets()"/>
 			</li>
 		</ul>
 		<ul>

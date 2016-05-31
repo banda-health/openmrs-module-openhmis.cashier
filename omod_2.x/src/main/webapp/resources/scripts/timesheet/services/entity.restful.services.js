@@ -24,8 +24,9 @@
 		var service;
 		
 		service = {
-			loadCashpoints : loadCashpoints,
+			loadCashpoints: loadCashpoints,
 			loadTimesheet: loadTimesheet,
+			loadProvider: loadProvider
 		};
 		
 		return service;
@@ -33,6 +34,7 @@
 		/**
 		 * Retrieve all cashpoints
 		 * @param onLoadCashpointsSuccessful
+		 * @param module_name
 		 */
 		function loadCashpoints(module_name, onLoadCashpointsSuccessful) {
 			var requestParams = [];
@@ -41,21 +43,48 @@
 				onLoadCashpointsSuccessful,
 				errorCallback
 			);
-
-			//reset base url..
-			EntityRestFactory.setBaseUrl(module_name);
-		}
-
-		function loadTimesheet(module_name, onLoadTimesheetSuccessful, timesheetDate) {
-			var requestParams = [];
-			requestParams['rest_entity_name'] = 'timesheet?date=' + timesheetDate;
-			EntityRestFactory.loadEntities(requestParams, onLoadTimesheetSuccessful, errorCallback);
 			
 			//reset base url..
 			EntityRestFactory.setBaseUrl(module_name);
 		}
-
-		function errorCallback(error){
+		
+		/**
+		 * Retrieve Timesheets
+		 * @param module_name
+		 * @param onLoadTimesheetSuccessfull
+		 * @param timesheetDate
+		 * */
+		function loadTimesheet(module_name, onLoadTimesheetSuccessful, timesheetDate) {
+			var requestParams = [];
+			requestParams['rest_entity_name'] = 'timesheet';
+			requestParams['date'] = timesheetDate;
+			EntityRestFactory.loadEntities(requestParams,
+				onLoadTimesheetSuccessful,
+				errorCallback);
+			
+			//reset base url..
+			EntityRestFactory.setBaseUrl(module_name);
+		}
+		
+		/**
+		 * Retrieve the current provider
+		 * @param onLoadProviderSuccessful
+		 * @param module_name
+		 */
+		function loadProvider(module_name, onLoadProviderSuccessful) {
+			var requestParams = [];
+			requestParams['rest_entity_name'] = '';
+			EntityRestFactory.setBaseUrl('appui/session', 'v1');
+			EntityRestFactory.loadEntities(requestParams,
+				onLoadProviderSuccessful,
+				errorCallback
+			);
+			
+			//reset base url..
+			EntityRestFactory.setBaseUrl(module_name);
+		}
+		
+		function errorCallback(error) {
 			console.log(error);
 		}
 	}

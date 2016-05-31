@@ -48,19 +48,20 @@ public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 		description.addProperty("clockOut");
 		if (rep instanceof RefRepresentation) {
 			description.addProperty("id");
+			description.addProperty("uuid");
 		}
 
 		return description;
 	}
 
-	/*@Override
+	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = super.getCreatableProperties();
 		description.addProperty("cashier");
 		description.addProperty("cashpoint");
 		return description;
 	}
-	*/
+
 	public String getDisplayString(Timesheet instance) {
 		return instance.getClockIn().toString() + " to "
 		        + (instance.getClockOut() != null ? instance.getClockOut() : " open");

@@ -27,7 +27,7 @@
 		
 		// @Override
 		extended.getModelFields = function () {
-			var fields = ["cashier", "cashPoint", "clockIn", "clockOut"];
+			var fields = ["cashier", "cashPoint", "clockIn", "clockOut", "uuid"];
 			return fields;
 		};
 		

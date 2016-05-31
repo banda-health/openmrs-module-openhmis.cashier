@@ -39,7 +39,7 @@
 			'app.genericEntityController',
 			'app.genericManageController',
 			'app.entityFunctionsFactory'
-			
+		
 		]);
 		app.config(function ($stateProvider, $urlRouterProvider, $provide) {
 			/*
