@@ -26,7 +26,8 @@
 		service = {
 			loadCashpoints: loadCashpoints,
 			loadTimesheet: loadTimesheet,
-			loadProvider: loadProvider
+			loadProvider: loadProvider,
+			loadCashierShiftReportId: loadCashierShiftReportId
 		};
 		
 		return service;
@@ -80,6 +81,23 @@
 				errorCallback
 			);
 			
+			//reset base url..
+			EntityRestFactory.setBaseUrl(module_name);
+		}
+
+		/**
+		 * Retrieve the report Id for the cashier shift
+		 * */
+		function loadCashierShiftReportId (module_name, onLoadCashierShiftReportIdSuccessful) {
+			var requestParams = [];
+			requestParams['resource'] = 'module/openhmis/cashier/moduleSettings.page';
+			requestParams['setting'] = 'openhmis.cashier.defaultShiftReportId';
+			EntityRestFactory.setCustomBaseUrl('/'+OPENMRS_CONTEXT_PATH +'/');
+			EntityRestFactory.loadResults(requestParams,
+				onLoadCashierShiftReportIdSuccessful,
+				errorCallback
+			);
+
 			//reset base url..
 			EntityRestFactory.setBaseUrl(module_name);
 		}

@@ -105,10 +105,13 @@
 						])}
 			</li>
 			<li>
+
+			</li>
+			<li>
 				<br/>
 				<input type="submit" class="btn-sm"
 				       value="${ui.message('openhmis.cashier.page.reports.box.generate.report')}"
-				       ng-click="loadReportTimesheets()"/>
+				       ng-click="printCashierShiftReport()"/>
 			</li>
 		</ul>
 		<ul>

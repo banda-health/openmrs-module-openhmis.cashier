@@ -47,6 +47,7 @@
 				self.loadCashpoints();
 				self.loadCurrentTimesheets();
 				self.loadCurrentProvider();
+				self.loadCashierShiftReportId();
 				
 				$scope.loadClockOutTime = function () {
 					if ($scope.timesheets != null && $scope.timesheets.clockOut == null) {
@@ -60,7 +61,10 @@
 				
 				$scope.loadReportTimesheets = function () {
 					var shiftDate = angular.element(document.getElementById('shiftDate-display').val);
-					console.log(shiftDate);
+				}
+				
+				$scope.printCashierShiftReport = function () {
+					
 				}
 				
 				TimesheetFunctions.onChangeDatePicker('shiftDate-display',
@@ -79,9 +83,15 @@
 
 		self.onLoadSelectedReportDateTimesheetSuccessful  = self.onLoadSelectedReportDateTimesheetSuccessful || function (data) {
 				$scope.selectedDatesReports = data.results;
-				if (data.results == null) {
+			}
 
-				}
+		self.loadCashierShiftReportId = self.loadCashierShiftReportId || function () {
+				TimesheetRestfulService.loadCashierShiftReportId(module_name, self.onLoadCashierShiftReportIdSuccessful);
+			}
+
+		self.onLoadCashierShiftReportIdSuccessful = self.onLoadCashierShiftReportIdSuccessful || function (data) {
+				$scope.cashierShiftReportId = data.results;
+				console.log(data.results);
 			}
 
 		self.loadCashpoints = self.loadCashpoints || function () {
