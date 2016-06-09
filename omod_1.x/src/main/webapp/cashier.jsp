@@ -129,7 +129,7 @@
                     <spring:bind path="cashPoint">
                         <select id="cashPoint" name="${status.expression}">
                             <c:forEach items="${cashPoints}" var="cashPoint">
-                                <option value="${cashPoint.id}" <c:if test="${timesheet.cashPoint.id == cashPoint.id}}">selected="true"</c:if>>
+                                <option value="${cashPoint.id}" <c:if test="${timesheet.cashPoint.id == cashPoint.id}"> selected </c:if>>
                                         ${cashPoint.name}
                                 </option>
                             </c:forEach>

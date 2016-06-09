@@ -101,21 +101,24 @@
 						 label        : 'Select Shift Date',
 						 required     : 'required',
 						 formFieldName: 'shiftDatepicker',
-						 useTime      : false
+						 useTime      : false,
+						 name         : 'shiftDate'
 						])}
-			</li>
-			<li>
-
 			</li>
 			<li>
 				<br/>
 				<input type="submit" class="btn-sm"
 				       value="${ui.message('openhmis.cashier.page.reports.box.generate.report')}"
-				       ng-click="printCashierShiftReport()"/>
+				       ng-click="generateReport()"/>
 			</li>
 		</ul>
-		<ul>
-
+		<br/>
+		<ul ng-show="selectedDatesTimesheet != null ">
+			<h6>${ui.message('openhmis.cashier.page.reports.box.timesheets.shift.date')}</h6>
+			<li ng-repeat="timesheet in selectedDatesTimesheet">
+				<input name="timesheetId" ng-model="seletedTimesheet" ng-change="selectedTimesheet('{{timesheet.id}}')" ng-value="timesheet" id="{{timesheet.id}}"
+				       type="radio"> {{timesheet.display}}
+			</li>
 		</ul>
 		<br/>
 	</fieldset>

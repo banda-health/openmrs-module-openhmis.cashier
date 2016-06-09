@@ -28,7 +28,7 @@
 			addMessageLabels: addMessageLabels,
 			formatDate: formatDates,
 			convertToDate: convertToDate,
-			onChangeDatePicker: onChangeDatePicker,
+			onChangeDatePicker: onChangeDatePicker
 		};
 		
 		return service;
@@ -59,11 +59,11 @@
 		}
 		
 		/**
-		 * 
+		 * Gets the selected for the cashier shift report 
 		 * */
-		function onChangeDatePicker(id, successfulCallback){
-			var picker = angular.element(document.getElementById(id));
-			picker.bind('keyup change select', function(){
+		function onChangeDatePicker(id, successfulCallback) {
+			var datePicker = angular.element(document.getElementById(id));
+			datePicker.bind('keyup change select checked', function () {
 				var input = this.value;
 				successfulCallback(input);
 			});
