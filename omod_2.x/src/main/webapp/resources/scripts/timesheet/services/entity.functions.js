@@ -26,9 +26,10 @@
 		
 		service = {
 			addMessageLabels: addMessageLabels,
-			formatDate: formatDates,
+			formatDate: formatDate,
 			convertToDate: convertToDate,
-			onChangeDatePicker: onChangeDatePicker
+			onChangeDatePicker: onChangeDatePicker,
+			generateCashierShiftReport:generateCashierShiftReport
 		};
 		
 		return service;
@@ -46,13 +47,19 @@
 			return messages;
 		}
 		
-		/*Converts the date to what to what rest accepts for timesheet lookup*/
-		function formatDates(date) {
+		/**
+		 * Converts the date to what to what rest accepts for timesheet lookup
+		 * @params date
+		 * */
+		function formatDate(date) {
 			var formattedDate = ($filter('date')(new Date(date), 'MM/dd/yyyy HH:mm'));
 			return formattedDate;
 		}
 		
-		/*converts the date to what the service accepts to save the timesheet.*/
+		/**
+		 * converts the date to what the service accepts to save the timesheet.
+		 * @params date
+		 * */
 		function convertToDate(date) {
 			var convertedDate = ($filter('date')(new Date(date), "yyyy-MM-dd'T'HH:mm:ss"));
 			return convertedDate;
@@ -67,6 +74,32 @@
 				var input = this.value;
 				successfulCallback(input);
 			});
+		}
+
+		/**
+		 * Disable and gray-out background when a dialog box opens up.
+		 */
+		function disableBackground(){
+			var backgroundElement = angular.element('.simplemodal-overlay');
+			backgroundElement.addClass('disable-background');
+		}
+		
+		/**
+		 * Show the generate report popup
+		 * @param selectorId - div id
+		 */
+		function generateCashierShiftReport(selectorId){
+			var dialog = emr.setupConfirmationDialog({
+				selector: '#' + selectorId,
+				actions: {
+					cancel: function(){
+						dialog.close();
+					}
+				}
+			});
+			
+			dialog.show();
+			disableBackground();
 		}
 	}
 })();

@@ -44,9 +44,6 @@
 				onLoadCashpointsSuccessful,
 				errorCallback
 			);
-			
-			//reset base url..
-			EntityRestFactory.setBaseUrl(module_name);
 		}
 		
 		/**
@@ -62,9 +59,6 @@
 			EntityRestFactory.loadEntities(requestParams,
 				onLoadTimesheetSuccessful,
 				errorCallback);
-			
-			//reset base url..
-			EntityRestFactory.setBaseUrl(module_name);
 		}
 		
 		/**

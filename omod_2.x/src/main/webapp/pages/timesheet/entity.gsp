@@ -19,8 +19,18 @@
 </script>
 
 <form name="entityForm" class="entity-form" ng-class="{'submitted': submitted}" style="font-size:inherit">
-	<fieldset class="format timesheet">
-		<legend>${ui.message('openhmis.cashier.page.timesheet.box.title')}</legend>
+	<table class="header-title">
+		<span class="h1-substitue-left" style="float:left;">
+			${ui.message('openhmis.cashier.page.timesheet.box.title')}
+		</span>
+		<span style="float:right;">
+			<a id="shiftReportButton" class="btn btn-grey" ui-sref="new" ng-click="generateCashierShiftReport('generaterCashierReport')">
+				<i class="icon-download"></i> ${ui.message('openhmis.cashier.page.reports.box.generate.cashier.shift.report.download.button')}
+			</a>
+		</span>
+	</table>
+	<br/>
+	<fieldset class="format">
 		<ul class="table-layout">
 			<li class="required">
 				<span>${ui.message('openhmis.cashier.cashpoints')}</span>
@@ -46,7 +56,7 @@
 						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"/>
 					</div>
 
-					<div class="col-sm-1 " ng-show="timesheets == null || showClockOutSection.length != 0">
+					<div class="col-sm-1 " ng-show="timesheets == null || showClockOutSection == false">
 						<input type="button" class="btn-sm"
 						       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"
 						       ng-click="loadClockInTime()"/>
@@ -54,7 +64,7 @@
 				</div>
 			</li>
 		</ul>
-		<ul class="table-layout" ng-show="timesheets != null && showClockOutSection.length == 0">
+		<ul class="table-layout" ng-show="timesheets != null && showClockOutSection == true">
 			<li class="required">
 				<span>${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}</span>
 			</li>
@@ -84,43 +94,62 @@
 	</fieldset>
 	<fieldset class="format">
 		<span>
-			<input type="submit" class="confirm" value="${ui.message('general.save')}" ng-click="saveOrUpdate()"/>
+			<input type="button" class="cancel" value="{{messageLabels['general.cancel']}}" ng-click="cancel()"/>
+			<input type="submit" class="confirm right" value="${ui.message('general.save')}" ng-click="saveOrUpdate()"/>
 		</span>
 	</fieldset>
 </form>
 <br/>
 <hr/>
 
-<form name="entityForm" class="entity-form" ng-class="{'submitted': submitted}" style="font-size:inherit">
-	<fieldset class="format timesheet">
-		<legend>${ui.message('openhmis.cashier.page.reports')}</legend>
-		<ul class="table-layout">
-			<li>
-				${ui.includeFragment("uicommons", "field/datetimepicker",
-						[id           : 'shiftDate',
-						 label        : 'Select Shift Date',
-						 required     : 'required',
-						 formFieldName: 'shiftDatepicker',
-						 useTime      : false,
-						 name         : 'shiftDate'
-						])}
-			</li>
-			<li>
+<div id="generaterCashierReport" class="dialog" style="display:none;">
+	<div class="dialog-header">
+		<span>
+			<i class="icon-download"></i>
+
+			<h3>${ui.message('openhmis.cashier.page.reports.box.generate.cashier.shift.report.popup.header')}</h3>
+		</span>
+		<i class="icon-remove cancel" style="float:right; cursor: pointer;" ng-click="closeThisDialog()"></i>
+	</div>
+
+	<div class="dialog-content form">
+		<div class="row">
+			<div class="col-md-4 required">
 				<br/>
-				<input type="submit" class="btn-sm"
-				       value="${ui.message('openhmis.cashier.page.reports.box.generate.report')}"
-				       ng-click="generateReport()"/>
-			</li>
-		</ul>
+				<span>Select Shift Date</span>
+			</div>
+
+			<div class="col-md-8">
+				${ui.includeFragment("uicommons", "field/datetimepicker",
+					[id           : 'shiftDate',
+					 label        : '',
+					 required     : 'required',
+					 formFieldName: 'shiftDatepicker',
+					 useTime      : false,
+					 name         : 'shiftDate'
+					])}
+			</div>
+		</div>
 		<br/>
-		<ul ng-show="selectedDatesTimesheet != null ">
+
+		<div class="row detail-section-border-top" ng-show="selectedDatesTimesheet != null ">
+			<br/>
 			<h6>${ui.message('openhmis.cashier.page.reports.box.timesheets.shift.date')}</h6>
-			<li ng-repeat="timesheet in selectedDatesTimesheet">
-				<input name="timesheetId" ng-model="seletedTimesheet" ng-change="selectedTimesheet('{{timesheet.id}}')" ng-value="timesheet" id="{{timesheet.id}}"
+			<ul><li ng-repeat="timesheet in selectedDatesTimesheet">
+				<input name="timesheetId" ng-model="seletedTimesheet"
+				       ng-change="selectedTimesheet('{{timesheet.id}}')" ng-value="timesheet"
+				       id="{{timesheet.id}}"
 				       type="radio"> {{timesheet.display}}
-			</li>
-		</ul>
-		<br/>
-	</fieldset>
-</form>
-<br/>
+			</li></ul>
+		</div>
+		<div class="row ngdialog-buttons detail-section-border-top">
+			<br/>
+			<input type="button" class="cancel" value="{{messageLabels['general.cancel']}}"
+			       ng-click="closeThisDialog('Cancel')"/>
+			<input ng-disabled="timesheetId == null" type="submit" class="confirm right"
+			       value="${ui.message('openhmis.cashier.page.reports.box.generate.report')}"
+			       ng-click="generateReport()"/>
+		</div>
+	</div>
+</div>
+

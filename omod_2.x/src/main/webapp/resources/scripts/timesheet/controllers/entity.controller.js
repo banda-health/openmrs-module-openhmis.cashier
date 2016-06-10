@@ -28,7 +28,7 @@
 		var module_name = 'cashier';
 		var entity_name_message_key = emr.message("openhmis.cashier.page.timesheet");
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
-		var cancel_page = '#';
+		var cancel_page = '/'+ OPENMRS_CONTEXT_PATH +'/openhmis.cashier/cashierLanding.page';
 		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
@@ -48,6 +48,7 @@
 				self.loadCurrentTimesheets();
 				self.loadCurrentProvider();
 				self.loadCashierShiftReportId();
+				$scope.generateCashierShiftReport = self.generateCashierShiftReport;
 				
 				$scope.loadClockOutTime = function () {
 					if ($scope.timesheets != null && $scope.timesheets.clockOut == null) {
@@ -67,7 +68,7 @@
 				}
 				
 				$scope.generateReport = function () {
-					var contextPath = '/' +OPENMRS_CONTEXT_PATH + '/';
+					var contextPath = '/' + OPENMRS_CONTEXT_PATH + '/';
 					var url = "module/openhmis/cashier/jasperReport.form?";
 					url += "reportId=" + $scope.cashierShiftReportId  + "&timesheetId=" + $scope.timesheetId;
 					window.open(contextPath+url, "pdfDownload");
@@ -117,26 +118,30 @@
 				$scope.cashier = data.currentProvider.uuid;
 			}
 		
+		self.generateCashierShiftReport = self.generateCashierShiftReport || function (id) {
+				TimesheetFunctions.generateCashierShiftReport(id);
+			}
+		
 		self.onloadCurrentTimesheetSuccessful = self.onloadCurrentTimesheetSuccessful || function (data) {
 				$scope.timesheets = data.results[0];
-				/*Get the latest timesheet for the day if multiple exist*/
+				//Get the latest timesheet for the day if multiple exist
 				if ($scope.timesheets) {
 					//check if the timesheet exists and has a clockOut time filled
 					if ($scope.timesheets.clockOut != null) {
 						$scope.clockIn = TimesheetFunctions.formatDate(new Date);
-						$scope.showClockOutSection = TimesheetFunctions.formatDate(new Date(data.results[0].clockOut));
+						$scope.showClockOutSection = false;
 						$scope.clockOut = "";
 					} else {
 						$scope.clockIn = TimesheetFunctions.formatDate(new Date(data.results[0].clockIn));
 						$scope.clockOut = "";
-						$scope.showClockOutSection = "";
+						$scope.showClockOutSection = true;
 						$scope.entity.cashPoint = data.results[0].cashPoint;
 						$scope.entity.uuid = data.results[0].uuid;
 						$scope.entity.id = data.results[0].id;
 					}
 				} else {
 					$scope.clockIn = TimesheetFunctions.formatDate(new Date());
-					$scope.showClockOutSection = "";
+					$scope.showClockOutSection = false;
 				}
 			}
 		
