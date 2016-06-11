@@ -14,7 +14,6 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
-import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -22,6 +21,8 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+
+import java.text.SimpleDateFormat;
 
 /**
  * REST resource representing a {@link Timesheet}.
@@ -63,7 +64,9 @@ public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 	}
 
 	public String getDisplayString(Timesheet instance) {
-		return instance.getClockIn().toString() + " to "
-		        + (instance.getClockOut() != null ? instance.getClockOut() : " open");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return dateFormat.format(instance.getClockIn()) + " to "
+		        + (instance.getClockOut() != null ? dateFormat.format(instance.getClockOut())
+		                : " open");
 	}
 }
