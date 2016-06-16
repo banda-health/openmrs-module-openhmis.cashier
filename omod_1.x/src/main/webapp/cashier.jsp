@@ -42,19 +42,12 @@
         var year = date.getFullYear();
         var hour = date.getHours();
         var min = date.getMinutes();
-        var ampm = "AM";
 
         day = day < 10 ? "0" + day : day.toString();
         month = month < 10 ? "0" + month: month.toString();
         hour = hour < 10 ? "0" + hour : hour.toString();
         min = min < 10 ? "0" + min: min.toString();
-
-        /*
-        if (hour > 12) {
-            ampm = "PM";
-            hour -= 12;
-        }
-        */
+        
         return month + '/' + day + '/' + year + " " + hour + ":" + min;
     }
 
