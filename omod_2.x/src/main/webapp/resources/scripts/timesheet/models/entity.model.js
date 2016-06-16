@@ -28,7 +28,7 @@
 		// @Override
 		extended.getModelFields = function () {
 			var fields = ["cashier", "cashPoint", "clockIn", "clockOut"];
-			return fields.concat(defaultFields);
+			return fields;
 		};
 		
 		return extended;

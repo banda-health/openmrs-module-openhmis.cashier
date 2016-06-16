@@ -47,7 +47,7 @@
         month = month < 10 ? "0" + month: month.toString();
         hour = hour < 10 ? "0" + hour : hour.toString();
         min = min < 10 ? "0" + min: min.toString();
-        
+
         return month + '/' + day + '/' + year + " " + hour + ":" + min;
     }
 
