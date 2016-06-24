@@ -91,6 +91,27 @@ table.manage-cashpoints-table th:nth-child(2), td:nth-child(2) {
     width: 45%;
 }
 
+table.amount-details tr:nth-child(even){
+	background: none;
+}
+
+table.amount-details tr {
+	line-height: 20px;
+	border-style:none;
+}
+
+table.amount-details td {
+	border-style:none;
+	font-weight: bold;
+}
+table.amount-details th:first-child, td:first-child{
+	width:60%;
+}
+
+table.amount-details th:nth-child(2), td:nth-child(2) {
+	width: 35%;
+}
+
 .not-found{
     margin-left:300px;
 }
@@ -107,3 +128,41 @@ ul.dialog-table-layout li {
 #attribute-types-dialog select option {
     font-size: 1.1em;
 }
+fieldset.actions{
+	margin: 10px 0px;
+	min-width: 100%;
+}
+fieldset.paymentMode{
+	width: 100%;
+	margin: 10px 0px;
+	border: 1px solid #666666;
+}
+ul.table-layout .gray-button{
+	background: #666666;
+	border-color: #666666;
+	color: white;
+}
+
+ul.totals-layout{
+	text-align: left;
+	margin-left: 0px;
+	padding: 0;
+}
+
+ul.totals-layout li{
+	text-align: left;
+	display: inline-block;
+	width: 260px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+ul.totals-layout li.valign {
+	vertical-align: top;
+}
+
+.right-justify{
+	text-align: right;
+}
+
+
