@@ -27,13 +27,26 @@
     </span>
 
     <div style="float:right;">
-        <span ng-show="cashier !== undefined && cashier.display !== ''">
-            ${ui.message('openhmis.cashier.cashier.name')}: {{cashier.display}}
+        <span ng-show="cashier !== undefined">
+            <b>${ui.message('openhmis.cashier.cashier.name')}:</b> {{cashier}} |
         </span>
-        <span ng-show="cashPoint !== undefined && cashPoint.name !== ''">
-            ${ui.message('openhmis.cashier.cashPoint.name')}: {{cashPoint.name}}
+        <span ng-show="cashPoint !== undefined">
+            <b>${ui.message('openhmis.cashier.cashPoint.name')}:</b> {{cashPoint.name}}
         </span>
+
     </div>
+
+    <span ng-show="cashPoints.length > 0 && uuid === undefined">
+        <ul class="table-layout" style="margin: 10px 0px;">
+            <li style="width:100px;margin:0px 0px;"><b>${ui.message('openhmis.cashier.cashPoint.name')}:</b></li>
+            <li style="width:100px;vertical-align: baseline;">
+                <select ng-model="cashPoint" class="right-justify" style="width:150px;height:31px;"
+                        ng-options="cashPoint.name for cashPoint in cashPoints">
+                    <option value="" ng-if="false"></option>
+                </select>
+            </li>
+        </ul>
+    </span>
 
     <fieldset class="operation">
         ${ui.includeFragment("openhmis.commons", "patientSearchFragment", [
@@ -42,73 +55,9 @@
                 changePatient: "STATUS === 'PENDING'"
         ])}
 
-        <fieldset class="nested" ng-show="STATUS !== 'PENDING'">
-            <legend>${ui.message('openhmis.inventory.operations.time.namePlural')}</legend>
-            <span ng-show="lineItems.length === 0" style="margin:250px;">
-                ${ui.message('openhmis.cashier.bill.noLineItems')}
-                <br />
-            </span>
-            <table class="item-stock" ng-show="lineItems.length > 0">
-                <tr>
-                    <th>${ui.message('openhmis.inventory.item.name')}</th>
-                    <th>${ui.message('openhmis.inventory.item.quantity')}</th>
-                    <th>${ui.message('openhmis.cashier.item.price')}</th>
-                    <th>${ui.message('openhmis.cashier.item.total')}</th>
-                </tr>
-                <tr ng-repeat="lineItem in lineItems">
-                    <td style="width:46%;">{{lineItem.itemStock.name}}</td>
-                    <td class="right-justify">{{lineItem.itemStockQuantity}}</td>
-                    <td class="right-justify">{{lineItem.itemStockPrice.price  | number : 2}}</td>
-                    <td class="right-justify">{{lineItem.total  | number : 2}}</td>
-                </tr>
-            </table><br />
-            <div class="detail-section-border-top">
-                <table class="amount-details">
-                    <tr>
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.item.total')}:</td>
-                        <td class="right-justify">{{totalPayableAmount}}</td>
-                    </tr>
-                    <tr ng-show="totalAmountTendered > 0">
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.payment.detailsTitle.tendered')}:</td>
-                        <td class="right-justify">{{totalAmountTendered}}</td>
-                    </tr>
-                    <tr ng-hide="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue > 0)">
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.payment.detailsTitle.amount')} ${ui.message('openhmis.cashier.bill.due')}:</td>
-                        <td class="right-justify">{{totalAmountDue}}</td>
-                    </tr>
-                    <tr ng-show="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue > 0)">
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.bill.changeDue')}:</td>
-                        <td class="right-justify">{{totalChangeDue}}</td>
-                    </tr>
-                </table>
-            </div>
-        </fieldset>
-
-        <fieldset class="nested" ng-show="previousLineItems.length > 0">
-            <legend style="width:40%">{{previousBillTitle}}</legend>
-            <table class="item-stock">
-                <tr>
-                    <th>${ui.message('openhmis.inventory.item.name')}</th>
-                    <th>${ui.message('openhmis.inventory.item.quantity')}</th>
-                    <th>${ui.message('openhmis.cashier.item.price')}</th>
-                    <th>${ui.message('openhmis.cashier.item.total')}</th>
-                </tr>
-                <tr ng-repeat="lineItem in previousLineItems">
-                    <td style="width:46%;">{{lineItem.itemStock.name}}</td>
-                    <td class="right-justify">{{lineItem.itemStockQuantity}}</td>
-                    <td class="right-justify">{{lineItem.itemStockPrice.price  | number : 2}}</td>
-                    <td class="right-justify">{{lineItem.total  | number : 2}}</td>
-                </tr>
-            </table>
-        </fieldset>
-
         <fieldset class="nested" ng-show="previousPayments.length > 0">
             <legend style="width:22%">${ui.message('openhmis.cashier.bill.previousPayments')}</legend>
-            <table class="item-stock">
+            <table class="item-stock table-height">
                 <tr>
                     <th>${ui.message('openhmis.cashier.payment.detailsTitle.date')}</th>
                     <th>${ui.message('openhmis.cashier.paymentMode.name')}</th>
@@ -132,7 +81,7 @@
 
         <fieldset class="nested" ng-show="currentPayments.length > 0">
             <legend style="width:22%">${ui.message('openhmis.cashier.bill.currentPayments')}</legend>
-            <table class="item-stock">
+            <table class="item-stock table-height">
                 <tr>
                     <th>${ui.message('openhmis.cashier.payment.detailsTitle.date')}</th>
                     <th>${ui.message('openhmis.cashier.paymentMode.name')}</th>
@@ -154,8 +103,72 @@
             </table>
         </fieldset>
 
+        <fieldset class="nested" ng-show="previousLineItems.length > 0">
+            <legend style="width:40%">{{previousBillTitle}}</legend>
+            <table class="item-stock table-height">
+                <tr>
+                    <th>${ui.message('openhmis.inventory.item.name')}</th>
+                    <th>${ui.message('openhmis.inventory.item.quantity')}</th>
+                    <th>${ui.message('openhmis.cashier.item.price')}</th>
+                    <th>${ui.message('openhmis.cashier.item.total')}</th>
+                </tr>
+                <tr ng-repeat="lineItem in previousLineItems">
+                    <td style="width:60%;">{{lineItem.itemStock.name}}</td>
+                    <td style="width:10%" class="right-justify">{{lineItem.itemStockQuantity}}</td>
+                    <td style="width:15%" class="right-justify">{{lineItem.itemStockPrice.price  | number : 2}}</td>
+                    <td style="width:15%" class="right-justify">{{lineItem.total  | number : 2}}</td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <fieldset class="nested" ng-show="STATUS !== 'PENDING'">
+            <legend>${ui.message('openhmis.cashier.bill.operationLineItems')}</legend>
+            <span ng-show="lineItems.length === 0" style="margin:250px;">
+                ${ui.message('openhmis.cashier.bill.noLineItems')}
+                <br />
+            </span>
+            <table class="item-stock table-height" ng-show="lineItems.length > 0">
+                <tr>
+                    <th>${ui.message('openhmis.inventory.item.name')}</th>
+                    <th>${ui.message('openhmis.inventory.item.quantity')}</th>
+                    <th>${ui.message('openhmis.cashier.item.price')}</th>
+                    <th>${ui.message('openhmis.cashier.item.total')}</th>
+                </tr>
+                <tr ng-repeat="lineItem in lineItems">
+                    <td style="width:60%;">{{lineItem.itemStock.name}}</td>
+                    <td style="width:10%" class="right-justify">{{lineItem.itemStockQuantity}}</td>
+                    <td style="width:15%" class="right-justify">{{lineItem.itemStockPrice.price  | number : 2}}</td>
+                    <td style="width:15%" class="right-justify">{{lineItem.total  | number : 2}}</td>
+                </tr>
+            </table><br />
+            <div class="detail-section-border-top">
+                <table class="amount-details">
+                    <tr>
+                        <td></td>
+                        <td>${ui.message('openhmis.cashier.item.total')}:</td>
+                        <td class="right-justify">{{totalPayableAmount}}</td>
+                    </tr>
+                    <tr ng-show="totalAmountTendered != 0">
+                        <td></td>
+                        <td>${ui.message('openhmis.cashier.payment.detailsTitle.tendered')}:</td>
+                        <td class="right-justify">{{totalAmountTendered}}</td>
+                    </tr>
+                    <tr ng-hide="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
+                        <td></td>
+                        <td>${ui.message('openhmis.cashier.payment.detailsTitle.amount')} ${ui.message('openhmis.cashier.bill.due')}:</td>
+                        <td class="right-justify">{{totalAmountDue}}</td>
+                    </tr>
+                    <tr ng-show="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
+                        <td></td>
+                        <td>${ui.message('openhmis.cashier.bill.changeDue')}:</td>
+                        <td class="right-justify">{{totalChangeDue}}</td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+
         <fieldset class="nested" ng-show="STATUS === 'PENDING'">
-            <legend>${ui.message('openhmis.inventory.operations.time.namePlural')}</legend>
+            <legend>${ui.message('openhmis.cashier.bill.operationLineItems')}</legend>
             <table class="item-stock">
                 <tr>
                     <th></th>
@@ -167,6 +180,7 @@
                 <tr ng-repeat="lineItem in lineItems">
                     <td class="item-actions">
                         <input type="image" src="/openmrs/images/trash.gif"
+                               tabindex="-1" ng-show="lineItem.selected"
                                title="${ui.message('openhmis.inventory.operations.removeItemStock')}"
                                class="remove" ng-click="removeLineItem(lineItem)">
                     </td>
@@ -177,22 +191,24 @@
                                 typeaheadOnSelect: "selectStockOperationItem(\$item, lineItem)",
                                 typeaheadEditable: "true",
                                 class: ["form-control autocomplete-search"],
+                                showRemoveIcon: "false",
+                                ngEnterEvent: "addLineItem()",
                                 placeholder: [ui.message('openhmis.inventory.item.enterItemSearch')],
                         ])}
                     </td>
                     <td>
-                        <input type="number" ng-model="lineItem.itemStockQuantity"
-                               style="width:50px" ng-change="changeItemQuantity(lineItem)" />
+                        <input class="right-justify" type="number" ng-model="lineItem.itemStockQuantity"
+                               style="width:50px" ng-change="changeItemQuantity(lineItem)" ng-enter="changeItemQuantity(lineItem)" />
                     </td>
                     <td>
-                        <select ng-model="lineItem.itemStockPrice" style="width:150px"
+                        <select ng-model="lineItem.itemStockPrice" class="right-justify" style="width:150px"
                                 ng-options="formatItemPrice(price) for price in lineItem.prices"
                                 ng-change="changeItemQuantity(lineItem)">
                             <option value="" ng-if="false"></option>
                         </select>
                     </td>
-                    <td>
-                        <input style="width:20px;" ng-disabled="true" ng-model="lineItem.total" />
+                    <td class="right-justify">
+                        {{lineItem.total | number : 2}}
                     </td>
                 </tr>
             </table><br />
@@ -204,17 +220,17 @@
                         <td>${ui.message('openhmis.cashier.item.total')}:</td>
                         <td class="right-justify">{{totalPayableAmount}}</td>
                     </tr>
-                    <tr ng-show="totalAmountTendered > 0">
+                    <tr ng-show="totalAmountTendered != 0">
                         <td></td>
                         <td>${ui.message('openhmis.cashier.payment.detailsTitle.tendered')}:</td>
                         <td class="right-justify">{{totalAmountTendered}}</td>
                     </tr>
-                    <tr ng-hide="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue > 0)">
+                    <tr ng-hide="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
                         <td></td>
                         <td>${ui.message('openhmis.cashier.payment.detailsTitle.amount')} ${ui.message('openhmis.cashier.bill.due')}:</td>
                         <td class="right-justify">{{totalAmountDue}}</td>
                     </tr>
-                    <tr ng-show="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue > 0)">
+                    <tr ng-show="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
                         <td></td>
                         <td>${ui.message('openhmis.cashier.bill.changeDue')}:</td>
                         <td class="right-justify">{{totalChangeDue}}</td>
@@ -224,7 +240,7 @@
         </fieldset>
 
         <fieldset class="paymentMode" ng-show="STATUS !== 'PAID' && STATUS !== 'ADJUSTED' || (totalChangeDue < 0 && STATUS !== 'PENDING')">
-            <legend>${ ui.message("openhmis.cashier.paymentMode.name")}</legend>
+            <legend>${ ui.message("openhmis.cashier.paymentPlural")}</legend>
             <ul class="table-layout">
                 <li class="not-required">${ui.message('openhmis.cashier.bill.selectMode')}</li>
                 <li>
@@ -258,7 +274,7 @@
             </ul>
             <ul class="table-layout">
                 <li>
-                    <input class="gray-button" type="button" value="${ui.message('openhmis.cashier.bill.processPayment')}"
+                    <input class="btn gray-button" type="button" value="${ui.message('openhmis.cashier.bill.processPayment')}"
                            ng-click="processPayment()" ng-disabled="amountTendered <= 0 || amountTendered === undefined" />
                 </li>
             </ul>
@@ -311,13 +327,13 @@
             <div class="dialog-content form">
                 <span><b>${ui.message('openhmis.cashier.adjustedReasonPrompt')}</b></span>
                 <br /><br /><br />
-                <span>
+                <span ng-show="adjustmentReasonRequired">
                     ${ui.message('openhmis.cashier.adjustedReason')}:
                 </span>
-                <span>
+                <span ng-show="adjustmentReasonRequired">
                     <input type="text" ng-model="adjustmentReason" />
+                    <br /><br />
                 </span>
-                <br /><br />
                 <div class="ngdialog-buttons detail-section-border-top">
                     <br />
                     <input type="button" class="cancel" value="${ui.message('general.cancel')}" ng-click="closeThisDialog('Cancel')" />

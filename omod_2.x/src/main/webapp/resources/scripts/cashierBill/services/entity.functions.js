@@ -35,6 +35,7 @@
 			reOrderItemPrices: reOrderItemPrices,
 			calculateTotalPayableAmount: calculateTotalPayableAmount,
 			roundItemPrice: roundItemPrice,
+			createPayment: createPayment,
 		};
 
 		return service;
@@ -72,7 +73,11 @@
 					confirm: function () {
 						$scope.isProcessPayment = true;
 						$scope.$apply();
-						$scope.saveOrUpdate();
+						if ($scope.uuid !== undefined) {
+							$scope.postPayment();
+						} else {
+							$scope.saveOrUpdate();
+						}
 						dialog.close();
 					},
 					cancel: function () {
@@ -158,8 +163,8 @@
 				for (var i = 0; i < payments.length; i++) {
 					var payment = {};
 					var attributes = [];
-					if(payments[i].attributes.length > 0){
-						for(var j = 0; j < payments[i].attributes.length; j++){
+					if (payments[i].attributes.length > 0) {
+						for (var j = 0; j < payments[i].attributes.length; j++) {
 							var attr = {};
 							attr.attributeType = payments[i].attributes[j].attributeType.uuid;
 							attr.value = payments[i].attributes[j].value;
@@ -173,6 +178,23 @@
 					populatedPayments.push(payment);
 				}
 			}
+		}
+
+		function createPayment(paymentModeAttributes, attributes, amountTendered, paymentModeUuid) {
+			var requestPaymentAttributeTypes = [];
+			if (EntityFunctions.validateAttributeTypes(
+					paymentModeAttributes, attributes, requestPaymentAttributeTypes)) {
+				var payment = {};
+				payment.attributes = [];
+				if (requestPaymentAttributeTypes.length > 0) {
+					payment.attributes = requestPaymentAttributeTypes;
+				}
+				payment.amount = amountTendered;
+				payment.amountTendered = amountTendered;
+				payment.instanceType = paymentModeUuid;
+				return payment;
+			}
+			return false;
 		}
 
 		function reOrderItemPrices(lineItem, itemDetails) {
@@ -191,13 +213,13 @@
 			}
 		}
 
-		function calculateTotalPayableAmount(lineItems, roundingItem){
+		function calculateTotalPayableAmount(lineItems, roundingItem) {
 			var totalPayableAmount = 0;
 			for (var i = 0; i < lineItems.length; i++) {
 				var lineItem = lineItems[i];
 				if (lineItem.isSelected()) {
-					if(roundingItem !== null && roundingItem !== undefined){
-						if(roundingItem.roundingItemUuid !== lineItem.itemStock.uuid){
+					if (roundingItem !== null && roundingItem !== undefined) {
+						if (roundingItem.roundingItemUuid !== lineItem.itemStock.uuid) {
 							totalPayableAmount += roundItemPrice(
 								lineItem.getTotal(), roundingItem.roundToNearest, roundingItem.roundingMode);
 						}
@@ -211,10 +233,9 @@
 		}
 
 		function roundItemPrice(val, nearest, mode) {
-			if (nearest === 0){
+			if (nearest === 0) {
 				return val;
 			}
-
 			var factor = 1 / nearest;
 			switch (mode) {
 				case 'FLOOR':

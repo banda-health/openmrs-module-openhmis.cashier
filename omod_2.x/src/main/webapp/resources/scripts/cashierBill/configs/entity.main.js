@@ -28,5 +28,6 @@ emr.loadMessages([
 	"openhmis.inventory.operations.required.patient",
 	"openhmis.cashier.editBill",
 	"openhmis.cashier.viewBill",
-	"openhmis.cashier.bill.chooseItemErrorMessage"
+	"openhmis.cashier.bill.chooseItemErrorMessage",
+	"openhmis.cashier.bill.previousBill",
 ]);

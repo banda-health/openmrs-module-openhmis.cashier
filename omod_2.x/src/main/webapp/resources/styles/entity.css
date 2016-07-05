@@ -142,7 +142,10 @@ ul.table-layout .gray-button{
 	border-color: #666666;
 	color: white;
 }
-
+input[type="button"].gray-button:hover{
+	background: #666666;
+	border-color: #666666;
+}
 ul.totals-layout{
 	text-align: left;
 	margin-left: 0px;
@@ -161,8 +164,10 @@ ul.totals-layout li.valign {
 	vertical-align: top;
 }
 
-.right-justify{
-	text-align: right;
+table.table-height th{
+	padding: 2px 10px;
 }
 
-
+table.table-height td{
+	padding: 0px 10px;
+}

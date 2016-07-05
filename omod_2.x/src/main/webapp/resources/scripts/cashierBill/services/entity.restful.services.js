@@ -30,7 +30,12 @@
 			loadItemDetails: loadItemDetails,
 			setBaseUrl: setBaseUrl,
 			loadBill: loadBill,
+			processPayment: processPayment,
 			getRoundingItem: getRoundingItem,
+			getTimesheet: getTimesheet,
+			getCashier: getCashier,
+			getCashPoints: getCashPoints,
+			checkAdjustmentReasonRequired: checkAdjustmentReasonRequired,
 		};
 
 		return service;
@@ -92,12 +97,58 @@
 			);
 		}
 
-		function getRoundingItem(onLoadRoundingItemSuccessful){
+		function processPayment(module_name, billUuid, payment, onProcessPaymentSuccessful) {
+			setBaseUrl(module_name);
+			EntityRestFactory.post('bill/' + billUuid + '/payment', '',
+				payment,
+				onProcessPaymentSuccessful,
+				errorCallback
+			);
+		}
+
+		function getRoundingItem(onLoadRoundingItemSuccessful) {
 			var requestParams = [];
 			requestParams['resource'] = 'options.json';
 			EntityRestFactory.setCustomBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/module/openhmis/cashier/');
 			EntityRestFactory.loadResults(requestParams,
 				onLoadRoundingItemSuccessful, errorCallback);
+		}
+
+		function getTimesheet(onLoadTimesheetSuccessful){
+			var requestParams = [];
+			requestParams['resource'] = 'module/openhmis/cashier/moduleSettings.page';
+			requestParams['setting'] = 'timesheet';
+			EntityRestFactory.setCustomBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/');
+			EntityRestFactory.loadResults(requestParams,
+				onLoadTimesheetSuccessful, errorCallback);
+		}
+
+		function checkAdjustmentReasonRequired(onLoadAdjustmentReasonSuccessful){
+			var requestParams = [];
+			requestParams['resource'] = 'module/openhmis/cashier/moduleSettings.page';
+			requestParams['setting'] = 'openhmis.cashier.adjustmentReasonField';
+			EntityRestFactory.setCustomBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/');
+			EntityRestFactory.loadResults(requestParams,
+				onLoadAdjustmentReasonSuccessful, errorCallback);
+		}
+
+		function getCashier(url, cashierUuid, onLoadCashierSuccessful){
+			url = url.split(cashierUuid).join("");
+			var requestParams = [];
+			requestParams['resource'] = cashierUuid;
+			EntityRestFactory.setCustomBaseUrl(url);
+			EntityRestFactory.loadResults(requestParams,
+				onLoadCashierSuccessful, errorCallback);
+		}
+
+		function getCashPoints(module_name, onLoadCashPointsSuccessful){
+			setBaseUrl(module_name);
+			var requestParams = {};
+			requestParams['rest_entity_name'] = 'cashPoint';
+			EntityRestFactory.loadEntities(requestParams,
+				onLoadCashPointsSuccessful,
+				errorCallback
+			);
 		}
 
 		function setBaseUrl(module_name) {
