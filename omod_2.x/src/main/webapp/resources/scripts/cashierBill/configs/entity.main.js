@@ -30,4 +30,6 @@ emr.loadMessages([
 	"openhmis.cashier.viewBill",
 	"openhmis.cashier.bill.chooseItemErrorMessage",
 	"openhmis.cashier.bill.previousBill",
+	"openhmis.cashier.adjustmentOf",
+	"openhmis.cashier.adjustedBy",
 ]);

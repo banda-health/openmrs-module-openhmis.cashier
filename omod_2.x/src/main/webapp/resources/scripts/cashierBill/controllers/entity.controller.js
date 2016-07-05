@@ -501,15 +501,15 @@
 					if ($scope.STATUS !== 'ADJUSTED') {
 						// load adjusted bill
 						$scope.previousBillTitle =
-							emr.message("openhmis.cashier.bill.previousBill") + " (" + data.billAdjusted.display + ")";
+							emr.message("openhmis.cashier.bill.previousBill") + " (" + data.billAdjusted.display + ") ";
 						CashierBillRestfulService.loadBill(module_name, data.billAdjusted.uuid, self.onLoadAdjustedBillSuccessful);
 					}
 
-					pageTitle += " Adjustment of <a target='_blank' href='entities.page#/" + data.billAdjusted.uuid + "'>";
-					pageTitle += " " + data.billAdjusted.display + "</a>";
+					pageTitle += emr.message("openhmis.cashier.adjustmentOf") + " <a target='_blank' href='entities.page#/" + data.billAdjusted.uuid + "'>";
+					pageTitle += " " + data.billAdjusted.display + "</a> ";
 
 					if (data.adjustedBy !== null && data.adjustedBy.length > 0) {
-						pageTitle += " Adjusted by ";
+						pageTitle += emr.message("openhmis.cashier.adjustedBy");
 						for (var i = 0; i < data.adjustedBy.length; i++) {
 							var adjustedBy = data.adjustedBy[i];
 							pageTitle += "<a target='_blank' href='entities.page#/" + adjustedBy.uuid;
