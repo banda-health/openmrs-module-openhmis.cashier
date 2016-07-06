@@ -40,6 +40,7 @@
 					<div class="col-sm-10">
 						<select class="form-control" ng-model="entity.cashPoint"
 						        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.uuid'>
+								<option value="?" ng-if="false"></option>
 						</select>
 					</div>
 				</div>

@@ -95,7 +95,6 @@
 		
 		self.onLoadCashierShiftReportIdSuccessful = self.onLoadCashierShiftReportIdSuccessful || function (data) {
 				$scope.cashierShiftReportId = data.results;
-				console.log(data.results);
 			}
 		
 		self.loadCashpoints = self.loadCashpoints || function () {
@@ -119,7 +118,7 @@
 			}
 		
 		self.generateCashierShiftReport = self.generateCashierShiftReport || function (id) {
-				TimesheetFunctions.generateCashierShiftReport(id);
+				TimesheetFunctions.generateCashierShiftReport(id,$scope);
 			}
 		
 		self.onloadCurrentTimesheetSuccessful = self.onloadCurrentTimesheetSuccessful || function (data) {
@@ -150,11 +149,17 @@
 				$scope.submitted = false;
 				if (!angular.isDefined($scope.clockOut) || $scope.clockOut == "") {
 					$scope.entity.clockOut = null;
-					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockIn.message"));
+					if ($scope.entity.cashPoint == null || $scope.entity.cashPoint == "") {
+						emr.errorAlert(emr.message("openhmis.cashier.page.timesheet.box.cashpoint.empty"));
+						return false;
+					} else {
+						emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockIn.message"));
+					}
 				} else {
 					$scope.entity.clockOut = TimesheetFunctions.convertToDate($scope.clockOut);
 					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockOut.message"));
 				}
+
 				
 				/**
 				 * Performs checks to either get the current logged in cashier

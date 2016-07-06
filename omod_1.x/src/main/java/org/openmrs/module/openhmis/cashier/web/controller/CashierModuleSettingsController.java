@@ -18,6 +18,8 @@ package org.openmrs.module.openhmis.cashier.web.controller;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
+import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
+import org.openmrs.module.openhmis.cashier.api.util.TimesheetUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +32,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * Type of a RestController to check up setting values in the Cashier Module Settings.
  */
-@Controller(value = "moduleSettings")
+@Controller(value = "cashierModuleSettings")
 @RequestMapping(CashierWebConstants.MODULE_SETTINGS_PAGE)
-public class ModuleSettingsController {
+public class CashierModuleSettingsController {
 
 	private AdministrationService adminService;
 
 	@Autowired
-	public ModuleSettingsController(AdministrationService adminService) {
+	public CashierModuleSettingsController(AdministrationService adminService) {
 		this.adminService = adminService;
 	}
 
@@ -46,11 +48,30 @@ public class ModuleSettingsController {
 	public SimpleObject get(@RequestParam("setting") String setting) {
 		SimpleObject results = new SimpleObject();
 		if (StringUtils.isNotEmpty(setting)) {
-			if (StringUtils.equalsIgnoreCase(setting, ModuleSettings.CASHIER_SHIFT_REPORT_ID_PROPERTY)) {
-				results.put("results", adminService.getGlobalProperty(ModuleSettings.CASHIER_SHIFT_REPORT_ID_PROPERTY));
+			if (StringUtils.equalsIgnoreCase(setting, "timesheet")) {
+				results.put("isTimeSheetRequired", TimesheetUtil.isTimesheetRequired());
+				Timesheet currentTimesheet = getCurrentTimesheet();
+				if (currentTimesheet != null) {
+					SimpleObject cashPoint = new SimpleObject();
+					cashPoint.put("name", currentTimesheet.getCashPoint().getName());
+					cashPoint.put("uuid", currentTimesheet.getCashPoint().getUuid());
+					results.put("cashPoint", cashPoint);
+					results.put("cashier", currentTimesheet.getCashier().getName());
+				}
+			} else {
+				results.put("results", adminService.getGlobalProperty(setting));
 			}
-			// TODO: check other settings
 		}
 		return results;
+	}
+
+	private Timesheet getCurrentTimesheet() {
+		Timesheet timesheet;
+		try {
+			timesheet = TimesheetUtil.getCurrentTimesheet();
+		} catch (Exception e) {
+			timesheet = null;
+		}
+		return timesheet;
 	}
 }

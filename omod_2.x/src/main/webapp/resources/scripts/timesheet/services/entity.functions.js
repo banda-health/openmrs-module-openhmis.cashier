@@ -19,9 +19,9 @@
 	var app = angular.module('app.timesheetFunctionsFactory', []);
 	app.service('TimesheetFunctions', TimesheetFunctions);
 	
-	TimesheetFunctions.$inject = ['$filter'];
+	TimesheetFunctions.$inject = ['$filter','$window'];
 	
-	function TimesheetFunctions($filter) {
+	function TimesheetFunctions($filter,$window) {
 		var service;
 		
 		service = {
@@ -88,12 +88,17 @@
 		 * Show the generate report popup
 		 * @param selectorId - div id
 		 */
-		function generateCashierShiftReport(selectorId){
+		function generateCashierShiftReport(selectorId,$scope){
 			var dialog = emr.setupConfirmationDialog({
 				selector: '#' + selectorId,
 				actions: {
 					cancel: function(){
 						dialog.close();
+					},
+					confirm: function () {
+						$scope.generateReport();
+						dialog.close();
+
 					}
 				}
 			});
