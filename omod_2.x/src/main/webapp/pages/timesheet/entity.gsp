@@ -24,7 +24,8 @@
 			${ui.message('openhmis.cashier.page.timesheet.box.title')}
 		</span>
 		<span style="float:right;">
-			<a id="shiftReportButton" class="btn btn-grey" ui-sref="new" ng-click="generateCashierShiftReport('generaterCashierReport')">
+			<a id="shiftReportButton" class="btn btn-grey" ui-sref="new"
+			   ng-click="generateCashierShiftReport('generaterCashierReport')">
 				<i class="icon-download"></i> ${ui.message('openhmis.cashier.page.reports.box.generate.cashier.shift.report.download.button')}
 			</a>
 		</span>
@@ -40,7 +41,7 @@
 					<div class="col-sm-10">
 						<select class="form-control" ng-model="entity.cashPoint"
 						        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.uuid'>
-								<option value="?" ng-if="false"></option>
+							<option value="">--Select Cashpoint--</option>
 						</select>
 					</div>
 				</div>
@@ -122,18 +123,29 @@
 
 			<div class="col-md-8">
 				${ui.includeFragment("uicommons", "field/datetimepicker",
-					[id           : 'shiftDate',
-					 label        : '',
-					 required     : 'required',
-					 formFieldName: 'shiftDatepicker',
-					 useTime      : false,
-					 name         : 'shiftDate'
-					])}
+						[id           : 'shiftDate',
+						 label        : '',
+						 required     : 'required',
+						 formFieldName: 'shiftDatepicker',
+						 useTime      : false,
+						 name         : 'shiftDate'
+						])}
 			</div>
 		</div>
 		<br/>
 
-		<div class="row detail-section-border-top" ng-show="selectedDatesTimesheet != null ">
+		<div class="row detail-section-border-top" ng-show="showSelectShiftDate == true ">
+			<br/>
+			<p>${ui.message('openhmis.cashier.page.reports.box.select.shift.date.error')}</p>
+		</div>
+
+		<div class="row detail-section-border-top" ng-show="showTimesheetRow == false && showSelectShiftDate == false">
+			<br/>
+
+			<p>${ui.message('openhmis.cashier.page.reports.box.timesheets.shift.date.error')}&nbsp;{{selectedReportDate | date: "EEEE, MMMM d, y"}}</p>
+		</div>
+
+		<div class="row detail-section-border-top" ng-show="showTimesheetRow == true">
 			<br/>
 			<h6>${ui.message('openhmis.cashier.page.reports.box.timesheets.shift.date')}</h6>
 			<ul><li ng-repeat="timesheet in selectedDatesTimesheet">
@@ -143,6 +155,7 @@
 				       type="radio"> {{timesheet.display}}
 			</li></ul>
 		</div>
+
 		<div class="row ngdialog-buttons detail-section-border-top">
 			<br/>
 			<input type="button" class="cancel" value="{{messageLabels['general.cancel']}}"

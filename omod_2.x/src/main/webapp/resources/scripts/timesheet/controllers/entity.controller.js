@@ -28,7 +28,7 @@
 		var module_name = 'cashier';
 		var entity_name_message_key = emr.message("openhmis.cashier.page.timesheet");
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
-		var cancel_page = '/'+ OPENMRS_CONTEXT_PATH +'/openhmis.cashier/cashierLanding.page';
+		var cancel_page = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page';
 		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
@@ -48,6 +48,8 @@
 				self.loadCurrentTimesheets();
 				self.loadCurrentProvider();
 				self.loadCashierShiftReportId();
+				$scope.showTimesheetRow = false;
+				$scope.showSelectShiftDate = true;
 				$scope.generateCashierShiftReport = self.generateCashierShiftReport;
 				
 				$scope.loadClockOutTime = function () {
@@ -59,7 +61,7 @@
 				$scope.loadClockInTime = function () {
 					$scope.clockIn = TimesheetFunctions.formatDate(new Date());
 				}
-
+				
 				TimesheetFunctions.onChangeDatePicker('shiftDate-display',
 					self.onTimesheetShiftReportDateSuccessCallback);
 				
@@ -70,10 +72,10 @@
 				$scope.generateReport = function () {
 					var contextPath = '/' + OPENMRS_CONTEXT_PATH + '/';
 					var url = "module/openhmis/cashier/jasperReport.form?";
-					url += "reportId=" + $scope.cashierShiftReportId  + "&timesheetId=" + $scope.timesheetId;
-					window.open(contextPath+url, "pdfDownload");
+					url += "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
+					window.open(contextPath + url, "pdfDownload");
 				}
-
+				
 			};
 		
 		/**
@@ -81,12 +83,15 @@
 		 * @return boolean
 		 */
 		self.onTimesheetShiftReportDateSuccessCallback = self.onTimesheetShiftReportDateSuccessCallback || function (data) {
+				$scope.selectedReportDate = data;
 				var selectedReportDate = TimesheetFunctions.formatDate(data);
+				$scope.showSelectShiftDate = !(selectedReportDate != null || selectedReportDate != "");
 				TimesheetRestfulService.loadTimesheet(module_name, self.onLoadSelectedReportDateTimesheetSuccessful, selectedReportDate);
 			}
 		
 		self.onLoadSelectedReportDateTimesheetSuccessful = self.onLoadSelectedReportDateTimesheetSuccessful || function (data) {
 				$scope.selectedDatesTimesheet = data.results;
+				$scope.showTimesheetRow = data.results.length != 0;
 			}
 		
 		self.loadCashierShiftReportId = self.loadCashierShiftReportId || function () {
@@ -118,7 +123,7 @@
 			}
 		
 		self.generateCashierShiftReport = self.generateCashierShiftReport || function (id) {
-				TimesheetFunctions.generateCashierShiftReport(id,$scope);
+				TimesheetFunctions.generateCashierShiftReport(id, $scope);
 			}
 		
 		self.onloadCurrentTimesheetSuccessful = self.onloadCurrentTimesheetSuccessful || function (data) {
@@ -159,7 +164,7 @@
 					$scope.entity.clockOut = TimesheetFunctions.convertToDate($scope.clockOut);
 					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockOut.message"));
 				}
-
+				
 				
 				/**
 				 * Performs checks to either get the current logged in cashier

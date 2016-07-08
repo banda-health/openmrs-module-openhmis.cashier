@@ -87,6 +87,7 @@
 		/**
 		 * Show the generate report popup
 		 * @param selectorId - div id
+		 * @param $scope
 		 */
 		function generateCashierShiftReport(selectorId,$scope){
 			var dialog = emr.setupConfirmationDialog({
@@ -97,8 +98,8 @@
 					},
 					confirm: function () {
 						$scope.generateReport();
+						$window.location.replace('/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page');
 						dialog.close();
-
 					}
 				}
 			});
