@@ -94,6 +94,7 @@
 				selector: '#' + selectorId,
 				actions: {
 					cancel: function(){
+						$window.location.replace('/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page');
 						dialog.close();
 					},
 					confirm: function () {
