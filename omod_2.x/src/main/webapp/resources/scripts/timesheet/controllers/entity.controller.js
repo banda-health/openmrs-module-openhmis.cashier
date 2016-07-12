@@ -49,7 +49,6 @@
 				self.loadCurrentProvider();
 				self.loadCashierShiftReportId();
 				$scope.showTimesheetRow = false;
-				$scope.showSelectShiftDate = true;
 				$scope.generateCashierShiftReport = self.generateCashierShiftReport;
 				
 				$scope.loadClockOutTime = function () {
@@ -85,7 +84,6 @@
 		self.onTimesheetShiftReportDateSuccessCallback = self.onTimesheetShiftReportDateSuccessCallback || function (data) {
 				$scope.selectedReportDate = data;
 				var selectedReportDate = TimesheetFunctions.formatDate(data);
-				$scope.showSelectShiftDate = !(selectedReportDate != null || selectedReportDate != "");
 				TimesheetRestfulService.loadTimesheet(module_name, self.onLoadSelectedReportDateTimesheetSuccessful, selectedReportDate);
 			}
 		
@@ -154,17 +152,29 @@
 				$scope.submitted = false;
 				if (!angular.isDefined($scope.clockOut) || $scope.clockOut == "") {
 					$scope.entity.clockOut = null;
-					if ($scope.entity.cashPoint == null || $scope.entity.cashPoint == "") {
-						emr.errorAlert(emr.message("openhmis.cashier.page.timesheet.box.cashpoint.empty"));
-						return false;
-					} else {
-						emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockIn.message"));
-					}
-				} else {
+				}
+
+				if ($scope.clockOut != "" && $scope.entity.cashPoint != null) {
+					$scope.entity.clockIn = TimesheetFunctions.convertToDate($scope.clockIn);
+					console.log($scope.entity.clockIn);
 					$scope.entity.clockOut = TimesheetFunctions.convertToDate($scope.clockOut);
 					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockOut.message"));
 				}
-				
+
+				if (!angular.isDefined($scope.entity.cashPoint) || $scope.entity.cashPoint == null) {
+					emr.errorAlert(emr.message("openhmis.cashier.page.timesheet.box.cashpoint.empty"));
+					return false;
+				}
+
+				if (!angular.isDefined($scope.clockIn) || $scope.clockIn == "") {
+					emr.errorAlert(emr.message("openhmis.cashier.page.reports.box.select.clock.in.error"));
+					return false;
+				}
+
+				if ($scope.clockOut == "" && $scope.entity.cashPoint != null && $scope.clockIn != "") {
+					$scope.entity.clockIn = TimesheetFunctions.convertToDate($scope.clockIn);
+					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockIn.message"));
+				}
 				
 				/**
 				 * Performs checks to either get the current logged in cashier
@@ -179,8 +189,7 @@
 				} else {
 					$scope.entity.cashier = $scope.cashier;
 				}
-				
-				$scope.entity.clockIn = TimesheetFunctions.convertToDate($scope.clockIn);
+
 				return true;
 			}
 		

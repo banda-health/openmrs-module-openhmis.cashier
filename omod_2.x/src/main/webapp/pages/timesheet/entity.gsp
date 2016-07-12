@@ -39,9 +39,9 @@
 			<li>
 				<div class="row">
 					<div class="col-sm-10">
-						<select class="form-control" ng-model="entity.cashPoint"
+						<select class="form-control required" ng-model="entity.cashPoint"
 						        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.uuid'>
-							<option value="">--Select Cashpoint--</option>
+							<option value="">-- Select Cashpoint --</option>
 						</select>
 					</div>
 				</div>
@@ -54,7 +54,7 @@
 			<li>
 				<div class="row">
 					<div class="col-sm-10">
-						<input type="datetime" class="form-control" ng-model="clockIn" style="min-width: 50%;"
+						<input readonly type="datetime" class="form-control required" ng-model="clockIn" style="min-width: 50%;"
 						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"/>
 					</div>
 
@@ -133,11 +133,6 @@
 			</div>
 		</div>
 		<br/>
-
-		<div class="row detail-section-border-top" ng-show="showSelectShiftDate == true ">
-			<br/>
-			<p>${ui.message('openhmis.cashier.page.reports.box.select.shift.date.error')}</p>
-		</div>
 
 		<div class="row detail-section-border-top" ng-show="showTimesheetRow == false && showSelectShiftDate == false">
 			<br/>
