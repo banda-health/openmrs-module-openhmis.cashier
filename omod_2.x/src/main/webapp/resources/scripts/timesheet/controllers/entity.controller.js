@@ -129,9 +129,8 @@
 		
 		self.onloadCurrentTimesheetSuccessful = self.onloadCurrentTimesheetSuccessful || function (data) {
 				$scope.timesheets = data.results[0];
-				console.log(data.results[0]);
 				//Get the latest timesheet for the day if multiple exist
-				if ($scope.timesheets) {
+				if ($scope.timesheets != undefined) {
 					//check if the timesheet exists and has a clockOut time filled
 					if ($scope.timesheets.clockOut != null) {
 						$scope.clockIn = TimesheetFunctions.formatDate(new Date());
