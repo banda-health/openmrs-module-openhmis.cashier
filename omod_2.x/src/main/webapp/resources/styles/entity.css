@@ -152,3 +152,10 @@ ul.dialog-table-layout li {
     background-color: #666666;
     color: white;
 }
+select.ng-invalid.ng-touched {
+    border-color: red;
+}
+
+select.ng-valid.ng-touched {
+    border-color: #EBE9ED;
+}

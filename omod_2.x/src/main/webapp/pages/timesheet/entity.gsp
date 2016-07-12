@@ -39,7 +39,7 @@
 			<li>
 				<div class="row">
 					<div class="col-sm-10">
-						<select class="form-control required" ng-model="entity.cashPoint"
+						<select class="form-control" required ng-model="entity.cashPoint" id="cashpointDropdown"
 						        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.uuid'>
 							<option value="">-- Select Cashpoint --</option>
 						</select>

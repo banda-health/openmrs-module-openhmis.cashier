@@ -154,28 +154,28 @@
 					$scope.entity.clockOut = null;
 				}
 
-				if ($scope.clockOut != "" && $scope.entity.cashPoint != null) {
+				if (!angular.isDefined($scope.clockIn) || $scope.clockIn == "") {
+					emr.errorAlert(emr.message("openhmis.cashier.page.reports.box.select.clock.in.error"));
+					return false;
+				} else {
 					$scope.entity.clockIn = TimesheetFunctions.convertToDate($scope.clockIn);
-					console.log($scope.entity.clockIn);
-					$scope.entity.clockOut = TimesheetFunctions.convertToDate($scope.clockOut);
-					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockOut.message"));
 				}
 
-				if (!angular.isDefined($scope.entity.cashPoint) || $scope.entity.cashPoint == null) {
+				if (!angular.isDefined($scope.entity.cashPoint) || $scope.entity.cashPoint == null 
+					|| $scope.entity.cashPoint == "") {
 					emr.errorAlert(emr.message("openhmis.cashier.page.timesheet.box.cashpoint.empty"));
 					return false;
 				}
 
-				if (!angular.isDefined($scope.clockIn) || $scope.clockIn == "") {
-					emr.errorAlert(emr.message("openhmis.cashier.page.reports.box.select.clock.in.error"));
-					return false;
-				}
-
-				if ($scope.clockOut == "" && $scope.entity.cashPoint != null && $scope.clockIn != "") {
-					$scope.entity.clockIn = TimesheetFunctions.convertToDate($scope.clockIn);
+				if ($scope.clockOut == "" && $scope.entity.cashPoint != "") {
 					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockIn.message"));
 				}
-				
+
+				if ($scope.clockOut != "" && $scope.entity.cashPoint != null) {
+					$scope.entity.clockOut = TimesheetFunctions.convertToDate($scope.clockOut);
+					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockOut.message"));
+				}
+
 				/**
 				 * Performs checks to either get the current logged in cashier
 				 * or the cashier the started the timesheet.
