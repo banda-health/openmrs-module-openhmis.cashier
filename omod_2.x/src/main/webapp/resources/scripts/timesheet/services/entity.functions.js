@@ -52,8 +52,7 @@
 		 * @params date
 		 * */
 		function formatDate(date) {
-			var formattedDate = ($filter('date')(new Date(date), 'MM/dd/yyyy HH:mm'));
-			return formattedDate;
+			return ($filter('date')(new Date(date), 'MM/dd/yyyy HH:mm'));
 		}
 		
 		/**
@@ -61,8 +60,7 @@
 		 * @params date
 		 * */
 		function convertToDate(date) {
-			var convertedDate = ($filter('date')(new Date(date), "yyyy-MM-dd'T'HH:mm:ss"));
-			return convertedDate;
+			return ($filter('date')(new Date(date), "yyyy-MM-dd'T'HH:mm:ss"));
 		}
 		
 		/**

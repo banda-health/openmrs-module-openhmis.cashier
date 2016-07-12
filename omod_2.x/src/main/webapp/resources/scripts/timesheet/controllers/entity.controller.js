@@ -45,15 +45,15 @@
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function (uuid) {
 				self.loadCashpoints();
-				self.loadCurrentTimesheets();
 				self.loadCurrentProvider();
+				self.loadCurrentTimesheets();
 				self.loadCashierShiftReportId();
 				$scope.showTimesheetRow = false;
 				$scope.generateCashierShiftReport = self.generateCashierShiftReport;
 				
 				$scope.loadClockOutTime = function () {
 					if ($scope.timesheets != null && $scope.timesheets.clockOut == null) {
-						$scope.clockOut = TimesheetFunctions.formatDate(new Date);
+						$scope.clockOut = TimesheetFunctions.formatDate(new Date());
 					}
 				}
 				
@@ -107,8 +107,7 @@
 				TimesheetRestfulService.loadProvider(module_name, self.onLoadProviderSuccessful);
 			}
 		self.loadCurrentTimesheets = self.loadCurrentTimesheets || function () {
-				var timesheetDate = TimesheetFunctions.formatDate(new Date());
-				TimesheetRestfulService.loadTimesheet(module_name, self.onloadCurrentTimesheetSuccessful, timesheetDate);
+				TimesheetRestfulService.loadTimesheet(module_name, self.onloadCurrentTimesheetSuccessful, TimesheetFunctions.formatDate(new Date()));
 			}
 		
 		//callback
@@ -117,7 +116,11 @@
 			}
 		
 		self.onLoadProviderSuccessful = self.onLoadProviderSuccessful || function (data) {
-				$scope.cashier = data.currentProvider.uuid;
+				if (data.currentProvider == null) {
+					emr.errorAlert(emr.message("openhmis.cashier.timesheet.entry.error.notProvider"));
+				} else {
+					$scope.cashier = data.currentProvider.uuid;
+				}
 			}
 		
 		self.generateCashierShiftReport = self.generateCashierShiftReport || function (id) {
@@ -126,11 +129,12 @@
 		
 		self.onloadCurrentTimesheetSuccessful = self.onloadCurrentTimesheetSuccessful || function (data) {
 				$scope.timesheets = data.results[0];
+				console.log(data.results[0]);
 				//Get the latest timesheet for the day if multiple exist
 				if ($scope.timesheets) {
 					//check if the timesheet exists and has a clockOut time filled
 					if ($scope.timesheets.clockOut != null) {
-						$scope.clockIn = TimesheetFunctions.formatDate(new Date);
+						$scope.clockIn = TimesheetFunctions.formatDate(new Date());
 						$scope.showClockOutSection = false;
 						$scope.clockOut = "";
 					} else {
@@ -143,6 +147,7 @@
 					}
 				} else {
 					$scope.clockIn = TimesheetFunctions.formatDate(new Date());
+					$scope.clockOut = "";
 					$scope.showClockOutSection = false;
 				}
 			}
@@ -167,11 +172,12 @@
 					return false;
 				}
 
-				if ($scope.clockOut == "" && $scope.entity.cashPoint != "") {
+				if ($scope.entity.clockOut == null && $scope.entity.cashPoint != "") {
 					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockIn.message"));
 				}
 
 				if ($scope.clockOut != "" && $scope.entity.cashPoint != null) {
+					console.log("___________  "+$scope.clockOut + "-----------------");
 					$scope.entity.clockOut = TimesheetFunctions.convertToDate($scope.clockOut);
 					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockOut.message"));
 				}
