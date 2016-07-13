@@ -49,6 +49,7 @@
 				self.loadCurrentTimesheets();
 				self.loadCashierShiftReportId();
 				$scope.showTimesheetRow = false;
+				$scope.disableInputs = false;
 				$scope.generateCashierShiftReport = self.generateCashierShiftReport;
 				
 				$scope.loadClockOutTime = function () {
@@ -117,8 +118,10 @@
 		
 		self.onLoadProviderSuccessful = self.onLoadProviderSuccessful || function (data) {
 				if (data.currentProvider == null) {
+					$scope.disableInputs = true;
 					emr.errorAlert(emr.message("openhmis.cashier.timesheet.entry.error.notProvider"));
 				} else {
+					$scope.disableInputs = false;
 					$scope.cashier = data.currentProvider.uuid;
 				}
 			}

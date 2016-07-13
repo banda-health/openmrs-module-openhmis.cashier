@@ -24,7 +24,7 @@
 			${ui.message('openhmis.cashier.page.timesheet.box.title')}
 		</span>
 		<span style="float:right;">
-			<a id="shiftReportButton" class="btn btn-grey" ui-sref="new"
+			<a ng-hide="disableInputs == true" id="shiftReportButton" class="btn btn-grey" ui-sref="new"
 			   ng-click="generateCashierShiftReport('generaterCashierReport')">
 				<i class="icon-download"></i> ${ui.message('openhmis.cashier.page.reports.box.generate.cashier.shift.report.download.button')}
 			</a>
@@ -39,7 +39,7 @@
 			<li>
 				<div class="row">
 					<div class="col-sm-10">
-						<select class="form-control" ng-required="true" ng-model="entity.cashPoint" id="cashpointDropdown"
+						<select ng-disabled="disableInputs == true" class="form-control" ng-required="true" ng-model="entity.cashPoint" id="cashpointDropdown"
 						        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.uuid'>
 							<option value="">-- Select Cashpoint --</option>
 						</select>
@@ -54,12 +54,12 @@
 			<li>
 				<div class="row">
 					<div class="col-sm-10">
-						<input readonly type="datetime" class="form-control required" ng-model="clockIn" style="min-width: 50%;"
+						<input ng-disabled="disableInputs == true" readonly type="datetime" class="form-control required" ng-model="clockIn" style="min-width: 50%;"
 						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"/>
 					</div>
 
 					<div class="col-sm-1 " ng-show="timesheets == null || showClockOutSection == false">
-						<input type="button" class="btn-sm"
+						<input ng-disabled="disableInputs == true" type="button" class="btn-sm"
 						       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"
 						       ng-click="loadClockInTime()"/>
 					</div>
@@ -73,12 +73,12 @@
 			<li>
 				<div class="row">
 					<div class="col-sm-10 ">
-						<input type="datetime" class="form-control" ng-model="clockOut" style="min-width: 50%;"
+						<input ng-disabled="disableInputs == true" type="datetime" class="form-control" ng-model="clockOut" style="min-width: 50%;"
 						       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"/>
 					</div>
 
 					<div class="col-sm-1 ">
-						<input type="button" class="btn-sm"
+						<input ng-disabled="disableInputs == true" type="button" class="btn-sm"
 						       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"
 						       ng-click="loadClockOutTime()"/>
 					</div>
@@ -96,8 +96,8 @@
 	</fieldset>
 	<fieldset class="format">
 		<span>
-			<input type="button" class="cancel" value="{{messageLabels['general.cancel']}}" ng-click="cancel()"/>
-			<input type="submit" class="confirm right" value="${ui.message('general.save')}" ng-click="saveOrUpdate()"/>
+			<input ng-disabled="disableInputs == true" type="button" class="cancel" value="{{messageLabels['general.cancel']}}" ng-click="cancel()"/>
+			<input ng-disabled="disableInputs == true" type="submit" class="confirm right" value="${ui.message('general.save')}" ng-click="saveOrUpdate()"/>
 		</span>
 	</fieldset>
 </form>

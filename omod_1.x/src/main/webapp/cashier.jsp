@@ -1,3 +1,4 @@
+
 <%@ page import="org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants" %>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
