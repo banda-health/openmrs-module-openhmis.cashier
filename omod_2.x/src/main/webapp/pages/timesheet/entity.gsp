@@ -96,7 +96,7 @@
 	</fieldset>
 	<fieldset class="format">
 		<span>
-			<input ng-disabled="disableInputs == true" type="button" class="cancel" value="{{messageLabels['general.cancel']}}" ng-click="cancel()"/>
+			<input type="button" class="cancel" value="{{messageLabels['general.cancel']}}" ng-click="cancel()"/>
 			<input ng-disabled="disableInputs == true" type="submit" class="confirm right" value="${ui.message('general.save')}" ng-click="saveOrUpdate()"/>
 		</span>
 	</fieldset>
