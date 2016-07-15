@@ -44,36 +44,43 @@
 		// @Override
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function (uuid) {
-				self.loadCashpoints();
+				$scope.noProvider = false;
 				self.loadCurrentProvider();
-				self.loadCurrentTimesheets();
-				self.loadCashierShiftReportId();
-				$scope.showTimesheetRow = false;
-				$scope.disableInputs = false;
-				$scope.generateCashierShiftReport = self.generateCashierShiftReport;
-				
-				$scope.loadClockOutTime = function () {
-					if ($scope.timesheets != null && $scope.timesheets.clockOut == null) {
-						$scope.clockOut = TimesheetFunctions.formatDate(new Date());
+				if ($scope.provider == null) {
+					$scope.noProvider = true;
+					emr.errorAlert(emr.message("openhmis.cashier.timesheet.entry.error.notProvider"));
+				} else {
+					$scope.noProvider = false;
+					$scope.cashier = $scope.provider.uuid;
+					self.loadCashpoints();
+					self.loadCurrentTimesheets();
+					self.loadCashierShiftReportId();
+					$scope.showTimesheetRow = false;
+					$scope.generateCashierShiftReport = self.generateCashierShiftReport;
+
+					$scope.loadClockOutTime = function () {
+						if ($scope.timesheets != null && $scope.timesheets.clockOut == null) {
+							$scope.clockOut = TimesheetFunctions.formatDate(new Date());
+						}
 					}
-				}
-				
-				$scope.loadClockInTime = function () {
-					$scope.clockIn = TimesheetFunctions.formatDate(new Date());
-				}
-				
-				TimesheetFunctions.onChangeDatePicker('shiftDate-display',
-					self.onTimesheetShiftReportDateSuccessCallback);
-				
-				$scope.selectedTimesheet = function (timesheetId) {
-					$scope.timesheetId = timesheetId;
-				}
-				
-				$scope.generateReport = function () {
-					var contextPath = '/' + OPENMRS_CONTEXT_PATH + '/';
-					var url = "module/openhmis/cashier/jasperReport.form?";
-					url += "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
-					window.open(contextPath + url, "pdfDownload");
+
+					$scope.loadClockInTime = function () {
+						$scope.clockIn = TimesheetFunctions.formatDate(new Date());
+					}
+
+					TimesheetFunctions.onChangeDatePicker('shiftDate-display',
+						self.onTimesheetShiftReportDateSuccessCallback);
+
+					$scope.selectedTimesheet = function (timesheetId) {
+						$scope.timesheetId = timesheetId;
+					}
+
+					$scope.generateReport = function () {
+						var contextPath = '/' + OPENMRS_CONTEXT_PATH + '/';
+						var url = "module/openhmis/cashier/jasperReport.form?";
+						url += "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
+						window.open(contextPath + url, "pdfDownload");
+					}
 				}
 				
 			};
@@ -117,13 +124,7 @@
 			}
 		
 		self.onLoadProviderSuccessful = self.onLoadProviderSuccessful || function (data) {
-				if (data.currentProvider == null) {
-					$scope.disableInputs = true;
-					emr.errorAlert(emr.message("openhmis.cashier.timesheet.entry.error.notProvider"));
-				} else {
-					$scope.disableInputs = false;
-					$scope.cashier = data.currentProvider.uuid;
-				}
+				$scope.provider = data.currentProvider;
 			}
 		
 		self.generateCashierShiftReport = self.generateCashierShiftReport || function (id) {
