@@ -115,7 +115,7 @@
 				onLoadRoundingItemSuccessful, errorCallback);
 		}
 
-		function getTimesheet(onLoadTimesheetSuccessful){
+		function getTimesheet(onLoadTimesheetSuccessful) {
 			var requestParams = [];
 			requestParams['resource'] = 'module/openhmis/cashier/moduleSettings.page';
 			requestParams['setting'] = 'timesheet';
@@ -124,7 +124,7 @@
 				onLoadTimesheetSuccessful, errorCallback);
 		}
 
-		function checkAdjustmentReasonRequired(onLoadAdjustmentReasonSuccessful){
+		function checkAdjustmentReasonRequired(onLoadAdjustmentReasonSuccessful) {
 			var requestParams = [];
 			requestParams['resource'] = 'module/openhmis/cashier/moduleSettings.page';
 			requestParams['setting'] = 'openhmis.cashier.adjustmentReasonField';
@@ -133,7 +133,7 @@
 				onLoadAdjustmentReasonSuccessful, errorCallback);
 		}
 
-		function getCashier(url, cashierUuid, onLoadCashierSuccessful){
+		function getCashier(url, cashierUuid, onLoadCashierSuccessful) {
 			url = url.split(cashierUuid).join("");
 			var requestParams = [];
 			requestParams['resource'] = cashierUuid;
@@ -142,7 +142,7 @@
 				onLoadCashierSuccessful, errorCallback);
 		}
 
-		function getCashPoints(module_name, onLoadCashPointsSuccessful){
+		function getCashPoints(module_name, onLoadCashPointsSuccessful) {
 			setBaseUrl(module_name);
 			var requestParams = {};
 			requestParams['rest_entity_name'] = 'cashPoint';
@@ -152,7 +152,7 @@
 			);
 		}
 
-		function getPaymentModeAttributeData(type, foreignKey, onLoadAttributeDataSuccessful){
+		function getPaymentModeAttributeData(type, foreignKey, onLoadAttributeDataSuccessful) {
 			var requestParams = [];
 			requestParams['resource'] = 'module/openhmis/cashier/paymentModeFragment2x.page';
 			requestParams['type'] = type;
@@ -162,37 +162,37 @@
 				onLoadAttributeDataSuccessful, errorCallback);
 		}
 
-		function populatePaymentModeAttributesData($scope, paymentModeAttributes){
+		function populatePaymentModeAttributesData($scope, paymentModeAttributes) {
 			$scope.paymentModeAttributes = paymentModeAttributes.attributeTypes;
-			for(var i = 0; i < $scope.paymentModeAttributes.length; i++){
+			for (var i = 0; i < $scope.paymentModeAttributes.length; i++) {
 				var paymentModeAttribute = $scope.paymentModeAttributes[i];
-				if(paymentModeAttribute.format === 'org.openmrs.Concept' && paymentModeAttribute.foreignKey !== null){
-					getPaymentModeAttributeData('concept', paymentModeAttribute.foreignKey, function(data){
-						if(data !== undefined){
+				if (paymentModeAttribute.format === 'org.openmrs.Concept' && paymentModeAttribute.foreignKey !== null) {
+					getPaymentModeAttributeData('concept', paymentModeAttribute.foreignKey, function (data) {
+						if (data !== undefined) {
 							$scope.paymentModeAttributesData[data.foreignKey] = data.results;
 						}
 					});
-				} else if(paymentModeAttribute.format === 'org.openmrs.User'){
-					getPaymentModeAttributeData('user', '', function(data){
-						if(data !== undefined){
+				} else if (paymentModeAttribute.format === 'org.openmrs.User') {
+					getPaymentModeAttributeData('user', '', function (data) {
+						if (data !== undefined) {
 							$scope.paymentModeAttributesData['users'] = data.results;
 						}
 					});
-				} else if(paymentModeAttribute.format === 'org.openmrs.Location'){
-					getPaymentModeAttributeData('location', '', function(data){
-						if(data !== undefined){
+				} else if (paymentModeAttribute.format === 'org.openmrs.Location') {
+					getPaymentModeAttributeData('location', '', function (data) {
+						if (data !== undefined) {
 							$scope.paymentModeAttributesData['locations'] = data.results;
 						}
 					});
-				} else if(paymentModeAttribute.format === 'org.openmrs.Drug'){
-					getPaymentModeAttributeData('drug', '', function(data){
-						if(data !== undefined){
+				} else if (paymentModeAttribute.format === 'org.openmrs.Drug') {
+					getPaymentModeAttributeData('drug', '', function (data) {
+						if (data !== undefined) {
 							$scope.paymentModeAttributesData['drugs'] = data.results;
 						}
 					});
-				} else if(paymentModeAttribute.format === 'org.openmrs.Provider'){
-					getPaymentModeAttributeData('provider', '', function(data){
-						if(data !== undefined){
+				} else if (paymentModeAttribute.format === 'org.openmrs.Provider') {
+					getPaymentModeAttributeData('provider', '', function (data) {
+						if (data !== undefined) {
 							$scope.paymentModeAttributesData['providers'] = data.results;
 						}
 					});

@@ -50,18 +50,18 @@
 			|| function () {
 				//check if timesheet is required
 				$scope.cashPoints = [];
-				CashierBillRestfulService.getTimesheet(function(data){
-					if(data !== undefined){
+				CashierBillRestfulService.getTimesheet(function (data) {
+					if (data !== undefined) {
 						$scope.cashier = data.cashier;
 						$scope.cashPoint = data.cashPoint;
-						if(data.isTimeSheetRequired === true
-							&& (data.cashier === undefined || data.cashPoint === undefined)){
+						if (data.isTimeSheetRequired === true
+							&& (data.cashier === undefined || data.cashPoint === undefined)) {
 							// redirect to timesheet page.
 							window.location = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/timesheet/entities.page#/';
 						}
 
-						if(data.cashPoint === undefined){
-							CashierBillRestfulService.getCashPoints(module_name, function(data){
+						if (data.cashPoint === undefined) {
+							CashierBillRestfulService.getCashPoints(module_name, function (data) {
 								$scope.cashPoints = data.results;
 							});
 						}
@@ -151,7 +151,7 @@
 				$scope.saveBill = self.saveBill;
 				$scope.printBill = self.printBill;
 
-				$timeout(function(){
+				$timeout(function () {
 					$scope.fullyLoaded = true;
 				}, 1700);
 			};
@@ -185,7 +185,7 @@
 							CashierBillFunctions.validateLineItems($scope.previousLineItems, $scope.entity.lineItems);
 						}
 					} else {
-						if(validatedLineItems.length == 0){
+						if (validatedLineItems.length == 0) {
 							emr.errorAlert("openhmis.cashier.bill.chooseItemErrorMessage");
 						}
 						$scope.submitted = true;
@@ -218,7 +218,7 @@
 					delete $scope.entity['status'];
 				} else if ($scope.isPostBill) {
 					$scope.entity.status = 'POSTED';
-				} else if($scope.isSaveBill){
+				} else if ($scope.isSaveBill) {
 					$scope.entity.status = 'PENDING';
 					$scope.entity.payments = [];
 				}
@@ -226,14 +226,14 @@
 					$scope.entity.status = $scope.STATUS;
 				}
 
-				if(!$scope.isAdjustBill && $scope.uuid !== undefined){
-					if($scope.billAdjustedUuid !== undefined && $scope.billAdjustedUuid !== ''){
+				if (!$scope.isAdjustBill && $scope.uuid !== undefined) {
+					if ($scope.billAdjustedUuid !== undefined && $scope.billAdjustedUuid !== '') {
 						$scope.entity.billAdjusted = $scope.billAdjustedUuid;
 					}
 					$scope.entity.uuid = $scope.uuid;
 				}
 
-				if($scope.cashPoint !== undefined){
+				if ($scope.cashPoint !== undefined) {
 					$scope.entity.cashPoint = $scope.cashPoint.uuid;
 				}
 
@@ -275,12 +275,12 @@
 				CashierBillFunctions.populateExistingLineItems($scope.entity.lineItems, $scope.lineItems, $scope);
 			}
 
-		self.computeTotalPrice = self.computeTotalPrice || function(){
+		self.computeTotalPrice = self.computeTotalPrice || function () {
 				return CashierBillFunctions.computeTotalPrice($scope);
 			}
 
 		self.addLineItem = self.addLineItem || function () {
-				if($scope.lineItem !== undefined){
+				if ($scope.lineItem !== undefined) {
 				}
 				var addItem = true;
 				for (var i = 0; i < $scope.lineItems.length; i++) {
@@ -298,7 +298,7 @@
 
 		self.removeLineItem = self.removeLineItem || function (lineItem) {
 				//only remove selected line items..
-				if(lineItem.selected){
+				if (lineItem.selected) {
 					var index = $scope.lineItems.indexOf(lineItem);
 					if (index !== -1) {
 						$scope.lineItems.splice(index, 1);
@@ -333,9 +333,9 @@
 				}
 			}
 
-		self.getConcepts = self.getConcepts || function(uuid){
-				if(uuid !== undefined){
-					CashierBillRestfulService.getConcepts(uuid, function(data){
+		self.getConcepts = self.getConcepts || function (uuid) {
+				if (uuid !== undefined) {
+					CashierBillRestfulService.getConcepts(uuid, function (data) {
 						//return data.results;
 						$scope.concepts = $scope.concepts || data;
 					});
@@ -369,7 +369,7 @@
 					$scope.isPrintBill = false;
 					self.setPaymentWarningMessage();
 					CashierBillFunctions.paymentWarningDialog($scope);
-				} else{
+				} else {
 					$scope.submitted = true;
 				}
 			}
@@ -390,7 +390,7 @@
 							}
 						);
 					}
-				} else{
+				} else {
 					$scope.saveOrUpdate();
 				}
 			}
@@ -412,8 +412,8 @@
 				$scope.isPrintBill = false;
 
 				//check if adjustment reason is required.
-				CashierBillRestfulService.checkAdjustmentReasonRequired(function(data){
-					if(data !== undefined && data.results === "true"){
+				CashierBillRestfulService.checkAdjustmentReasonRequired(function (data) {
+					if (data !== undefined && data.results === "true") {
 						$scope.adjustmentReasonRequired = true;
 					}
 					else {
@@ -461,7 +461,7 @@
 				$scope.currentPayments = [];
 				$scope.previousPayments = [];
 				CashierBillRestfulService.getCashier(data.cashier.links[0].uri,
-					data.cashier.uuid, function(data){
+					data.cashier.uuid, function (data) {
 						$scope.cashier = data.person.display;
 					}
 				);
@@ -503,7 +503,7 @@
 					pageTitle += "</li>";
 				}
 
-				if(data.adjustmentReason !== null && data.adjustmentReason !== ""){
+				if (data.adjustmentReason !== null && data.adjustmentReason !== "") {
 					pageTitle += "<li>";
 					pageTitle += "<b> " + emr.message("Adjustment Reason") + ":</b> ";
 					pageTitle += data.adjustmentReason;
@@ -529,9 +529,9 @@
 			}
 
 		self.onChangeEntitySuccessful = self.onChangeEntitySuccessful || function (data) {
-				if($scope.uuid === data.uuid){
+				if ($scope.uuid === data.uuid) {
 					$window.location.reload();
-				} else{
+				} else {
 					$window.location.href = 'entities.page#/' + data.uuid;
 				}
 

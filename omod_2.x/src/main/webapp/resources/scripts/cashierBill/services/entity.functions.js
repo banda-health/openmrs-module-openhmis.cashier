@@ -120,7 +120,7 @@
 			for (var i = 0; i < lineItems.length; i++) {
 				var lineItem = lineItems[i];
 				if (lineItem.selected) {
-					if(lineItem.itemStock.name === undefined){
+					if (lineItem.itemStock.name === undefined) {
 						var errorMessage = emr.message("openhmis.cashier.bill.lineItems.error.invalidItem") + " - " + lineItem.itemStock.toString();
 						emr.errorAlert(errorMessage);
 						failed = true;
@@ -199,9 +199,9 @@
 					payment.attributes = requestPaymentAttributeTypes;
 				}
 
-				if(amountDue - amountTendered < 0){
+				if (amountDue - amountTendered < 0) {
 					payment.amount = Math.round(amountDue);
-				}else {
+				} else {
 					payment.amount = amountTendered;
 				}
 				payment.amountTendered = amountTendered;
@@ -253,7 +253,7 @@
 			// calculate amount for current items.
 			if ($scope.STATUS === 'PENDING') {
 				$scope.totalPayableAmount = calculateTotalPayableAmount(
-						$scope.lineItems, $scope.roundingItem);
+					$scope.lineItems, $scope.roundingItem);
 			} else {
 				$scope.totalPayableAmount = calculateTotalPayableAmount($scope.lineItems);
 				if ($scope.STATUS === 'ADJUSTED') {
@@ -283,7 +283,7 @@
 			// calculate change due
 			if ($scope.totalPayableAmount > 0) {
 				$scope.totalChangeDue = $scope.totalAmountTendered - $scope.totalPayableAmount;
-			} else if($scope.totalAmountTendered > 0){
+			} else if ($scope.totalAmountTendered > 0) {
 				$scope.totalChangeDue = $scope.totalAmountTendered;
 			}
 
