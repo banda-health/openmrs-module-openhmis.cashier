@@ -19,9 +19,9 @@
 	var app = angular.module('app.cashierBillFunctionsFactory', []);
 	app.service('CashierBillFunctions', CashierBillFunctions);
 
-	CashierBillFunctions.$inject = ['EntityFunctions', 'LineItemModel'];
+	CashierBillFunctions.$inject = ['EntityFunctions', 'LineItemModel', '$filter'];
 
-	function CashierBillFunctions(EntityFunctions, LineItemModel) {
+	function CashierBillFunctions(EntityFunctions, LineItemModel, $filter) {
 		var service;
 
 		service = {
@@ -36,6 +36,7 @@
 			calculateTotalPayableAmount: calculateTotalPayableAmount,
 			roundItemPrice: roundItemPrice,
 			createPayment: createPayment,
+			computeTotalPrice: computeTotalPrice,
 		};
 
 		return service;
@@ -115,9 +116,16 @@
 		function validateLineItems(lineItems, validatedLineItems) {
 			// validate line items
 			var count = 0;
+			var failed = false;
 			for (var i = 0; i < lineItems.length; i++) {
 				var lineItem = lineItems[i];
 				if (lineItem.selected) {
+					if(lineItem.itemStock.name === undefined){
+						var errorMessage = emr.message("openhmis.cashier.bill.lineItems.error.invalidItem") + " - " + lineItem.itemStock.toString();
+						emr.errorAlert(errorMessage);
+						failed = true;
+						continue;
+					}
 					var requestLineItem = {
 						item: lineItem.itemStock.uuid,
 						lineItemOrder: count++,
@@ -130,7 +138,7 @@
 				}
 			}
 
-			if (validatedLineItems.length > 0) {
+			if (validatedLineItems.length > 0 && !failed) {
 				return true;
 			}
 			return false;
@@ -180,7 +188,8 @@
 			}
 		}
 
-		function createPayment(paymentModeAttributes, attributes, amountTendered, paymentModeUuid) {
+		function createPayment(paymentModeAttributes, attributes,
+		                       amountTendered, amountDue, paymentModeUuid) {
 			var requestPaymentAttributeTypes = [];
 			if (EntityFunctions.validateAttributeTypes(
 					paymentModeAttributes, attributes, requestPaymentAttributeTypes)) {
@@ -189,7 +198,12 @@
 				if (requestPaymentAttributeTypes.length > 0) {
 					payment.attributes = requestPaymentAttributeTypes;
 				}
-				payment.amount = amountTendered;
+
+				if(amountDue - amountTendered < 0){
+					payment.amount = Math.round(amountDue);
+				}else {
+					payment.amount = amountTendered;
+				}
 				payment.amountTendered = amountTendered;
 				payment.instanceType = paymentModeUuid;
 				return payment;
@@ -230,6 +244,61 @@
 			}
 
 			return totalPayableAmount;
+		}
+
+		function computeTotalPrice($scope) {
+			$scope.totalChangeDue = 0;
+			$scope.totalAmountDue = 0;
+
+			// calculate amount for current items.
+			if ($scope.STATUS === 'PENDING') {
+				$scope.totalPayableAmount = calculateTotalPayableAmount(
+						$scope.lineItems, $scope.roundingItem);
+			} else {
+				$scope.totalPayableAmount = calculateTotalPayableAmount($scope.lineItems);
+				if ($scope.STATUS === 'ADJUSTED') {
+					$scope.totalPayableAmount = roundItemPrice(
+						$scope.totalPayableAmount, $scope.roundingItem.roundToNearest, $scope.roundingItem.roundingMode);
+				}
+			}
+
+			// sum amount for previous line items.
+			$scope.totalPayableAmount += calculateTotalPayableAmount($scope.previousLineItems);
+
+			// calculate tendered amount
+			$scope.totalAmountTendered = 0;
+			if ($scope.currentPayments !== null) {
+				for (var i = 0; i < $scope.currentPayments.length; i++) {
+					$scope.totalAmountTendered += $scope.currentPayments[i].amountTendered;
+				}
+			}
+
+			// sum previous payments.
+			if ($scope.previousPayments !== null) {
+				for (var i = 0; i < $scope.previousPayments.length; i++) {
+					$scope.totalAmountTendered += $scope.previousPayments[i].amountTendered;
+				}
+			}
+
+			// calculate change due
+			if ($scope.totalPayableAmount > 0) {
+				$scope.totalChangeDue = $scope.totalAmountTendered - $scope.totalPayableAmount;
+			} else if($scope.totalAmountTendered > 0){
+				$scope.totalChangeDue = $scope.totalAmountTendered;
+			}
+
+			// calculate amount due
+			if ($scope.totalChangeDue < 0) {
+				$scope.totalAmountDue = $scope.totalChangeDue * -1;
+				$scope.totalChangeDue = 0;
+			} else {
+				$scope.totalAmountDue = 0;
+			}
+
+			$scope.totalChangeDue = $filter('number')($scope.totalChangeDue, 2);
+			$scope.totalAmountDue = $filter('number')($scope.totalAmountDue, 2);
+			$scope.totalAmountTendered = $filter('number')($scope.totalAmountTendered, 2);
+			$scope.totalPayableAmount = $filter('number')($scope.totalPayableAmount, 2);
 		}
 
 		function roundItemPrice(val, nearest, mode) {

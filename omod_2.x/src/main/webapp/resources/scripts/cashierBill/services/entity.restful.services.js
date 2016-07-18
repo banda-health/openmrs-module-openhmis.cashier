@@ -36,6 +36,8 @@
 			getCashier: getCashier,
 			getCashPoints: getCashPoints,
 			checkAdjustmentReasonRequired: checkAdjustmentReasonRequired,
+			getPaymentModeAttributeData: getPaymentModeAttributeData,
+			populatePaymentModeAttributesData: populatePaymentModeAttributesData,
 		};
 
 		return service;
@@ -80,7 +82,6 @@
 		function searchStockOperationItems(q) {
 			setBaseUrl('inventory');
 			var requestParams = {};
-			requestParams['has_physical_inventory'] = 'true';
 			requestParams['q'] = q;
 			requestParams['limit'] = 10;
 			requestParams['startIndex'] = 1;
@@ -149,6 +150,54 @@
 				onLoadCashPointsSuccessful,
 				errorCallback
 			);
+		}
+
+		function getPaymentModeAttributeData(type, foreignKey, onLoadAttributeDataSuccessful){
+			var requestParams = [];
+			requestParams['resource'] = 'module/openhmis/cashier/paymentModeFragment2x.page';
+			requestParams['type'] = type;
+			requestParams['foreignKey'] = foreignKey;
+			EntityRestFactory.setCustomBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/');
+			EntityRestFactory.loadResults(requestParams,
+				onLoadAttributeDataSuccessful, errorCallback);
+		}
+
+		function populatePaymentModeAttributesData($scope, paymentModeAttributes){
+			$scope.paymentModeAttributes = paymentModeAttributes.attributeTypes;
+			for(var i = 0; i < $scope.paymentModeAttributes.length; i++){
+				var paymentModeAttribute = $scope.paymentModeAttributes[i];
+				if(paymentModeAttribute.format === 'org.openmrs.Concept' && paymentModeAttribute.foreignKey !== null){
+					getPaymentModeAttributeData('concept', paymentModeAttribute.foreignKey, function(data){
+						if(data !== undefined){
+							$scope.paymentModeAttributesData[data.foreignKey] = data.results;
+						}
+					});
+				} else if(paymentModeAttribute.format === 'org.openmrs.User'){
+					getPaymentModeAttributeData('user', '', function(data){
+						if(data !== undefined){
+							$scope.paymentModeAttributesData['users'] = data.results;
+						}
+					});
+				} else if(paymentModeAttribute.format === 'org.openmrs.Location'){
+					getPaymentModeAttributeData('location', '', function(data){
+						if(data !== undefined){
+							$scope.paymentModeAttributesData['locations'] = data.results;
+						}
+					});
+				} else if(paymentModeAttribute.format === 'org.openmrs.Drug'){
+					getPaymentModeAttributeData('drug', '', function(data){
+						if(data !== undefined){
+							$scope.paymentModeAttributesData['drugs'] = data.results;
+						}
+					});
+				} else if(paymentModeAttribute.format === 'org.openmrs.Provider'){
+					getPaymentModeAttributeData('provider', '', function(data){
+						if(data !== undefined){
+							$scope.paymentModeAttributesData['providers'] = data.results;
+						}
+					});
+				}
+			}
 		}
 
 		function setBaseUrl(module_name) {

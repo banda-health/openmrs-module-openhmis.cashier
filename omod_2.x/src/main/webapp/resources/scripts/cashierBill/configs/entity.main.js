@@ -32,4 +32,5 @@ emr.loadMessages([
 	"openhmis.cashier.bill.previousBill",
 	"openhmis.cashier.adjustmentOf",
 	"openhmis.cashier.adjustedBy",
+	"openhmis.cashier.bill.lineItems.error.invalidItem",
 ]);

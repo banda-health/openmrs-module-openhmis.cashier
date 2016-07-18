@@ -105,11 +105,14 @@ table.amount-details td {
 	font-weight: bold;
 }
 table.amount-details th:first-child, td:first-child{
-	width:60%;
+	width:85%;
 }
 
 table.amount-details th:nth-child(2), td:nth-child(2) {
-	width: 35%;
+	width: 15%;
+}
+table.amount-details th:nth-child(3), td:nth-child(3) {
+	width: 10%;
 }
 
 .not-found{
@@ -136,6 +139,9 @@ fieldset.paymentMode{
 	width: 100%;
 	margin: 10px 0px;
 	border: 1px solid #666666;
+}
+fieldset.paymentMode select{
+	width: 100%;
 }
 ul.table-layout .gray-button{
 	background: #666666;
@@ -164,10 +170,71 @@ ul.totals-layout li.valign {
 	vertical-align: top;
 }
 
-table.table-height th{
-	padding: 2px 10px;
+table.item-stock th{
+	line-height: 20px;
+	font-size: 15px;
 }
 
-table.table-height td{
-	padding: 0px 10px;
+table.item-stock .autocomplete-search {
+	width: 300px;
+}
+table.item-stock td{
+	vertical-align: top;
+}
+fieldset.createBill{
+	min-width: 100%;
+	margin: 0 0px;
+	border: 0px;
+	padding: 0px;
+}
+fieldset.createBill input.btn {
+	background: #666666;
+	border-color: #666666;
+	color: white;
+	font-size: 16px;
+}
+fieldset.createBill input.btn:hover {
+	background: #666666;
+	border-color: #666666;
+	color: white;
+}
+table.bool{
+	width: 50%;
+	margin: 0 -10px;
+}
+table.bool tr {
+	line-height: 20px;
+	border-style:none;
+}
+
+table.bool td {
+	border-style:none;
+}
+ul.bill-info{
+	font-size: 10pt;
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+ul.bill-info li{
+	margin: 0 20px 0 0;
+	display: block;
+	float: left;
+}
+ul.bill-info li select{
+	padding: 0px;
+	width: 150px;
+	margin: 0px 0 0 -7px;
+}
+
+ul.page-title{
+	font-size: 11pt;
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+ul.page-title li{
+	margin: 0 20px 0 0;
+	display: block;
+	float: left;
 }

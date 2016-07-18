@@ -17,6 +17,7 @@ package org.openmrs.module.openhmis.cashier.web.controller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetUtil;
@@ -57,6 +58,8 @@ public class CashierModuleSettingsController {
 					cashPoint.put("uuid", currentTimesheet.getCashPoint().getUuid());
 					results.put("cashPoint", cashPoint);
 					results.put("cashier", currentTimesheet.getCashier().getName());
+				} else {
+					results.put("cashier", Context.getAuthenticatedUser().getPerson().getPersonName().getFullName());
 				}
 			} else {
 				results.put("results", adminService.getGlobalProperty(setting));
