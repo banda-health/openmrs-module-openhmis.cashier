@@ -80,6 +80,7 @@
 				$scope.selectPatient = self.selectPatient;
 				$scope.changePatient = self.changePatient;
 				$scope.fullyLoaded = false;
+				$scope.submitted = false;
 				$scope.loadItemDetails = self.loadItemDetails;
 				$scope.computeTotalPrice = self.computeTotalPrice;
 				$scope.STATUS = 'PENDING';
@@ -163,6 +164,7 @@
 			// @Override
 		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
 				$scope.submitted = false;
+				$scope.processing = false;
 				CashierBillRestfulService.setBaseUrl(module_name);
 
 				// validate patient
@@ -179,15 +181,11 @@
 				if (!$scope.isAdjustBill) {
 					if (CashierBillFunctions.validateLineItems($scope.lineItems, validatedLineItems)) {
 						$scope.entity.lineItems = validatedLineItems;
-
 						// check for previous line items
 						if (!$scope.isSaveBill) {
 							CashierBillFunctions.validateLineItems($scope.previousLineItems, $scope.entity.lineItems);
 						}
 					} else {
-						if (validatedLineItems.length == 0) {
-							emr.errorAlert("openhmis.cashier.bill.chooseItemErrorMessage");
-						}
 						$scope.submitted = true;
 						return false;
 					}
@@ -210,7 +208,6 @@
 
 				CashierBillFunctions.populatePayments($scope.currentPayments, $scope.entity.payments);
 				CashierBillFunctions.populatePayments($scope.previousPayments, $scope.entity.payments);
-
 				if ($scope.isAdjustBill) {
 					$scope.entity.adjustmentReason = $scope.adjustmentReason;
 					$scope.entity.lineItems = [];
@@ -236,6 +233,8 @@
 				if ($scope.cashPoint !== undefined) {
 					$scope.entity.cashPoint = $scope.cashPoint.uuid;
 				}
+
+				$scope.processing = true;
 
 				return true;
 			}
@@ -318,12 +317,12 @@
 
 		self.selectStockOperationItem = self.selectStockOperationItem || function (stockOperationItem, lineItem) {
 				$scope.lineItem = {};
-				lineItem.setItemStockQuantity(1);
 				if (stockOperationItem !== undefined) {
+					lineItem.setInvalidEntry(false);
 					lineItem.setItemStock(stockOperationItem);
 					lineItem.setItemStockPrice(stockOperationItem.defaultPrice);
 					lineItem.setSelected(true);
-					lineItem.setTotal($filter('number')(stockOperationItem.defaultPrice.price * lineItem.getItemStockQuantity(), 2))
+					lineItem.setTotal(stockOperationItem.defaultPrice.price * lineItem.getItemStockQuantity());
 					$scope.lineItem = lineItem;
 					// load item details
 					self.loadItemDetails(stockOperationItem.uuid, $scope.lineItem);
@@ -347,7 +346,7 @@
 			}
 
 		self.changeItemQuantity = self.changeItemQuantity || function (lineItem) {
-				if (lineItem.itemStockQuantity <= 0) {
+				if (lineItem.itemStockQuantity <= 0 && $scope.uuid === undefined) {
 					lineItem.setItemStockQuantity(1);
 				}
 				lineItem.setTotal(lineItem.getItemStockQuantity() * lineItem.getItemStockPrice().price);
@@ -376,6 +375,7 @@
 
 		self.postPayment = self.postPayment || function () {
 				if ($scope.uuid !== undefined && $scope.isProcessPayment && $scope.STATUS !== 'PENDING') {
+					$scope.processing = true;
 					var payment = CashierBillFunctions.createPayment(
 						$scope.paymentModeAttributes, $scope.attributes,
 						$scope.amountTendered, $scope.totalAmountDue, $scope.paymentMode.uuid);
@@ -410,7 +410,6 @@
 		self.adjustBill = self.adjustBill || function () {
 				$scope.isAdjustBill = true;
 				$scope.isPrintBill = false;
-
 				//check if adjustment reason is required.
 				CashierBillRestfulService.checkAdjustmentReasonRequired(function (data) {
 					if (data !== undefined && data.results === "true") {
@@ -460,6 +459,7 @@
 		self.onLoadBillSuccessful = self.onLoadBillSuccessful || function (data) {
 				$scope.currentPayments = [];
 				$scope.previousPayments = [];
+				$scope.adjustedBill = data;
 				CashierBillRestfulService.getCashier(data.cashier.links[0].uri,
 					data.cashier.uuid, function (data) {
 						$scope.cashier = data.person.display;
@@ -467,15 +467,6 @@
 				);
 
 				$scope.cashPoint = data.cashPoint;
-				var pageTitle = "<h3>";
-				if ($scope.STATUS === 'PENDING') {
-					pageTitle += emr.message('openhmis.cashier.editBill');
-				} else {
-					pageTitle += emr.message('openhmis.cashier.viewBill');
-				}
-
-				pageTitle += " " + data.display + "</h3>";
-				pageTitle += "<ul class='page-title'>";
 				if (data.billAdjusted !== null && data.billAdjusted.display !== null) {
 					$scope.billAdjustedUuid = data.billAdjusted.uuid;
 					if ($scope.STATUS !== 'ADJUSTED') {
@@ -484,35 +475,9 @@
 							emr.message("openhmis.cashier.bill.previousBill") + " (" + data.billAdjusted.display + ") ";
 						CashierBillRestfulService.loadBill(module_name, data.billAdjusted.uuid, self.onLoadAdjustedBillSuccessful);
 					}
-
-					pageTitle += "<li>";
-					pageTitle += "<b>" + emr.message("openhmis.cashier.adjustmentOf") + ":</b>";
-					pageTitle += "<a target='_blank' href='entities.page#/" + data.billAdjusted.uuid + "'>";
-					pageTitle += " " + data.billAdjusted.display + "</a> ";
-					pageTitle += "</li>";
 				}
 
-				if (data.adjustedBy !== null && data.adjustedBy.length > 0) {
-					pageTitle += "<li>";
-					pageTitle += "<b>" + emr.message("openhmis.cashier.adjustedBy") + ":</b> ";
-					for (var i = 0; i < data.adjustedBy.length; i++) {
-						var adjustedBy = data.adjustedBy[i];
-						pageTitle += "<a target='_blank' href='entities.page#/" + adjustedBy.uuid;
-						pageTitle += "'>" + adjustedBy.display + "</a>";
-					}
-					pageTitle += "</li>";
-				}
-
-				if (data.adjustmentReason !== null && data.adjustmentReason !== "") {
-					pageTitle += "<li>";
-					pageTitle += "<b> " + emr.message("Adjustment Reason") + ":</b> ";
-					pageTitle += data.adjustmentReason;
-					pageTitle += "</li>";
-				}
-
-				pageTitle += "</ul><br />";
 				$scope.dateCreated = data.dateCreated;
-				$scope.pageTitle = $sce.trustAsHtml(pageTitle);
 				$scope.currentPayments = data.payments;
 				self.computeTotalPrice();
 			}

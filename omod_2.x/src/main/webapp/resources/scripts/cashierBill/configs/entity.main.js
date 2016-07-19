@@ -25,12 +25,12 @@ emr.loadMessages([
 	"general.cancel",
 	"openhmis.cashier.payment.confirm.paymentProcess",
 	"openhmis.commons.general.required.itemAttribute",
-	"openhmis.inventory.operations.required.patient",
 	"openhmis.cashier.editBill",
 	"openhmis.cashier.viewBill",
 	"openhmis.cashier.bill.chooseItemErrorMessage",
 	"openhmis.cashier.bill.previousBill",
 	"openhmis.cashier.adjustmentOf",
 	"openhmis.cashier.adjustedBy",
+	"openhmis.cashier.adjustedReason",
 	"openhmis.cashier.bill.lineItems.error.invalidItem",
 ]);

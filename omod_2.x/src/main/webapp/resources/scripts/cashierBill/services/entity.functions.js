@@ -121,8 +121,10 @@
 				var lineItem = lineItems[i];
 				if (lineItem.selected) {
 					if (lineItem.itemStock.name === undefined) {
-						var errorMessage = emr.message("openhmis.cashier.bill.lineItems.error.invalidItem") + " - " + lineItem.itemStock.toString();
+						var errorMessage =
+							emr.message("openhmis.cashier.bill.lineItems.error.invalidItem") + " - " + lineItem.itemStock.toString();
 						emr.errorAlert(errorMessage);
+						lineItem.invalidEntry = true;
 						failed = true;
 						continue;
 					}
@@ -135,12 +137,21 @@
 						quantity: lineItem.itemStockQuantity
 					};
 					validatedLineItems.push(requestLineItem);
+				} else if (lineItem.itemStock !== "") {
+					var errorMessage =
+						emr.message("openhmis.cashier.bill.lineItems.error.invalidItem") + " - " + lineItem.itemStock.toString();
+					emr.errorAlert(errorMessage);
+					lineItem.invalidEntry = true;
+					failed = true;
 				}
 			}
 
-			if (validatedLineItems.length > 0 && !failed) {
+			if (validatedLineItems.length == 0 && !failed) {
+				emr.errorAlert("openhmis.cashier.bill.chooseItemErrorMessage");
+			} else if (validatedLineItems.length > 0 && !failed) {
 				return true;
 			}
+
 			return false;
 		}
 

@@ -28,7 +28,35 @@
     </span>
 
     <span ng-show="uuid !== undefined">
-        <span ng-bind-html="pageTitle"></span>
+        <h3>
+            <span ng-show="STATUS === 'PENDING'">${ui.message('openhmis.cashier.editBill')} {{adjustedBill.display}}</span>
+            <span ng-show="STATUS !== 'PENDING'">${ui.message('openhmis.cashier.viewBill')} {{adjustedBill.display}}</span>
+        </h3>
+
+        <ul class='page-title'>
+            <li ng-show="adjustedBill.billAdjusted !== null && adjustedBill.billAdjusted.display !== null">
+                <b>${ui.message("openhmis.cashier.adjustmentOf")}:</b>
+                <a target='_blank' href='entities.page#/{{adjustedBill.billAdjusted.uuid}}'>
+                    {{adjustedBill.billAdjusted.display}}
+                </a>
+            </li>
+            <li ng-show="adjustedBill.adjustedBy !== null && adjustedBill.adjustedBy.length > 0">
+                <b>${ui.message("openhmis.cashier.adjustedBy")}:</b>
+                <span ng-repeat="adjustedBy in adjustedBill.adjustedBy">
+                    <a target='_blank' href='entities.page#/{{adjustedBy.uuid}}'>
+                        {{adjustedBy.display}}
+                    </a>
+                </span>
+            </li>
+            <li ng-show="adjustedBill.adjustmentReason !== null && adjustedBill.adjustmentReason !== ''">
+                <b>${ui.message("openhmis.cashier.adjustedReason")}:</b>
+                {{adjustedBill.adjustmentReason}}
+            </li>
+        </ul>
+        <span ng-show="adjustedBill.billAdjusted !== null || (adjustedBill.adjustedBy !== null && adjustedBill.adjustedBy.length > 0)">
+            <br />
+        </span>
+
     </span>
 
     <ul class="bill-info">
@@ -149,7 +177,7 @@
                                title="${ui.message('openhmis.cashier.item.removeTitle')}"
                                class="remove" ng-click="removeLineItem(lineItem)">
                     </td>
-                    <td>
+                    <td ng-class="{'not-valid': lineItem.invalidEntry === true}">
                         ${ ui.includeFragment("openhmis.commons", "searchFragment", [
                                 typeahead: ["stockOperationItem.name for stockOperationItem in searchStockOperationItems(\$viewValue)"],
                                 model: "lineItem.itemStock",
@@ -283,22 +311,22 @@
             <ul class="table-layout">
                 <li>
                     <input class="btn gray-button" type="button" value="${ui.message('openhmis.cashier.bill.processPayment')}"
-                           ng-click="processPayment()" ng-disabled="amountTendered <= 0 || amountTendered === undefined" />
+                           ng-click="processPayment()" ng-disabled="amountTendered <= 0 || amountTendered === undefined || processing === true" />
                 </li>
             </ul>
         </fieldset>
 
         <span class="actions" ng-show="STATUS === 'PENDING'">
             <input type="button" class="cancel" value="${ui.message('general.cancel')}" ng-click="cancel()" />
-            <input type="button" class="confirm right" value="${ui.message('openhmis.cashier.bill.postAndPrint')}" ng-click="postAndPrintBill()" />
-            <input type="button" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.saveBill')}" ng-click="saveBill()" />
-            <input type="button" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.postBill')}" ng-click="postBill()" />
+            <input type="button" ng-disabled="processing === true" class="confirm right" value="${ui.message('openhmis.cashier.bill.postAndPrint')}" ng-click="postAndPrintBill()" />
+            <input type="button" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.saveBill')}" ng-click="saveBill()" />
+            <input type="button" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.postBill')}" ng-click="postBill()" />
         </span>
 
         <span class="actions" ng-show="STATUS === 'POSTED' || STATUS === 'PAID'">
             <input type="button" class="cancel" value="${ui.message('general.cancel')}" ng-click="cancel()" />
-            <input type="button" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.printReceipt')}" ng-click="printBill()" />
-            <input type="button" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.adjustBill')}" ng-click="adjustBill()" />
+            <input type="button" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.printReceipt')}" ng-click="printBill()" />
+            <input type="button" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.adjustBill')}" ng-click="adjustBill()" />
         </span>
 
         <div id="payment-warning-dialog" class="dialog" style="display:none;">

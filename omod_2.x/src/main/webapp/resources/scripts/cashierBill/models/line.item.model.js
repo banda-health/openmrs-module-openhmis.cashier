@@ -27,6 +27,7 @@
 			this.itemStockPrice = itemStockPrice;
 			this.total = '';
 			this.prices = [];
+			this.invalidEntry = false;
 		}
 
 		LineItemModel.prototype = {
@@ -77,6 +78,14 @@
 
 			setPrices: function (prices) {
 				this.prices = prices;
+			},
+
+			setInvalidEntry: function (invalidEntry) {
+				this.invalidEntry = invalidEntry;
+			},
+
+			isInvalidEntry: function () {
+				return this.invalidEntry;
 			}
 		};
 

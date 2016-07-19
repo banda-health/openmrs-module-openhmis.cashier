@@ -176,7 +176,7 @@ table.item-stock th{
 }
 
 table.item-stock .autocomplete-search {
-	width: 300px;
+	width: 375px;
 }
 table.item-stock td{
 	vertical-align: top;
@@ -238,3 +238,4 @@ ul.page-title li{
 	display: block;
 	float: left;
 }
+
