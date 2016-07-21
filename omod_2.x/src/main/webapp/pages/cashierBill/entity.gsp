@@ -306,7 +306,7 @@
                 </li>
             </ul>
 
-            ${ui.includeFragment("openhmis.commons", "paymentModeFragment")}
+            ${ui.includeFragment("openhmis.cashier", "paymentModeFragment")}
 
             <ul class="table-layout">
                 <li>

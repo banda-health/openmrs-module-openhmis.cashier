@@ -17,12 +17,12 @@
 
 	var base = angular.module('app.genericEntityController');
 	base.controller("CashierBillController", CashierBillController);
-	CashierBillController.$inject = ['$window', '$sce', '$stateParams', '$injector', '$scope', 'CookiesService',
+	CashierBillController.$inject = ['$window', '$stateParams', '$injector', '$scope', 'CookiesService',
 		'$filter', 'EntityRestFactory', 'CashierBillModel', 'CashierBillRestfulService',
 		'CommonsRestfulFunctions', 'PaginationService', 'LineItemModel',
 		'CashierBillFunctions', 'EntityFunctions', '$timeout'];
 
-	function CashierBillController($window, $sce, $stateParams, $injector, $scope, CookiesService, $filter,
+	function CashierBillController($window, $stateParams, $injector, $scope, CookiesService, $filter,
 	                               EntityRestFactory, CashierBillModel,
 	                               CashierBillRestfulService, CommonsRestfulFunctions,
 	                               PaginationService, LineItemModel, CashierBillFunctions,
@@ -33,6 +33,9 @@
 		var entity_name_message_key = "openhmis.cashier.bill";
 		var cancel_page = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page';
 		var rest_entity_name = emr.message("openhmis.cashier.restful_name");
+		self.TIMESHEET_URL = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/timesheet/entities.page#/';
+		self.PRINT_RECEIPT_URL = '/' + OPENMRS_CONTEXT_PATH + '/module/openhmis/cashier/receipt.form?billId=';
+		self.ENTITIES_URL = 'entities.page#/';
 
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters || function () {
@@ -57,7 +60,7 @@
 						if (data.isTimeSheetRequired === true
 							&& (data.cashier === undefined || data.cashPoint === undefined)) {
 							// redirect to timesheet page.
-							window.location = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/timesheet/entities.page#/';
+							window.location = self.TIMESHEET_URL;
 						}
 
 						if (data.cashPoint === undefined) {
@@ -432,7 +435,7 @@
 				CashierBillRestfulService.loadBill(module_name, $scope.uuid, function (data) {
 					if (data.id !== undefined) {
 						EntityFunctions.printPage(
-							'/' + OPENMRS_CONTEXT_PATH + '/module/openhmis/cashier/receipt.form?billId=' + data.id
+							self.PRINT_RECEIPT_URL + data.id
 						);
 					}
 				});
@@ -497,7 +500,7 @@
 				if ($scope.uuid === data.uuid) {
 					$window.location.reload();
 				} else {
-					$window.location.href = 'entities.page#/' + data.uuid;
+					$window.location.href =  self.ENTITIES_URL + data.uuid;
 				}
 
 				if ($scope.isPrintBill) {

@@ -20,6 +20,11 @@
 
 	CashierBillRestfulService.$inject = ['EntityRestFactory', 'CashierBillFunctions'];
 
+	var ROOT_URL = '/' + OPENMRS_CONTEXT_PATH + '/';
+	var CASHIER_PAGE_URL = ROOT_URL + '/module/openhmis/cashier/';
+	var MODULE_SETTINGS_URL = 'module/openhmis/cashier/moduleSettings.page';
+	var PAYMENT_MODE_FRAGMENT_URL = 'module/openhmis/cashier/paymentModeFragment2x.page';
+
 	function CashierBillRestfulService(EntityRestFactory, CashierBillFunctions) {
 		var service;
 
@@ -110,25 +115,25 @@
 		function getRoundingItem(onLoadRoundingItemSuccessful) {
 			var requestParams = [];
 			requestParams['resource'] = 'options.json';
-			EntityRestFactory.setCustomBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/module/openhmis/cashier/');
+			EntityRestFactory.setCustomBaseUrl(CASHIER_PAGE_URL);
 			EntityRestFactory.loadResults(requestParams,
 				onLoadRoundingItemSuccessful, errorCallback);
 		}
 
 		function getTimesheet(onLoadTimesheetSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = 'module/openhmis/cashier/moduleSettings.page';
+			requestParams['resource'] = MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'timesheet';
-			EntityRestFactory.setCustomBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/');
+			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
 				onLoadTimesheetSuccessful, errorCallback);
 		}
 
 		function checkAdjustmentReasonRequired(onLoadAdjustmentReasonSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = 'module/openhmis/cashier/moduleSettings.page';
+			requestParams['resource'] = MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'openhmis.cashier.adjustmentReasonField';
-			EntityRestFactory.setCustomBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/');
+			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
 				onLoadAdjustmentReasonSuccessful, errorCallback);
 		}
@@ -154,10 +159,10 @@
 
 		function getPaymentModeAttributeData(type, foreignKey, onLoadAttributeDataSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = 'module/openhmis/cashier/paymentModeFragment2x.page';
+			requestParams['resource'] = PAYMENT_MODE_FRAGMENT_URL;
 			requestParams['type'] = type;
 			requestParams['foreignKey'] = foreignKey;
-			EntityRestFactory.setCustomBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/');
+			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
 				onLoadAttributeDataSuccessful, errorCallback);
 		}
