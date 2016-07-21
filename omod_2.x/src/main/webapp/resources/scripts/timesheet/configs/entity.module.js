@@ -20,57 +20,66 @@
  * existing entity for editing.
  */
 (function () {
-	define([], loadPage);
-	
-	function loadPage() {
-		'use strict';
+		define([], loadPage);
 		
-		var app = angular.module('entitiesApp', [
-			'ui.bootstrap',
-			'ui.router',
-			'angularUtils.directives.dirPagination',
-			'app.css',
-			'app.filters',
-			'app.pagination',
-			'app.cookies',
-			'app.genericMetadataModel',
-			'app.restfulServices',
-			'app.timesheetFunctionsFactory',
-			'app.genericEntityController',
-			'app.genericManageController',
-			'app.entityFunctionsFactory'
-		
-		]);
-		app.config(function ($stateProvider, $urlRouterProvider, $provide) {
-			/*
-			 * Configure routes and urls. The default route is '/' which loads
-			 * manageEntities.page. 'edit' route calls entity.page -- it
-			 * appends a 'uuid' to the url to edit an existing entity. 'new'
-			 * route is called to create a new entity.
-			 */
-			$urlRouterProvider.otherwise('/');
-			$stateProvider.state('/', {
-				url: '/',
-				templateUrl: 'entity.page',
-				controller: 'TimesheetController'
-			});
+		function loadPage() {
+			'use strict';
 			
-			$provide.factory('$exceptionHandler', function ($injector) {
-				return function (exception, cause) {
-					// unknown provider..
-					var exc = String(exception);
-					if (exc.indexOf("unpr") !== -1) {
-						console.log(exc);
-					} else if (exc.indexOf("session") !== -1 || exc.indexOf("timeout") !== -1) {
-						console.log(exc + " - " + cause);
-						emr.message("SESSION TIMEOUT");
-					} else {
-						console.log(exc + " - " + cause);
-						emr.message(cause);
+			var app = angular.module('entitiesApp', [
+				'ui.bootstrap',
+				'ui.router',
+				'angularUtils.directives.dirPagination',
+				'app.css',
+				'app.filters',
+				'app.pagination',
+				'app.cookies',
+				'app.genericMetadataModel',
+				'app.restfulServices',
+				'app.timesheetFunctionsFactory',
+				'app.genericEntityController',
+				'app.genericManageController',
+				'app.entityFunctionsFactory'
+			
+			]);
+			app.config(function ($stateProvider, $urlRouterProvider, $provide) {
+				/*
+				 * Configure routes and urls. The default route is '/' which loads
+				 * manageEntities.page. 'edit' route calls entity.page -- it
+				 * appends a 'uuid' to the url to edit an existing entity. 'new'
+				 * route is called to create a new entity.
+				 */
+				$urlRouterProvider.otherwise('/');
+				$stateProvider.state('/', {
+					url: '/',
+					templateUrl: 'entity.page',
+					controller: 'TimesheetController'
+				}).state('/accessDenied', {
+					url: '/accessDenied',
+					views: {
+						'': {
+							templateUrl: 'accessDenied.page',
+							controller: 'TimesheetController'
+						}
 					}
-				}
-			});
-		});
-		return app;
-	}
-})();
+				});
+				
+				$provide.factory('$exceptionHandler', function ($injector) {
+					return function (exception, cause) {
+						// unknown provider..
+						var exc = String(exception);
+						if (exc.indexOf("unpr") !== -1) {
+							console.log(exc);
+						} else if (exc.indexOf("session") !== -1 || exc.indexOf("timeout") !== -1) {
+							console.log(exc + " - " + cause);
+							emr.message("SESSION TIMEOUT");
+						} else {
+							console.log(exc + " - " + cause);
+							emr.message(cause);
+						}
+					}
+				});
+			})
+			;
+			return app;
+		}
+	})();

@@ -19,10 +19,10 @@
 	var base = angular.module('app.genericEntityController');
 	base.controller("TimesheetController", TimesheetController);
 	TimesheetController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory', 'TimesheetModel',
-		'TimesheetRestfulService', 'TimesheetFunctions'];
+		'TimesheetRestfulService', 'TimesheetFunctions', '$window'];
 	
 	function TimesheetController($stateParams, $injector, $scope, $filter, EntityRestFactory, TimesheetModel,
-	                             TimesheetRestfulService, TimesheetFunctions) {
+	                             TimesheetRestfulService, TimesheetFunctions, $window) {
 		var self = this;
 		
 		var module_name = 'cashier';
@@ -44,45 +44,36 @@
 		// @Override
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function (uuid) {
-				$scope.noProvider = false;
 				self.loadCurrentProvider();
-				if ($scope.provider == null) {
-					$scope.noProvider = true;
-					emr.errorAlert(emr.message("openhmis.cashier.timesheet.entry.error.notProvider"));
-				} else {
-					$scope.noProvider = false;
-					$scope.cashier = $scope.provider.uuid;
-					self.loadCashpoints();
-					self.loadCurrentTimesheets();
-					self.loadCashierShiftReportId();
-					$scope.showTimesheetRow = false;
-					$scope.generateCashierShiftReport = self.generateCashierShiftReport;
-
-					$scope.loadClockOutTime = function () {
-						if ($scope.timesheets != null && $scope.timesheets.clockOut == null) {
-							$scope.clockOut = TimesheetFunctions.formatDate(new Date());
-						}
-					}
-
-					$scope.loadClockInTime = function () {
-						$scope.clockIn = TimesheetFunctions.formatDate(new Date());
-					}
-
-					TimesheetFunctions.onChangeDatePicker('shiftDate-display',
-						self.onTimesheetShiftReportDateSuccessCallback);
-
-					$scope.selectedTimesheet = function (timesheetId) {
-						$scope.timesheetId = timesheetId;
-					}
-
-					$scope.generateReport = function () {
-						var contextPath = '/' + OPENMRS_CONTEXT_PATH + '/';
-						var url = "module/openhmis/cashier/jasperReport.form?";
-						url += "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
-						window.open(contextPath + url, "pdfDownload");
+				self.loadCashpoints();
+				self.loadCurrentTimesheets();
+				self.loadCashierShiftReportId();
+				$scope.showTimesheetRow = false;
+				$scope.generateCashierShiftReport = self.generateCashierShiftReport;
+				
+				$scope.loadClockOutTime = function () {
+					if ($scope.timesheets != null && $scope.timesheets.clockOut == null) {
+						$scope.clockOut = TimesheetFunctions.formatDate(new Date());
 					}
 				}
 				
+				$scope.loadClockInTime = function () {
+					$scope.clockIn = TimesheetFunctions.formatDate(new Date());
+				}
+				
+				TimesheetFunctions.onChangeDatePicker('shiftDate-display',
+					self.onTimesheetShiftReportDateSuccessCallback);
+				
+				$scope.selectedTimesheet = function (timesheetId) {
+					$scope.timesheetId = timesheetId;
+				}
+				
+				$scope.generateReport = function () {
+					var contextPath = '/' + OPENMRS_CONTEXT_PATH + '/';
+					var url = "module/openhmis/cashier/jasperReport.form?";
+					url += "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
+					window.open(contextPath + url, "pdfDownload");
+				}
 			};
 		
 		/**
@@ -124,7 +115,12 @@
 			}
 		
 		self.onLoadProviderSuccessful = self.onLoadProviderSuccessful || function (data) {
-				$scope.provider = data.currentProvider;
+				if (data.currentProvider == null) {
+					$window.location.replace('entities.page#/accessDenied');
+				} else {
+					$scope.cashier = data.currentProvider.uuid;
+					$scope.accessDenied = false;
+				}
 			}
 		
 		self.generateCashierShiftReport = self.generateCashierShiftReport || function (id) {
@@ -161,44 +157,45 @@
 				if (!angular.isDefined($scope.clockOut) || $scope.clockOut == "") {
 					$scope.entity.clockOut = null;
 				}
-
+				
 				if (!angular.isDefined($scope.clockIn) || $scope.clockIn == "") {
 					emr.errorAlert(emr.message("openhmis.cashier.page.reports.box.select.clock.in.error"));
 					return false;
 				} else {
 					$scope.entity.clockIn = TimesheetFunctions.convertToDate($scope.clockIn);
 				}
-
-				if (!angular.isDefined($scope.entity.cashPoint) || $scope.entity.cashPoint == null 
+				
+				if (!angular.isDefined($scope.entity.cashPoint) || $scope.entity.cashPoint == null
 					|| $scope.entity.cashPoint == "") {
 					emr.errorAlert(emr.message("openhmis.cashier.page.timesheet.box.cashpoint.empty"));
 					return false;
 				}
-
+				
 				if ($scope.entity.clockOut == null && $scope.entity.cashPoint != "") {
 					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockIn.message"));
 				}
-
+				
 				if ($scope.clockOut != "" && $scope.entity.cashPoint != null) {
-					console.log("___________  "+$scope.clockOut + "-----------------");
 					$scope.entity.clockOut = TimesheetFunctions.convertToDate($scope.clockOut);
 					emr.successAlert(emr.message("openhmis.cashier.page.timesheet.box.clockOut.message"));
 				}
-
+				
 				/**
 				 * Performs checks to either get the current logged in cashier
 				 * or the cashier the started the timesheet.
 				 * */
 				if ($scope.timesheets) {
 					if ($scope.timesheets.clockOut != null) {
+						console.log($scope.cashier)
 						$scope.entity.cashier = $scope.cashier;
 					} else {
 						$scope.entity.cashier = $scope.timesheets.cashier;
 					}
 				} else {
 					$scope.entity.cashier = $scope.cashier;
+					console.log($scope.cashier);
 				}
-
+				
 				return true;
 			}
 		

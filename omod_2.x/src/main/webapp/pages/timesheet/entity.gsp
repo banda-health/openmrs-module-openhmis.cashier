@@ -11,33 +11,14 @@
 			label: "${ ui.message("openhmis.cashier.page.timesheet.box.title")}"
 		}
 	];
-
+	
 	jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
-
+	
 	jQuery(".tabs").tabs();
 
 </script>
 
-<div ng-show="noProvider == true">
-	<div>
-		<table class="header-title">
-			<span class="h1-substitue-left" style="float:left;">
-				${ui.message('openhmis.cashier.general.error')}
-			</span>
-		</table>
-	</div>
-	<br/>
-
-	<div>
-		<p>
-			${ui.message('openhmis.cashier.timesheet.entry.error.notProvider')}
-		</p>
-	</div>
-	<br/>
-	<br/>
-</div>
-
-<div ng-show="noProvider == false">
+<div ng-show="accessDenied == false">
 	<form name="entityForm" class="entity-form" ng-class="{'submitted': submitted}" style="font-size:inherit">
 		<table class="header-title">
 			<span class="h1-substitue-left" style="float:left;">
@@ -79,7 +60,7 @@
 							       class="form-control required" ng-model="clockIn" style="min-width: 50%;"
 							       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"/>
 						</div>
-
+						
 						<div class="col-sm-1 " ng-show="timesheets == null || showClockOutSection == false">
 							<input type="button" class="btn-sm"
 							       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.in')}"
@@ -99,7 +80,7 @@
 							       ng-model="clockOut" style="min-width: 50%;"
 							       placeholder="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"/>
 						</div>
-
+						
 						<div class="col-sm-1 ">
 							<input type="button" class="btn-sm"
 							       value="${ui.message('openhmis.cashier.page.timesheet.box.button.clock.out')}"
@@ -127,24 +108,24 @@
 	</form>
 	<br/>
 	<hr/>
-
+	
 	<div id="generaterCashierReport" class="dialog" style="display:none;">
 		<div class="dialog-header">
 			<span>
 				<i class="icon-download"></i>
-
+				
 				<h3>${ui.message('openhmis.cashier.page.reports.box.generate.cashier.shift.report.popup.header')}</h3>
 			</span>
 			<i class="icon-remove cancel" style="float:right; cursor: pointer;" ng-click="closeThisDialog()"></i>
 		</div>
-
+		
 		<div class="dialog-content form">
 			<div class="row">
 				<div class="col-md-4 required">
 					<br/>
 					<span>Select Shift Date</span>
 				</div>
-
+				
 				<div class="col-md-8">
 					${ui.includeFragment("uicommons", "field/datetimepicker",
 							[id           : 'shiftDate',
@@ -157,13 +138,13 @@
 				</div>
 			</div>
 			<br/>
-
+			
 			<div class="row detail-section-border-top" ng-show="showTimesheetRow == false && showSelectShiftDate == false">
 				<br/>
-
+				
 				<p>${ui.message('openhmis.cashier.page.reports.box.timesheets.shift.date.error')}&nbsp;{{selectedReportDate | date: "EEEE, MMMM d, y"}}</p>
 			</div>
-
+			
 			<div class="row detail-section-border-top" ng-show="showTimesheetRow == true">
 				<br/>
 				<h6>${ui.message('openhmis.cashier.page.reports.box.timesheets.shift.date')}</h6>
@@ -174,7 +155,7 @@
 					       type="radio"> {{timesheet.display}}
 				</li></ul>
 			</div>
-
+			
 			<div class="row ngdialog-buttons detail-section-border-top">
 				<br/>
 				<input type="button" class="cancel" value="{{messageLabels['general.cancel']}}"
