@@ -31,6 +31,7 @@
 		service = {
 			getPaymentModes: getPaymentModes,
 			loadPaymentModeAttributes: loadPaymentModeAttributes,
+			searchPerson: searchPerson,
 			searchStockOperationItems: searchStockOperationItems,
 			loadItemDetails: loadItemDetails,
 			setBaseUrl: setBaseUrl,
@@ -82,6 +83,17 @@
 				},
 				errorCallback
 			);
+		}
+
+		function searchPerson(q, type) {
+			var requestParams = [];
+			requestParams['q'] = q;
+			if(type === 'patient'){
+				requestParams['v'] = "custom:(patientIdentifier:(uuid,identifier)," +
+					"person:(personName))";
+			}
+
+			return EntityRestFactory.autocompleteSearch(requestParams, type, 'inventory', 'v1');
 		}
 
 		function searchStockOperationItems(q) {
@@ -199,6 +211,12 @@
 					getPaymentModeAttributeData('provider', '', function (data) {
 						if (data !== undefined) {
 							$scope.paymentModeAttributesData['providers'] = data.results;
+						}
+					});
+				} else if (paymentModeAttribute.format === 'org.openmrs.ProgramWorkflow') {
+					getPaymentModeAttributeData('programworkflow', '', function (data) {
+						if (data !== undefined) {
+							$scope.paymentModeAttributesData['programworkflow'] = data.results;
 						}
 					});
 				}

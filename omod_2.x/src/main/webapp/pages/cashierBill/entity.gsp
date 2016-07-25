@@ -22,7 +22,7 @@
         <img src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
     </span>
 </div>
-<form ng-show="fullyLoaded" name="entityForm" class="entity-form" ng-class="{'submitted': submitted}" style="font-size:inherit">
+<form novalidate ng-show="fullyLoaded" name="entityForm" class="entity-form" ng-class="{'submitted': submitted}" style="font-size:inherit">
     <span ng-show="uuid === undefined">
         <h3>${ui.message('openhmis.cashier.addBill')}</h3>
     </span>

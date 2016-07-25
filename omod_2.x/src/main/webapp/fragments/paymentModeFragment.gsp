@@ -93,26 +93,37 @@
 
         <span ng-if="paymentModeAttribute.format === 'org.openmrs.Patient'">
             <!-- show patient fragment -->
-            <input ng-if="paymentModeAttribute.required" required class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
-            <input ng-if="!paymentModeAttribute.required" class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
+            ${ ui.includeFragment("openhmis.commons", "searchFragment", [
+                    ngEnterEvent: "false",
+                    typeahead: ["patient.person.personName.display for patient in searchPaymentModePatients(\$viewValue)"],
+                    model: "attributes[paymentModeAttribute.uuid].value",
+                    typeaheadEditable: "true",
+                    class: ["form-control autocomplete-search"],
+                    showRemoveIcon: "false",
+                    required: "paymentModeAttribute.required",
+                    placeholder: [ui.message("openhmis.commons.general.searchPatientIdentifier")],
+            ])}
         </span>
 
         <span ng-if="paymentModeAttribute.format === 'org.openmrs.Person'">
             <!-- show person fragment -->
-            <input ng-if="paymentModeAttribute.required" required class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
-            <input ng-if="!paymentModeAttribute.required" class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
+            ${ ui.includeFragment("openhmis.commons", "searchFragment", [
+                    ngEnterEvent: "false",
+                    typeahead: ["person.display for person in searchPaymentModePerson(\$viewValue)"],
+                    model: "attributes[paymentModeAttribute.uuid].value",
+                    typeaheadEditable: "true",
+                    class: ["form-control autocomplete-search"],
+                    showRemoveIcon: "false",
+                    required: "paymentModeAttribute.required",
+                    placeholder: [ui.message("openhmis.commons.general.searchPersonName")],
+            ])}
         </span>
 
         <span ng-if="paymentModeAttribute.format === 'org.openmrs.ProgramWorkflow'">
             <!-- show workflow fragment -->
-            <input ng-if="paymentModeAttribute.required" required class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
-            <input ng-if="!paymentModeAttribute.required" class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
+            <select ng-model="attributes[paymentModeAttribute.uuid].value" class="form-control"
+                    ng-options="programworkflow for programworkflow in paymentModeAttributesData['programworkflow']">
+            </select>
         </span>
 
         <span ng-if="paymentModeAttribute.format === 'org.openmrs.Provider'">

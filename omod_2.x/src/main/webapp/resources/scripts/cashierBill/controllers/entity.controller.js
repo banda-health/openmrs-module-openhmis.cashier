@@ -80,6 +80,8 @@
 				$scope.patient;
 				$scope.patients = [];
 				$scope.searchPatients = self.searchPatients;
+				$scope.searchPaymentModePatients = self.searchPaymentModePatients;
+				$scope.searchPaymentModePerson = self.searchPaymentModePerson;
 				$scope.selectPatient = self.selectPatient;
 				$scope.changePatient = self.changePatient;
 				$scope.fullyLoaded = false;
@@ -248,6 +250,14 @@
 
 		self.loadPaymentModeAttributes = self.loadPaymentModeAttributes || function (uuid) {
 				CashierBillRestfulService.loadPaymentModeAttributes(module_name, uuid, self.onLoadPaymentModeAttributesSuccessful);
+			}
+
+		self.searchPaymentModePatients = self.searchPaymentModePatients || function(q){
+				return CashierBillRestfulService.searchPerson(q, 'patient');
+			}
+
+		self.searchPaymentModePerson = self.searchPaymentModePerson || function(q){
+				return CashierBillRestfulService.searchPerson(q, 'person');
 			}
 
 		self.searchPatients = self.searchPatients || function (currentPage) {

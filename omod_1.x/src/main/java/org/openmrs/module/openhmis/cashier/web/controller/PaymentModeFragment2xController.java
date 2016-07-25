@@ -17,16 +17,19 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.openmrs.User;
-import org.openmrs.Provider;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
-import org.openmrs.Location;
 import org.openmrs.Drug;
+import org.openmrs.Location;
+import org.openmrs.User;
+import org.openmrs.Provider;
+import org.openmrs.Program;
+import org.openmrs.ProgramWorkflow;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
-import org.openmrs.api.UserService;
 import org.openmrs.api.ProviderService;
+import org.openmrs.api.UserService;
+import org.openmrs.api.ProgramWorkflowService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.util.PrivilegeConstants;
@@ -59,6 +62,8 @@ public class PaymentModeFragment2xController {
 			return getUsers();
 		} else if (type.equalsIgnoreCase("provider")) {
 			return getProviders();
+		} else if (type.equalsIgnoreCase("programworkflow")) {
+			return getProgramWorkflows();
 		}
 		return "";
 	}
@@ -214,6 +219,30 @@ public class PaymentModeFragment2xController {
 			}
 		} else {
 			results.put("error", "Privileges required: " + PrivilegeConstants.VIEW_PROVIDERS);
+		}
+
+		return convertToJSON(results);
+	}
+
+	private String getProgramWorkflows() {
+		SimpleObject results = new SimpleObject();
+		try {
+			ProgramWorkflowService programWorkflowService = Context.getProgramWorkflowService();
+			List<String> programWorkflowObjects = new ArrayList<String>();
+			List<Program> programs = programWorkflowService.getAllPrograms();
+			List<ProgramWorkflow> programWorkflows = new ArrayList<ProgramWorkflow>();
+			for (Program program : programs) {
+				programWorkflows.addAll(program.getAllWorkflows());
+			}
+
+			for (ProgramWorkflow programWorkflow : programWorkflows) {
+				programWorkflowObjects.add(programWorkflow.getConcept().getName().getName());
+			}
+
+			results.put("results", programWorkflowObjects);
+
+		} catch (Exception ex) {
+			results.put("error", ex.getMessage());
 		}
 
 		return convertToJSON(results);
