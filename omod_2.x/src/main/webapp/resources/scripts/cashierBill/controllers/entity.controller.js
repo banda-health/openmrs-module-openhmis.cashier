@@ -12,7 +12,7 @@
  * Copyright (C) OpenHMIS.  All Rights Reserved.
  *
  */
-(function () {
+(function() {
 	'use strict';
 
 	var base = angular.module('app.genericEntityController');
@@ -31,16 +31,17 @@
 
 		var module_name = 'cashier';
 		var entity_name_message_key = "openhmis.cashier.bill";
-		var cancel_page = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page';
 		var rest_entity_name = emr.message("openhmis.cashier.restful_name");
-		self.TIMESHEET_URL = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/timesheet/entities.page#/';
-		self.PRINT_RECEIPT_URL = '/' + OPENMRS_CONTEXT_PATH + '/module/openhmis/cashier/receipt.form?billId=';
-		self.ENTITIES_URL = 'entities.page#/';
+		var ROOT_URL = '/' + OPENMRS_CONTEXT_PATH + '/';
+		var CANCEL_PAGE = ROOT_URL + 'openhmis.cashier/cashierLanding.page';
+		var TIMESHEET_URL = ROOT_URL + 'openhmis.cashier/timesheet/entities.page#/';
+		var PRINT_RECEIPT_URL = ROOT_URL + 'module/openhmis/cashier/receipt.form?billId=';
+		var ENTITIES_URL = 'entities.page#/';
 
 		// @Override
-		self.setRequiredInitParameters = self.setRequiredInitParameters || function () {
+		self.setRequiredInitParameters = self.setRequiredInitParameters || function() {
 				self.bindBaseParameters(module_name, rest_entity_name,
-					entity_name_message_key, cancel_page);
+					entity_name_message_key, CANCEL_PAGE);
 				self.checkPrivileges('Manage Cashier Metadata,View Cashier Metadata');
 			};
 
@@ -50,21 +51,21 @@
 		 */
 			// @Override
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
-			|| function () {
+			|| function() {
 				//check if timesheet is required
 				$scope.cashPoints = [];
-				CashierBillRestfulService.getTimesheet(function (data) {
-					if (data !== undefined) {
+				CashierBillRestfulService.getTimesheet(function(data) {
+					if(data !== undefined) {
 						$scope.cashier = data.cashier;
 						$scope.cashPoint = data.cashPoint;
-						if (data.isTimeSheetRequired === true
+						if(data.isTimeSheetRequired === true
 							&& (data.cashier === undefined || data.cashPoint === undefined)) {
 							// redirect to timesheet page.
-							window.location = self.TIMESHEET_URL;
+							window.location = TIMESHEET_URL;
 						}
 
-						if (data.cashPoint === undefined) {
-							CashierBillRestfulService.getCashPoints(module_name, function (data) {
+						if(data.cashPoint === undefined) {
+							CashierBillRestfulService.getCashPoints(module_name, function(data) {
 								$scope.cashPoints = data.results;
 							});
 						}
@@ -111,11 +112,11 @@
 				$scope.dateCreated = '';
 
 				//load rounding item if any..
-				CashierBillRestfulService.getRoundingItem(function (roundingItem) {
+				CashierBillRestfulService.getRoundingItem(function(roundingItem) {
 					$scope.roundingItem = roundingItem;
 				});
 
-				if ($scope.entity !== undefined && $scope.entity.patient !== undefined) {
+				if($scope.entity !== undefined && $scope.entity.patient !== undefined) {
 					$scope.uuid = self.getUuid();
 					$scope.selectExistingPatient = true;
 					$scope.patient = $scope.entity.patient.display.split(' - ')[1];
@@ -134,17 +135,17 @@
 				$scope.visit = '';
 				$scope.endVisit = self.endVisit;
 				$scope.paymentModeAttributes = [];
-				if ($scope.STATUS === 'PENDING') {
+				if($scope.STATUS === 'PENDING') {
 					self.addLineItem();
 				}
 
-				if ($scope.STATUS !== 'ADJUSTED') {
+				if($scope.STATUS !== 'ADJUSTED') {
 					self.getPaymentModes();
 				}
 
 				$scope.loadPaymentModeAttributes = self.loadPaymentModeAttributes;
-				$scope.searchStockOperationItems = self.searchStockOperationItems;
-				$scope.selectStockOperationItem = self.selectStockOperationItem;
+				$scope.searchItems = self.searchItems;
+				$scope.selectItem = self.selectItem;
 				$scope.changeItemQuantity = self.changeItemQuantity;
 				$scope.removeLineItem = self.removeLineItem;
 				$scope.formatItemPrice = CashierBillFunctions.formatItemPrice;
@@ -157,7 +158,7 @@
 				$scope.saveBill = self.saveBill;
 				$scope.printBill = self.printBill;
 
-				$timeout(function () {
+				$timeout(function() {
 					$scope.fullyLoaded = true;
 				}, 1700);
 			};
@@ -167,15 +168,15 @@
 		 * @return boolean
 		 */
 			// @Override
-		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
+		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function() {
 				$scope.submitted = false;
 				$scope.processing = false;
 				CashierBillRestfulService.setBaseUrl(module_name);
 
 				// validate patient
-				if ($scope.selectedPatient === '') {
+				if($scope.selectedPatient === '') {
 					$scope.submitted = true;
-					emr.errorAlert("openhmis.inventory.operations.required.patient");
+					emr.errorAlert("openhmis.commons.general.requirePatient");
 					return false;
 				} else {
 					$scope.entity.patient = $scope.selectedPatient.uuid;
@@ -183,11 +184,11 @@
 
 				// validate line items
 				var validatedLineItems = [];
-				if (!$scope.isAdjustBill) {
-					if (CashierBillFunctions.validateLineItems($scope.lineItems, validatedLineItems)) {
+				if(!$scope.isAdjustBill) {
+					if(CashierBillFunctions.validateLineItems($scope.lineItems, validatedLineItems)) {
 						$scope.entity.lineItems = validatedLineItems;
 						// check for previous line items
-						if (!$scope.isSaveBill) {
+						if(!$scope.isSaveBill) {
 							CashierBillFunctions.validateLineItems($scope.previousLineItems, $scope.entity.lineItems);
 						}
 					} else {
@@ -198,11 +199,11 @@
 
 				// validate payments
 				$scope.entity.payments = [];
-				if ($scope.isProcessPayment) {
+				if($scope.isProcessPayment) {
 					var payment = CashierBillFunctions.createPayment(
 						$scope.paymentModeAttributes, $scope.attributes,
 						$scope.amountTendered, $scope.totalAmountDue, $scope.paymentMode.uuid);
-					if (!payment) {
+					if(!payment) {
 						$scope.submitted = true;
 						return false;
 					} else {
@@ -213,29 +214,28 @@
 
 				CashierBillFunctions.populatePayments($scope.currentPayments, $scope.entity.payments);
 				CashierBillFunctions.populatePayments($scope.previousPayments, $scope.entity.payments);
-				if ($scope.isAdjustBill) {
+				if($scope.isAdjustBill) {
 					$scope.entity.adjustmentReason = $scope.adjustmentReason;
 					$scope.entity.lineItems = [];
 					$scope.entity.billAdjusted = $scope.uuid;
 					delete $scope.entity['status'];
-				} else if ($scope.isPostBill) {
+				} else if($scope.isPostBill) {
 					$scope.entity.status = 'POSTED';
-				} else if ($scope.isSaveBill) {
+				} else if($scope.isSaveBill) {
 					$scope.entity.status = 'PENDING';
 					$scope.entity.payments = [];
-				}
-				else {
+				} else {
 					$scope.entity.status = $scope.STATUS;
 				}
 
-				if (!$scope.isAdjustBill && $scope.uuid !== undefined) {
-					if ($scope.billAdjustedUuid !== undefined && $scope.billAdjustedUuid !== '') {
+				if(!$scope.isAdjustBill && $scope.uuid !== undefined) {
+					if($scope.billAdjustedUuid !== undefined && $scope.billAdjustedUuid !== '') {
 						$scope.entity.billAdjusted = $scope.billAdjustedUuid;
 					}
 					$scope.entity.uuid = $scope.uuid;
 				}
 
-				if ($scope.cashPoint !== undefined) {
+				if($scope.cashPoint !== undefined) {
 					$scope.entity.cashPoint = $scope.cashPoint.uuid;
 				}
 
@@ -244,24 +244,24 @@
 				return true;
 			}
 
-		self.getPaymentModes = self.getPaymentModes || function () {
+		self.getPaymentModes = self.getPaymentModes || function() {
 				CashierBillRestfulService.getPaymentModes(module_name, self.onLoadPaymentModesSuccessful);
 			}
 
-		self.loadPaymentModeAttributes = self.loadPaymentModeAttributes || function (uuid) {
+		self.loadPaymentModeAttributes = self.loadPaymentModeAttributes || function(uuid) {
 				CashierBillRestfulService.loadPaymentModeAttributes(module_name, uuid, self.onLoadPaymentModeAttributesSuccessful);
 			}
 
-		self.searchPaymentModePatients = self.searchPaymentModePatients || function(q){
+		self.searchPaymentModePatients = self.searchPaymentModePatients || function(q) {
 				return CashierBillRestfulService.searchPerson(q, 'patient');
 			}
 
-		self.searchPaymentModePerson = self.searchPaymentModePerson || function(q){
+		self.searchPaymentModePerson = self.searchPaymentModePerson || function(q) {
 				return CashierBillRestfulService.searchPerson(q, 'person');
 			}
 
-		self.searchPatients = self.searchPatients || function (currentPage) {
-				if ($scope.patient !== undefined) {
+		self.searchPatients = self.searchPatients || function(currentPage) {
+				if($scope.patient !== undefined) {
 					$scope.currentPage = $scope.currentPage || currentPage;
 					$scope.patients = CommonsRestfulFunctions.searchPatients(
 						module_name, $scope.patient, $scope.currentPage,
@@ -269,54 +269,52 @@
 				}
 			}
 
-		self.selectPatient = self.selectPatient || function (patient) {
+		self.selectPatient = self.selectPatient || function(patient) {
 				$scope.selectedPatient = patient;
 				CommonsRestfulFunctions.loadVisit(module_name, patient.uuid, $scope);
 			}
 
-		self.changePatient = self.changePatient || function () {
+		self.changePatient = self.changePatient || function() {
 				$scope.selectedPatient = '';
 			}
 
-		self.endVisit = self.endVisit || function () {
+		self.endVisit = self.endVisit || function() {
 				CommonsRestfulFunctions.endVisit(module_name,
 					$scope.visit.uuid, $scope);
 			}
 
-		self.addExistingLineItems = self.addExistingLineItems || function () {
+		self.addExistingLineItems = self.addExistingLineItems || function() {
 				CashierBillFunctions.populateExistingLineItems($scope.entity.lineItems, $scope.lineItems, $scope);
 			}
 
-		self.computeTotalPrice = self.computeTotalPrice || function () {
+		self.computeTotalPrice = self.computeTotalPrice || function() {
 				return CashierBillFunctions.computeTotalPrice($scope);
 			}
 
-		self.addLineItem = self.addLineItem || function () {
-				if ($scope.lineItem !== undefined) {
-				}
+		self.addLineItem = self.addLineItem || function() {
 				var addItem = true;
-				for (var i = 0; i < $scope.lineItems.length; i++) {
+				for(var i = 0; i < $scope.lineItems.length; i++) {
 					var lineItem = $scope.lineItems[i];
-					if (!lineItem.selected) {
+					if(!lineItem.selected) {
 						addItem = false;
 						break;
 					}
 				}
-				if (addItem) {
+				if(addItem) {
 					var lineItem = new LineItemModel('', 1, '');
 					$scope.lineItems.push(lineItem);
 				}
 			}
 
-		self.removeLineItem = self.removeLineItem || function (lineItem) {
+		self.removeLineItem = self.removeLineItem || function(lineItem) {
 				//only remove selected line items..
-				if (lineItem.selected) {
+				if(lineItem.selected) {
 					var index = $scope.lineItems.indexOf(lineItem);
-					if (index !== -1) {
+					if(index !== -1) {
 						$scope.lineItems.splice(index, 1);
 					}
 
-					if ($scope.lineItems.length == 0) {
+					if($scope.lineItems.length == 0) {
 						self.addLineItem();
 					}
 
@@ -324,13 +322,13 @@
 				}
 			}
 
-		self.searchStockOperationItems = self.searchStockOperationItems || function (search) {
-				return CashierBillRestfulService.searchStockOperationItems(search);
+		self.searchItems = self.searchItems || function(search) {
+				return CashierBillRestfulService.searchItems(search);
 			}
 
-		self.selectStockOperationItem = self.selectStockOperationItem || function (stockOperationItem, lineItem) {
+		self.selectItem = self.selectItem || function(stockOperationItem, lineItem) {
 				$scope.lineItem = {};
-				if (stockOperationItem !== undefined) {
+				if(stockOperationItem !== undefined) {
 					lineItem.setInvalidEntry(false);
 					lineItem.setItemStock(stockOperationItem);
 					lineItem.setItemStockPrice(stockOperationItem.defaultPrice);
@@ -345,28 +343,28 @@
 				}
 			}
 
-		self.getConcepts = self.getConcepts || function (uuid) {
-				if (uuid !== undefined) {
-					CashierBillRestfulService.getConcepts(uuid, function (data) {
+		self.getConcepts = self.getConcepts || function(uuid) {
+				if(uuid !== undefined) {
+					CashierBillRestfulService.getConcepts(uuid, function(data) {
 						//return data.results;
 						$scope.concepts = $scope.concepts || data;
 					});
 				}
 			}
 
-		self.loadItemDetails = self.loadItemDetails || function (uuid, lineItem) {
+		self.loadItemDetails = self.loadItemDetails || function(uuid, lineItem) {
 				return CashierBillRestfulService.loadItemDetails(uuid, lineItem);
 			}
 
-		self.changeItemQuantity = self.changeItemQuantity || function (lineItem) {
-				if (lineItem.itemStockQuantity <= 0 && $scope.uuid === undefined) {
+		self.changeItemQuantity = self.changeItemQuantity || function(lineItem) {
+				if(lineItem.itemStockQuantity <= 0 && $scope.uuid === undefined) {
 					lineItem.setItemStockQuantity(1);
 				}
 				lineItem.setTotal(lineItem.getItemStockQuantity() * lineItem.getItemStockPrice().price);
 				self.computeTotalPrice();
 			}
 
-		self.setPaymentWarningMessage = self.setPaymentWarningMessage || function () {
+		self.setPaymentWarningMessage = self.setPaymentWarningMessage || function() {
 				$scope.paymentWarningMessage = $filter('EmrFormat')(
 					emr.message("openhmis.cashier.payment.confirm.paymentProcess"), [
 						$scope.paymentMode.name, $scope.amountTendered
@@ -374,8 +372,8 @@
 				);
 			}
 
-		self.processPayment = self.processPayment || function () {
-				if (EntityFunctions.validateAttributeTypes(
+		self.processPayment = self.processPayment || function() {
+				if(EntityFunctions.validateAttributeTypes(
 						$scope.paymentModeAttributes, $scope.attributes, [])) {
 					$scope.isProcessPayment = true;
 					$scope.isPrintBill = false;
@@ -386,19 +384,19 @@
 				}
 			}
 
-		self.postPayment = self.postPayment || function () {
-				if ($scope.uuid !== undefined && $scope.isProcessPayment && $scope.STATUS !== 'PENDING') {
+		self.postPayment = self.postPayment || function() {
+				if($scope.uuid !== undefined && $scope.isProcessPayment && $scope.STATUS !== 'PENDING') {
 					$scope.processing = true;
 					var payment = CashierBillFunctions.createPayment(
 						$scope.paymentModeAttributes, $scope.attributes,
 						$scope.amountTendered, $scope.totalAmountDue, $scope.paymentMode.uuid);
-					if (!payment) {
+					if(!payment) {
 						$scope.submitted = true;
 						return false;
 					} else {
 						$scope.entity = payment;
 						CashierBillRestfulService.processPayment(
-							module_name, $scope.uuid, payment, function () {
+							module_name, $scope.uuid, payment, function() {
 								$window.location.reload();
 							}
 						);
@@ -408,44 +406,43 @@
 				}
 			}
 
-		self.postBill = self.postBill || function () {
+		self.postBill = self.postBill || function() {
 				$scope.isPostBill = true;
 				$scope.isPrintBill = false;
 				$scope.saveOrUpdate();
 			}
 
-		self.postAndPrintBill = self.postAndPrintBill || function () {
+		self.postAndPrintBill = self.postAndPrintBill || function() {
 				$scope.isPrintBill = true;
 				$scope.isPostBill = true;
 				$scope.saveOrUpdate();
 			}
 
-		self.adjustBill = self.adjustBill || function () {
+		self.adjustBill = self.adjustBill || function() {
 				$scope.isAdjustBill = true;
 				$scope.isPrintBill = false;
 				//check if adjustment reason is required.
-				CashierBillRestfulService.checkAdjustmentReasonRequired(function (data) {
-					if (data !== undefined && data.results === "true") {
+				CashierBillRestfulService.checkAdjustmentReasonRequired(function(data) {
+					if(data !== undefined && data.results === "true") {
 						$scope.adjustmentReasonRequired = true;
-					}
-					else {
+					} else {
 						$scope.adjustmentReasonRequired = false;
 					}
 					CashierBillFunctions.adjustBillWarningDialog($scope);
 				});
 			}
 
-		self.saveBill = self.saveBill || function () {
+		self.saveBill = self.saveBill || function() {
 				$scope.isSaveBill = true;
 				$scope.isPrintBill = false;
 				$scope.saveOrUpdate();
 			}
 
-		self.printBill = self.printBill || function () {
-				CashierBillRestfulService.loadBill(module_name, $scope.uuid, function (data) {
-					if (data.id !== undefined) {
+		self.printBill = self.printBill || function() {
+				CashierBillRestfulService.loadBill(module_name, $scope.uuid, function(data) {
+					if(data.id !== undefined) {
 						EntityFunctions.printPage(
-							self.PRINT_RECEIPT_URL + data.id
+							PRINT_RECEIPT_URL + data.id
 						);
 					}
 				});
@@ -454,35 +451,38 @@
 			}
 
 		//callback
-		self.onLoadPaymentModesSuccessful = self.onLoadPaymentModesSuccessful || function (data) {
+		self.onLoadPaymentModesSuccessful = self.onLoadPaymentModesSuccessful || function(data) {
 				$scope.paymentModes = data.results;
-				if ($scope.paymentModes !== undefined && $scope.paymentModes.length > 0) {
+				if($scope.paymentModes !== undefined && $scope.paymentModes.length > 0) {
 					$scope.paymentMode = $scope.paymentMode || $scope.paymentModes[0];
 					self.loadPaymentModeAttributes($scope.paymentMode.uuid);
 				}
 			}
 
-		self.onLoadPaymentModeAttributesSuccessful = self.onLoadPaymentModeAttributesSuccessful || function (data) {
+		self.onLoadPaymentModeAttributesSuccessful = self.onLoadPaymentModeAttributesSuccessful || function(data) {
 				var paymentModeAttributes = data;
-				if (paymentModeAttributes !== undefined && paymentModeAttributes.attributeTypes !== undefined) {
-					CashierBillRestfulService.populatePaymentModeAttributesData($scope, paymentModeAttributes);
+				$scope.paymentModeAttributesData = [];
+				if(paymentModeAttributes !== undefined && paymentModeAttributes.attributeTypes !== undefined) {
+					$scope.paymentModeAttributes = paymentModeAttributes.attributeTypes;
+					CommonsRestfulFunctions.populateFieldAttributesData(ROOT_URL,
+						$scope.paymentModeAttributesData, $scope.paymentModeAttributes);
 				}
 			}
 
-		self.onLoadBillSuccessful = self.onLoadBillSuccessful || function (data) {
+		self.onLoadBillSuccessful = self.onLoadBillSuccessful || function(data) {
 				$scope.currentPayments = [];
 				$scope.previousPayments = [];
 				$scope.adjustedBill = data;
 				CashierBillRestfulService.getCashier(data.cashier.links[0].uri,
-					data.cashier.uuid, function (data) {
+					data.cashier.uuid, function(data) {
 						$scope.cashier = data.person.display;
 					}
 				);
 
 				$scope.cashPoint = data.cashPoint;
-				if (data.billAdjusted !== null && data.billAdjusted.display !== null) {
+				if(data.billAdjusted !== null && data.billAdjusted.display !== null) {
 					$scope.billAdjustedUuid = data.billAdjusted.uuid;
-					if ($scope.STATUS !== 'ADJUSTED') {
+					if($scope.STATUS !== 'ADJUSTED') {
 						// load adjusted bill
 						$scope.previousBillTitle =
 							emr.message("openhmis.cashier.bill.previousBill") + " (" + data.billAdjusted.display + ") ";
@@ -495,25 +495,25 @@
 				self.computeTotalPrice();
 			}
 
-		self.onLoadAdjustedBillSuccessful = self.onLoadAdjustedBillSuccessful || function (data) {
-				if ($scope.entity.status === 'PENDING' || $scope.lineItems.length === 0) {
+		self.onLoadAdjustedBillSuccessful = self.onLoadAdjustedBillSuccessful || function(data) {
+				if($scope.entity.status === 'PENDING' || $scope.lineItems.length === 0) {
 					CashierBillFunctions.populateExistingLineItems(data.lineItems, $scope.previousLineItems, $scope);
 				}
 
-				if ($scope.currentPayments.length === 0) {
+				if($scope.currentPayments.length === 0) {
 					$scope.previousPayments = data.payments;
 					self.computeTotalPrice();
 				}
 			}
 
-		self.onChangeEntitySuccessful = self.onChangeEntitySuccessful || function (data) {
-				if ($scope.uuid === data.uuid) {
+		self.onChangeEntitySuccessful = self.onChangeEntitySuccessful || function(data) {
+				if($scope.uuid === data.uuid) {
 					$window.location.reload();
 				} else {
-					$window.location.href =  self.ENTITIES_URL + data.uuid;
+					$window.location.href = ENTITIES_URL + data.uuid;
 				}
 
-				if ($scope.isPrintBill) {
+				if($scope.isPrintBill) {
 					$scope.uuid = data.uuid;
 					self.printBill();
 				}

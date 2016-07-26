@@ -13,7 +13,7 @@
  *
  */
 
-(function () {
+(function() {
 	'use strict';
 
 	angular.module('app.restfulServices').service('CashierBillRestfulService', CashierBillRestfulService);
@@ -23,7 +23,6 @@
 	var ROOT_URL = '/' + OPENMRS_CONTEXT_PATH + '/';
 	var CASHIER_PAGE_URL = ROOT_URL + '/module/openhmis/cashier/';
 	var MODULE_SETTINGS_URL = 'module/openhmis/cashier/moduleSettings.page';
-	var PAYMENT_MODE_FRAGMENT_URL = 'module/openhmis/cashier/paymentModeFragment2x.page';
 
 	function CashierBillRestfulService(EntityRestFactory, CashierBillFunctions) {
 		var service;
@@ -32,7 +31,7 @@
 			getPaymentModes: getPaymentModes,
 			loadPaymentModeAttributes: loadPaymentModeAttributes,
 			searchPerson: searchPerson,
-			searchStockOperationItems: searchStockOperationItems,
+			searchItems: searchItems,
 			loadItemDetails: loadItemDetails,
 			setBaseUrl: setBaseUrl,
 			loadBill: loadBill,
@@ -42,8 +41,6 @@
 			getCashier: getCashier,
 			getCashPoints: getCashPoints,
 			checkAdjustmentReasonRequired: checkAdjustmentReasonRequired,
-			getPaymentModeAttributeData: getPaymentModeAttributeData,
-			populatePaymentModeAttributesData: populatePaymentModeAttributesData,
 		};
 
 		return service;
@@ -77,7 +74,7 @@
 			var requestParams = {};
 			requestParams['rest_entity_name'] = 'item/' + uuid;
 			EntityRestFactory.loadEntities(requestParams,
-				function (data) {
+				function(data) {
 					lineItem.prices = data.prices;
 					CashierBillFunctions.reOrderItemPrices(lineItem, data)
 				},
@@ -88,7 +85,7 @@
 		function searchPerson(q, type) {
 			var requestParams = [];
 			requestParams['q'] = q;
-			if(type === 'patient'){
+			if(type === 'patient') {
 				requestParams['v'] = "custom:(patientIdentifier:(uuid,identifier)," +
 					"person:(personName))";
 			}
@@ -96,13 +93,13 @@
 			return EntityRestFactory.autocompleteSearch(requestParams, type, 'inventory', 'v1');
 		}
 
-		function searchStockOperationItems(q) {
-			setBaseUrl('inventory');
+		function searchItems(q) {
+			setBaseUrl("inventory");
 			var requestParams = {};
 			requestParams['q'] = q;
 			requestParams['limit'] = 10;
 			requestParams['startIndex'] = 1;
-			return EntityRestFactory.autocompleteSearch(requestParams, 'item', 'inventory');
+			return EntityRestFactory.autocompleteSearch(requestParams, 'item');
 		}
 
 		function loadBill(module_name, uuid, onLoadBillSuccessful) {
@@ -167,60 +164,6 @@
 				onLoadCashPointsSuccessful,
 				errorCallback
 			);
-		}
-
-		function getPaymentModeAttributeData(type, foreignKey, onLoadAttributeDataSuccessful) {
-			var requestParams = [];
-			requestParams['resource'] = PAYMENT_MODE_FRAGMENT_URL;
-			requestParams['type'] = type;
-			requestParams['foreignKey'] = foreignKey;
-			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
-			EntityRestFactory.loadResults(requestParams,
-				onLoadAttributeDataSuccessful, errorCallback);
-		}
-
-		function populatePaymentModeAttributesData($scope, paymentModeAttributes) {
-			$scope.paymentModeAttributes = paymentModeAttributes.attributeTypes;
-			for (var i = 0; i < $scope.paymentModeAttributes.length; i++) {
-				var paymentModeAttribute = $scope.paymentModeAttributes[i];
-				if (paymentModeAttribute.format === 'org.openmrs.Concept' && paymentModeAttribute.foreignKey !== null) {
-					getPaymentModeAttributeData('concept', paymentModeAttribute.foreignKey, function (data) {
-						if (data !== undefined) {
-							$scope.paymentModeAttributesData[data.foreignKey] = data.results;
-						}
-					});
-				} else if (paymentModeAttribute.format === 'org.openmrs.User') {
-					getPaymentModeAttributeData('user', '', function (data) {
-						if (data !== undefined) {
-							$scope.paymentModeAttributesData['users'] = data.results;
-						}
-					});
-				} else if (paymentModeAttribute.format === 'org.openmrs.Location') {
-					getPaymentModeAttributeData('location', '', function (data) {
-						if (data !== undefined) {
-							$scope.paymentModeAttributesData['locations'] = data.results;
-						}
-					});
-				} else if (paymentModeAttribute.format === 'org.openmrs.Drug') {
-					getPaymentModeAttributeData('drug', '', function (data) {
-						if (data !== undefined) {
-							$scope.paymentModeAttributesData['drugs'] = data.results;
-						}
-					});
-				} else if (paymentModeAttribute.format === 'org.openmrs.Provider') {
-					getPaymentModeAttributeData('provider', '', function (data) {
-						if (data !== undefined) {
-							$scope.paymentModeAttributesData['providers'] = data.results;
-						}
-					});
-				} else if (paymentModeAttribute.format === 'org.openmrs.ProgramWorkflow') {
-					getPaymentModeAttributeData('programworkflow', '', function (data) {
-						if (data !== undefined) {
-							$scope.paymentModeAttributesData['programworkflow'] = data.results;
-						}
-					});
-				}
-			}
 		}
 
 		function setBaseUrl(module_name) {

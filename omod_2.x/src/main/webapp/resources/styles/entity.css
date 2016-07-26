@@ -238,4 +238,38 @@ ul.page-title li{
 	display: block;
 	float: left;
 }
+fieldset.nested .paymentTitle{
+	width: 22%;
+}
+fieldset.nested .previousBillTitle{
+	width: 40%;
+}
+fieldset.nested .previous-bill td:first-child{
+	width: 60%;
+}
+fieldset.nested .previous-bill td:nth-child(2){
+	width: 10%;
+}
+fieldset.nested .previous-bill td:nth-child(3){
+	width: 15%;
+}
+fieldset.nested .previous-bill td:nth-child(4){
+	width: 15%;
+}
+fieldset.nested .previous-payment td:first-child{
+	width: 20%;
+}
+fieldset.nested .previous-payment td:nth-child(2){
+	width: 25%;
+}
+fieldset.nested .previous-payment td:nth-child(3){
+	width: 42%;
+	font-size:0.9em;
+}
+fieldset.nested .previous-payment td:nth-child(4){
+	width: 15%;
+}
+fieldset.nested .previous-payment td:nth-child(5){
+	width: 15%;
+}
 

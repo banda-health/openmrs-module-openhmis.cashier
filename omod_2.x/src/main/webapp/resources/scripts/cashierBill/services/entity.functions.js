@@ -13,7 +13,7 @@
  *
  */
 
-(function () {
+(function() {
 	'use strict';
 
 	var app = angular.module('app.cashierBillFunctionsFactory', []);
@@ -52,14 +52,14 @@
 
 		function formatItemPrice(itemPrice) {
 			var price = itemPrice.price;
-			if (price !== undefined) {
+			if(price !== undefined) {
 				price = (Math.round(price * 100) / 100).toFixed(2);
 			}
 			else {
 				price = '';
 			}
 
-			if (itemPrice.name === undefined || itemPrice.name === '' || itemPrice.name === null) {
+			if(itemPrice.name === undefined || itemPrice.name === '' || itemPrice.name === null) {
 				return price;
 			}
 			else {
@@ -71,17 +71,17 @@
 			var dialog = emr.setupConfirmationDialog({
 				selector: '#payment-warning-dialog',
 				actions: {
-					confirm: function () {
+					confirm: function() {
 						$scope.isProcessPayment = true;
 						$scope.$apply();
-						if ($scope.uuid !== undefined) {
+						if($scope.uuid !== undefined) {
 							$scope.postPayment();
 						} else {
 							$scope.saveOrUpdate();
 						}
 						dialog.close();
 					},
-					cancel: function () {
+					cancel: function() {
 						dialog.close();
 					}
 				}
@@ -96,13 +96,13 @@
 			var dialog = emr.setupConfirmationDialog({
 				selector: '#adjust-bill-warning-dialog',
 				actions: {
-					confirm: function () {
+					confirm: function() {
 						$scope.isAdjustBill = true;
 						$scope.$apply();
 						$scope.saveOrUpdate();
 						dialog.close();
 					},
-					cancel: function () {
+					cancel: function() {
 						dialog.close();
 					}
 				}
@@ -117,10 +117,10 @@
 			// validate line items
 			var count = 0;
 			var failed = false;
-			for (var i = 0; i < lineItems.length; i++) {
+			for(var i = 0; i < lineItems.length; i++) {
 				var lineItem = lineItems[i];
-				if (lineItem.selected) {
-					if (lineItem.itemStock.name === undefined) {
+				if(lineItem.selected) {
+					if(lineItem.itemStock.name === undefined) {
 						var errorMessage =
 							emr.message("openhmis.cashier.bill.lineItems.error.invalidItem") + " - " + lineItem.itemStock.toString();
 						emr.errorAlert(errorMessage);
@@ -137,7 +137,7 @@
 						quantity: lineItem.itemStockQuantity
 					};
 					validatedLineItems.push(requestLineItem);
-				} else if (lineItem.itemStock !== "") {
+				} else if(lineItem.itemStock !== "") {
 					var errorMessage =
 						emr.message("openhmis.cashier.bill.lineItems.error.invalidItem") + " - " + lineItem.itemStock.toString();
 					emr.errorAlert(errorMessage);
@@ -146,9 +146,9 @@
 				}
 			}
 
-			if (validatedLineItems.length == 0 && !failed) {
+			if(validatedLineItems.length == 0 && !failed) {
 				emr.errorAlert("openhmis.cashier.bill.chooseItemErrorMessage");
-			} else if (validatedLineItems.length > 0 && !failed) {
+			} else if(validatedLineItems.length > 0 && !failed) {
 				return true;
 			}
 
@@ -156,7 +156,7 @@
 		}
 
 		function populateExistingLineItems(lineItems, populatedLineItems, $scope) {
-			for (var i = 0; i < lineItems.length; i++) {
+			for(var i = 0; i < lineItems.length; i++) {
 				var lineItem = lineItems[i];
 				var itemStockPrice = {
 					name: lineItem.priceName,
@@ -178,12 +178,12 @@
 		}
 
 		function populatePayments(payments, populatedPayments) {
-			if (payments !== undefined && payments.length > 0) {
-				for (var i = 0; i < payments.length; i++) {
+			if(payments !== undefined && payments.length > 0) {
+				for(var i = 0; i < payments.length; i++) {
 					var payment = {};
 					var attributes = [];
-					if (payments[i].attributes.length > 0) {
-						for (var j = 0; j < payments[i].attributes.length; j++) {
+					if(payments[i].attributes.length > 0) {
+						for(var j = 0; j < payments[i].attributes.length; j++) {
 							var attr = {};
 							attr.attributeType = payments[i].attributes[j].attributeType.uuid;
 							attr.value = payments[i].attributes[j].value;
@@ -202,15 +202,15 @@
 		function createPayment(paymentModeAttributes, attributes,
 		                       amountTendered, amountDue, paymentModeUuid) {
 			var requestPaymentAttributeTypes = [];
-			if (EntityFunctions.validateAttributeTypes(
+			if(EntityFunctions.validateAttributeTypes(
 					paymentModeAttributes, attributes, requestPaymentAttributeTypes)) {
 				var payment = {};
 				payment.attributes = [];
-				if (requestPaymentAttributeTypes.length > 0) {
+				if(requestPaymentAttributeTypes.length > 0) {
 					payment.attributes = requestPaymentAttributeTypes;
 				}
 
-				if (amountDue - amountTendered < 0) {
+				if(amountDue - amountTendered < 0) {
 					payment.amount = Math.round(amountDue);
 				} else {
 					payment.amount = amountTendered;
@@ -225,14 +225,14 @@
 		function reOrderItemPrices(lineItem, itemDetails) {
 			var defaultPrice = itemDetails.defaultPrice;
 			var index = -1;
-			for (var i = 0; i < itemDetails.prices.length; i++) {
+			for(var i = 0; i < itemDetails.prices.length; i++) {
 				var price = itemDetails.prices[i];
-				if (price.uuid === defaultPrice.uuid) {
+				if(price.uuid === defaultPrice.uuid) {
 					index = lineItem.prices.indexOf(price);
 				}
 			}
 
-			if (index !== -1) {
+			if(index !== -1) {
 				lineItem.prices.splice(index, 1);
 				lineItem.prices.unshift(defaultPrice);
 			}
@@ -240,11 +240,11 @@
 
 		function calculateTotalPayableAmount(lineItems, roundingItem) {
 			var totalPayableAmount = 0;
-			for (var i = 0; i < lineItems.length; i++) {
+			for(var i = 0; i < lineItems.length; i++) {
 				var lineItem = lineItems[i];
-				if (lineItem.isSelected()) {
-					if (roundingItem !== null && roundingItem !== undefined) {
-						if (roundingItem.roundingItemUuid !== lineItem.itemStock.uuid) {
+				if(lineItem.isSelected()) {
+					if(roundingItem !== null && roundingItem !== undefined) {
+						if(roundingItem.roundingItemUuid !== lineItem.itemStock.uuid) {
 							totalPayableAmount += roundItemPrice(
 								lineItem.getTotal(), roundingItem.roundToNearest, roundingItem.roundingMode);
 						}
@@ -262,12 +262,12 @@
 			$scope.totalAmountDue = 0;
 
 			// calculate amount for current items.
-			if ($scope.STATUS === 'PENDING') {
+			if($scope.STATUS === 'PENDING') {
 				$scope.totalPayableAmount = calculateTotalPayableAmount(
 					$scope.lineItems, $scope.roundingItem);
 			} else {
 				$scope.totalPayableAmount = calculateTotalPayableAmount($scope.lineItems);
-				if ($scope.STATUS === 'ADJUSTED') {
+				if($scope.STATUS === 'ADJUSTED') {
 					$scope.totalPayableAmount = roundItemPrice(
 						$scope.totalPayableAmount, $scope.roundingItem.roundToNearest, $scope.roundingItem.roundingMode);
 				}
@@ -278,28 +278,28 @@
 
 			// calculate tendered amount
 			$scope.totalAmountTendered = 0;
-			if ($scope.currentPayments !== null) {
-				for (var i = 0; i < $scope.currentPayments.length; i++) {
+			if($scope.currentPayments !== null) {
+				for(var i = 0; i < $scope.currentPayments.length; i++) {
 					$scope.totalAmountTendered += $scope.currentPayments[i].amountTendered;
 				}
 			}
 
 			// sum previous payments.
-			if ($scope.previousPayments !== null) {
-				for (var i = 0; i < $scope.previousPayments.length; i++) {
+			if($scope.previousPayments !== null) {
+				for(var i = 0; i < $scope.previousPayments.length; i++) {
 					$scope.totalAmountTendered += $scope.previousPayments[i].amountTendered;
 				}
 			}
 
 			// calculate change due
-			if ($scope.totalPayableAmount > 0) {
+			if($scope.totalPayableAmount > 0) {
 				$scope.totalChangeDue = $scope.totalAmountTendered - $scope.totalPayableAmount;
-			} else if ($scope.totalAmountTendered > 0) {
+			} else if($scope.totalAmountTendered > 0) {
 				$scope.totalChangeDue = $scope.totalAmountTendered;
 			}
 
 			// calculate amount due
-			if ($scope.totalChangeDue < 0) {
+			if($scope.totalChangeDue < 0) {
 				$scope.totalAmountDue = $scope.totalChangeDue * -1;
 				$scope.totalChangeDue = 0;
 			} else {
@@ -313,11 +313,11 @@
 		}
 
 		function roundItemPrice(val, nearest, mode) {
-			if (nearest === 0) {
+			if(nearest === 0) {
 				return val;
 			}
 			var factor = 1 / nearest;
-			switch (mode) {
+			switch(mode) {
 				case 'FLOOR':
 					return Math.floor(val * factor) / factor;
 				case 'CEILING':

@@ -14,7 +14,7 @@
  */
 
 /* initialize and bootstrap application */
-requirejs(['cashierBill/configs/entity.module'], function () {
+requirejs(['cashierBill/configs/entity.module'], function() {
 	angular.bootstrap(document, ['entitiesApp']);
 });
 
@@ -33,4 +33,5 @@ emr.loadMessages([
 	"openhmis.cashier.adjustedBy",
 	"openhmis.cashier.adjustedReason",
 	"openhmis.cashier.bill.lineItems.error.invalidItem",
+	"openhmis.commons.general.requirePatient",
 ]);

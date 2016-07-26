@@ -18,7 +18,6 @@ package org.openmrs.module.openhmis.cashier.web.controller;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
@@ -36,7 +35,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller(value = "cashierModuleSettings")
 @RequestMapping(CashierWebConstants.MODULE_SETTINGS_PAGE)
 public class CashierModuleSettingsController {
-
 	private AdministrationService adminService;
 
 	@Autowired

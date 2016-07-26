@@ -13,7 +13,7 @@
  *
  */
 
-(function () {
+(function() {
 	'use strict';
 
 	var baseModel = angular.module('app.lineItemModel', []);
@@ -32,59 +32,59 @@
 
 		LineItemModel.prototype = {
 
-			getItemStock: function () {
+			getItemStock: function() {
 				return this.itemStock;
 			},
 
-			setItemStock: function (itemStock) {
+			setItemStock: function(itemStock) {
 				this.itemStock = itemStock;
 			},
 
-			getItemStockQuantity: function () {
+			getItemStockQuantity: function() {
 				return this.itemStockQuantity;
 			},
 
-			setItemStockQuantity: function (itemStockQuantity) {
+			setItemStockQuantity: function(itemStockQuantity) {
 				this.itemStockQuantity = itemStockQuantity;
 			},
 
-			getItemStockPrice: function () {
+			getItemStockPrice: function() {
 				return this.itemStockPrice;
 			},
 
-			setItemStockPrice: function (itemStockPrice) {
+			setItemStockPrice: function(itemStockPrice) {
 				this.itemStockPrice = itemStockPrice;
 			},
 
-			setSelected: function (selected) {
+			setSelected: function(selected) {
 				this.selected = selected;
 			},
 
-			isSelected: function () {
+			isSelected: function() {
 				return this.selected;
 			},
 
-			getTotal: function () {
+			getTotal: function() {
 				return this.total;
 			},
 
-			setTotal: function (total) {
+			setTotal: function(total) {
 				this.total = total;
 			},
 
-			getPrices: function () {
+			getPrices: function() {
 				return this.prices;
 			},
 
-			setPrices: function (prices) {
+			setPrices: function(prices) {
 				this.prices = prices;
 			},
 
-			setInvalidEntry: function (invalidEntry) {
+			setInvalidEntry: function(invalidEntry) {
 				this.invalidEntry = invalidEntry;
 			},
 
-			isInvalidEntry: function () {
+			isInvalidEntry: function() {
 				return this.invalidEntry;
 			}
 		};

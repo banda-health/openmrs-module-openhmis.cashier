@@ -72,14 +72,14 @@
         <span ng-if="paymentModeAttribute.format === 'org.openmrs.Location'">
             <!-- show locations dropdown -->
             <select ng-model="attributes[paymentModeAttribute.uuid].value" class="form-control"
-                    ng-options="user.name for user in paymentModeAttributesData['locations']">
+                    ng-options="location.name for location in paymentModeAttributesData['locations']">
             </select>
         </span>
 
         <span ng-if="paymentModeAttribute.format === 'org.openmrs.Drug'">
             <!-- show drugs dropdown -->
             <select ng-model="attributes[paymentModeAttribute.uuid].value" class="form-control"
-                    ng-options="user.name for user in paymentModeAttributesData['drugs']">
+                    ng-options="drug.name for drug in paymentModeAttributesData['drugs']">
             </select>
         </span>
 
