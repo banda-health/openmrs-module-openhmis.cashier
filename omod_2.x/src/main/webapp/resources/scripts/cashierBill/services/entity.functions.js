@@ -306,6 +306,11 @@
 				$scope.totalAmountDue = 0;
 			}
 
+			// auto-fill payment amount.
+			if($scope.checkAutofillPaymentAmount && $scope.totalAmountDue !== 0) {
+				$scope.amountTendered = $scope.totalAmountDue;
+			}
+
 			$scope.totalChangeDue = $filter('number')($scope.totalChangeDue, 2);
 			$scope.totalAmountDue = $filter('number')($scope.totalAmountDue, 2);
 			$scope.totalAmountTendered = $filter('number')($scope.totalAmountTendered, 2);

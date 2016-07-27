@@ -41,6 +41,8 @@
 			getCashier: getCashier,
 			getCashPoints: getCashPoints,
 			checkAdjustmentReasonRequired: checkAdjustmentReasonRequired,
+			checkAllowBillAdjustment: checkAllowBillAdjustment,
+			checkAutofillPaymentAmount: checkAutofillPaymentAmount,
 		};
 
 		return service;
@@ -145,6 +147,24 @@
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
 				onLoadAdjustmentReasonSuccessful, errorCallback);
+		}
+
+		function checkAllowBillAdjustment(onLoadAllowBillAdjustmentSuccessful) {
+			var requestParams = [];
+			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['setting'] = 'openhmis.cashier.allowBillAdjustments';
+			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
+			EntityRestFactory.loadResults(requestParams,
+				onLoadAllowBillAdjustmentSuccessful, errorCallback);
+		}
+
+		function checkAutofillPaymentAmount(onLoadAutofillPaymentAmountSuccessful) {
+			var requestParams = [];
+			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['setting'] = 'openhmis.cashier.autofillPaymentAmount';
+			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
+			EntityRestFactory.loadResults(requestParams,
+				onLoadAutofillPaymentAmountSuccessful, errorCallback);
 		}
 
 		function getCashier(url, cashierUuid, onLoadCashierSuccessful) {

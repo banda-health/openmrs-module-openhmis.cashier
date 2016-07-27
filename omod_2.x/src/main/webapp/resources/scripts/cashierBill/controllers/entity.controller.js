@@ -28,7 +28,6 @@
 	                               PaginationService, LineItemModel, CashierBillFunctions,
 	                               EntityFunctions, $timeout) {
 		var self = this;
-
 		var module_name = 'cashier';
 		var entity_name_message_key = "openhmis.cashier.bill";
 		var rest_entity_name = emr.message("openhmis.cashier.restful_name");
@@ -37,12 +36,14 @@
 		var TIMESHEET_URL = ROOT_URL + 'openhmis.cashier/timesheet/entities.page#/';
 		var PRINT_RECEIPT_URL = ROOT_URL + 'module/openhmis/cashier/receipt.form?billId=';
 		var ENTITIES_URL = 'entities.page#/';
+		var PRIVILEGE_CREATE_BILL = 'Task: Create new bill';
+		var PRIVILEGE_ADJUST_BILL = 'Task: Adjust Cashier Bills';
 
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters || function() {
 				self.bindBaseParameters(module_name, rest_entity_name,
 					entity_name_message_key, CANCEL_PAGE);
-				self.checkPrivileges('Manage Cashier Metadata,View Cashier Metadata');
+				self.checkPrivileges(PRIVILEGE_CREATE_BILL);
 			};
 
 		/**
@@ -52,26 +53,10 @@
 			// @Override
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function() {
-				//check if timesheet is required
-				$scope.cashPoints = [];
-				CashierBillRestfulService.getTimesheet(function(data) {
-					if(data !== undefined) {
-						$scope.cashier = data.cashier;
-						$scope.cashPoint = data.cashPoint;
-						if(data.isTimeSheetRequired === true
-							&& (data.cashier === undefined || data.cashPoint === undefined)) {
-							// redirect to timesheet page.
-							window.location = TIMESHEET_URL;
-						}
+				// check init settings and privileges.
+				self.checkInitSettingsAndPrivileges();
 
-						if(data.cashPoint === undefined) {
-							CashierBillRestfulService.getCashPoints(module_name, function(data) {
-								$scope.cashPoints = data.results;
-							});
-						}
-					}
-				});
-
+				// initialize variables and functions.
 				$scope.billAdjustedUuid = '';
 				$scope.totalNumOfResults = 0;
 				$scope.limit = CookiesService.get('limit') || 5;
@@ -158,6 +143,8 @@
 				$scope.saveBill = self.saveBill;
 				$scope.printBill = self.printBill;
 
+				// Very hacky and may not work well for slower machines.
+				// Need to find a better way to capture an event after all components have rendered.
 				$timeout(function() {
 					$scope.fullyLoaded = true;
 				}, 1700);
@@ -228,6 +215,7 @@
 					$scope.entity.status = $scope.STATUS;
 				}
 
+				// check if a bill is being adjusted.
 				if(!$scope.isAdjustBill && $scope.uuid !== undefined) {
 					if($scope.billAdjustedUuid !== undefined && $scope.billAdjustedUuid !== '') {
 						$scope.entity.billAdjusted = $scope.billAdjustedUuid;
@@ -235,13 +223,56 @@
 					$scope.entity.uuid = $scope.uuid;
 				}
 
+				// set cashpoint
 				if($scope.cashPoint !== undefined) {
 					$scope.entity.cashPoint = $scope.cashPoint.uuid;
 				}
 
 				$scope.processing = true;
-
 				return true;
+			}
+
+		self.checkInitSettingsAndPrivileges = self.checkInitSettingsAndPrivileges || function() {
+				// check if user has privileges to adjust a bill.
+				if(self.getUuid() !== undefined) {
+					self.checkPrivileges(PRIVILEGE_ADJUST_BILL);
+				}
+
+				//check if the "allow bill adjustment" setting is set.
+				CashierBillRestfulService.checkAllowBillAdjustment(function(data) {
+					if(data !== undefined && data.results === "false") {
+						$window.location.href = CANCEL_PAGE;
+					}
+				});
+
+				//check if timesheet is required
+				$scope.cashPoints = [];
+				CashierBillRestfulService.getTimesheet(function(data) {
+					if(data !== undefined) {
+						$scope.cashier = data.cashier;
+						$scope.cashPoint = data.cashPoint;
+						if(data.isTimeSheetRequired === true
+							&& (data.cashier === undefined || data.cashPoint === undefined)) {
+							// redirect to timesheet page.
+							$window.location.href = TIMESHEET_URL;
+						}
+
+						if(data.cashPoint === undefined) {
+							CashierBillRestfulService.getCashPoints(module_name, function(data) {
+								$scope.cashPoints = data.results;
+							});
+						}
+					}
+				});
+
+				// check "autofill payment amount" setting.
+				CashierBillRestfulService.checkAutofillPaymentAmount(function(data) {
+					if(data !== undefined && data.results === "true") {
+						$scope.checkAutofillPaymentAmount = true;
+					} else {
+						$scope.checkAutofillPaymentAmount = false;
+					}
+				});
 			}
 
 		self.getPaymentModes = self.getPaymentModes || function() {
