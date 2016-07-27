@@ -19,9 +19,9 @@
 	var app = angular.module('app.timesheetFunctionsFactory', []);
 	app.service('TimesheetFunctions', TimesheetFunctions);
 	
-	TimesheetFunctions.$inject = ['$filter','$window'];
+	TimesheetFunctions.$inject = ['$filter','$window','EntityFunctions'];
 	
-	function TimesheetFunctions($filter,$window) {
+	function TimesheetFunctions($filter,$window,EntityFunctions) {
 		var service;
 		
 		service = {
@@ -73,14 +73,6 @@
 				successfulCallback(input);
 			});
 		}
-
-		/**
-		 * Disable and gray-out background when a dialog box opens up.
-		 */
-		function disableBackground(){
-			var backgroundElement = angular.element('.simplemodal-overlay');
-			backgroundElement.addClass('disable-background');
-		}
 		
 		/**
 		 * Show the generate report popup
@@ -104,7 +96,7 @@
 			});
 			
 			dialog.show();
-			disableBackground();
+			EntityFunctions.disableBackground();
 		}
 	}
 })();
