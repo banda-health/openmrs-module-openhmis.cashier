@@ -5,7 +5,6 @@
     ui.includeJavascript("uicommons", "angular-ui/angular-ui-router.min.js")
     ui.includeJavascript("uicommons", "angular-sanitize.min.js")
 
-
     ui.includeCss("openhmis.commons", "bootstrap.css")
     ui.includeCss("openhmis.commons", "entities2x.css")
     ui.includeCss("openhmis.cashier", "entity.css")
