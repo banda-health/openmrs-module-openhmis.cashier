@@ -19,7 +19,7 @@
  * page either creates a new entity if NO uuid is given, else loads an
  * existing entity for editing.
  */
-(function () {
+(function() {
 	define([], loadPage);
 
 	function loadPage() {
@@ -40,7 +40,7 @@
 			'app.genericEntityController',
 			'app.genericManageController'
 		]);
-		app.config(function ($stateProvider, $urlRouterProvider, $provide) {
+		app.config(function($stateProvider, $urlRouterProvider, $provide) {
 			/*
 			 * Configure routes and urls. The default route is '/' which loads
 			 * manageEntities.page. 'edit' route calls entity.page -- it
@@ -70,7 +70,7 @@
 				}
 			});
 
-			$provide.factory('$exceptionHandler', function ($injector) {
+			$provide.factory('$exceptionHandler', function($injector) {
 				return handleException;
 			});
 		});
