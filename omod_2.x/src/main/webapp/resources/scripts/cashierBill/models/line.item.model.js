@@ -20,11 +20,11 @@
 
 	function LineItemModel() {
 
-		function LineItemModel(itemStock, itemStockQuantity, itemStockPrice) {
-			this.itemStock = itemStock;
-			this.itemStockQuantity = itemStockQuantity;
+		function LineItemModel(item, itemQuantity, itemPrice) {
+			this.item = item;
+			this.itemQuantity = itemQuantity;
 			this.selected = false;
-			this.itemStockPrice = itemStockPrice;
+			this.itemPrice = itemPrice;
 			this.total = '';
 			this.prices = [];
 			this.invalidEntry = false;
@@ -32,28 +32,28 @@
 
 		LineItemModel.prototype = {
 
-			getItemStock: function() {
-				return this.itemStock;
+			getItem: function() {
+				return this.item;
 			},
 
-			setItemStock: function(itemStock) {
-				this.itemStock = itemStock;
+			setItem: function(item) {
+				this.item = item;
 			},
 
-			getItemStockQuantity: function() {
-				return this.itemStockQuantity;
+			getItemQuantity: function() {
+				return this.itemQuantity;
 			},
 
-			setItemStockQuantity: function(itemStockQuantity) {
-				this.itemStockQuantity = itemStockQuantity;
+			setItemQuantity: function(itemQuantity) {
+				this.itemQuantity = itemQuantity;
 			},
 
-			getItemStockPrice: function() {
-				return this.itemStockPrice;
+			getItemPrice: function() {
+				return this.itemPrice;
 			},
 
-			setItemStockPrice: function(itemStockPrice) {
-				this.itemStockPrice = itemStockPrice;
+			setItemPrice: function(itemPrice) {
+				this.itemPrice = itemPrice;
 			},
 
 			setSelected: function(selected) {

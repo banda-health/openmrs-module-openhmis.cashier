@@ -102,9 +102,9 @@
                     </tr>
                 </thead>
                 <tr ng-repeat="lineItem in previousLineItems">
-                    <td>{{lineItem.itemStock.name}}</td>
-                    <td class="right-justify">{{lineItem.itemStockQuantity}}</td>
-                    <td class="right-justify">{{lineItem.itemStockPrice.price  | number : 2}}</td>
+                    <td>{{lineItem.item.name}}</td>
+                    <td class="right-justify">{{lineItem.itemQuantity}}</td>
+                    <td class="right-justify">{{lineItem.itemPrice.price  | number : 2}}</td>
                     <td class="right-justify">{{lineItem.total  | number : 2}}</td>
                 </tr>
             </table>
@@ -126,9 +126,9 @@
                     </tr>
                 </thead>
                 <tr ng-repeat="lineItem in lineItems">
-                    <td>{{lineItem.itemStock.name}}</td>
-                    <td class="right-justify">{{lineItem.itemStockQuantity}}</td>
-                    <td class="right-justify">{{lineItem.itemStockPrice.price  | number : 2}}</td>
+                    <td>{{lineItem.item.name}}</td>
+                    <td class="right-justify">{{lineItem.itemQuantity}}</td>
+                    <td class="right-justify">{{lineItem.itemPrice.price  | number : 2}}</td>
                     <td class="right-justify">{{lineItem.total  | number : 2}}</td>
                 </tr>
             </table><br />
@@ -180,7 +180,7 @@
                     <td ng-class="{'not-valid': lineItem.invalidEntry === true}">
                         ${ ui.includeFragment("openhmis.commons", "searchFragment", [
                                 typeahead: ["billItem.name for billItem in searchItems(\$viewValue)"],
-                                model: "lineItem.itemStock",
+                                model: "lineItem.item",
                                 typeaheadOnSelect: "selectItem(\$item, lineItem)",
                                 typeaheadEditable: "true",
                                 class: ["form-control autocomplete-search input-sm"],
@@ -190,11 +190,11 @@
                         ])}
                     </td>
                     <td>
-                        <input class="form-control input-sm right-justify" type="number" ng-model="lineItem.itemStockQuantity"
+                        <input class="form-control input-sm right-justify" type="number" ng-model="lineItem.itemQuantity"
                                ng-change="changeItemQuantity(lineItem)" ng-enter="changeItemQuantity(lineItem)" />
                     </td>
                     <td>
-                        <select ng-model="lineItem.itemStockPrice" class="form-control input-sm right-justify" style="width:150px"
+                        <select ng-model="lineItem.itemPrice" class="form-control input-sm right-justify" style="width:150px"
                                 ng-options="formatItemPrice(price) for price in lineItem.prices"
                                 ng-change="changeItemQuantity(lineItem)">
                             <option value="" ng-if="false"></option>

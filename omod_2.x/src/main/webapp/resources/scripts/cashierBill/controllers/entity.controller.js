@@ -357,17 +357,17 @@
 				return CashierBillRestfulService.searchItems(search);
 			}
 
-		self.selectItem = self.selectItem || function(stockOperationItem, lineItem) {
+		self.selectItem = self.selectItem || function(selectedItem, lineItem) {
 				$scope.lineItem = {};
-				if(stockOperationItem !== undefined) {
+				if(selectedItem !== undefined) {
 					lineItem.setInvalidEntry(false);
-					lineItem.setItemStock(stockOperationItem);
-					lineItem.setItemStockPrice(stockOperationItem.defaultPrice);
+					lineItem.setItem(selectedItem);
+					lineItem.setItemPrice(selectedItem.defaultPrice);
 					lineItem.setSelected(true);
-					lineItem.setTotal(stockOperationItem.defaultPrice.price * lineItem.getItemStockQuantity());
+					lineItem.setTotal(selectedItem.defaultPrice.price * lineItem.getItemQuantity());
 					$scope.lineItem = lineItem;
 					// load item details
-					self.loadItemDetails(stockOperationItem.uuid, $scope.lineItem);
+					self.loadItemDetails(selectedItem.uuid, $scope.lineItem);
 					// load next line item
 					self.addLineItem();
 					self.computeTotalPrice();
@@ -388,10 +388,10 @@
 			}
 
 		self.changeItemQuantity = self.changeItemQuantity || function(lineItem) {
-				if(lineItem.itemStockQuantity <= 0 && $scope.uuid === undefined) {
-					lineItem.setItemStockQuantity(1);
+				if(lineItem.itemQuantity <= 0 && $scope.uuid === undefined) {
+					lineItem.setItemQuantity(1);
 				}
-				lineItem.setTotal(lineItem.getItemStockQuantity() * lineItem.getItemStockPrice().price);
+				lineItem.setTotal(lineItem.getItemQuantity() * lineItem.getItemPrice().price);
 				self.computeTotalPrice();
 			}
 
