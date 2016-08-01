@@ -54,15 +54,13 @@
 			var price = itemPrice.price;
 			if(price !== undefined) {
 				price = (Math.round(price * 100) / 100).toFixed(2);
-			}
-			else {
+			} else {
 				price = '';
 			}
 
 			if(itemPrice.name === undefined || itemPrice.name === '' || itemPrice.name === null) {
 				return price;
-			}
-			else {
+			} else {
 				return price + ' (' + itemPrice.name + ')';
 			}
 		}
@@ -158,12 +156,12 @@
 		function populateExistingLineItems(lineItems, populatedLineItems, $scope) {
 			for(var i = 0; i < lineItems.length; i++) {
 				var lineItem = lineItems[i];
-				var itemStockPrice = {
+				var itemSPrice = {
 					name: lineItem.priceName,
 					price: lineItem.price,
 					uuid: lineItem.priceUuid
 				};
-				var lineItemModel = new LineItemModel(lineItem.item, lineItem.quantity, itemStockPrice);
+				var lineItemModel = new LineItemModel(lineItem.item, lineItem.quantity, itemSPrice);
 				lineItemModel.setSelected(true);
 				lineItemModel.setTotal(lineItem.price * lineItem.quantity);
 				populatedLineItems.push(lineItemModel);
@@ -243,15 +241,13 @@
 			for(var i = 0; i < lineItems.length; i++) {
 				var lineItem = lineItems[i];
 				if(lineItem.isSelected()) {
-					if(roundingItem !== null && roundingItem !== undefined) {
-						if(roundingItem.roundingItemUuid !== lineItem.itemStock.uuid) {
-							totalPayableAmount += roundItemPrice(
-								lineItem.getTotal(), roundingItem.roundToNearest, roundingItem.roundingMode);
-						}
-					} else {
-						totalPayableAmount += lineItem.getTotal();
-					}
+					totalPayableAmount += lineItem.getTotal();
 				}
+			}
+
+			if(totalPayableAmount > 0 && roundingItem.roundingItemUuid !== lineItem.itemStock.uuid) {
+				totalPayableAmount = roundItemPrice(
+					totalPayableAmount, roundingItem.roundToNearest, roundingItem.roundingMode);
 			}
 
 			return totalPayableAmount;
