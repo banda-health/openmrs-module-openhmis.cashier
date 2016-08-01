@@ -217,7 +217,7 @@
 				payment.instanceType = paymentModeUuid;
 				return payment;
 			}
-			return false;
+			return null;
 		}
 
 		function reOrderItemPrices(lineItem, itemDetails) {
