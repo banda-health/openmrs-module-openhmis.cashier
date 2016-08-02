@@ -87,7 +87,7 @@
 		function searchPerson(q, type) {
 			var requestParams = [];
 			requestParams['q'] = q;
-			if(type === 'patient') {
+			if (type === 'patient') {
 				requestParams['v'] = "custom:(patientIdentifier:(uuid,identifier)," +
 					"person:(personName))";
 			}
