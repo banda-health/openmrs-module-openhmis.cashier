@@ -21,8 +21,9 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.util.LocaleUtility;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 /**
  * REST resource representing a {@link Timesheet}.
@@ -64,7 +65,8 @@ public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 	}
 
 	public String getDisplayString(Timesheet instance) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		DateFormat dateFormat =
+		        DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.SHORT, LocaleUtility.getDefaultLocale());
 		return dateFormat.format(instance.getClockIn()) + " to "
 		        + (instance.getClockOut() != null ? dateFormat.format(instance.getClockOut())
 		                : " open");
