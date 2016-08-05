@@ -91,6 +91,30 @@ table.manage-cashpoints-table th:nth-child(2), td:nth-child(2) {
     width: 45%;
 }
 
+table.amount-details tr:nth-child(even){
+	background: none;
+}
+
+table.amount-details tr {
+	line-height: 20px;
+	border-style:none;
+}
+
+table.amount-details td {
+	border-style:none;
+	font-weight: bold;
+}
+table.amount-details th:first-child, td:first-child{
+	width:85%;
+}
+
+table.amount-details th:nth-child(2), td:nth-child(2) {
+	width: 15%;
+}
+table.amount-details th:nth-child(3), td:nth-child(3) {
+	width: 10%;
+}
+
 .not-found{
     margin-left:300px;
 }
@@ -106,4 +130,199 @@ ul.dialog-table-layout li {
 }
 #attribute-types-dialog select option {
     font-size: 1.1em;
+}
+
+.timesheet legend{
+        font-size:16px;
+        width:150px;
+        color: #00463f  ;
+        text-transform: none;
+        font-weight: bold;
+}
+#generaterCashierReport{
+    width:550px;
+}
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.btn-grey {
+    background-color: #666666;
+    color: white;
+}
+.btn-grey:hover {
+    background-color: #666666;
+    color: white;
+}
+select.ng-invalid.ng-touched {
+    border-color: red;
+}
+
+select.ng-valid.ng-touched {
+    border-color: #EBE9ED;
+}
+
+fieldset.actions{
+	margin: 10px 0px;
+	min-width: 100%;
+}
+fieldset.paymentMode{
+	width: 100%;
+	margin: 10px 0px;
+	border: 1px solid #666666;
+}
+fieldset.paymentMode select{
+	width: 100%;
+}
+ul.table-layout .gray-button{
+	background: #666666;
+	border-color: #666666;
+	color: white;
+}
+input[type="button"].gray-button:hover{
+	background: #666666;
+	border-color: #666666;
+}
+ul.totals-layout{
+	text-align: left;
+	margin-left: 0px;
+	padding: 0;
+}
+
+ul.totals-layout li{
+	text-align: left;
+	display: inline-block;
+	width: 260px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+ul.totals-layout li.valign {
+	vertical-align: top;
+}
+
+table.item-stock th{
+	line-height: 20px;
+	font-size: 15px;
+}
+
+table.item-stock .autocomplete-search {
+	width: 375px;
+}
+table.item-stock td{
+	vertical-align: top;
+}
+fieldset.createBill{
+	min-width: 100%;
+	margin: 0 0px;
+	border: 0px;
+	padding: 0px;
+}
+fieldset.createBill input.btn {
+	background: #666666;
+	border-color: #666666;
+	color: white;
+	font-size: 16px;
+}
+fieldset.createBill input.btn:hover {
+	background: #666666;
+	border-color: #666666;
+	color: white;
+}
+table.bool{
+	width: 50%;
+	margin: 0 -10px;
+}
+table.bool tr {
+	line-height: 20px;
+	border-style:none;
+}
+
+table.bool td {
+	border-style:none;
+}
+ul.bill-info{
+	font-size: 10pt;
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+ul.bill-info li{
+	margin: 0 20px 0 0;
+	display: block;
+	float: left;
+}
+ul.bill-info li select{
+	padding: 0px;
+	width: 150px;
+	margin: 0px 0 0 -7px;
+}
+
+ul.page-title{
+	font-size: 11pt;
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+ul.page-title li{
+	margin: 0 20px 0 0;
+	display: block;
+	float: left;
+}
+fieldset.nested .paymentTitle{
+	width: 22%;
+}
+fieldset.nested .previousBillTitle{
+	width: 40%;
+}
+fieldset.nested .previous-bill td:first-child{
+	width: 60%;
+}
+fieldset.nested .previous-bill td:nth-child(2){
+	width: 10%;
+}
+fieldset.nested .previous-bill td:nth-child(3){
+	width: 15%;
+}
+fieldset.nested .previous-bill td:nth-child(4){
+	width: 15%;
+}
+fieldset.nested .previous-payment td:first-child{
+	width: 20%;
+}
+fieldset.nested .previous-payment td:nth-child(2){
+	width: 25%;
+}
+fieldset.nested .previous-payment td:nth-child(3){
+	width: 42%;
+	font-size:0.9em;
+}
+fieldset.nested .previous-payment td:nth-child(4){
+	width: 15%;
+}
+fieldset.nested .previous-payment td:nth-child(5){
+	width: 15%;
 }

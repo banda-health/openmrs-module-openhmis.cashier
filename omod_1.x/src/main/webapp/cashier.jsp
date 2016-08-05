@@ -1,3 +1,4 @@
+
 <%@ page import="org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants" %>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
@@ -42,19 +43,12 @@
         var year = date.getFullYear();
         var hour = date.getHours();
         var min = date.getMinutes();
-        var ampm = "AM";
 
         day = day < 10 ? "0" + day : day.toString();
         month = month < 10 ? "0" + month: month.toString();
         hour = hour < 10 ? "0" + hour : hour.toString();
         min = min < 10 ? "0" + min: min.toString();
 
-        /*
-        if (hour > 12) {
-            ampm = "PM";
-            hour -= 12;
-        }
-        */
         return month + '/' + day + '/' + year + " " + hour + ":" + min;
     }
 
@@ -129,7 +123,7 @@
                     <spring:bind path="cashPoint">
                         <select id="cashPoint" name="${status.expression}">
                             <c:forEach items="${cashPoints}" var="cashPoint">
-                                <option value="${cashPoint.id}" <c:if test="${timesheet.cashPoint.id == status.value}">selected="true"</c:if>>
+                                <option value="${cashPoint.id}" <c:if test="${timesheet.cashPoint.id == cashPoint.id}"> selected </c:if>>
                                         ${cashPoint.name}
                                 </option>
                             </c:forEach>
