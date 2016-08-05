@@ -195,6 +195,11 @@
 	</privilege>
 
 	<privilege>
+		<name>Task: Adjust Cashier Bills</name>
+		<description>Able to adjust cashier bills</description>
+	</privilege>
+
+	<privilege>
 		<name>Task: Cashier Timesheets</name>
 		<description>Able to access timesheets page</description>
 	</privilege>
