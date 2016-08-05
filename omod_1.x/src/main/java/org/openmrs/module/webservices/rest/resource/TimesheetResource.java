@@ -14,7 +14,6 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
-import org.openmrs.module.openhmis.cashier.api.model.BillLineItem;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -22,6 +21,9 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.util.LocaleUtility;
+
+import java.text.DateFormat;
 
 /**
  * REST resource representing a {@link Timesheet}.
@@ -42,15 +44,31 @@ public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		description.addProperty("cashier", Representation.REF);
+		description.addProperty("cashPoint", Representation.REF);
+		description.addProperty("clockIn");
+		description.addProperty("clockOut");
 		if (rep instanceof RefRepresentation) {
 			description.addProperty("id");
+			description.addProperty("uuid");
 		}
 
 		return description;
 	}
 
+	@Override
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = super.getCreatableProperties();
+		description.addProperty("cashier");
+		description.addProperty("cashpoint");
+		return description;
+	}
+
 	public String getDisplayString(Timesheet instance) {
-		return instance.getClockIn().toString() + " to "
-		        + (instance.getClockOut() != null ? instance.getClockOut() : " open");
+		DateFormat dateFormat =
+		        DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.SHORT, LocaleUtility.getDefaultLocale());
+		return dateFormat.format(instance.getClockIn()) + " to "
+		        + (instance.getClockOut() != null ? dateFormat.format(instance.getClockOut())
+		                : " open");
 	}
 }
