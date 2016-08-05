@@ -189,9 +189,9 @@
 		function setBaseUrl(module_name) {
 			EntityRestFactory.setBaseUrl(module_name);
 		}
-
-		function errorCallback(error) {
-			console.log(error);
+		
+		function errorCallback(error){
+			emr.errorAlert(error);
 		}
 	}
 })();
