@@ -20,10 +20,6 @@
 
 	CashierBillRestfulService.$inject = ['EntityRestFactory', 'CashierBillFunctions'];
 
-	var ROOT_URL = '/' + OPENMRS_CONTEXT_PATH + '/';
-	var CASHIER_PAGE_URL = ROOT_URL + '/module/openhmis/cashier/';
-	var MODULE_SETTINGS_URL = 'module/openhmis/cashier/moduleSettings.page';
-
 	function CashierBillRestfulService(EntityRestFactory, CashierBillFunctions) {
 		var service;
 

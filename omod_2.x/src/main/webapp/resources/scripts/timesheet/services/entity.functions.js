@@ -84,12 +84,12 @@
 				selector: '#' + selectorId,
 				actions: {
 					cancel: function(){
-						$window.location.replace('/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page');
+						$window.location.replace(CASHIER_LANDING_PAGE_URL);
 						dialog.close();
 					},
 					confirm: function () {
 						$scope.generateReport();
-						$window.location.replace('/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page');
+						$window.location.replace(CASHIER_LANDING_PAGE_URL);
 						dialog.close();
 					}
 				}

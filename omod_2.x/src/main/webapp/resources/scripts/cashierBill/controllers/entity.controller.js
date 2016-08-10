@@ -31,18 +31,11 @@
 		var module_name = 'cashier';
 		var entity_name_message_key = "openhmis.cashier.bill";
 		var rest_entity_name = emr.message("openhmis.cashier.restful_name");
-		var ROOT_URL = '/' + OPENMRS_CONTEXT_PATH + '/';
-		var CANCEL_PAGE = ROOT_URL + 'openhmis.cashier/cashierLanding.page';
-		var TIMESHEET_URL = ROOT_URL + 'openhmis.cashier/timesheet/entities.page#/';
-		var PRINT_RECEIPT_URL = ROOT_URL + 'module/openhmis/cashier/receipt.form?billId=';
-		var ENTITIES_URL = 'entities.page#/';
-		var PRIVILEGE_CREATE_BILL = 'Task: Create new bill';
-		var PRIVILEGE_ADJUST_BILL = 'Task: Adjust Cashier Bills';
 
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters || function() {
 				self.bindBaseParameters(module_name, rest_entity_name,
-					entity_name_message_key, CANCEL_PAGE);
+					entity_name_message_key, CASHIER_LANDING_PAGE_URL);
 				self.checkPrivileges(PRIVILEGE_CREATE_BILL);
 			};
 
@@ -241,7 +234,7 @@
 				//check if the "allow bill adjustment" setting is set.
 				CashierBillRestfulService.checkAllowBillAdjustment(function(data) {
 					if (data !== undefined && data.results === "false") {
-						$window.location.href = CANCEL_PAGE;
+						$window.location.href = CASHIER_CANCEL_PAGE;
 					}
 				});
 

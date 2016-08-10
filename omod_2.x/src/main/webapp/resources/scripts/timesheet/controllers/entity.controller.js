@@ -28,13 +28,12 @@
 		var module_name = 'cashier';
 		var entity_name_message_key = emr.message("openhmis.cashier.page.timesheet");
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
-		var cancel_page = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page';
 		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
 			|| function () {
 				self.bindBaseParameters(module_name, rest_entity_name,
-					entity_name_message_key, cancel_page);
+					entity_name_message_key, CASHIER_LANDING_PAGE_URL);
 			}
 		
 		/**
@@ -69,9 +68,10 @@
 				}
 				
 				$scope.generateReport = function () {
-					var contextPath = '/' + OPENMRS_CONTEXT_PATH + '/';
-					var url = "module/openhmis/cashier/jasperReport.form?";
-					url += "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
+					var contextPath = ROOT_URL;
+					console.log(ROOT_URL);
+					var url =  REPORTS_PAGE_URL + "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
+					console.log(REPORTS_PAGE_URL);
 					window.open(contextPath + url, "pdfDownload");
 				}
 			};
@@ -116,7 +116,7 @@
 		
 		self.onLoadProviderSuccessful = self.onLoadProviderSuccessful || function (data) {
 				if (data.currentProvider == null) {
-					$window.location.replace('entities.page#/accessDenied');
+					$window.location.replace(TIMESHEET_ACCESS_DENIED_PAGE_URL);
 				} else {
 					$scope.cashier = data.currentProvider.uuid;
 					$scope.accessDenied = false;
