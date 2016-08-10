@@ -28,6 +28,8 @@
 		var module_name = 'cashier';
 		var entity_name_message_key = emr.message("openhmis.cashier.page.timesheet");
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
+		var REPORTS_PAGE_URL = 'module/openhmis/cashier/jasperReport.form?';
+		var TIMESHEET_ACCESS_DENIED_PAGE_URL = 'entities.page#/accessDenied';
 		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
@@ -69,9 +71,7 @@
 				
 				$scope.generateReport = function () {
 					var contextPath = ROOT_URL;
-					console.log(ROOT_URL);
 					var url =  REPORTS_PAGE_URL + "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
-					console.log(REPORTS_PAGE_URL);
 					window.open(contextPath + url, "pdfDownload");
 				}
 			};
