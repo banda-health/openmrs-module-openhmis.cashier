@@ -21,8 +21,10 @@
 	CashierBillRestfulService.$inject = ['EntityRestFactory', 'CashierBillFunctions'];
 
 	function CashierBillRestfulService(EntityRestFactory, CashierBillFunctions) {
+		
 		var service;
-
+		var CASHIER_PAGE_URL = ROOT_URL + '/module/openhmis/cashier/';
+		
 		service = {
 			getPaymentModes: getPaymentModes,
 			loadPaymentModeAttributes: loadPaymentModeAttributes,
