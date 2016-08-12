@@ -28,10 +28,12 @@
         var module_name = 'cashier';
         var entity_name = emr.message("openhmis.cashier.paymentMode.name");
         var rest_entity_name = emr.message("openhmis.cashier.paymentMode.rest_name");
+        var PRIVILEGE_MANAGE_PAYMENT_MODES = "Task: Manage Payment Modes";
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {
                 self.bindBaseParameters(module_name, rest_entity_name, entity_name);
+                self.checkPrivileges(PRIVILEGE_MANAGE_PAYMENT_MODES);
             }
 
         /* ENTRY POINT: Instantiate the base controller which loads the page */

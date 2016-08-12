@@ -1,3 +1,4 @@
+<%@ page import="org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants" %>
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%--
   ~ The contents of this file are subject to the OpenMRS Public License
@@ -13,7 +14,7 @@
   ~ Copyright (C) OpenHMIS.  All Rights Reserved.
   ~
   --%>
-<openmrs:require allPrivileges="<%=PrivilegeWebConstants.SETTING_PAGE_PRIVILEGE%>" otherwise="/login.htm"
+<openmrs:require allPrivileges="<%=PrivilegeConstants.TASK_MANAGE_SETTINGS_PAGE%>" otherwise="/login.htm"
                  redirect="<%= CashierWebConstants.CASHIER_SETTINGS_2X_PAGE %>"/>
 
 <openmrs:htmlInclude file='<%= request.getContextPath() + CashierWebConstants.MODULE_RESOURCE_ROOT + "css/style.css" %>'/>

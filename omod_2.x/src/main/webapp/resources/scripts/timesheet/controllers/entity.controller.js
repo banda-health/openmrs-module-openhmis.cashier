@@ -29,12 +29,14 @@
 		var entity_name_message_key = emr.message("openhmis.cashier.page.timesheet");
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
 		var cancel_page = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page';
+		var PRIVILEGE_CASHIER_TIMESHEETS = "Task: Cashier Timesheets";
 		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
 			|| function () {
 				self.bindBaseParameters(module_name, rest_entity_name,
 					entity_name_message_key, cancel_page);
+				self.checkPrivileges(PRIVILEGE_CASHIER_TIMESHEETS);
 			}
 		
 		/**
