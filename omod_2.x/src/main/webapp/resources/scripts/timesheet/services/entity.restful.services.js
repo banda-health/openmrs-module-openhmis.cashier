@@ -84,7 +84,7 @@
 		 * */
 		function loadCashierShiftReportId(module_name, onLoadCashierShiftReportIdSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['resource'] = CASHIER_MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'openhmis.cashier.defaultShiftReportId';
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,

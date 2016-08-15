@@ -25,16 +25,14 @@
 	                             TimesheetRestfulService, TimesheetFunctions, $window) {
 		var self = this;
 		
-		var module_name = 'cashier';
-		var entity_name_message_key = emr.message("openhmis.cashier.page.timesheet");
+		var entity_name_message_key = "openhmis.cashier.page.timesheet";
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
-		var REPORTS_PAGE_URL = 'module/openhmis/cashier/jasperReport.form?';
 		var TIMESHEET_ACCESS_DENIED_PAGE_URL = 'entities.page#/accessDenied';
 		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
 			|| function () {
-				self.bindBaseParameters(module_name, rest_entity_name,
+				self.bindBaseParameters(CASHIER_MODULE_NAME, rest_entity_name,
 					entity_name_message_key, CASHIER_LANDING_PAGE_URL);
 			}
 		
@@ -83,7 +81,7 @@
 		self.onTimesheetShiftReportDateSuccessCallback = self.onTimesheetShiftReportDateSuccessCallback || function (data) {
 				$scope.selectedReportDate = data;
 				var selectedReportDate = TimesheetFunctions.formatDate(data);
-				TimesheetRestfulService.loadTimesheet(module_name, self.onLoadSelectedReportDateTimesheetSuccessful, selectedReportDate);
+				TimesheetRestfulService.loadTimesheet(CASHIER_MODULE_NAME, self.onLoadSelectedReportDateTimesheetSuccessful, selectedReportDate);
 			}
 		
 		self.onLoadSelectedReportDateTimesheetSuccessful = self.onLoadSelectedReportDateTimesheetSuccessful || function (data) {
@@ -92,7 +90,7 @@
 			}
 		
 		self.loadCashierShiftReportId = self.loadCashierShiftReportId || function () {
-				TimesheetRestfulService.loadCashierShiftReportId(module_name, self.onLoadCashierShiftReportIdSuccessful);
+				TimesheetRestfulService.loadCashierShiftReportId(CASHIER_MODULE_NAME, self.onLoadCashierShiftReportIdSuccessful);
 			}
 		
 		self.onLoadCashierShiftReportIdSuccessful = self.onLoadCashierShiftReportIdSuccessful || function (data) {
@@ -100,13 +98,13 @@
 			}
 		
 		self.loadCashpoints = self.loadCashpoints || function () {
-				TimesheetRestfulService.loadCashpoints(module_name, self.onLoadCashpointsSuccessful);
+				TimesheetRestfulService.loadCashpoints(CASHIER_MODULE_NAME, self.onLoadCashpointsSuccessful);
 			}
 		self.loadCurrentProvider = self.loadCurrentProvider || function () {
-				TimesheetRestfulService.loadProvider(module_name, self.onLoadProviderSuccessful);
+				TimesheetRestfulService.loadProvider(CASHIER_MODULE_NAME, self.onLoadProviderSuccessful);
 			}
 		self.loadCurrentTimesheets = self.loadCurrentTimesheets || function () {
-				TimesheetRestfulService.loadTimesheet(module_name, self.onloadCurrentTimesheetSuccessful, TimesheetFunctions.formatDate(new Date()));
+				TimesheetRestfulService.loadTimesheet(CASHIER_MODULE_NAME, self.onloadCurrentTimesheetSuccessful, TimesheetFunctions.formatDate(new Date()));
 			}
 		
 		//callback

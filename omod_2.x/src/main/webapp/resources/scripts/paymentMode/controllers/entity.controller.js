@@ -24,13 +24,12 @@
                                    PaymentModeModel, PaymentModeFunctions, EntityFunctions, PaymentModeRestfulService) {
         var self = this;
 
-        var module_name = 'cashier';
         var entity_name_message_key = "openhmis.cashier.paymentMode.name";
         var rest_entity_name = emr.message("openhmis.cashier.paymentMode.rest_name");
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function() {
-                self.bindBaseParameters(module_name, rest_entity_name, entity_name_message_key, RELATIVE_CANCEL_PAGE_URL);
+                self.bindBaseParameters(CASHIER_MODULE_NAME, rest_entity_name, entity_name_message_key, RELATIVE_CANCEL_PAGE_URL);
             };
 
         /**
@@ -63,7 +62,7 @@
                 }
 
                 // retrieve and load format fields..
-                PaymentModeRestfulService.loadFormatFields(module_name, self.onLoadFormatFieldsSuccessful);
+                PaymentModeRestfulService.loadFormatFields(CASHIER_MODULE_NAME, self.onLoadFormatFieldsSuccessful);
             };
 
         /**

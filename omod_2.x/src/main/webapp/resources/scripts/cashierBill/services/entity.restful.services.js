@@ -131,7 +131,7 @@
 
 		function getTimesheet(onLoadTimesheetSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['resource'] = CASHIER_MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'timesheet';
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
@@ -140,7 +140,7 @@
 
 		function checkAdjustmentReasonRequired(onLoadAdjustmentReasonSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['resource'] = CASHIER_MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'openhmis.cashier.adjustmentReasonField';
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
@@ -149,7 +149,7 @@
 
 		function checkAllowBillAdjustment(onLoadAllowBillAdjustmentSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['resource'] = CASHIER_MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'openhmis.cashier.allowBillAdjustments';
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
@@ -158,7 +158,7 @@
 
 		function checkAutofillPaymentAmount(onLoadAutofillPaymentAmountSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['resource'] = CASHIER_MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'openhmis.cashier.autofillPaymentAmount';
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
