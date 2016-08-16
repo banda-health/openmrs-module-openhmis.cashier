@@ -25,13 +25,12 @@
 
         var self = this;
 
-        var module_name = 'cashier';
         var entity_name = emr.message("openhmis.cashier.cashPoint.name");
         var rest_entity_name = emr.message("openhmis.cashier.cashPoint.rest_name");
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {
-                self.bindBaseParameters(module_name, rest_entity_name, entity_name);
+                self.bindBaseParameters(CASHIER_MODULE_NAME, rest_entity_name, entity_name);
             }
 
         // @Override
@@ -52,7 +51,7 @@
             }
 
         self.loadLocations = self.loadLocations || function(){
-                CashpointRestfulService.loadLocations(module_name, self.onLoadLocationsSuccessful);
+                CashpointRestfulService.loadLocations(CASHIER_MODULE_NAME, self.onLoadLocationsSuccessful);
             }
 
         self.searchCashpointsByName = self.searchCashpointsByName || function(currentPage){
