@@ -20,13 +20,11 @@
 
 	CashierBillRestfulService.$inject = ['EntityRestFactory', 'CashierBillFunctions'];
 
-	var ROOT_URL = '/' + OPENMRS_CONTEXT_PATH + '/';
-	var CASHIER_PAGE_URL = ROOT_URL + '/module/openhmis/cashier/';
-	var MODULE_SETTINGS_URL = 'module/openhmis/cashier/moduleSettings.page';
-
 	function CashierBillRestfulService(EntityRestFactory, CashierBillFunctions) {
+		
 		var service;
-
+		var CASHIER_PAGE_URL = ROOT_URL + '/module/openhmis/cashier/';
+		
 		service = {
 			getPaymentModes: getPaymentModes,
 			loadPaymentModeAttributes: loadPaymentModeAttributes,
@@ -133,7 +131,7 @@
 
 		function getTimesheet(onLoadTimesheetSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['resource'] = CASHIER_MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'timesheet';
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
@@ -142,7 +140,7 @@
 
 		function checkAdjustmentReasonRequired(onLoadAdjustmentReasonSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['resource'] = CASHIER_MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'openhmis.cashier.adjustmentReasonField';
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
@@ -151,7 +149,7 @@
 
 		function checkAllowBillAdjustment(onLoadAllowBillAdjustmentSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['resource'] = CASHIER_MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'openhmis.cashier.allowBillAdjustments';
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,
@@ -160,7 +158,7 @@
 
 		function checkAutofillPaymentAmount(onLoadAutofillPaymentAmountSuccessful) {
 			var requestParams = [];
-			requestParams['resource'] = MODULE_SETTINGS_URL;
+			requestParams['resource'] = CASHIER_MODULE_SETTINGS_URL;
 			requestParams['setting'] = 'openhmis.cashier.autofillPaymentAmount';
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams,

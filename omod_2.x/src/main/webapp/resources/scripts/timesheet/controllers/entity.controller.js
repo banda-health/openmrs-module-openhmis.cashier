@@ -25,17 +25,18 @@
 	                             TimesheetRestfulService, TimesheetFunctions, $window) {
 		var self = this;
 		
-		var module_name = 'cashier';
-		var entity_name_message_key = emr.message("openhmis.cashier.page.timesheet");
+		var entity_name_message_key = "openhmis.cashier.page.timesheet";
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
 		var cancel_page = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page';
+		
 		var PRIVILEGE_CASHIER_TIMESHEETS = "Task: Cashier Timesheets";
+		var TIMESHEET_ACCESS_DENIED_PAGE_URL = 'entities.page#/accessDenied';
 		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
 			|| function () {
-				self.bindBaseParameters(module_name, rest_entity_name,
-					entity_name_message_key, cancel_page);
+					self.bindBaseParameters(CASHIER_MODULE_NAME, rest_entity_name,
+						entity_name_message_key, CASHIER_LANDING_PAGE_URL);
 				self.checkPrivileges(PRIVILEGE_CASHIER_TIMESHEETS);
 			}
 		
@@ -71,9 +72,8 @@
 				}
 				
 				$scope.generateReport = function () {
-					var contextPath = '/' + OPENMRS_CONTEXT_PATH + '/';
-					var url = "module/openhmis/cashier/jasperReport.form?";
-					url += "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
+					var contextPath = ROOT_URL;
+					var url =  REPORTS_PAGE_URL + "reportId=" + $scope.cashierShiftReportId + "&timesheetId=" + $scope.timesheetId;
 					window.open(contextPath + url, "pdfDownload");
 				}
 			};
@@ -85,7 +85,7 @@
 		self.onTimesheetShiftReportDateSuccessCallback = self.onTimesheetShiftReportDateSuccessCallback || function (data) {
 				$scope.selectedReportDate = data;
 				var selectedReportDate = TimesheetFunctions.formatDate(data);
-				TimesheetRestfulService.loadTimesheet(module_name, self.onLoadSelectedReportDateTimesheetSuccessful, selectedReportDate);
+				TimesheetRestfulService.loadTimesheet(CASHIER_MODULE_NAME, self.onLoadSelectedReportDateTimesheetSuccessful, selectedReportDate);
 			}
 		
 		self.onLoadSelectedReportDateTimesheetSuccessful = self.onLoadSelectedReportDateTimesheetSuccessful || function (data) {
@@ -94,7 +94,7 @@
 			}
 		
 		self.loadCashierShiftReportId = self.loadCashierShiftReportId || function () {
-				TimesheetRestfulService.loadCashierShiftReportId(module_name, self.onLoadCashierShiftReportIdSuccessful);
+				TimesheetRestfulService.loadCashierShiftReportId(CASHIER_MODULE_NAME, self.onLoadCashierShiftReportIdSuccessful);
 			}
 		
 		self.onLoadCashierShiftReportIdSuccessful = self.onLoadCashierShiftReportIdSuccessful || function (data) {
@@ -102,13 +102,13 @@
 			}
 		
 		self.loadCashpoints = self.loadCashpoints || function () {
-				TimesheetRestfulService.loadCashpoints(module_name, self.onLoadCashpointsSuccessful);
+				TimesheetRestfulService.loadCashpoints(CASHIER_MODULE_NAME, self.onLoadCashpointsSuccessful);
 			}
 		self.loadCurrentProvider = self.loadCurrentProvider || function () {
-				TimesheetRestfulService.loadProvider(module_name, self.onLoadProviderSuccessful);
+				TimesheetRestfulService.loadProvider(CASHIER_MODULE_NAME, self.onLoadProviderSuccessful);
 			}
 		self.loadCurrentTimesheets = self.loadCurrentTimesheets || function () {
-				TimesheetRestfulService.loadTimesheet(module_name, self.onloadCurrentTimesheetSuccessful, TimesheetFunctions.formatDate(new Date()));
+				TimesheetRestfulService.loadTimesheet(CASHIER_MODULE_NAME, self.onloadCurrentTimesheetSuccessful, TimesheetFunctions.formatDate(new Date()));
 			}
 		
 		//callback
@@ -118,7 +118,7 @@
 		
 		self.onLoadProviderSuccessful = self.onLoadProviderSuccessful || function (data) {
 				if (data.currentProvider == null) {
-					$window.location.replace('entities.page#/accessDenied');
+					$window.location.replace(TIMESHEET_ACCESS_DENIED_PAGE_URL);
 				} else {
 					$scope.cashier = data.currentProvider.uuid;
 					$scope.accessDenied = false;

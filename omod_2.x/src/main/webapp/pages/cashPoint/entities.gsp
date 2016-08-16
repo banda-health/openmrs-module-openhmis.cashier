@@ -22,6 +22,7 @@
     ui.includeJavascript("openhmis.cashier", "cashPoint/controllers/entity.controller.js")
     ui.includeJavascript("openhmis.cashier", "cashPoint/controllers/manage-entity.controller.js")
     ui.includeJavascript("openhmis.cashier", "cashPoint/services/entity.functions.js")
+    ui.includeJavascript("openhmis.cashier", "constants.js")
 
 %>
 
