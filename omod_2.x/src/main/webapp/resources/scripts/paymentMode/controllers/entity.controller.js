@@ -26,7 +26,6 @@
 
         var entity_name_message_key = "openhmis.cashier.paymentMode.name";
         var rest_entity_name = emr.message("openhmis.cashier.paymentMode.rest_name");
-        var PRIVILEGE_MANAGE_PAYMENT_MODES = "Task: Manage Payment Modes";
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function() {

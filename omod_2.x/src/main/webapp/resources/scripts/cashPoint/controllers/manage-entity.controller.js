@@ -27,7 +27,6 @@
 
         var entity_name = emr.message("openhmis.cashier.cashPoint.name");
         var rest_entity_name = emr.message("openhmis.cashier.cashPoint.rest_name");
-	    var PRIVILEGE_MANAGE_CASH_POINTS = "Task: Manage Cash Points";
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {

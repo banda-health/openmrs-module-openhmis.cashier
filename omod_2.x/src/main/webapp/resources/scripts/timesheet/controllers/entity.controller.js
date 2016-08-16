@@ -27,9 +27,6 @@
 		
 		var entity_name_message_key = "openhmis.cashier.page.timesheet";
 		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
-		var cancel_page = '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashierLanding.page';
-		
-		var PRIVILEGE_CASHIER_TIMESHEETS = "Task: Cashier Timesheets";
 		var TIMESHEET_ACCESS_DENIED_PAGE_URL = 'entities.page#/accessDenied';
 		
 		// @Override
