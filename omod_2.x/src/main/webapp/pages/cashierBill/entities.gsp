@@ -23,6 +23,7 @@
     ui.includeJavascript("openhmis.cashier", "cashierBill/services/entity.restful.services.js")
     ui.includeJavascript("openhmis.cashier", "cashierBill/controllers/entity.controller.js")
     ui.includeJavascript("openhmis.cashier", "cashierBill/services/entity.functions.js")
+    ui.includeJavascript("openhmis.cashier", "constants.js")
 
 %>
 
