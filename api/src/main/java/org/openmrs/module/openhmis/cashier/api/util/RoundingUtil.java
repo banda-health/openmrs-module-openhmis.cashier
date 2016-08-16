@@ -71,17 +71,13 @@ public class RoundingUtil {
 			MessageSourceService msgService = Context.getMessageSourceService();
 			IDepartmentDataService deptService = Context.getService(IDepartmentDataService.class);
 			IItemDataService itemService = Context.getService(IItemDataService.class);
-
-			Integer itemId;
-			Integer deptId;
-
-			deptId = parseDepartmentId(adminService);
-			itemId = parseItemId(adminService);
-
-			if (deptId == null && itemId == null) {
-				Department department = new Department();
-				String name = msgService.getMessage("openhmis.cashier.rounding.itemName");
-				String description = msgService.getMessage("openhmis.cashier.rounding.itemDescription");
+			Integer deptId = parseDepartmentId(adminService);
+			Integer itemId = parseItemId(adminService);
+			String name = msgService.getMessage("openhmis.cashier.rounding.itemName");
+			String description = msgService.getMessage("openhmis.cashier.rounding.itemDescription");
+			Department department = null;
+			if (deptId == null) {
+				department = new Department();
 				department.setName(name);
 				department.setDescription(description);
 				department.setRetired(true);
@@ -90,11 +86,22 @@ public class RoundingUtil {
 				log.info("Created department for rounding item (ID = " + department.getId() + ")...");
 				adminService.saveGlobalProperty(new GlobalProperty(ModuleSettings.ROUNDING_DEPT_ID, department.getId()
 				        .toString()));
+			}
 
+			if (itemId == null) {
 				Item item = new Item();
 				item.setName(name);
 				item.setDescription(description);
+				if (department == null) {
+					department = Context.getService(IDepartmentDataService.class).getById(deptId);
+					if (department == null) {
+						throw new APIException(
+						        "Department with id " + deptId + " doesn't exist.");
+					}
+				}
+
 				item.setDepartment(department);
+				item.setHasExpiration(false);
 
 				ItemPrice price = item.addPrice(name, BigDecimal.ZERO);
 				item.setDefaultPrice(price);
