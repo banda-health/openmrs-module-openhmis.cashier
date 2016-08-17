@@ -13,16 +13,16 @@
  */
 package org.openmrs.module.openhmis.cashier.api.util;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.openmrs.Privilege;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.util.JasperReportPrivilegeConstants;
 import org.openmrs.module.openhmis.commons.web.PrivilegeConstantsCompatibility;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Constants class for module privilege constants.
@@ -49,18 +49,13 @@ public class PrivilegeConstants {
 	public static final String TASK_ADJUST_CASHIER_BILL = "Task: Adjust Cashier Bills";
 	public static final String TASK_CASHIER_TIMESHEETS_PAGE = "Task: Cashier Timesheets";
 	public static final String TASK_MANAGE_CASHIER_MODULE_PAGE = "Task: Manage Cashier Module";
-	public static final String TASK_CASHIER_ROLE_CREATION_PAGE = "Task: Cashier Role Creation";
-	public static final String TASK_MANAGE_CASH_POINTS_PAGE = "Task: Manage Cash Points";
-	public static final String TASK_MANAGE_PAYMENT_MODES_PAGE = "Task: Manage Payment Modes";
-	public static final String TASK_MANAGE_RECEIPT_NUMBER_GENERATOR_PAGE = "Task: Manage Receipt Number Generator";
-	public static final String TASK_MANAGE_SETTINGS_PAGE = "Task: Access Cashier Settings";
+
+	public static final String TASK_MANAGE_METADATA = "Task: Manage Cashier Metadata";
 
 	public static final String[] PRIVILEGE_NAMES = new String[] { MANAGE_BILLS, ADJUST_BILLS, VIEW_BILLS, PURGE_BILLS,
 	        REFUND_MONEY, REPRINT_RECEIPT, MANAGE_TIMESHEETS, VIEW_TIMESHEETS, PURGE_TIMESHEETS, MANAGE_METADATA,
 	        VIEW_METADATA, PURGE_METADATA, APP_VIEW_CASHIER_APP, TASK_CREATE_NEW_BILL_PAGE, TASK_ADJUST_CASHIER_BILL,
-	        TASK_CASHIER_TIMESHEETS_PAGE, TASK_MANAGE_CASHIER_MODULE_PAGE, TASK_CASHIER_ROLE_CREATION_PAGE,
-	        TASK_MANAGE_CASH_POINTS_PAGE, TASK_MANAGE_PAYMENT_MODES_PAGE, TASK_MANAGE_RECEIPT_NUMBER_GENERATOR_PAGE,
-	        TASK_MANAGE_SETTINGS_PAGE };
+	        TASK_CASHIER_TIMESHEETS_PAGE, TASK_MANAGE_CASHIER_MODULE_PAGE, TASK_MANAGE_METADATA };
 
 	protected PrivilegeConstants() {}
 

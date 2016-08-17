@@ -18,7 +18,7 @@
 <%--@elvariable id="roles" type="java.util.List<org.openmrs.Role>"--%>
 
 <%@ include file="/WEB-INF/template/include.jsp" %>
-<openmrs:require allPrivileges="<%=PrivilegeConstants.TASK_CASHIER_ROLE_CREATION_PAGE %>" otherwise="/login.htm"
+<openmrs:require allPrivileges="<%=PrivilegeConstants.TASK_MANAGE_METADATA %>" otherwise="/login.htm"
                  redirect="/module/openhmis/cashier/cashierRole.page"/>
 
 <openmrs:htmlInclude file='<%= request.getContextPath() + CashierWebConstants.MODULE_RESOURCE_ROOT + "css/style.css" %>'/>

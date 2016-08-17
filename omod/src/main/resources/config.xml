@@ -210,28 +210,8 @@
 	</privilege>
 
 	<privilege>
-		<name>Task: Cashier Role Creation</name>
-		<description>Able to access cashier role page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Manage Cash Points</name>
-		<description>Able to access the manage cash points page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Manage Payment Modes</name>
-		<description>Able to access manage payment modes page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Manage Receipt Number Generator</name>
-		<description>Able to access manage receipt number generator page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Access Cashier Settings</name>
-		<description>Able to access the cashier settings page</description>
+		<name>Task: Manage Cashier Metadata</name>
+		<description>Able to add/edit/delete cashier module metadata</description>
 	</privilege>
 
 	<!-- Maps hibernate files, if present -->

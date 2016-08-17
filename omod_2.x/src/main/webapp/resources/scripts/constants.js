@@ -8,6 +8,5 @@ var REPORTS_PAGE_URL = 'module/openhmis/cashier/jasperReport.form?';
 /*Defining the privileges to be used in the angular files*/
 var PRIVILEGE_CREATE_BILL = 'Task: Create new bill';
 var PRIVILEGE_ADJUST_BILL = 'Task: Adjust Cashier Bills';
-var PRIVILEGE_MANAGE_CASH_POINTS = "Task: Manage Cash Points";
-var PRIVILEGE_MANAGE_PAYMENT_MODES = "Task: Manage Payment Modes";
 var PRIVILEGE_CASHIER_TIMESHEETS = "Task: Cashier Timesheets";
+var TASK_MANAGE_METADATA = "Task: Manage Cashier Metadata";

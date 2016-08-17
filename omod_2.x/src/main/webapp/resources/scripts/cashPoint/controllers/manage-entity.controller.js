@@ -31,7 +31,7 @@
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {
                 self.bindBaseParameters(CASHIER_MODULE_NAME, rest_entity_name, entity_name);
-                self.checkPrivileges(PRIVILEGE_MANAGE_CASH_POINTS);
+                self.checkPrivileges(TASK_MANAGE_METADATA);
             }
 
         // @Override

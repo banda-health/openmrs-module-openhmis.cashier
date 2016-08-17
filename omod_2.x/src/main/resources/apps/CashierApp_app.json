@@ -51,7 +51,7 @@
         "label": "Cashier Role Creation",
         "url": "module/openhmis/cashier/cashierRole2x.page",
         "icon": "icon-user",
-        "requiredPrivilege": "Task: Cashier Role Creation"
+        "requiredPrivilege": "Task: Manage Cashier Metadata"
       },
 
       {
@@ -61,7 +61,7 @@
         "label": "Manage Cash Points",
         "url": "openhmis.cashier/cashPoint/entities.page",
         "icon": "icon-money",
-        "requiredPrivilege": "Task: Manage Cash Points"
+        "requiredPrivilege": "Task: Manage Cashier Metadata"
       },
 
       {
@@ -71,7 +71,7 @@
         "label": "Manage Payment Modes",
         "url": "openhmis.cashier/paymentMode/entities.page",
         "icon": "icon-tasks",
-        "requiredPrivilege": "Task: Manage Payment Modes"
+        "requiredPrivilege": "Task: Manage Cashier Metadata"
       },
 
       {
@@ -81,7 +81,7 @@
         "label": "Manage Receipt Number Generator ",
         "url": "module/openhmis/cashier/admin/receiptNumberGenerator2x.page",
         "icon": "icon-tasks",
-        "requiredPrivilege": "Task: Manage Receipt Number Generator"
+        "requiredPrivilege": "Task: Manage Cashier Metadata"
       },
 
       {
@@ -91,7 +91,7 @@
         "label": "Cashier Settings",
         "url": "module/openhmis/cashier/cashierSettings2x.page",
         "icon": "icon-cogs",
-        "requiredPrivilege": "Task: Access Cashier Settings"
+        "requiredPrivilege": "Task: Manage Cashier Metadata"
       }
     ]
   }
