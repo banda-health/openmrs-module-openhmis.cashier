@@ -37,11 +37,11 @@
     <br />
     <div class="row">
         <div class="col-xs-1">
-            <strong>Report:</strong>
+            <strong>${ui.message("openhmis.cashier.report.name")}:</strong>
         </div>
         <div class="col-xs-4">
             <select id="reportDropdown" class="form-control" onchange="selectReport()">
-                    <option value="-1">Select Report</option>
+                    <option value="-1">${ui.message("openhmis.cashier.report.selectDefault")}</option>
                     <% reports.each { %>
                     <option value="${it.reportId}">${it.name}</option>
                     <% } %>
@@ -51,7 +51,7 @@
     <br />
     <div class="row">
         <div class="col-xs-12">
-            <div class="parameterEntry noReportSelected" >Please select a report.</div>
+            <div class="parameterEntry noReportSelected" >${ui.message("openhmis.cashier.report.noReportSelectedMessage")}</div>
             <div class="dateRange parameterEntry" style="display: none">
                 <ul class="table-layout">
                     <li class="required">
@@ -81,7 +81,7 @@
     <br />
     <div class="detail-section-border-top">
         <br/>
-        <input type="button" class="cancel" value="Cancel" onClick="cancel()" />
+        <input type="button" class="cancel" value="${ui.message("general.cancel")}" onClick="cancel()" />
         <div class="right btn-group">
             <button type="button" class="btn confirm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -166,6 +166,6 @@
     }
 
     function cancel() {
-        window.history.back();
+        window.location = '${ui.pageLink("openhmis.cashier", "cashierLanding")}';
     }
 </script>

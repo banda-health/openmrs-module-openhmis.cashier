@@ -56,10 +56,7 @@ public class ModuleSettings {
 	protected ModuleSettings() {}
 
 	public static Integer getReceiptReportId() {
-		AdministrationService administrationService = Context.getAdministrationService();
-		String property = administrationService.getGlobalProperty(RECEIPT_REPORT_ID_PROPERTY);
-
-		return Integer.parseInt(property);
+		return getIntProperty(RECEIPT_REPORT_ID_PROPERTY);
 	}
 
 	public static JasperReport getReceiptReport() {
@@ -198,6 +195,16 @@ public class ModuleSettings {
 	}
 
 	// TODO: These functions should be moved to a commons-level base class for module settings classes
+	private static Boolean getBoolProperty(String propertyName) {
+		Boolean result = null;
+		String property = administrationService.getGlobalProperty(propertyName);
+		if (!StringUtils.isEmpty(property)) {
+			result = Boolean.parseBoolean(property);
+		}
+
+		return result;
+	}
+
 	private static void getBoolProperty(String propertyName, Action1<Boolean> action) {
 		getBoolProperty(propertyName, null, action);
 	}
@@ -217,6 +224,16 @@ public class ModuleSettings {
 		} else {
 			administrationService.setGlobalProperty(propertyName, Boolean.FALSE.toString());
 		}
+	}
+
+	private static Integer getIntProperty(String propertyName) {
+		Integer result = null;
+		String property = administrationService.getGlobalProperty(propertyName);
+		if (!StringUtils.isEmpty(property) && NumberUtils.isNumber(property)) {
+			result = Integer.parseInt(property);
+		}
+
+		return result;
 	}
 
 	private static void getIntProperty(String propertyName, Action1<Integer> action) {

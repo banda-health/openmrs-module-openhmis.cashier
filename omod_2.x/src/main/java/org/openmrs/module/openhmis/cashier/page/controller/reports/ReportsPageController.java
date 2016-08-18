@@ -43,7 +43,7 @@ public class ReportsPageController {
 	private JasperReportService reportService;
 	private List<JasperReport> reports;
 
-	public void get(PageModel model, PageRequest request, UiUtils ui) throws IOException {
+	public void get(PageModel model) throws IOException {
 		reportService = Context.getService(JasperReportService.class);
 		reports = new ArrayList<JasperReport>();
 

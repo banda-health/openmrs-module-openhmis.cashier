@@ -269,6 +269,11 @@
 		<description>Able to access the cashier settings page</description>
 	</privilege>
 
+	<privilege>
+		<name>Task: View Cashier Reports</name>
+		<description>Able to view the cashier reports</description>
+	</privilege>
+
 	<!-- Maps hibernate files, if present -->
 	<mappingFiles>
 		Bill.hbm.xml
