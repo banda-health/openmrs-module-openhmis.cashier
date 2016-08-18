@@ -26,11 +26,12 @@
         var self = this;
 
         var entity_name = emr.message("openhmis.cashier.cashPoint.name");
-        var rest_entity_name = emr.message("openhmis.cashier.cashPoint.rest_name");
+        var REST_ENTITY_NAME = "cashPoint";
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {
-                self.bindBaseParameters(CASHIER_MODULE_NAME, rest_entity_name, entity_name);
+                self.checkPrivileges(TASK_MANAGE_METADATA);
+                self.bindBaseParameters(CASHIER_MODULE_NAME, REST_ENTITY_NAME, entity_name);
             }
 
         // @Override
@@ -75,7 +76,7 @@
                     location_uuid = $scope.location.uuid || $scope.location;
                 }
                 CookiesService.set('location', location_uuid);
-                CashpointRestfulService.searchCashpoints(rest_entity_name, location_uuid, currentPage, $scope.limit, $scope.includeRetired, searchField, self.onSearchCashpointSuccessful);
+                CashpointRestfulService.searchCashpoints(REST_ENTITY_NAME, location_uuid, currentPage, $scope.limit, $scope.includeRetired, searchField, self.onSearchCashpointSuccessful);
             }
 
         // call back

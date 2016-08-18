@@ -18,7 +18,7 @@
 <%--@elvariable id="generators" type="java.util.List"--%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
-<openmrs:require privilege="<%=PrivilegeConstants.MANAGE_BILLS %>" otherwise="/login.htm" redirect="<%= CashierWebConstants.RECEIPT_NUMBER_GENERATOR_PAGE_2X%>" />
+<openmrs:require privilege="<%=PrivilegeConstants.TASK_MANAGE_RECEIPT_NUMBER_GENERATOR_PAGE %>" otherwise="/login.htm" redirect="<%= CashierWebConstants.RECEIPT_NUMBER_GENERATOR_PAGE_2X%>" />
 
 <openmrs:htmlInclude file='<%= request.getContextPath() + CashierWebConstants.MODULE_RESOURCE_ROOT + "css/style.css" %>'/>
 <openmrs:htmlInclude file='<%= request.getContextPath() + CashierWebConstants.MODULE_COMMONS_RESOURCE_ROOT + "css/css_2.x/style2x.css" %>'/>
