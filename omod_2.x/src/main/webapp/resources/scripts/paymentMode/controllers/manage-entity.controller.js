@@ -30,6 +30,7 @@
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {
+                self.checkPrivileges(TASK_MANAGE_METADATA);
                 self.bindBaseParameters(CASHIER_MODULE_NAME, REST_ENTITY_NAME, entity_name);
             }
 

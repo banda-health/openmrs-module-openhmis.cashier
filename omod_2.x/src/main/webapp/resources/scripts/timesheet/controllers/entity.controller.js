@@ -32,6 +32,7 @@
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
 			|| function () {
+				self.checkPrivileges(PRIVILEGE_CASHIER_TIMESHEETS);
 				self.bindBaseParameters(CASHIER_MODULE_NAME, REST_ENTITY_NAME, entity_name_message_key,
 					CASHIER_LANDING_PAGE_URL);
 			}

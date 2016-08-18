@@ -29,6 +29,7 @@
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function() {
+                self.checkPrivileges(TASK_MANAGE_METADATA);
                 self.bindBaseParameters(CASHIER_MODULE_NAME, REST_ENTITY_NAME, entity_name_message_key, RELATIVE_CANCEL_PAGE_URL);
             };
 
