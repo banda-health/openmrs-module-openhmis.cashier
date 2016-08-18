@@ -26,15 +26,15 @@
 		var self = this;
 		
 		var entity_name_message_key = "openhmis.cashier.page.timesheet";
-		var rest_entity_name = emr.message("openhmis.cashier.page.timesheet.rest_name");
+		var REST_ENTITY_NAME = "timesheet";
 		var TIMESHEET_ACCESS_DENIED_PAGE_URL = 'entities.page#/accessDenied';
 		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
 			|| function () {
-					self.bindBaseParameters(CASHIER_MODULE_NAME, rest_entity_name,
-						entity_name_message_key, CASHIER_LANDING_PAGE_URL);
 				self.checkPrivileges(PRIVILEGE_CASHIER_TIMESHEETS);
+				self.bindBaseParameters(CASHIER_MODULE_NAME, REST_ENTITY_NAME, entity_name_message_key,
+					CASHIER_LANDING_PAGE_URL);
 			}
 		
 		/**

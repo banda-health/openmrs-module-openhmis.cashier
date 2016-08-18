@@ -35,6 +35,16 @@
       },
 
       {
+        "id": "openhmis.cashier.reportsLink",
+        "extensionPointId": "org.openmrs.module.openhmis.cashier.landing",
+        "type": "link",
+        "label": "Cashier Reports",
+        "url": "openhmis.cashier/reports/reports.page",
+        "icon": "icon-list-alt",
+        "requiredPrivilege": "Task: View Cashier Reports"
+      },
+
+      {
         "id": "openhmis.cashier.manageCashierModuleLink",
         "extensionPointId": "org.openmrs.module.openhmis.cashier.landing",
         "type": "link",

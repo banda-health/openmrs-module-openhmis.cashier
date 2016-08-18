@@ -101,48 +101,6 @@
 			</tr>
 			<tr>
 				<td style="width: 70%;">
-					<spring:message code="openhmis.cashier.setting.receiptReportId.field.header"/>
-					<br/>
-						<span class="description"><spring:message
-								code="openhmis.cashier.setting.receiptReportId.field.description"/></span>
-				</td>
-				<td>
-					<spring:bind path="defaultReceiptReportId">
-						<select class="form-control" id="defaultReceiptReportId" name="defaultReceiptReportId">
-							<option value=""></option>
-							<c:forEach items="${reports}" var="report">
-								<option value="${report.reportId}"
-								        <c:if test="${cashierSettings.defaultReceiptReportId == report.reportId}">selected</c:if>>
-										${report.name}
-								</option>
-							</c:forEach>
-						</select>
-					</spring:bind>
-				</td>
-			</tr>
-			<tr>
-				<td style="width: 70%;">
-					<spring:message code="openhmis.cashier.setting.shiftReportId.field.header"/>
-					<br/>
-						<span class="description"><spring:message
-								code="openhmis.cashier.setting.shiftReportId.field.description"/></span>
-				</td>
-				<td>
-					<spring:bind path="defaultShitReportId">
-						<select class="form-control" id="defaultShitReportId" name="defaultShitReportId">
-							<option value=""></option>
-							<c:forEach items="${reports}" var="report">
-								<option value="${report.reportId}"
-								        <c:if test="${cashierSettings.defaultShitReportId == report.reportId}">selected</c:if>>
-										${report.name}
-								</option>
-							</c:forEach>
-						</select>
-					</spring:bind>
-				</td>
-			</tr>
-			<tr>
-				<td style="width: 70%;">
 					<spring:message code="openhmis.cashier.setting.nearestRounding.field.header"/>
 					<br/>
 						<span class="description"><spring:message
@@ -195,6 +153,133 @@
 						<input class="form-control" id="patientDashboard2BillCount" name="patientDashboard2BillCount" type="text" value="${cashierSettings.patientDashboard2BillCount}"
 						       size="50"
 						       maxlength="4000">
+					</spring:bind>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 70%;">
+					<spring:message code="openhmis.cashier.setting.receiptReportId.field.header"/>
+					<br/>
+					<span class="description"><spring:message
+							code="openhmis.cashier.setting.receiptReportId.field.description"/></span>
+				</td>
+				<td>
+					<spring:bind path="defaultReceiptReportId">
+						<select class="form-control" id="defaultReceiptReportId" name="defaultReceiptReportId">
+							<option value=""></option>
+							<c:forEach items="${reports}" var="report">
+								<option value="${report.reportId}"
+								        <c:if test="${cashierSettings.defaultReceiptReportId == report.reportId}">selected</c:if>>
+										${report.name}
+								</option>
+							</c:forEach>
+						</select>
+					</spring:bind>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 70%;">
+					<spring:message code="openhmis.cashier.setting.departmentCollectionsReportId.field.header"/>
+					<br/>
+					<span class="description">
+						<spring:message code="openhmis.cashier.setting.departmentCollectionsReportId.field.description"/>
+					</span>
+				</td>
+				<td>
+					<spring:bind path="departmentCollectionsReportId">
+						<select class="form-control" id="departmentCollectionsReportId" name="departmentCollectionsReportId">
+							<option value=""></option>
+							<c:forEach items="${reports}" var="report">
+								<option value="${report.reportId}"
+								        <c:if test="${cashierSettings.departmentCollectionsReportId == report.reportId}">selected</c:if>>
+										${report.name}
+								</option>
+							</c:forEach>
+						</select>
+					</spring:bind>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 70%;">
+					<spring:message code="openhmis.cashier.setting.departmentRevenueReportId.field.header"/>
+					<br/>
+					<span class="description"><spring:message
+							code="openhmis.cashier.setting.departmentRevenueReportId.field.description"/></span>
+				</td>
+				<td>
+					<spring:bind path="departmentRevenueReportId">
+						<select class="form-control" id="departmentRevenueReportId" name="departmentRevenueReportId">
+							<option value=""></option>
+							<c:forEach items="${reports}" var="report">
+								<option value="${report.reportId}"
+								        <c:if test="${cashierSettings.departmentRevenueReportId == report.reportId}">selected</c:if>>
+										${report.name}
+								</option>
+							</c:forEach>
+						</select>
+					</spring:bind>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 70%;">
+					<spring:message code="openhmis.cashier.setting.shiftReportId.field.header"/>
+					<br/>
+					<span class="description"><spring:message
+							code="openhmis.cashier.setting.shiftReportId.field.description"/></span>
+				</td>
+				<td>
+					<spring:bind path="defaultShiftReportId">
+						<select class="form-control" id="defaultShiftReportId" name="defaultShiftReportId">
+							<option value=""></option>
+							<c:forEach items="${reports}" var="report">
+								<option value="${report.reportId}"
+								        <c:if test="${cashierSettings.defaultShiftReportId == report.reportId}">selected</c:if>>
+										${report.name}
+								</option>
+							</c:forEach>
+						</select>
+					</spring:bind>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 70%;">
+					<spring:message code="openhmis.cashier.setting.dailyShiftSummaryReportId.field.header"/>
+					<br/>
+					<span class="description"><spring:message
+							code="openhmis.cashier.setting.dailyShiftSummaryReportId.field.description"/></span>
+				</td>
+				<td>
+					<spring:bind path="dailyShiftSummaryReportId">
+						<select class="form-control" id="dailyShiftSummaryReportId" name="dailyShiftSummaryReportId">
+							<option value=""></option>
+							<c:forEach items="${reports}" var="report">
+								<option value="${report.reportId}"
+								        <c:if test="${cashierSettings.dailyShiftSummaryReportId == report.reportId}">selected</c:if>>
+										${report.name}
+								</option>
+							</c:forEach>
+						</select>
+					</spring:bind>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 70%;">
+					<spring:message code="openhmis.cashier.setting.shiftSummaryReportId.field.header"/>
+					<br/>
+					<span class="description"><spring:message
+							code="openhmis.cashier.setting.shiftSummaryReportId.field.description"/></span>
+				</td>
+				<td>
+					<spring:bind path="shiftSummaryReportId">
+						<select class="form-control" id="shiftSummaryReportId" name="shiftSummaryReportId">
+							<option value=""></option>
+							<c:forEach items="${reports}" var="report">
+								<option value="${report.reportId}"
+								        <c:if test="${cashierSettings.shiftSummaryReportId == report.reportId}">selected</c:if>>
+										${report.name}
+								</option>
+							</c:forEach>
+						</select>
 					</spring:bind>
 				</td>
 			</tr>
