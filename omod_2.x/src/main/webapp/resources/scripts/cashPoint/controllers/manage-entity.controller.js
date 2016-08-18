@@ -26,7 +26,7 @@
         var self = this;
 
         var entity_name = emr.message("openhmis.cashier.cashPoint.name");
-        var REST_ENTITY_NAME ="cashPoint";
+        var REST_ENTITY_NAME = "cashPoint";
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {

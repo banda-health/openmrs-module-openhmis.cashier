@@ -26,7 +26,7 @@
 		var self = this;
 		
 		var entity_name_message_key = "openhmis.cashier.page.timesheet";
-		var REST_ENTITY_NAME ="timesheet";
+		var REST_ENTITY_NAME = "timesheet";
 		var TIMESHEET_ACCESS_DENIED_PAGE_URL = 'entities.page#/accessDenied';
 		
 		// @Override

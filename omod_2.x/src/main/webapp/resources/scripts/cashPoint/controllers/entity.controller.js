@@ -23,7 +23,7 @@
         var self = this;
 
         var entity_name_message_key = "openhmis.cashier.cashPoint.name";
-        var REST_ENTITY_NAME ="cashPoint";
+        var REST_ENTITY_NAME = "cashPoint";
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function() {
