@@ -25,11 +25,11 @@
         var self = this;
 
         var entity_name_message_key = "openhmis.cashier.paymentMode.name";
-        var rest_entity_name = emr.message("openhmis.cashier.paymentMode.rest_name");
+        var REST_ENTITY_NAME = "paymentMode";
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function() {
-                self.bindBaseParameters(CASHIER_MODULE_NAME, rest_entity_name, entity_name_message_key, RELATIVE_CANCEL_PAGE_URL);
+                self.bindBaseParameters(CASHIER_MODULE_NAME, REST_ENTITY_NAME, entity_name_message_key, RELATIVE_CANCEL_PAGE_URL);
             };
 
         /**
