@@ -84,3 +84,18 @@ li.bbf-field.field-cashPoint div.bbf-editor { margin-left: 7em; }
 	padding-left: 10px;
 	color: gray;
 }
+.indent{
+	text-indent: 2em;
+}
+.text-align-right a {
+	text-align: right;
+}
+.btn-grey {
+	background-color: #666666;
+	border-color: #666666;
+}
+
+#generatorLink a:link {
+	text-decoration: none;
+	color:white;
+}

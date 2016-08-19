@@ -51,7 +51,7 @@ define(
                 amountFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.amount')), readOnly: true },
                 amountTendered: { type: 'BasicNumber' },
                 amountTenderedFmt: { type: 'BasicNumber', title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.tendered')), readOnly: true },
-                instanceType: { type: 'Object', objRef: true, title: __(openhmis.getMessage('openhmis.cashier.paymentModes.name'))},
+                instanceType: { type: 'Object', objRef: true, title: __(openhmis.getMessage('openhmis.cashier.paymentMode.name'))},
                 attributes: { type: 'List', itemType: 'NestedModel', model: openhmis.PaymentAttribute , title: __(openhmis.getMessage('openhmis.cashier.payment.detailsTitle.details')) }
             },
 
@@ -133,7 +133,7 @@ define(
             attributeTypeClass: openhmis.PaymentModeAttributeType,
 
             meta: {
-                name: openhmis.getMessage('openhmis.cashier.paymentModes.name'),
+                name: openhmis.getMessage('openhmis.cashier.paymentMode.name'),
                 namePlural: openhmis.getMessage('openhmis.cashier.paymentModes.namePlural'),
                 restUrl: 'v2/cashier/paymentMode'
             },

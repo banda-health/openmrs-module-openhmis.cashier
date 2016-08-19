@@ -26,17 +26,17 @@
 </h2>
 
 <form method="POST">
-<b class="boxHeader">Select Receipt Number Generator</b>
+<b class="boxHeader"><spring:message code="openhmis.cashier.receiptGenerator.select" /></b>
 <div class="box">
     <table>
         <tr>
             <td colspan="2">
                 <input type="radio" name="selectedGenerator" value="" id="noGenerator"
                     <c:if test="${currentGenerator == null}">checked="true"</c:if> />
-                <label for="noGenerator">No Generator</label></td>
+                <label for="noGenerator"><spring:message code="openhmis.cashier.receiptGenerator.noGenerator" /></label></td>
         </tr>
         <tr>
-            <td width="5%"></td><td style="font-style: italic;">No receipt numbers will be generated for bills but the bill will still be created and saved.</td>
+            <td width="5%"></td><td style="font-style: italic;"><spring:message code="openhmis.cashier.receiptGenerator.noReceiptNumbers" /></td>
         </tr>
         <c:forEach var="generator" items="${generators}">
             <tr>
@@ -51,7 +51,9 @@
             <tr>
                 <td></td><td>
                     <c:if test="${currentGenerator.name == generator.name && not empty generator.configurationPage}">
-                            <a href="${pageContext.request.contextPath}/${generator.configurationPage}.form">Configure Generator</a>
+                            <a href="${pageContext.request.contextPath}/${generator.configurationPage}.form">
+                                <spring:message code="openhmis.cashier.receiptGenerator.configure" />
+                            </a>
                     </c:if>
                 </td>
             </tr>

@@ -34,23 +34,4 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping(value = CashierWebConstants.CASHIER_SETTINGS_ROOT)
-public class CashierSettingsController {
-	@RequestMapping(method = RequestMethod.GET)
-	public void render(ModelMap modelMap) throws IOException {
-		JasperReportService reportService = Context.getService(JasperReportService.class);
-
-		modelMap.addAttribute("reports", reportService.getJasperReports());
-		modelMap.addAttribute("cashierSettings", ModuleSettings.loadSettings());
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	public void submit(HttpServletRequest request, CashierSettings cashierSettings, Errors errors, ModelMap modelMap)
-	        throws IOException {
-		ModuleSettings.saveSettings(cashierSettings);
-
-		HttpSession session = request.getSession();
-		session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "openhmis.cashier.settings.saved");
-
-		render(modelMap);
-	}
-}
+public class CashierSettingsController extends CashierSettingsControllerBase {}

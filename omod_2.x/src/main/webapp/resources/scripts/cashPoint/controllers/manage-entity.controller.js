@@ -25,13 +25,13 @@
 
         var self = this;
 
-        var module_name = 'cashier';
         var entity_name = emr.message("openhmis.cashier.cashPoint.name");
-        var rest_entity_name = emr.message("openhmis.cashier.cashPoint.rest_name");
+        var REST_ENTITY_NAME = "cashPoint";
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {
-                self.bindBaseParameters(module_name, rest_entity_name, entity_name);
+                self.checkPrivileges(TASK_MANAGE_METADATA);
+                self.bindBaseParameters(CASHIER_MODULE_NAME, REST_ENTITY_NAME, entity_name);
             }
 
         // @Override
@@ -39,45 +39,64 @@
                 self.loadLocations();
                 $scope.searchCashpointsByName = self.searchCashpointsByName;
                 $scope.searchCashpoints = self.searchCashpoints;
-                $scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
+                $scope.searchField = CookiesService.get('searchField') || '';
                 $scope.postSearchMessage = $filter('EmrFormat')(emr.message("openhmis.commons.general.postSearchMessage"),
                     [self.entity_name]);
+
+                $scope.location = CookiesService.get('location');
+                self.searchCashpointsByName(1);
+            }
+
+        // @Override
+        self.paginate = self.paginate || function(page){
             }
 
         self.loadLocations = self.loadLocations || function(){
-                CashpointRestfulService.loadLocations(module_name, self.onLoadLocationsSuccessful);
+                CashpointRestfulService.loadLocations(CASHIER_MODULE_NAME, self.onLoadLocationsSuccessful);
             }
 
         self.searchCashpointsByName = self.searchCashpointsByName || function(currentPage){
                 // reset current page when the search field is cleared
-                if($scope.searhField === undefined || $scope.searchField === ''){
+                if($scope.searchField === undefined || $scope.searchField === ''){
                     currentPage = 1;
-                    $scope.currentPage = currentPage;
                 }
+                $scope.currentPage = currentPage;
                 self.searchCashpoints(currentPage);
             }
 
         self.searchCashpoints = self.searchCashpoints || function(currentPage){
-                CookiesService.set('searchField', $scope.searchField);
+                var searchField = $scope.searchField || '';
+                CookiesService.set('searchField', searchField);
                 CookiesService.set('limit', $scope.limit);
                 CookiesService.set('includeRetired', $scope.includeRetired);
                 CookiesService.set('currentPage', currentPage);
 
-                var location_uuid;
-                if($scope.location !== "" && $scope.location !== null){
-                    location_uuid = $scope.location.uuid;
+                var location_uuid = '';
+                if($scope.location !== "" && $scope.location !== null && $scope.location !== undefined){
+                    location_uuid = $scope.location.uuid || $scope.location;
                 }
-
-                var searchField = $scope.searchField || '';
-
-                CashpointRestfulService.searchCashpoints(rest_entity_name, location_uuid, currentPage, $scope.limit, $scope.includeRetired, searchField, self.onSearchCashpointSuccessful);
+                CookiesService.set('location', location_uuid);
+                CashpointRestfulService.searchCashpoints(REST_ENTITY_NAME, location_uuid, currentPage, $scope.limit, $scope.includeRetired, searchField, self.onSearchCashpointSuccessful);
             }
 
         // call back
         self.onLoadLocationsSuccessful = self.onLoadLocationsSuccessful || function(data){
                 $scope.locations = data.results;
-                $scope.location = $scope.location || emr.message('openhmis.commons.general.anyLocation')
+                var location_uuid = CookiesService.get('location');
+                if(location_uuid !== null && location_uuid !== undefined && location_uuid !== ''){
+                    self.setDisplayLocation($scope.locations, location_uuid);
+                }
             }
+
+        self.setDisplayLocation = self.setDisplayLocation || function(locations, uuid){
+            for(var i = 0; i < locations.length; i++){
+                var location = locations[i];
+                if(location.uuid === uuid){
+                    $scope.location = location;
+                    break;
+                }
+            }
+        }
 
         self.onSearchCashpointSuccessful = self.onSearchCashpointSuccessful || function(data){
                 $scope.fetchedEntities = data.results;

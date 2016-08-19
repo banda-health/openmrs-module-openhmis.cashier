@@ -32,53 +32,14 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Controller to manage the Receipt Number Generation
  */
 @Controller
-@RequestMapping(value = CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT)
-public class ReceiptNumberGeneratorController {
-	private static final Log LOG = LogFactory.getLog(ReceiptNumberGeneratorController.class);
+@RequestMapping(value = ReceiptNumberGeneratorController.RECEIPT_NUMBER_GENERATOR_URL)
+public class ReceiptNumberGeneratorController extends AbstractReceiptNumberGenerator {
 
-	@RequestMapping(method = RequestMethod.GET)
-	@Authorized(PrivilegeConstants.MANAGE_BILLS)
-	public void render(ModelMap model) {
-		IReceiptNumberGenerator currentGenerator = ReceiptNumberGeneratorFactory.getGenerator();
-		IReceiptNumberGenerator[] generators = ReceiptNumberGeneratorFactory.locateGenerators();
+	public static final String RECEIPT_NUMBER_GENERATOR_URL = CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT;
 
-		model.addAttribute("currentGenerator", currentGenerator);
-		model.addAttribute("generators", generators);
+	@Override
+	public String getReceiptNumberGeneratorUrl() {
+		return RECEIPT_NUMBER_GENERATOR_URL;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	@Authorized(PrivilegeConstants.MANAGE_BILLS)
-	public String submit(ModelMap model, @RequestParam(value = "selectedGenerator", required = true) String generatorName) {
-		IReceiptNumberGenerator[] generators = ReceiptNumberGeneratorFactory.locateGenerators();
-		IReceiptNumberGenerator selectedGenerator = null;
-
-		// If no generator has been defined then remove the current one
-		if (StringUtils.isEmpty(generatorName)) {
-			ReceiptNumberGeneratorFactory.setGenerator(null);
-		} else {
-			// Get the selected generator
-			for (IReceiptNumberGenerator generator : generators) {
-				if (generator.getName().equals(generatorName)) {
-					selectedGenerator = generator;
-				}
-			}
-
-			// Load the generator configuration page, if defined
-			if (selectedGenerator == null) {
-				LOG.warn("Could not locate a receipt number generator named '" + generatorName + "'.");
-			} else if (StringUtils.isEmpty(selectedGenerator.getConfigurationPage())) {
-				// There is no generator configuration page so just set the system generator and reload the page
-				ReceiptNumberGeneratorFactory.setGenerator(selectedGenerator);
-			} else {
-				// The configuration page should set the system generator when saved so it is not done here
-				return UrlUtil.redirectUrl(selectedGenerator.getConfigurationPage());
-			}
-		}
-
-		// By default, the page will simply reload with the selected generator
-		model.addAttribute("currentGenerator", selectedGenerator);
-		model.addAttribute("generators", generators);
-
-		return UrlUtil.redirectUrl(CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT);
-	}
 }

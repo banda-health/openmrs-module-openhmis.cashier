@@ -28,7 +28,7 @@
 		<require_module version="2.3">org.openmrs.module.openhmis.backboneforms</require_module>
 		<require_module version="3.0">org.openmrs.module.openhmis.commons</require_module>
 		<require_module version="1.5">org.openmrs.module.openhmis.inventory</require_module>
-		<require_module version="1.5.6">org.openmrs.module.jasperreport</require_module>
+		<require_module version="1.5.7">org.openmrs.module.jasperreport</require_module>
 	</require_modules>
 
 	<!-- Module Activator -->
@@ -98,7 +98,42 @@
 		<description>
 			Number of Bills to show up on the OpenMRS 2.x patientDashboard.
 		</description>
-		<defaultValue>10</defaultValue>
+		<defaultValue>5</defaultValue>
+	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.reports.departmentCollections</property>
+		<description>
+			The ID of the Department Collections report.
+		</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.reports.departmentRevenue</property>
+		<description>
+			The ID of the Department Revenue report.
+		</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.reports.shiftSummary</property>
+		<description>
+			The ID of the Shift Summary report.
+		</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.reports.dailyShiftSummary</property>
+		<description>
+			The ID of the Daily Shift Summary report.
+		</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.reports.paymentsByPaymentMode</property>
+		<description>
+			The ID of the Payments by Payment Mode report.
+		</description>
 	</globalProperty>
 
 	<!-- Extensions -->
@@ -195,6 +230,11 @@
 	</privilege>
 
 	<privilege>
+		<name>Task: Adjust Cashier Bills</name>
+		<description>Able to adjust cashier bills</description>
+	</privilege>
+
+	<privilege>
 		<name>Task: Cashier Timesheets</name>
 		<description>Able to access timesheets page</description>
 	</privilege>
@@ -205,28 +245,13 @@
 	</privilege>
 
 	<privilege>
-		<name>Task: Cashier Role Creation</name>
-		<description>Able to access cashier role page</description>
+		<name>Task: Manage Cashier Metadata</name>
+		<description>Able to add/edit/delete cashier module metadata</description>
 	</privilege>
 
 	<privilege>
-		<name>Task: Manage Cash Points</name>
-		<description>Able to access the manage cash points page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Manage Payment Modes</name>
-		<description>Able to access manage payment modes page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Manage Receipt Number Generator</name>
-		<description>Able to access manage receipt number generator page</description>
-	</privilege>
-
-	<privilege>
-		<name>Task: Access Cashier Settings</name>
-		<description>Able to access the cashier settings page</description>
+		<name>Task: View Cashier Reports</name>
+		<description>Able to view the cashier reports</description>
 	</privilege>
 
 	<!-- Maps hibernate files, if present -->

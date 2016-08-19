@@ -14,25 +14,20 @@
 package org.openmrs.module.openhmis.cashier.web.controller;
 
 import org.openmrs.module.openhmis.cashier.api.ISequentialReceiptNumberGeneratorService;
-import org.openmrs.module.openhmis.cashier.api.ReceiptNumberGeneratorFactory;
-import org.openmrs.module.openhmis.cashier.api.SequentialReceiptNumberGenerator;
-import org.openmrs.module.openhmis.cashier.api.model.SequentialReceiptNumberGeneratorModel;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
-import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.request.WebRequest;
 
 /**
  * Contorller to manage the Sequential Receipt Number Generation
  */
 @Controller
-@RequestMapping(value = CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_PAGE)
-public class SequentialReceiptNumberGeneratorController {
+@RequestMapping(value = SequentialReceiptNumberGeneratorController.SEQ_RECEIPT_NUMBER_GENERATOR_URL)
+public class SequentialReceiptNumberGeneratorController extends AbstractSequentialReceiptNumberGenerator {
+
+	public static final String SEQ_RECEIPT_NUMBER_GENERATOR_URL = CashierWebConstants.SEQ_RECEIPT_NUMBER_GENERATOR_PAGE;
+
 	private ISequentialReceiptNumberGeneratorService service;
 
 	@Autowired
@@ -40,29 +35,13 @@ public class SequentialReceiptNumberGeneratorController {
 		this.service = service;
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
-	public void render(ModelMap modelMap) {
-		SequentialReceiptNumberGeneratorModel model = service.getOnly();
-
-		modelMap.addAttribute("generator", model);
+	@Override
+	public ISequentialReceiptNumberGeneratorService getService() {
+		return this.service;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public String post(@ModelAttribute("generator") SequentialReceiptNumberGeneratorModel generator, WebRequest request) {
-		if (generator.getSeparator().equals("<space>")) {
-			generator.setSeparator(" ");
-		}
-
-		// The check digit checkbox value is only bound if checked
-		if (request.getParameter("includeCheckDigit") == null) {
-			generator.setIncludeCheckDigit(false);
-		}
-
-		// Save the generator settings
-		service.save(generator);
-
-		// Set the system generator
-		ReceiptNumberGeneratorFactory.setGenerator(new SequentialReceiptNumberGenerator());
-		return UrlUtil.redirectUrl("/" + CashierWebConstants.RECEIPT_NUMBER_GENERATOR_ROOT);
+	@Override
+	public String getReceiptNumberGeneratorUrl() {
+		return SEQ_RECEIPT_NUMBER_GENERATOR_URL;
 	}
 }

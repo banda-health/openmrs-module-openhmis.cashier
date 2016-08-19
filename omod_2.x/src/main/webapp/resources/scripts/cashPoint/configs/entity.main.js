@@ -14,7 +14,7 @@
  */
 
 /* initialize and bootstrap application */
-requirejs(['cashpoints/configs/entity.module'], function() {
+requirejs(['cashPoint/configs/entity.module'], function() {
     angular.bootstrap(document, ['entitiesApp']);
 });
 

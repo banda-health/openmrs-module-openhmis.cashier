@@ -127,8 +127,9 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 		Criteria criteria = getRepository().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("patient.id", patientId));
 
-		List<Bill> results = getRepository().select(getEntityClass(), criteria);
+		List<Bill> results = getRepository().select(getEntityClass(), createPagingCriteria(paging, criteria));
 		removeNullLineItems(results);
+
 		return results;
 	}
 
