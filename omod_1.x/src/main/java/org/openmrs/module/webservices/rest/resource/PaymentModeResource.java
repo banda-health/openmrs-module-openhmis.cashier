@@ -53,9 +53,8 @@ public class PaymentModeResource extends BaseRestInstanceTypeResource<PaymentMod
 		return description;
 	}
 
-	// Workaround to fix the TypeVariable issue on base generic property
 	@PropertySetter("attributeTypes")
 	public void setAttributeTypes(PaymentMode instance, List<PaymentModeAttributeType> attributeTypes) {
-		super.setAttributeTypesBase(instance, attributeTypes);
+		super.baseSetAttributeTypes(instance, attributeTypes);
 	}
 }
