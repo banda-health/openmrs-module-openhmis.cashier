@@ -99,7 +99,7 @@
 				if ($scope.entity !== undefined && $scope.entity.patient !== undefined) {
 					$scope.uuid = self.getUuid();
 					$scope.selectExistingPatient = true;
-					$scope.patient = $scope.entity.patient.display.split(' - ')[1];
+					$scope.patient = $scope.entity.patient.display.split(' - ')[0];
 					self.searchPatients(1);
 
 					self.addExistingLineItems();
