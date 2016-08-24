@@ -14,7 +14,7 @@
   ~ Copyright (C) OpenHMIS.  All Rights Reserved.
   ~
   --%>
-<openmrs:require allPrivileges="<%=PrivilegeConstants.TASK_MANAGE_METADATA%>" otherwise="/login.htm"
+<openmrs:require allPrivileges="<%=PrivilegeConstants.TASK_MANAGE_CASHIER_METADATA%>" otherwise="/login.htm"
                  redirect="<%= CashierWebConstants.CASHIER_SETTINGS_2X_PAGE %>"/>
 
 <openmrs:htmlInclude file='<%= request.getContextPath() + CashierWebConstants.MODULE_RESOURCE_ROOT + "css/style.css" %>'/>
