@@ -66,7 +66,7 @@
         <li ng-show="dateCreated !== ''">
             <b>${ui.message('openhmis.cashier.date')}:</b> {{dateCreated | date: 'yyyy-MM-dd hh:mm'}}
         </li>
-        <li ng-show="cashPoint !== undefined && STATUS !== 'PENDING'">
+        <li ng-show="cashPoint !== undefined && (STATUS !== 'PENDING' || cashPoints.length === 0)">
             <b>${ui.message('openhmis.cashier.cashPoint.name')}:</b> {{cashPoint.name}}
         </li>
     </ul>
@@ -302,7 +302,7 @@
             <ul class="table-layout">
                 <li class="required">${ui.message('openhmis.cashier.payment.detailsTitle.amount')}</li>
                 <li>
-                    <input class="form-control" type="number" ng-model="amountTendered" required />
+                    <input class="form-control" type="number" ng-model="amountTendered" required ng-enter="processPayment()" />
                 </li>
             </ul>
 

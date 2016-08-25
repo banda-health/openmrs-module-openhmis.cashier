@@ -33,5 +33,6 @@ emr.loadMessages([
 	"openhmis.cashier.adjustedBy",
 	"openhmis.cashier.adjustedReason",
 	"openhmis.cashier.bill.lineItems.error.invalidItem",
+	"openhmis.cashier.payment.error.amountRequired",
 	"openhmis.commons.general.requirePatient",
 ]);
