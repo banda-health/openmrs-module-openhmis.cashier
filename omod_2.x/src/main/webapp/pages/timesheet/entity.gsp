@@ -43,7 +43,7 @@
 							<select class="form-control" ng-required="true"
 							        ng-model="entity.cashPoint" id="cashpointDropdown"
 							        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.uuid'>
-								<option value="">-- Select Cashpoint --</option>
+								<option value="">${ui.message('openhmis.cashier.selectCashpoint')}</option>
 							</select>
 						</div>
 					</div>
