@@ -27,14 +27,14 @@
                     <td>
                         <input type="radio" name="response"
                                ng-model="attributes[paymentModeAttribute.uuid].value"
-                               data-ng-value="true"
+                               data-ng-value="true" ng-enter="processPayment()"
                                ng-checked="attributes[paymentModeAttribute.uuid].value"/>
                     </td>
                     <td>${ui.message('general.no')}:</td>
                     <td>
                         <input type="radio" name="response"
                                ng-model="attributes[paymentModeAttribute.uuid].value"
-                               data-ng-value="false"
+                               data-ng-value="false" ng-enter="processPayment()"
                                ng-checked="!attributes[paymentModeAttribute.uuid].value"/>
                     </td>
                 </tr>
@@ -43,16 +43,16 @@
 
         <span ng-if="paymentModeAttribute.format === 'java.lang.Float' || paymentModeAttribute.format === 'java.lang.Integer'">
             <input type="number" ng-if="paymentModeAttribute.required" required class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
+                   ng-model="attributes[paymentModeAttribute.uuid].value" ng-enter="processPayment()" />
             <input type="number" ng-if="!paymentModeAttribute.required" class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
+                   ng-model="attributes[paymentModeAttribute.uuid].value" ng-enter="processPayment()" />
         </span>
 
         <span ng-if="paymentModeAttribute.format === 'java.lang.Character' || paymentModeAttribute.format === 'java.lang.String'">
             <input ng-if="paymentModeAttribute.required" required class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
+                   ng-model="attributes[paymentModeAttribute.uuid].value" ng-enter="processPayment()" />
             <input ng-if="!paymentModeAttribute.required" class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
+                   ng-model="attributes[paymentModeAttribute.uuid].value" ng-enter="processPayment()" />
         </span>
 
         <span ng-if="paymentModeAttribute.format === 'org.openmrs.Concept'">
@@ -86,9 +86,9 @@
         <span ng-if="paymentModeAttribute.format === 'org.openmrs.Encounter'">
             <!-- show encounter fragment -->
             <input ng-if="paymentModeAttribute.required" required class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
+                   ng-model="attributes[paymentModeAttribute.uuid].value" ng-enter="processPayment()" />
             <input ng-if="!paymentModeAttribute.required" class="form-control"
-                   ng-model="attributes[paymentModeAttribute.uuid].value" />
+                   ng-model="attributes[paymentModeAttribute.uuid].value" ng-enter="processPayment()" />
         </span>
 
         <span ng-if="paymentModeAttribute.format === 'org.openmrs.Patient'">

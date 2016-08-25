@@ -45,7 +45,7 @@
 		 * Initializes and binds any required variable and/or function specific to entity.page
 		 * @type {Function}
 		 */
-			// @Override
+		// @Override
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function() {
 				// check init settings and privileges.
@@ -149,7 +149,7 @@
 		 * All post-submit validations are done here.
 		 * @return boolean
 		 */
-			// @Override
+		// @Override
 		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function() {
 				$scope.submitted = false;
 				$scope.processing = false;
@@ -221,7 +221,7 @@
 				// set cashpoint
 				if ($scope.cashPoint !== undefined && $scope.cashPoint !== "") {
 					$scope.entity.cashPoint = $scope.cashPoint.uuid;
-				} else if ($scope.cashPoints.length > 0){
+				} else if ($scope.cashPoints.length > 0) {
 					$scope.entity.cashPoint = $scope.cashPoints[0].uuid;
 				}
 
@@ -261,7 +261,7 @@
 						}
 
 						if ($scope.cashier === undefined) {
-							CommonsRestfulFunctions.getSession(CASHIER_MODULE_NAME, function(data){
+							CommonsRestfulFunctions.getSession(CASHIER_MODULE_NAME, function(data) {
 								$scope.cashier = data.currentProvider.person.display;
 							});
 						}
@@ -392,7 +392,7 @@
 
 		self.changeItemQuantity = self.changeItemQuantity || function(lineItem) {
 				if (lineItem.itemQuantity === undefined || lineItem.itemQuantity === 0 ||
-					(lineItem.itemQuantity < 0 && $scope.uuid === undefined)){
+					(lineItem.itemQuantity < 0 && $scope.uuid === undefined)) {
 					lineItem.setItemQuantity(1);
 				}
 
@@ -409,7 +409,10 @@
 			}
 
 		self.processPayment = self.processPayment || function() {
-				if (EntityFunctions.validateAttributeTypes(
+				if ($scope.amountTendered === 0) {
+					emr.errorAlert("openhmis.cashier.payment.error.amountRequired");
+					$scope.submitted = true;
+				} else if (EntityFunctions.validateAttributeTypes(
 						$scope.paymentModeAttributes, $scope.attributes, [])) {
 					$scope.isProcessPayment = true;
 					$scope.isPrintBill = false;
@@ -522,7 +525,7 @@
 						// load adjusted bill
 						$scope.previousBillTitle =
 							emr.message("openhmis.cashier.bill.previousBill");
-						if(data.billAdjusted.display !== null){
+						if (data.billAdjusted.display !== null) {
 							$scope.previousBillTitle += " (" + data.billAdjusted.display + ") "
 						}
 						CashierBillRestfulService.loadBill(CASHIER_MODULE_NAME, data.billAdjusted.uuid, self.onLoadAdjustedBillSuccessful);
