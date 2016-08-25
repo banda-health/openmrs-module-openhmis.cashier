@@ -45,7 +45,7 @@
 		 * Initializes and binds any required variable and/or function specific to entity.page
 		 * @type {Function}
 		 */
-			// @Override
+		// @Override
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function() {
 				// check init settings and privileges.
@@ -99,7 +99,7 @@
 				if ($scope.entity !== undefined && $scope.entity.patient !== undefined) {
 					$scope.uuid = self.getUuid();
 					$scope.selectExistingPatient = true;
-					$scope.patient = $scope.entity.patient.display.split(' - ')[1];
+					$scope.patient = $scope.entity.patient.display.split(' - ')[0];
 					self.searchPatients(1);
 
 					self.addExistingLineItems();
@@ -149,7 +149,7 @@
 		 * All post-submit validations are done here.
 		 * @return boolean
 		 */
-			// @Override
+		// @Override
 		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function() {
 				$scope.submitted = false;
 				$scope.processing = false;
@@ -219,8 +219,10 @@
 				}
 
 				// set cashpoint
-				if ($scope.cashPoint !== undefined) {
+				if ($scope.cashPoint !== undefined && $scope.cashPoint !== "") {
 					$scope.entity.cashPoint = $scope.cashPoint.uuid;
+				} else if ($scope.cashPoints.length > 0) {
+					$scope.entity.cashPoint = $scope.cashPoints[0].uuid;
 				}
 
 				$scope.processing = true;
@@ -252,9 +254,15 @@
 							$window.location.href = TIMESHEET_URL;
 						}
 
-						if (data.cashPoint === undefined) {
+						if ($scope.cashPoint === undefined) {
 							CashierBillRestfulService.getCashPoints(CASHIER_MODULE_NAME, function(data) {
 								$scope.cashPoints = data.results;
+							});
+						}
+
+						if ($scope.cashier === undefined) {
+							CommonsRestfulFunctions.getSession(CASHIER_MODULE_NAME, function(data) {
+								$scope.cashier = data.currentProvider.person.display;
 							});
 						}
 					}
@@ -352,7 +360,7 @@
 				return CashierBillRestfulService.searchItems(search);
 			}
 
-		self.selectItem = self.selectItem || function(selectedItem, lineItem) {
+		self.selectItem = self.selectItem || function(selectedItem, lineItem, index) {
 				$scope.lineItem = {};
 				if (selectedItem !== undefined) {
 					lineItem.setInvalidEntry(false);
@@ -367,6 +375,17 @@
 					self.addLineItem();
 					self.computeTotalPrice();
 				}
+
+				self.focusNext(index);
+
+			}
+
+		self.focusNext = self.focusNext || function(index) {
+				//focus on quantity input..
+				$timeout(function() {
+					document.getElementById('quantity-' + index).focus();
+					$scope.lineItem.itemQuantity.focus();
+				}, 100);
 			}
 
 		self.getConcepts = self.getConcepts || function(uuid) {
@@ -383,11 +402,6 @@
 			}
 
 		self.changeItemQuantity = self.changeItemQuantity || function(lineItem) {
-				if (lineItem.itemQuantity === undefined || lineItem.itemQuantity === 0 ||
-					(lineItem.itemQuantity < 0 && $scope.uuid === undefined)){
-					lineItem.setItemQuantity(1);
-				}
-
 				lineItem.setTotal(lineItem.getItemQuantity() * lineItem.getItemPrice().price);
 				self.computeTotalPrice();
 			}
@@ -401,7 +415,10 @@
 			}
 
 		self.processPayment = self.processPayment || function() {
-				if (EntityFunctions.validateAttributeTypes(
+				if ($scope.amountTendered === 0) {
+					emr.errorAlert("openhmis.cashier.payment.error.amountRequired");
+					$scope.submitted = true;
+				} else if (EntityFunctions.validateAttributeTypes(
 						$scope.paymentModeAttributes, $scope.attributes, [])) {
 					$scope.isProcessPayment = true;
 					$scope.isPrintBill = false;
@@ -508,12 +525,15 @@
 				);
 
 				$scope.cashPoint = data.cashPoint;
-				if (data.billAdjusted !== null && data.billAdjusted.display !== null) {
+				if (data.billAdjusted !== null) {
 					$scope.billAdjustedUuid = data.billAdjusted.uuid;
 					if ($scope.STATUS !== 'ADJUSTED') {
 						// load adjusted bill
 						$scope.previousBillTitle =
-							emr.message("openhmis.cashier.bill.previousBill") + " (" + data.billAdjusted.display + ") ";
+							emr.message("openhmis.cashier.bill.previousBill");
+						if (data.billAdjusted.display !== null) {
+							$scope.previousBillTitle += " (" + data.billAdjusted.display + ") "
+						}
 						CashierBillRestfulService.loadBill(CASHIER_MODULE_NAME, data.billAdjusted.uuid, self.onLoadAdjustedBillSuccessful);
 					}
 				}
