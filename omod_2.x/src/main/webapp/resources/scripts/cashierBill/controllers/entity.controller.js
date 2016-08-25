@@ -219,8 +219,10 @@
 				}
 
 				// set cashpoint
-				if ($scope.cashPoint !== undefined) {
+				if ($scope.cashPoint !== undefined && $scope.cashPoint !== "") {
 					$scope.entity.cashPoint = $scope.cashPoint.uuid;
+				} else if ($scope.cashPoints.length > 0){
+					$scope.entity.cashPoint = $scope.cashPoints[0].uuid;
 				}
 
 				$scope.processing = true;
@@ -252,9 +254,15 @@
 							$window.location.href = TIMESHEET_URL;
 						}
 
-						if (data.cashPoint === undefined) {
+						if ($scope.cashPoint === undefined) {
 							CashierBillRestfulService.getCashPoints(CASHIER_MODULE_NAME, function(data) {
 								$scope.cashPoints = data.results;
+							});
+						}
+
+						if ($scope.cashier === undefined) {
+							CommonsRestfulFunctions.getSession(CASHIER_MODULE_NAME, function(data){
+								$scope.cashier = data.currentProvider.person.display;
 							});
 						}
 					}
@@ -508,12 +516,15 @@
 				);
 
 				$scope.cashPoint = data.cashPoint;
-				if (data.billAdjusted !== null && data.billAdjusted.display !== null) {
+				if (data.billAdjusted !== null) {
 					$scope.billAdjustedUuid = data.billAdjusted.uuid;
 					if ($scope.STATUS !== 'ADJUSTED') {
 						// load adjusted bill
 						$scope.previousBillTitle =
-							emr.message("openhmis.cashier.bill.previousBill") + " (" + data.billAdjusted.display + ") ";
+							emr.message("openhmis.cashier.bill.previousBill");
+						if(data.billAdjusted.display !== null){
+							$scope.previousBillTitle += " (" + data.billAdjusted.display + ") "
+						}
 						CashierBillRestfulService.loadBill(CASHIER_MODULE_NAME, data.billAdjusted.uuid, self.onLoadAdjustedBillSuccessful);
 					}
 				}
