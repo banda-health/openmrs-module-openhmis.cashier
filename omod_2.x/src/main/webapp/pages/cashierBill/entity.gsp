@@ -36,14 +36,14 @@
         <ul class='page-title'>
             <li ng-show="adjustedBill.billAdjusted !== null">
                 <b>${ui.message("openhmis.cashier.adjustmentOf")}:</b>
-                <a target='_blank' href='entities.page#/{{adjustedBill.billAdjusted.uuid}}'>
+                <a href='entities.page#/{{adjustedBill.billAdjusted.uuid}}'>
                     {{adjustedBill.billAdjusted.display || adjustedBill.billAdjusted.uuid}}
                 </a>
             </li>
             <li ng-show="adjustedBill.adjustedBy !== null && adjustedBill.adjustedBy.length > 0">
                 <b>${ui.message("openhmis.cashier.adjustedBy")}:</b>
                 <span ng-repeat="adjustedBy in adjustedBill.adjustedBy">
-                    <a target='_blank' href='entities.page#/{{adjustedBy.uuid}}'>
+                    <a href='entities.page#/{{adjustedBy.uuid}}'>
                         {{adjustedBy.display || adjustedBy.uuid}}
                     </a>
                 </span>
