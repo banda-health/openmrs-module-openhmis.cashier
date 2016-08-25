@@ -181,7 +181,7 @@
                         ${ ui.includeFragment("openhmis.commons", "searchFragment", [
                                 typeahead: ["billItem.name for billItem in searchItems(\$viewValue)"],
                                 model: "lineItem.item",
-                                typeaheadOnSelect: "selectItem(\$item, lineItem)",
+                                typeaheadOnSelect: "selectItem(\$item, lineItem, \$index)",
                                 typeaheadEditable: "true",
                                 class: ["form-control autocomplete-search input-sm"],
                                 showRemoveIcon: "false",
@@ -190,7 +190,7 @@
                         ])}
                     </td>
                     <td>
-                        <input class="form-control input-sm right-justify" type="number" ng-model="lineItem.itemQuantity"
+                        <input id="quantity-{{\$index}}" class="form-control input-sm right-justify" type="number" ng-model="lineItem.itemQuantity"
                                ng-change="changeItemQuantity(lineItem)" ng-enter="changeItemQuantity(lineItem)" />
                     </td>
                     <td>

@@ -360,7 +360,7 @@
 				return CashierBillRestfulService.searchItems(search);
 			}
 
-		self.selectItem = self.selectItem || function(selectedItem, lineItem) {
+		self.selectItem = self.selectItem || function(selectedItem, lineItem, index) {
 				$scope.lineItem = {};
 				if (selectedItem !== undefined) {
 					lineItem.setInvalidEntry(false);
@@ -375,6 +375,17 @@
 					self.addLineItem();
 					self.computeTotalPrice();
 				}
+
+				self.focusNext(index);
+
+			}
+
+		self.focusNext = self.focusNext || function(index) {
+				//focus on quantity input..
+				$timeout(function() {
+					document.getElementById('quantity-' + index).focus();
+					$scope.lineItem.itemQuantity.focus();
+				}, 100);
 			}
 
 		self.getConcepts = self.getConcepts || function(uuid) {
