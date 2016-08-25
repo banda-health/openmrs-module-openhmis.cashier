@@ -34,17 +34,17 @@
         </h3>
 
         <ul class='page-title'>
-            <li ng-show="adjustedBill.billAdjusted !== null && adjustedBill.billAdjusted.display !== null">
+            <li ng-show="adjustedBill.billAdjusted !== null">
                 <b>${ui.message("openhmis.cashier.adjustmentOf")}:</b>
                 <a target='_blank' href='entities.page#/{{adjustedBill.billAdjusted.uuid}}'>
-                    {{adjustedBill.billAdjusted.display}}
+                    {{adjustedBill.billAdjusted.display || adjustedBill.billAdjusted.uuid}}
                 </a>
             </li>
             <li ng-show="adjustedBill.adjustedBy !== null && adjustedBill.adjustedBy.length > 0">
                 <b>${ui.message("openhmis.cashier.adjustedBy")}:</b>
                 <span ng-repeat="adjustedBy in adjustedBill.adjustedBy">
                     <a target='_blank' href='entities.page#/{{adjustedBy.uuid}}'>
-                        {{adjustedBy.display}}
+                        {{adjustedBy.display || adjustedBy.uuid}}
                     </a>
                 </span>
             </li>
@@ -53,7 +53,7 @@
                 {{adjustedBill.adjustmentReason}}
             </li>
         </ul>
-        <span ng-show="adjustedBill.billAdjusted !== null || (adjustedBill.adjustedBy !== null && adjustedBill.adjustedBy.length > 0)">
+        <span ng-show="(adjustedBill.billAdjusted !== null && adjustedBill.billAdjusted.display !== null) || (adjustedBill.adjustedBy !== null && adjustedBill.adjustedBy.length > 0)">
             <br />
         </span>
 
@@ -66,7 +66,7 @@
         <li ng-show="dateCreated !== ''">
             <b>${ui.message('openhmis.cashier.date')}:</b> {{dateCreated | date: 'yyyy-MM-dd hh:mm'}}
         </li>
-        <li ng-show="cashPoint !== undefined">
+        <li ng-show="cashPoint !== undefined && STATUS !== 'PENDING'">
             <b>${ui.message('openhmis.cashier.cashPoint.name')}:</b> {{cashPoint.name}}
         </li>
     </ul>
