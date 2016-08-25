@@ -12,7 +12,7 @@
     <div class="info-header">
         <i class="icon-money"></i>
         <h3>${ ui.message("openhmis.cashier.patient.bill.history").toUpperCase() }</h3>
-        <i class="icon-plus edit-action right" title='${ ui.message("openhmis.cashier.addBill") }' onclick="location.href='/${ui.contextPath()}/module/openhmis/cashier/bill.form?patientUuid=${param.patientId[0]}'"></i>
+        <i class="icon-plus edit-action right" title='${ ui.message("openhmis.cashier.addBill") }' onclick="location.href='/${ui.contextPath()}/openhmis.cashier/cashierBill/entities.page#/?patientUuid=${param.patientId[0]}'"></i>
     </div>
     <div class="info-body">
         <% if (bills.size == 0) { %>
