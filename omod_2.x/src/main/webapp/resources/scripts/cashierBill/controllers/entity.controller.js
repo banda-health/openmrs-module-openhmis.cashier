@@ -391,11 +391,6 @@
 			}
 
 		self.changeItemQuantity = self.changeItemQuantity || function(lineItem) {
-				if (lineItem.itemQuantity === undefined || lineItem.itemQuantity === 0 ||
-					(lineItem.itemQuantity < 0 && $scope.uuid === undefined)) {
-					lineItem.setItemQuantity(1);
-				}
-
 				lineItem.setTotal(lineItem.getItemQuantity() * lineItem.getItemPrice().price);
 				self.computeTotalPrice();
 			}
