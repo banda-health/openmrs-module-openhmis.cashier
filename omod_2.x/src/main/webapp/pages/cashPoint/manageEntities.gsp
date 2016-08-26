@@ -60,7 +60,7 @@
             </div>
 
             <br/><br/>
-            <table style="margin-bottom:5px;" class="manage-cashpoints-table">
+            <table style="margin-bottom:5px;" class="manage-cashpoints-table" id="manage-cashpoints-table">
                 <thead>
                 <tr>
                     <th>${ui.message('general.name')}</th>
