@@ -326,7 +326,7 @@
         <span class="actions" ng-show="STATUS === 'POSTED' || STATUS === 'PAID'">
             <input type="button" class="cancel" value="${ui.message('general.cancel')}" ng-click="cancel()" />
             <input type="button" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.printReceipt')}" ng-click="printBill()" />
-            <input type="button" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.adjustBill')}" ng-click="adjustBill()" />
+            <input type="button" ng-hide="ALLOW_BILL_ADJUSTMENT === false" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.adjustBill')}" ng-click="adjustBill()" />
         </span>
 
         <div id="payment-warning-dialog" class="dialog hide-dialog">
