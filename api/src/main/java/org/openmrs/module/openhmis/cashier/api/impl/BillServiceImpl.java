@@ -13,14 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
-import java.math.BigDecimal;
-import java.security.AccessControlException;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
@@ -36,6 +33,10 @@ import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataService
 import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.security.AccessControlException;
+import java.util.List;
 
 /**
  * Data service implementation class for {@link Bill}s.
@@ -126,6 +127,7 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 
 		Criteria criteria = getRepository().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("patient.id", patientId));
+		criteria.addOrder(Order.desc("id"));
 
 		List<Bill> results = getRepository().select(getEntityClass(), createPagingCriteria(paging, criteria));
 		removeNullLineItems(results);
