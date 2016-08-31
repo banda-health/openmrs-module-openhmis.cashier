@@ -233,14 +233,14 @@
 				// check if user has privileges to adjust a bill.
 				if (self.getUuid() !== undefined) {
 					self.checkPrivileges(PRIVILEGE_ADJUST_BILL);
-				}
 
-				//check if the "allow bill adjustment" setting is set.
-				CashierBillRestfulService.checkAllowBillAdjustment(function(data) {
-					if (data !== undefined && data.results === "false") {
-						$window.location.href = CASHIER_LANDING_PAGE_URL;
-					}
-				});
+					//check if the "allow bill adjustment" setting is set.
+					CashierBillRestfulService.checkAllowBillAdjustment(function(data) {
+						if (data !== undefined && data.results === "false") {
+							$scope.ALLOW_BILL_ADJUSTMENT = false;
+						}
+					});
+				}
 
 				//check if timesheet is required
 				$scope.cashPoints = [];
