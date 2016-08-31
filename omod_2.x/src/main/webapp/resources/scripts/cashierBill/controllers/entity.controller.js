@@ -376,16 +376,7 @@
 					self.computeTotalPrice();
 				}
 
-				self.focusNext(index);
-
-			}
-
-		self.focusNext = self.focusNext || function(index) {
-				//focus on quantity input..
-				$timeout(function() {
-					document.getElementById('quantity-' + index).focus();
-					$scope.lineItem.itemQuantity.focus();
-				}, 100);
+				EntityFunctions.focusOnElement('quantity-' + index);
 			}
 
 		self.getConcepts = self.getConcepts || function(uuid) {
