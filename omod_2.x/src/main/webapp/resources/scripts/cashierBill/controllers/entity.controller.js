@@ -74,7 +74,7 @@
 				$scope.totalAmountDue = 0.00;
 				$scope.totalChangeDue = 0.00;
 				$scope.totalAmountTendered = 0.00;
-				$scope.amountTendered = 0.00;
+				$scope.amountTendered;
 				$scope.currentPayments = [];
 				$scope.paymentMode;
 				$scope.previousLineItems = [];
@@ -376,16 +376,7 @@
 					self.computeTotalPrice();
 				}
 
-				self.focusNext(index);
-
-			}
-
-		self.focusNext = self.focusNext || function(index) {
-				//focus on quantity input..
-				$timeout(function() {
-					document.getElementById('quantity-' + index).focus();
-					$scope.lineItem.itemQuantity.focus();
-				}, 100);
+				EntityFunctions.focusOnElement('quantity-' + index);
 			}
 
 		self.getConcepts = self.getConcepts || function(uuid) {
