@@ -74,7 +74,7 @@
 				$scope.totalAmountDue = 0.00;
 				$scope.totalChangeDue = 0.00;
 				$scope.totalAmountTendered = 0.00;
-				$scope.amountTendered = 0.00;
+				$scope.amountTendered;
 				$scope.currentPayments = [];
 				$scope.paymentMode;
 				$scope.previousLineItems = [];
