@@ -36,6 +36,7 @@
 			calculateTotalPayableAmount: calculateTotalPayableAmount,
 			roundItemPrice: roundItemPrice,
 			createPayment: createPayment,
+			updatePaymentTenderedAmount: updatePaymentTenderedAmount,
 			computeTotalPrice: computeTotalPrice,
 		};
 
@@ -220,6 +221,15 @@
 				return payment;
 			}
 			return null;
+		}
+
+		function updatePaymentTenderedAmount(payments) {
+			for (var i = 0; i < payments.length; i++){
+				var payment = payments[i];
+				payment.amountTendered = payment.amount;
+			}
+
+			return payments;
 		}
 
 		function reOrderItemPrices(lineItem, itemDetails) {

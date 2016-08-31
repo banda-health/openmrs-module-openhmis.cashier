@@ -539,7 +539,12 @@
 				}
 
 				$scope.dateCreated = data.dateCreated;
-				$scope.currentPayments = data.payments;
+				if ($scope.STATUS === 'PENDING' && $scope.uuid !== undefined){
+					$scope.currentPayments = CashierBillFunctions.updatePaymentTenderedAmount(data.payments);
+				} else {
+					$scope.currentPayments = data.payments;
+				}
+
 				self.computeTotalPrice();
 			}
 
