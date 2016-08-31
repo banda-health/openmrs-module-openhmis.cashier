@@ -1,26 +1,27 @@
 <script type="text/javascript">
-    var breadcrumbs = [
-        {
-            icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm'
-        },
-        {
-            label: "${ ui.message("openhmis.cashier.page")}",
-            link: '${ui.pageLink("openhmis.cashier", "cashierLanding")}'
-        },
-        {
-            label: "${ ui.message("openhmis.cashier.bill")}"
-        }
-    ];
-
-    jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
-    jQuery(".tabs").tabs();
+	var breadcrumbs = [
+		{
+			icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm'
+		},
+		{
+			label: "${ ui.message("openhmis.cashier.page")}",
+			link: '${ui.pageLink("openhmis.cashier", "cashierLanding")}'
+		},
+		{
+			label: "${ ui.message("openhmis.cashier.bill")}"
+		}
+	];
+	
+	jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
+	jQuery(".tabs").tabs();
 </script>
+
 <div ng-show="!fullyLoaded" style="margin:200px;">
-    <span>${ui.message("openhmis.commons.general.loadingPage")}</span>
-    <br />
-    <span style="margin:100px;">
-        <img src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
-    </span>
+	<span>${ui.message("openhmis.commons.general.loadingPage")}</span>
+	<br/>
+	<span style="margin:100px;">
+		<img src="${ui.resourceLink("uicommons", "images/spinner.gif")}"/>
+	</span>
 </div>
 <form novalidate ng-show="fullyLoaded" name="entityForm" class="entity-form" ng-class="{'submitted': submitted}" style="font-size:inherit">
     <span ng-show="uuid === undefined">
@@ -133,28 +134,27 @@
                 </tr>
             </table><br />
             <div class="detail-section-border-top">
-                <table class="amount-details">
-                    <tr>
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.item.total')}:</td>
-                        <td class="right-justify">{{totalPayableAmount}}</td>
-                    </tr>
-                    <tr ng-show="totalAmountTendered != 0">
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.payment.detailsTitle.tendered')}:</td>
-                        <td class="right-justify">{{totalAmountTendered}}</td>
-                    </tr>
-                    <tr ng-hide="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.payment.detailsTitle.amount')} ${ui.message('openhmis.cashier.bill.due')}:</td>
-                        <td class="right-justify">{{totalAmountDue}}</td>
-                    </tr>
-                    <tr ng-show="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.bill.changeDue')}:</td>
-                        <td class="right-justify">{{totalChangeDue}}</td>
-                    </tr>
-                </table>
+	            <div class="row">
+		            <div class="col-md-8"></div>
+		            <div class="col-md-2 "><strong>${ui.message('openhmis.cashier.item.total')}:</strong></div>
+		            <div class="col-md-2 right-justify"><strong>{{totalPayableAmount}}</strong></div>
+	            </div>
+	            <div class="row" ng-show="totalAmountTendered != 0">
+		            <div class="col-md-8"></div>
+		            <div class="col-md-2 "><strong>${ui.message('openhmis.cashier.payment.detailsTitle.tendered')}:</strong></div>
+		            <div class="col-md-2 right-justify"><strong>{{totalAmountTendered}}</strong></div>
+	            </div>
+	            <div class="row" ng-hide="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
+		            <div class="col-md-8"></div>
+		            <div class="col-md-2 "><strong>${ui.message('openhmis.cashier.payment.detailsTitle.amount')}
+		            ${ui.message('openhmis.cashier.bill.due')}:</strong></div>
+		            <div class="col-md-2 right-justify"><strong>{{totalAmountDue}}</strong></div>
+	            </div>
+	            <div class="row" ng-show="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
+		            <div class="col-md-8"></div>
+		            <div class="col-md-2 "><strong>${ui.message('openhmis.cashier.bill.changeDue')}:</strong></div>
+		            <div class="col-md-2 right-justify"><strong>{{totalChangeDue}}</strong></div>
+	            </div>
             </div>
         </fieldset>
 
@@ -207,28 +207,27 @@
             </table><br />
 
             <div class="detail-section-border-top">
-                <table class="amount-details">
-                    <tr>
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.item.total')}:</td>
-                        <td class="right-justify">{{totalPayableAmount}}</td>
-                    </tr>
-                    <tr ng-show="totalAmountTendered != 0">
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.payment.detailsTitle.tendered')}:</td>
-                        <td class="right-justify">{{totalAmountTendered}}</td>
-                    </tr>
-                    <tr ng-hide="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.payment.detailsTitle.amount')} ${ui.message('openhmis.cashier.bill.due')}:</td>
-                        <td class="right-justify">{{totalAmountDue}}</td>
-                    </tr>
-                    <tr ng-show="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
-                        <td></td>
-                        <td>${ui.message('openhmis.cashier.bill.changeDue')}:</td>
-                        <td class="right-justify">{{totalChangeDue}}</td>
-                    </tr>
-                </table>
+	            <div class="row">
+		            <div class="col-md-8"></div>
+		            <div class="col-md-2 "><strong>${ui.message('openhmis.cashier.item.total')}:</strong></div>
+		            <div class="col-md-2 right-justify"><strong>{{totalPayableAmount}}</strong></div>
+	            </div>
+	            <div class="row" ng-show="totalAmountTendered != 0">
+		            <div class="col-md-8"></div>
+		            <div class="col-md-2 "><strong>${ui.message('openhmis.cashier.payment.detailsTitle.tendered')}:</strong></div>
+		            <div class="col-md-2 right-justify"><strong>{{totalAmountTendered}}</strong></div>
+	            </div>
+	            <div class="row" ng-hide="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
+		            <div class="col-md-8"></div>
+		            <div class="col-md-2 "><strong>${ui.message('openhmis.cashier.payment.detailsTitle.amount')}
+		            ${ui.message('openhmis.cashier.bill.due')}:</strong></div>
+		            <div class="col-md-2 right-justify"><strong>{{totalAmountDue}}</strong></div>
+	            </div>
+	            <div class="row" ng-show="STATUS === 'PAID' || (STATUS !== 'PAID' && totalChangeDue != 0)">
+		            <div class="col-md-8"></div>
+		            <div class="col-md-2 "><strong>${ui.message('openhmis.cashier.bill.changeDue')}:</strong></div>
+		            <div class="col-md-2 right-justify"><strong>{{totalChangeDue}}</strong></div>
+	            </div>
             </div>
         </fieldset>
 
@@ -326,7 +325,7 @@
         <span class="actions" ng-show="STATUS === 'POSTED' || STATUS === 'PAID'">
             <input type="button" class="cancel" value="${ui.message('general.cancel')}" ng-click="cancel()" />
             <input type="button" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.printReceipt')}" ng-click="printBill()" />
-            <input type="button" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.adjustBill')}" ng-click="adjustBill()" />
+            <input type="button" ng-hide="ALLOW_BILL_ADJUSTMENT === false" ng-disabled="processing === true" class="confirm btn gray-button right" value="${ui.message('openhmis.cashier.bill.adjustBill')}" ng-click="adjustBill()" />
         </span>
 
         <div id="payment-warning-dialog" class="dialog hide-dialog">
@@ -347,34 +346,38 @@
                 </div>
             </div>
         </div>
-
-        <div id="adjust-bill-warning-dialog" class="dialog hide-dialog">
-            <div class="dialog-header">
-                <span>
-                    <i class="icon-warning-sign"></i>
-                    <h3>
-                        ${ui.message('openhmis.cashier.bill.adjustBill')}
-                    </h3>
-                </span>
-                <i class="icon-remove cancel show-cursor align-right" ng-click="closeThisDialog()"></i>
-            </div>
-            <div class="dialog-content form">
-                <span><b>${ui.message('openhmis.cashier.adjustedReasonPrompt')}</b></span>
-                <br /><br /><br />
-                <span ng-show="adjustmentReasonRequired">
-                    ${ui.message('openhmis.cashier.adjustedReason')}:
-                </span>
-                <span ng-show="adjustmentReasonRequired">
-                    <input type="text" ng-model="adjustmentReason" required/>
-                    <br /><br />
-                </span>
-                <div class="ngdialog-buttons detail-section-border-top">
-                    <br />
-                    <input type="button" class="cancel" value="${ui.message('general.cancel')}" ng-click="closeThisDialog('Cancel')" />
-                    <input type="button" class="confirm right" value="Confirm"  ng-click="confirm('OK')"
-                           ng-disabled="adjustmentReasonRequired && (adjustmentReason === '' || adjustmentReason === undefined)"/>
-                </div>
-            </div>
-        </div>
-    </fieldset>
+		
+		<div id="adjust-bill-warning-dialog" class="dialog hide-dialog">
+			<div class="dialog-header">
+				<span>
+					<i class="icon-warning-sign"></i>
+					
+					<h3>
+						${ui.message('openhmis.cashier.bill.adjustBill')}
+					</h3>
+				</span>
+				<i class="icon-remove cancel show-cursor align-right" ng-click="closeThisDialog()"></i>
+			</div>
+			
+			<div class="dialog-content form">
+				<span><b>${ui.message('openhmis.cashier.adjustedReasonPrompt')}</b></span>
+				<br/><br/><br/>
+				<span ng-show="adjustmentReasonRequired">
+					${ui.message('openhmis.cashier.adjustedReason')}:
+				</span>
+				<span ng-show="adjustmentReasonRequired">
+					<input type="text" ng-model="adjustmentReason" required/>
+					<br/><br/>
+				</span>
+				
+				<div class="ngdialog-buttons detail-section-border-top">
+					<br/>
+					<input type="button" class="cancel" value="${ui.message('general.cancel')}"
+					       ng-click="closeThisDialog('Cancel')"/>
+					<input type="button" class="confirm right" value="Confirm" ng-click="confirm('OK')"
+					       ng-disabled="adjustmentReasonRequired && (adjustmentReason === '' || adjustmentReason === undefined)"/>
+				</div>
+			</div>
+		</div>
+	</fieldset>
 </form>
