@@ -8,6 +8,10 @@
 			link: '${ui.pageLink("openhmis.cashier", "cashierLanding")}'
 		},
 		{
+			label: "${ ui.message("openhmis.cashier.admin.task.dashboard")}",
+			link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashier/cashierTasksDashboard.page'
+		},
+		{
 			label: "${ ui.message("openhmis.cashier.bill")}"
 		}
 	];
