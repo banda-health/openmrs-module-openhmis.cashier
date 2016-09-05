@@ -225,6 +225,11 @@
 	</privilege>
 
 	<privilege>
+		<name>App: Access Cashier Tasks</name>
+		<description>Able to access cashier tasks page</description>
+	</privilege>
+
+	<privilege>
 		<name>Task: Create new bill</name>
 		<description>Able to access bill page</description>
 	</privilege>
