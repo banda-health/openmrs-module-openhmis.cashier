@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/cashier.iml" filepath="$PROJECT_DIR$/cashier.iml" />
-      <module fileurl="file://$PROJECT_DIR$/api/cashier-api.iml" filepath="$PROJECT_DIR$/api/cashier-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/omod/cashier-omod.iml" filepath="$PROJECT_DIR$/omod/cashier-omod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../projects/temp/openhmis.cashier-api.iml" filepath="$PROJECT_DIR$/../projects/temp/openhmis.cashier-api.iml" />
     </modules>
   </component>
 </project>
-
