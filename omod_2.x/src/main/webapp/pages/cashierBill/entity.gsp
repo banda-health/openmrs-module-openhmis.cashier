@@ -8,6 +8,10 @@
 			link: '${ui.pageLink("openhmis.cashier", "cashierLanding")}'
 		},
 		{
+			label: "${ ui.message("openhmis.cashier.admin.task.dashboard")}",
+			link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashier/cashierTasksDashboard.page'
+		},
+		{
 			label: "${ ui.message("openhmis.cashier.bill")}"
 		}
 	];
@@ -24,6 +28,14 @@
 	</span>
 </div>
 <form novalidate ng-show="fullyLoaded" name="entityForm" class="entity-form" ng-class="{'submitted': submitted}" style="font-size:inherit">
+
+    <span style="float:right;" ng-show="uuid !== undefined">
+        <a class="button confirm" href="/${ ui.contextPath() }/openhmis.cashier/cashierBill/entities.page#/">
+            <i class="icon-plus"></i>
+            ${ui.message('openhmis.cashier.addBill')}
+        </a>
+    </span>
+
     <span ng-show="uuid === undefined">
         <h3>${ui.message('openhmis.cashier.addBill')}</h3>
     </span>
@@ -342,7 +354,7 @@
                 <div class="ngdialog-buttons detail-section-border-top">
                     <br />
                     <input type="button" class="cancel" value="${ui.message('general.cancel')}" ng-click="closeThisDialog('Cancel')" />
-                    <input type="button" class="confirm right" value="Confirm"  ng-click="confirm('OK')" />
+                    <input id="confirmPayment" type="button" class="confirm right" value="Confirm"  ng-click="confirm('OK')" />
                 </div>
             </div>
         </div>
