@@ -97,7 +97,7 @@
 			setBaseUrl("inventory");
 			var requestParams = {};
 			requestParams['q'] = q;
-			requestParams['limit'] = 10;
+			requestParams['limit'] = 15;
 			requestParams['startIndex'] = 1;
 			return EntityRestFactory.autocompleteSearch(requestParams, 'item');
 		}

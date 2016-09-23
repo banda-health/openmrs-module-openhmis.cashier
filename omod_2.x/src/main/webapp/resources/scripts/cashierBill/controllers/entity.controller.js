@@ -415,6 +415,7 @@
 					$scope.isPrintBill = false;
 					self.setPaymentWarningMessage();
 					CashierBillFunctions.paymentWarningDialog($scope);
+					EntityFunctions.focusOnElement("confirmPayment");
 				} else {
 					$scope.submitted = true;
 				}
