@@ -20,7 +20,7 @@
 				"label": "Cashier Tasks",
 				"url": "openhmis.cashier/cashier/cashierTasksDashboard.page",
 				"icon": "icon-book",
-				"requiredPrivilege": "App: Access cashier Tasks"
+				"requiredPrivilege": "App: Access Cashier Tasks"
 			},
 			{
 				"id": "openhmis.cashier.createBillLink",
