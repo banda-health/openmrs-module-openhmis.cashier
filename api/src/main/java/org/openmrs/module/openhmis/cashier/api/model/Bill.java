@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
@@ -47,6 +48,7 @@ public class Bill extends BaseOpenmrsData {
 	private Set<Bill> adjustedBy;
 	private Boolean receiptPrinted = false;
 	private String adjustmentReason;
+	private Location location;
 
 	public String getAdjustmentReason() {
 		return adjustmentReason;
@@ -339,5 +341,13 @@ public class Bill extends BaseOpenmrsData {
 		String dateString = (changedStr != null) ? changedStr : createdStr;
 
 		return dateString;
+	}
+
+	public void setLocation(Location l) {
+		location = l;
+	}
+
+	public Location getLocation() {
+		return location;
 	}
 }

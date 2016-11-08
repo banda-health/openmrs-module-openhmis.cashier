@@ -16,6 +16,7 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import java.util.List;
 
+import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
@@ -67,6 +68,8 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 */
 	List<Bill> getBillsByPatientId(int patientId, PagingInfo paging);
 
+	List<Bill> getBillsByPatientId(int patientId, Location location, PagingInfo paging);
+
 	/**
 	 * Gets all bills using the specified {@link BillSearch} settings.
 	 * @param billSearch The bill search settings.
@@ -95,6 +98,10 @@ public interface IBillService extends IEntityDataService<Bill> {
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	List<Bill> getBills(BillSearch billSearch, PagingInfo pagingInfo);
+
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_BILLS })
+	List<Bill> getBillsByLocation(Location l, Boolean isretired, PagingInfo pagingInfo);
 
 	@Override
 	@Authorized(PrivilegeConstants.VIEW_BILLS)

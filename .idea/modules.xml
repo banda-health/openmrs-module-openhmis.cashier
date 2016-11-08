@@ -5,7 +5,10 @@
       <module fileurl="file://$PROJECT_DIR$/cashier.iml" filepath="$PROJECT_DIR$/cashier.iml" />
       <module fileurl="file://$PROJECT_DIR$/api/cashier-api.iml" filepath="$PROJECT_DIR$/api/cashier-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/omod/cashier-omod.iml" filepath="$PROJECT_DIR$/omod/cashier-omod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/openhmis.cashier-api.iml" filepath="$PROJECT_DIR$/api/openhmis.cashier-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/omod/openhmis.cashier-omod.iml" filepath="$PROJECT_DIR$/omod/openhmis.cashier-omod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/omod_1.x/openhmis.cashier-omod_1.x.iml" filepath="$PROJECT_DIR$/omod_1.x/openhmis.cashier-omod_1.x.iml" />
+      <module fileurl="file://$PROJECT_DIR$/omod_2.x/openhmis.cashier-omod_2.x.iml" filepath="$PROJECT_DIR$/omod_2.x/openhmis.cashier-omod_2.x.iml" />
     </modules>
   </component>
 </project>
-

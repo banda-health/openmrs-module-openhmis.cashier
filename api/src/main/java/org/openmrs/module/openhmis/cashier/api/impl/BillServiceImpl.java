@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.context.Context;
@@ -32,6 +33,7 @@ import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseEntityDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IEntityAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
+import org.openmrs.module.openhmis.inventory.api.util.HibernateCriteriaConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -136,6 +138,21 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	}
 
 	@Override
+	public List<Bill> getBillsByPatientId(int patientId, Location location, PagingInfo paging) {
+		if (patientId < 0) {
+			throw new IllegalArgumentException("The patient id must be a valid identifier.");
+		}
+
+		Criteria criteria = getRepository().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("patient.id", patientId));
+		criteria.add(Restrictions.eq("location", location));
+
+		List<Bill> results = getRepository().select(getEntityClass(), criteria);
+		removeNullLineItems(results);
+		return results;
+	}
+
+	@Override
 	public List<Bill> getBills(final BillSearch billSearch) {
 		return getBills(billSearch, null);
 	}
@@ -152,6 +169,19 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 			@Override
 			public void apply(Criteria criteria) {
 				billSearch.updateCriteria(criteria);
+			}
+		});
+	}
+
+	@Override
+	public List<Bill> getBillsByLocation(final Location location, final Boolean includeRetired, PagingInfo pagingInfo) {
+		return executeCriteria(Bill.class, pagingInfo, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+				criteria.add(Restrictions.eq(HibernateCriteriaConstants.LOCATION, location));
+				if (!includeRetired) {
+					criteria.add(Restrictions.eq(HibernateCriteriaConstants.RETIRED, false));
+				}
 			}
 		});
 	}

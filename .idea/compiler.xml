@@ -27,18 +27,49 @@
       </profile>
       <profile default="false" name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="cashier-api" />
         <module name="cashier-omod" />
+      </profile>
+      <profile default="false" name="Annotation profile for openhmis.cashier-api" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="openhmis.cashier-api" />
+      </profile>
+      <profile default="false" name="Annotation profile for openhmis.cashier-omod" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="openhmis.cashier-omod" />
+      </profile>
+      <profile default="false" name="Annotation profile for openhmis.cashier-omod_1.x" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="openhmis.cashier-omod_1.x" />
+      </profile>
+      <profile default="false" name="Annotation profile for openhmis.cashier-omod_2.x" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="openhmis.cashier-omod_2.x" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="cashier" target="1.6" />
       <module name="cashier-api" target="1.6" />
       <module name="cashier-omod" target="1.6" />
+      <module name="openhmis.cashier-api" target="1.6" />
+      <module name="openhmis.cashier-omod" target="1.6" />
+      <module name="openhmis.cashier-omod_1.x" target="1.6" />
+      <module name="openhmis.cashier-omod_2.x" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>
-

@@ -65,10 +65,12 @@
 <c:choose>
 	<c:when test="${!empty bill}">
 		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${bill.cashier.person.personName}</li>
-		<li class="date"><span class="label"><openmrs:message code="openhmis.cashier.date"/>: </span> ${bill.dateCreated}</li>		
+		<li class="location"><span>Bill Location:</span> ${bill.location} </li>
+		<li class="date"><span class="label"><openmrs:message code="openhmis.cashier.date"/>: </span> ${bill.dateCreated}</li>
 	</c:when>
 	<c:otherwise>
 		<li class="cashier"><span class="label"><openmrs:message code="openhmis.cashier.cashier.name"/>:</span> ${user.person.personName}</li>
+		<li class="location"><span>Bill Location:</span> ${location.name} </li>
 	</c:otherwise>
 </c:choose>	
 	<li class="cashPoint${timesheet != null ? " timesheet" : "" }">

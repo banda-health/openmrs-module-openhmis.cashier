@@ -22,6 +22,7 @@ public class CashierSettings {
 	private Integer shiftSummaryReportId;
 	private Integer dailyShiftSummaryReportId;
 	private Integer paymentsByPaymentModeReportId;
+	private Boolean cashierLocationRestriction;
 
 	public Boolean getAdjustmentReasonField() {
 		return adjustmentReasonField;
@@ -142,4 +143,13 @@ public class CashierSettings {
 	public void setPaymentsByPaymentModeReportId(Integer paymentsByPaymentModeReportId) {
 		this.paymentsByPaymentModeReportId = paymentsByPaymentModeReportId;
 	}
+
+	public Boolean getCashierLocationRestriction() {
+		return cashierLocationRestriction;
+	}
+
+	public void setCashierLocationRestriction(Boolean locationRestrictions) {
+		this.cashierLocationRestriction = locationRestrictions;
+	}
+
 }
