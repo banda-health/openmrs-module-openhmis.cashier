@@ -138,7 +138,7 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	}
 
 	@Override
-	public List<Bill> getBillsByPatientId(int patientId, Location location, PagingInfo paging) {
+	public List<Bill> getBillsByPatientIdAndLocation(int patientId, Location location, PagingInfo paging) {
 		if (patientId < 0) {
 			throw new IllegalArgumentException("The patient id must be a valid identifier.");
 		}
@@ -174,14 +174,11 @@ public class BillServiceImpl extends BaseEntityDataServiceImpl<Bill> implements 
 	}
 
 	@Override
-	public List<Bill> getBillsByLocation(final Location location, final Boolean includeRetired, PagingInfo pagingInfo) {
+	public List<Bill> getBillsByLocation(final Location location,  PagingInfo pagingInfo) {
 		return executeCriteria(Bill.class, pagingInfo, new Action1<Criteria>() {
 			@Override
 			public void apply(Criteria criteria) {
 				criteria.add(Restrictions.eq(HibernateCriteriaConstants.LOCATION, location));
-				if (!includeRetired) {
-					criteria.add(Restrictions.eq(HibernateCriteriaConstants.RETIRED, false));
-				}
 			}
 		});
 	}

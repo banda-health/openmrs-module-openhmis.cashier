@@ -52,8 +52,8 @@ public class PatientBillHistoryController {
 		if (ModuleSettings.areItemsRestrictedByLocation()) {
 			String location = Context.getAuthenticatedUser()
 			        .getUserProperty(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
-			Location locationtemp = Context.getLocationService().getLocation(Integer.parseInt(location));
-			List<Bill> bills = billService.getBillsByPatientId(patientId, locationtemp, null);
+			Location locationTemp = Context.getLocationService().getLocation(Integer.parseInt(location));
+			List<Bill> bills = billService.getBillsByPatientIdAndLocation(patientId, locationTemp, null);
 			model.addAttribute("bills", bills);
 		} else {
 			List<Bill> bills = billService.getBillsByPatientId(patientId, null);

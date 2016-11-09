@@ -40,7 +40,7 @@ public abstract class CashierSettingsControllerBase {
 
 		modelMap.addAttribute("reports", reportService.getJasperReports());
 		modelMap.addAttribute("cashierSettings", ModuleSettings.loadSettings());
-		//HeaderController.render(modelMap, request);
+		HeaderController.render(modelMap, request);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

@@ -68,7 +68,18 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 */
 	List<Bill> getBillsByPatientId(int patientId, PagingInfo paging);
 
-	List<Bill> getBillsByPatientId(int patientId, Location location, PagingInfo paging);
+    /**
+     * Returns all {@link Bill}s for the specified patient with the specified paging.
+     * @param patientId The patient id.
+     * @param location the location of the bill.
+     * @param paging The paging information.
+     * @return All of the bills for the specified patient.
+     * @should throw IllegalArgumentException if the patientId is less than zero
+     * @should throw NullPointerException if patient is null
+     * @should return all bills for the specified patient
+     * @should return an empty list if the specified patient has no bills
+     */
+	List<Bill> getBillsByPatientIdAndLocation(int patientId, Location location, PagingInfo paging);
 
 	/**
 	 * Gets all bills using the specified {@link BillSearch} settings.
@@ -99,9 +110,16 @@ public interface IBillService extends IEntityDataService<Bill> {
 	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	List<Bill> getBills(BillSearch billSearch, PagingInfo pagingInfo);
 
+
+    /**
+     * Gets all bills using the specified {@link Location}.
+     * @param location The location to restrict on.
+     * @param pagingInfo The paging information.
+     * @return The bills found or an empty list if no bills were found.
+     */
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_BILLS })
-	List<Bill> getBillsByLocation(Location l, Boolean isretired, PagingInfo pagingInfo);
+	List<Bill> getBillsByLocation(Location location, PagingInfo pagingInfo);
 
 	@Override
 	@Authorized(PrivilegeConstants.VIEW_BILLS)

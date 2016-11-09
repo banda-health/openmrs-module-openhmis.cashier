@@ -79,12 +79,12 @@ public class BillResource extends BaseRestDataResource<Bill> {
 	@Override
 	protected NeedsPaging<Bill> doGetAll(RequestContext context) {
 		if (ModuleSettings.areItemsRestrictedByLocation()) {
-			String loc = Context.getAuthenticatedUser().getUserProperty(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
-			Location ltemp = Context.getLocationService().getLocation(Integer.parseInt(loc));
+			String location = Context.getAuthenticatedUser().getUserProperty(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
+			Location locationTemp = Context.getLocationService().getLocation(Integer.parseInt(location));
 			PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 
 			return new NeedsPaging<Bill>(Context.getService(IBillService.class).getBillsByLocation(
-			    ltemp, false, pagingInfo), context);
+                    locationTemp, pagingInfo), context);
 		} else {
 			return super.doGetAll(context);
 		}
