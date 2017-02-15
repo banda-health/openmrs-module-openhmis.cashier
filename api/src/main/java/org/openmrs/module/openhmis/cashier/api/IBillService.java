@@ -16,6 +16,7 @@ package org.openmrs.module.openhmis.cashier.api;
 
 import java.util.List;
 
+import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
@@ -67,6 +68,19 @@ public interface IBillService extends IEntityDataService<Bill> {
 	 */
 	List<Bill> getBillsByPatientId(int patientId, PagingInfo paging);
 
+    /**
+     * Returns all {@link Bill}s for the specified patient with the specified paging.
+     * @param patientId The patient id.
+     * @param location the location of the bill.
+     * @param paging The paging information.
+     * @return All of the bills for the specified patient.
+     * @should throw IllegalArgumentException if the patientId is less than zero
+     * @should throw NullPointerException if patient is null
+     * @should return all bills for the specified patient
+     * @should return an empty list if the specified patient has no bills
+     */
+	List<Bill> getBillsByPatientIdAndLocation(int patientId, Location location, PagingInfo paging);
+
 	/**
 	 * Gets all bills using the specified {@link BillSearch} settings.
 	 * @param billSearch The bill search settings.
@@ -95,6 +109,17 @@ public interface IBillService extends IEntityDataService<Bill> {
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_BILLS })
 	List<Bill> getBills(BillSearch billSearch, PagingInfo pagingInfo);
+
+
+    /**
+     * Gets all bills using the specified {@link Location}.
+     * @param location The location to restrict on.
+     * @param pagingInfo The paging information.
+     * @return The bills found or an empty list if no bills were found.
+     */
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_BILLS })
+	List<Bill> getBillsByLocation(Location location, PagingInfo pagingInfo);
 
 	@Override
 	@Authorized(PrivilegeConstants.VIEW_BILLS)

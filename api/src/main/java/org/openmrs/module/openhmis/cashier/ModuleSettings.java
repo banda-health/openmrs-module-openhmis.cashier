@@ -46,6 +46,8 @@ public class ModuleSettings {
 	public static final String DAILY_SHIFT_SUMMARY_REPORT_ID_PROPERTY = "openhmis.cashier.reports.dailyShiftSummary";
 	public static final String PAYMENTS_BY_PAYMENT_MODE_REPORT_ID_PROPERTY =
 	        "openhmis.cashier.reports.paymentsByPaymentMode";
+	public static final String RESTRICT_CASHIER_ITEMS_BY_LOCATION =
+	        "openhmis.cashier.restrictCashierItemsByLocations";
 
 	private static AdministrationService administrationService;
 
@@ -69,6 +71,12 @@ public class ModuleSettings {
 		}
 
 		return report;
+	}
+
+	public static boolean areItemsRestrictedByLocation() {
+		AdministrationService adminService = Context.getAdministrationService();
+		String property = adminService.getGlobalProperty(RESTRICT_CASHIER_ITEMS_BY_LOCATION);
+		return Boolean.parseBoolean(property);
 	}
 
 	public static CashierSettings loadSettings() {
@@ -170,6 +178,13 @@ public class ModuleSettings {
 			}
 		});
 
+		getBoolProperty(RESTRICT_CASHIER_ITEMS_BY_LOCATION, new Action1<Boolean>() {
+			@Override
+			public void apply(Boolean parameter) {
+				cashierSettings.setCashierLocationRestriction(parameter);
+			}
+		});
+
 		return cashierSettings;
 	}
 
@@ -192,6 +207,7 @@ public class ModuleSettings {
 		setIntProperty(SHIFT_SUMMARY_REPORT_ID_PROPERTY, cashierSettings.getShiftSummaryReportId());
 		setIntProperty(DAILY_SHIFT_SUMMARY_REPORT_ID_PROPERTY, cashierSettings.getDailyShiftSummaryReportId());
 		setIntProperty(PAYMENTS_BY_PAYMENT_MODE_REPORT_ID_PROPERTY, cashierSettings.getPaymentsByPaymentModeReportId());
+		setBoolProperty(RESTRICT_CASHIER_ITEMS_BY_LOCATION, cashierSettings.getCashierLocationRestriction());
 	}
 
 	// TODO: These functions should be moved to a commons-level base class for module settings classes

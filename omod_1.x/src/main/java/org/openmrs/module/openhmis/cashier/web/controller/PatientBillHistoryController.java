@@ -13,12 +13,18 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.directwebremoting.util.Logger;
+import org.openmrs.Location;
 import org.openmrs.api.PatientService;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
+import org.openmrs.util.OpenmrsConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -43,7 +49,15 @@ public class PatientBillHistoryController {
 	@RequestMapping(method = RequestMethod.GET)
 	public void billHistory(ModelMap model, @RequestParam(value = "patientId", required = true) int patientId) {
 		LOG.warn("In bill history controller");
-		List<Bill> bills = billService.getBillsByPatientId(patientId, null);
-		model.addAttribute("bills", bills);
+		if (ModuleSettings.areItemsRestrictedByLocation()) {
+			String location = Context.getAuthenticatedUser()
+			        .getUserProperty(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
+			Location locationTemp = Context.getLocationService().getLocation(Integer.parseInt(location));
+			List<Bill> bills = billService.getBillsByPatientIdAndLocation(patientId, locationTemp, null);
+			model.addAttribute("bills", bills);
+		} else {
+			List<Bill> bills = billService.getBillsByPatientId(patientId, null);
+			model.addAttribute("bills", bills);
+		}
 	}
 }

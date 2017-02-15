@@ -839,4 +839,14 @@
 			<column name="sort_order" type="int"><constraints nullable="true"/></column>
 		</addColumn>
 	</changeSet>
+    <changeSet id="kmri.cashier-0.1" author="Mark Nicoll">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="cashier_bill" columnName="location_id" />
+            </not>
+        </preConditions>
+        <addColumn tableName="cashier_bill">
+            <column name="location_id" type="int"></column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

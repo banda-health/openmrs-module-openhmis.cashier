@@ -18,6 +18,7 @@
 		<many-to-one name="patient" class="org.openmrs.Patient" not-null="true" column="patient_id" />
 		<many-to-one name="cashPoint" class="CashPoint" not-null="true" column="cash_point_id" />
 		<many-to-one name="billAdjusted" class="Bill" column="adjusted_bill_id" />
+        <many-to-one name="location" class="org.openmrs.Location" column="location_id" />
 
 		<property name="status" column="status" not-null="true">
 			<type name="org.hibernate.type.EnumType">

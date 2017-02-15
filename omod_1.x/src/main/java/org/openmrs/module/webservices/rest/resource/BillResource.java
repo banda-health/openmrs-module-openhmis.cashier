@@ -14,6 +14,7 @@
 package org.openmrs.module.webservices.rest.resource;
 
 import com.google.common.collect.Iterators;
+import org.openmrs.Location;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
@@ -29,7 +30,9 @@ import org.openmrs.module.openhmis.cashier.api.model.Payment;
 import org.openmrs.module.openhmis.cashier.api.model.CashPoint;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.RoundingUtil;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IEntityDataService;
+import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -37,6 +40,8 @@ import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentat
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
+import org.openmrs.util.OpenmrsConstants;
 import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
@@ -69,6 +74,20 @@ public class BillResource extends BaseRestDataResource<Bill> {
 			description.addProperty("id");
 		}
 		return description;
+	}
+
+	@Override
+	protected NeedsPaging<Bill> doGetAll(RequestContext context) {
+		if (ModuleSettings.areItemsRestrictedByLocation()) {
+			String location = Context.getAuthenticatedUser().getUserProperty(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
+			Location locationTemp = Context.getLocationService().getLocation(Integer.parseInt(location));
+			PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
+
+			return new NeedsPaging<Bill>(Context.getService(IBillService.class).getBillsByLocation(
+                    locationTemp, pagingInfo), context);
+		} else {
+			return super.doGetAll(context);
+		}
 	}
 
 	@Override
