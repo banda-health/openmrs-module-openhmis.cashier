@@ -232,7 +232,7 @@
 		self.checkInitSettingsAndPrivileges = self.checkInitSettingsAndPrivileges || function() {
 				// check if user has privileges to adjust a bill.
 				if (self.getUuid() !== undefined) {
-					self.checkPrivileges(PRIVILEGE_ADJUST_BILL);
+					self.checkPrivileges(PRIVILEGE_ADJUST_BILL, self.onHasPrivilegesCallback);
 
 					//check if the "allow bill adjustment" setting is set.
 					CashierBillRestfulService.checkAllowBillAdjustment(function(data) {
@@ -561,6 +561,12 @@
 				if ($scope.isPrintBill) {
 					$scope.uuid = data.uuid;
 					self.printBill();
+				}
+			}
+
+		self.onHasPrivilegesCallback = self.onHasPrivilegesCallback || function(hasPrivileges){
+				if(!hasPrivileges){
+					$scope.ALLOW_BILL_ADJUSTMENT = false;
 				}
 			}
 
