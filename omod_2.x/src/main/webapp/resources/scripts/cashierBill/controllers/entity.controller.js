@@ -31,7 +31,8 @@
 		var entity_name_message_key = "openhmis.cashier.bill";
 		var REST_ENTITY_NAME = "bill";
 		var PRINT_RECEIPT_URL = ROOT_URL + 'module/openhmis/cashier/receipt.form?billId=';
-		var TIMESHEET_URL = ROOT_URL + 'openhmis.cashier/timesheet/entities.page#/';
+		var BILL_URL = ROOT_URL + 'openhmis.cashier/cashierBill/entities.page#/';
+		var TIMESHEET_URL = ROOT_URL + 'openhmis.cashier/timesheet/entities.page#/?redirectUrl=' + BILL_URL;
 		var ENTITIES_URL = 'entities.page#/';
 
 		// @Override

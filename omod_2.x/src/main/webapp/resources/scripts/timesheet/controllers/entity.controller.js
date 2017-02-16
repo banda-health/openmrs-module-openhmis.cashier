@@ -19,15 +19,16 @@
 	var base = angular.module('app.genericEntityController');
 	base.controller("TimesheetController", TimesheetController);
 	TimesheetController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory', 'TimesheetModel',
-		'TimesheetRestfulService', 'TimesheetFunctions', '$window'];
+		'TimesheetRestfulService', 'TimesheetFunctions', '$window', '$location'];
 	
 	function TimesheetController($stateParams, $injector, $scope, $filter, EntityRestFactory, TimesheetModel,
-	                             TimesheetRestfulService, TimesheetFunctions, $window) {
+	                             TimesheetRestfulService, TimesheetFunctions, $window, $location) {
 		var self = this;
 		
 		var entity_name_message_key = "openhmis.cashier.page.timesheet";
 		var REST_ENTITY_NAME = "timesheet";
 		var TIMESHEET_ACCESS_DENIED_PAGE_URL = 'entities.page#/accessDenied';
+		var REDIRECT_URL;
 		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters
@@ -44,6 +45,7 @@
 		// @Override
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function (uuid) {
+				REDIRECT_URL =  $location.search().redirectUrl;
 				self.loadCurrentProvider();
 				self.loadCashpoints();
 				self.loadCurrentTimesheets();
@@ -149,6 +151,14 @@
 					$scope.showClockOutSection = false;
 				}
 			}
+
+		self.cancel = self.cancel || function() {
+				if (REDIRECT_URL !== undefined) {
+					window.location = REDIRECT_URL;
+				} else {
+					window.location = CASHIER_LANDING_PAGE_URL;
+				}
+			}
 		
 		// @Override
 		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
@@ -185,14 +195,12 @@
 				 * */
 				if ($scope.timesheets) {
 					if ($scope.timesheets.clockOut != null) {
-						console.log($scope.cashier)
 						$scope.entity.cashier = $scope.cashier;
 					} else {
 						$scope.entity.cashier = $scope.timesheets.cashier;
 					}
 				} else {
 					$scope.entity.cashier = $scope.cashier;
-					console.log($scope.cashier);
 				}
 				
 				return true;
