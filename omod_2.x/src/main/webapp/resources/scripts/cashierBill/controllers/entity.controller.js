@@ -31,7 +31,8 @@
 		var entity_name_message_key = "openhmis.cashier.bill";
 		var REST_ENTITY_NAME = "bill";
 		var PRINT_RECEIPT_URL = ROOT_URL + 'module/openhmis/cashier/receipt.form?billId=';
-		var TIMESHEET_URL = ROOT_URL + 'openhmis.cashier/timesheet/entities.page#/';
+		var BILL_URL = ROOT_URL + 'openhmis.cashier/cashierBill/entities.page#/';
+		var TIMESHEET_URL = ROOT_URL + 'openhmis.cashier/timesheet/entities.page#/?redirectUrl=' + BILL_URL;
 		var ENTITIES_URL = 'entities.page#/';
 
 		// @Override
@@ -232,7 +233,7 @@
 		self.checkInitSettingsAndPrivileges = self.checkInitSettingsAndPrivileges || function() {
 				// check if user has privileges to adjust a bill.
 				if (self.getUuid() !== undefined) {
-					self.checkPrivileges(PRIVILEGE_ADJUST_BILL);
+					self.checkPrivileges(PRIVILEGE_ADJUST_BILL, self.onHasPrivilegesCallback);
 
 					//check if the "allow bill adjustment" setting is set.
 					CashierBillRestfulService.checkAllowBillAdjustment(function(data) {
@@ -561,6 +562,12 @@
 				if ($scope.isPrintBill) {
 					$scope.uuid = data.uuid;
 					self.printBill();
+				}
+			}
+
+		self.onHasPrivilegesCallback = self.onHasPrivilegesCallback || function(hasPrivileges){
+				if(!hasPrivileges){
+					$scope.ALLOW_BILL_ADJUSTMENT = false;
 				}
 			}
 
