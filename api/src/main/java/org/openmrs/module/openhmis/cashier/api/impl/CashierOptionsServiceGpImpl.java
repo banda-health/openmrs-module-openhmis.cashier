@@ -13,8 +13,6 @@
  */
 package org.openmrs.module.openhmis.cashier.api.impl;
 
-import java.math.BigDecimal;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

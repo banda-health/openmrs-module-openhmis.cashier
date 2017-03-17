@@ -52,7 +52,7 @@
 		<openMRSVersion>1.9.9</openMRSVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<powermock.version>1.4.10</powermock.version>
-		<javaCompilerVersion>1.6</javaCompilerVersion>
+		<javaCompilerVersion>1.8</javaCompilerVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -213,7 +213,20 @@
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-module-junit4-rule-agent</artifactId>
-				<version>1.4.10</version>
+				<version>${powermock.version}</version>
+				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.javassist</groupId>
+						<artifactId>javassist</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.19.0-GA</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -347,7 +360,7 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.14</version>
 					<configuration>
-						<argLine>-javaagent:${settings.localRepository}/org/powermock/powermock-module-javaagent/${powermock.version}/powermock-module-javaagent-${powermock.version}.jar -XX:-UseSplitVerifier</argLine>
+						<argLine>-javaagent:${settings.localRepository}/org/powermock/powermock-module-javaagent/${powermock.version}/powermock-module-javaagent-${powermock.version}.jar -noverify</argLine>
 					</configuration>
 				</plugin>
 				<plugin>
