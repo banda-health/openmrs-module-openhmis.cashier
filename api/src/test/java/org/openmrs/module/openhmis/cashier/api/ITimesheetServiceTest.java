@@ -38,8 +38,8 @@ public class ITimesheetServiceTest extends IEntityDataServiceTest<ITimesheetServ
 		providerService = Context.getProviderService();
 		cashPointService = Context.getService(ICashPointService.class);
 
-		executeDataSet(ICashPointServiceTest.CASH_POINT_DATASET);
 		executeDataSet(TestConstants.CORE_DATASET);
+		executeDataSet(ICashPointServiceTest.CASH_POINT_DATASET);
 		executeDataSet(TIMESHEET_DATASET);
 	}
 

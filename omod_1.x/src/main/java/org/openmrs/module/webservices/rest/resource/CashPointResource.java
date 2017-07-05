@@ -25,7 +25,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
  * REST resource representing a {@link CashPoint}.
  */
 @Resource(name = CashierRestConstants.CASH_POINT_RESOURCE, supportedClass = CashPoint.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
 public class CashPointResource extends BaseRestMetadataResource<CashPoint> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
