@@ -2,7 +2,7 @@
 <dataset>
 	<cashier_seq_receipt_number_generator seq_receipt_number_generator_id="0" uuid="4028814B3A25FE62013A25FE62840000"
 		grouping_type="CASHIER_AND_CASH_POINT" sequence_type="DATE_COUNTER" sequence_separator="-" cashier_prefix="P"
-		cash_point_prefix="CP" sequence_padding="4" has_check_digit="true"/>
+		cash_point_prefix="CP" sequence_padding="4" />
 
 	<cashier_seq_group_sequence seq_group_sequence_id="0" uuid="4028814B3A25FE62013A269F4B610001"
 	                            sequence_group="Test Seq 1" sequence_value="10" />
