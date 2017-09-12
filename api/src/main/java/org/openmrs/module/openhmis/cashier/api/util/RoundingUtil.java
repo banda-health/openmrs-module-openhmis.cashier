@@ -13,17 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.api.util;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.logic.op.In;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
@@ -35,6 +29,9 @@ import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Utility class for Rounding off bill values

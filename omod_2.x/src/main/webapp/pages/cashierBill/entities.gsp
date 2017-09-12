@@ -15,7 +15,7 @@
     ui.includeJavascript("uicommons", "datetimepicker/bootstrap-datetimepicker.min.js")
 
     /* load re-usables/common modules */
-    ui.includeFragment("openhmis.commons", "load.reusable.modules")
+    ui.includeFragment("openhmis.commons", "loadReusableModules")
 
     /* load cashier bill modules */
     ui.includeJavascript("openhmis.cashier", "cashierBill/models/entity.model.js")

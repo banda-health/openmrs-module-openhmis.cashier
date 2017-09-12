@@ -29,7 +29,7 @@ import java.text.DateFormat;
  * REST resource representing a {@link Timesheet}.
  */
 @Resource(name = RestConstants.VERSION_2 + "/cashier/timesheet", supportedClass = Timesheet.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
 public class TimesheetResource extends BaseRestDataResource<Timesheet> {
 	@Override
 	public Timesheet newDelegate() {
