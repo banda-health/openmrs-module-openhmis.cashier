@@ -16,7 +16,7 @@
     ui.includeCss("uicommons", "datetimepicker.css")
 
     /* load re-usables/common modules */
-    ui.includeFragment("openhmis.commons", "load.reusable.modules")
+    ui.includeFragment("openhmis.commons", "loadReusableModules")
 
     /* load item modules */
     ui.includeJavascript("openhmis.cashier", "timesheet/models/entity.model.js")

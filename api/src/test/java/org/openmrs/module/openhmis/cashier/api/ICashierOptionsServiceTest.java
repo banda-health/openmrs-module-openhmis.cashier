@@ -13,17 +13,16 @@
  */
 package org.openmrs.module.openhmis.cashier.api;
 
-import java.math.BigDecimal;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
+import org.openmrs.module.openhmis.commons.api.BaseModuleContextTest;
+import org.openmrs.module.openhmis.inventory.api.IDepartmentDataServiceTest;
 import org.openmrs.module.openhmis.inventory.api.IItemDataServiceTest;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
 
-public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
+public class ICashierOptionsServiceTest extends BaseModuleContextTest {
 	public static final String OPTIONS_DATASET_VALID = TestConstants.BASE_DATASET_DIR + "CashierOptionsTestValid.xml";
 	public static final String OPTIONS_DATASET_INVALID = TestConstants.BASE_DATASET_DIR + "CashierOptionsTestInvalid.xml";
 
@@ -41,7 +40,9 @@ public class ICashierOptionsServiceTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void getOptions_shouldLoadOptions() throws Exception {
 		executeDataSet(OPTIONS_DATASET_VALID);
+		executeDataSet(IDepartmentDataServiceTest.DEPARTMENT_DATASET);
 		executeDataSet(IItemDataServiceTest.ITEM_DATASET);
+
 		CashierOptions options = cashierOptionsService.getOptions();
 		Assert.assertEquals("4028814B399565AA01399681B1B5000E", options.getRoundingItemUuid());
 		Assert.assertEquals(3, options.getDefaultReceiptReportId());

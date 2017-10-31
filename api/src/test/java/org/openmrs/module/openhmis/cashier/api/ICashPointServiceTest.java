@@ -34,8 +34,8 @@ public class ICashPointServiceTest extends IMetadataDataServiceTest<ICashPointSe
 	public void before() throws Exception {
 		super.before();
 
-		executeDataSet(CASH_POINT_DATASET);
 		executeDataSet(TestConstants.CORE_DATASET);
+		executeDataSet(CASH_POINT_DATASET);
 	}
 
 	@Override

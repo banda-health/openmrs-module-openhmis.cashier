@@ -14,7 +14,7 @@
     ui.includeJavascript("uicommons", "angular-common.js")
 
     /* load re-usables/common modules */
-    ui.includeFragment("openhmis.commons", "load.reusable.modules")
+    ui.includeFragment("openhmis.commons", "loadReusableModules")
 
     /* load item modules */
     ui.includeJavascript("openhmis.cashier", "cashPoint/models/entity.model.js")

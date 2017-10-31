@@ -45,7 +45,7 @@ import java.util.Set;
  * REST resource representing a {@link Payment}.
  */
 @SubResource(parent = BillResource.class, path = "payment", supportedClass = Payment.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
 public class PaymentResource extends DelegatingSubResource<Payment, Bill, BillResource> {
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {

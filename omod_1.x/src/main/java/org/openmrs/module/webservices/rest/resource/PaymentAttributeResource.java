@@ -47,7 +47,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
  * REST resource representing a {@link PaymentAttribute}.
  */
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentAttribute", supportedClass = PaymentAttribute.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
 public class PaymentAttributeResource extends BaseRestAttributeDataResource<PaymentAttribute, PaymentModeAttributeType> {
 	private static final Log LOG = LogFactory.getLog(PaymentAttributeResource.class);
 
