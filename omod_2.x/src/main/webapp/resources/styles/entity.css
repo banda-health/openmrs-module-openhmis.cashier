@@ -1,4 +1,15 @@
 /*Contains CSS used to style managecashPoints.gsp*/
+table.amount-details th:first-child, td:first-child{
+	width:90%;
+}
+
+table.amount-details th:nth-child(2), td:nth-child(2) {
+	width: 10%;
+}
+table.amount-details th:nth-child(3), td:nth-child(3) {
+	width: 5%;
+}
+
 .clickable-tr, .cashPoint-pagination span a {
 	cursor:pointer;/*turns to a finger instead of pointer*/
 }
@@ -83,12 +94,16 @@ ul.search-area li{
 ul.search-area-input{
     text-align: left;
 }
-table.manage-cashpoints-table th:first-child, td:first-child {
-    width: 30%;
+table .manage-cashpoints-table th:first-child, td:first-child {
+    width: 25%;
 }
 
-table.manage-cashpoints-table th:nth-child(2), td:nth-child(2) {
+table .manage-cashpoints-table th:nth-child(2), td:nth-child(2) {
     width: 45%;
+}
+
+table .manage-cashpoints-table th:nth-child(3), td:nth-child(3) {
+	width: 45%;
 }
 
 table.amount-details tr:nth-child(even){
@@ -103,16 +118,6 @@ table.amount-details tr {
 table.amount-details td {
 	border-style:none;
 	font-weight: bold;
-}
-table.amount-details th:first-child, td:first-child{
-	width:85%;
-}
-
-table.amount-details th:nth-child(2), td:nth-child(2) {
-	width: 15%;
-}
-table.amount-details th:nth-child(3), td:nth-child(3) {
-	width: 10%;
 }
 
 .not-found{

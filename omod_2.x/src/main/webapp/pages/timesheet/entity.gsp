@@ -8,6 +8,10 @@
 			link: '${ui.pageLink("openhmis.cashier", "cashierLanding")}'
 		},
 		{
+			label: "${ ui.message("openhmis.cashier.admin.task.dashboard")}",
+			link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.cashier/cashier/cashierTasksDashboard.page'
+		},
+		{
 			label: "${ ui.message("openhmis.cashier.page.timesheet.box.title")}"
 		}
 	];
@@ -43,7 +47,7 @@
 							<select class="form-control" ng-required="true"
 							        ng-model="entity.cashPoint" id="cashpointDropdown"
 							        ng-options='cashpoint.name for cashpoint in cashpoints track by cashpoint.uuid'>
-								<option value="">-- Select Cashpoint --</option>
+								<option value="">${ui.message('openhmis.cashier.selectCashpoint')}</option>
 							</select>
 						</div>
 					</div>

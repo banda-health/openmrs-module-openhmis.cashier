@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>3.3.0</version>
+		<version>3.4.0</version>
 	</parent>
 
 	<artifactId>openhmis.cashier-api</artifactId>
@@ -39,6 +39,19 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>jasperreport-api</artifactId>
+		</dependency>
+
+		<!-- These two dependencies need to be higher in the order to ensure that the correct (newer) version of
+		javassit is used -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-rule-agent</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -87,13 +100,6 @@
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4-rule-agent</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 
 	<build>

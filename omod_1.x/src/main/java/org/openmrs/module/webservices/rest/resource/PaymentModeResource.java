@@ -31,7 +31,7 @@ import java.util.List;
  * REST resource representing a {@link PaymentMode}.
  */
 @Resource(name = RestConstants.VERSION_2 + "/cashier/paymentMode", supportedClass = PaymentMode.class,
-        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*" })
+        supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
 public class PaymentModeResource extends BaseRestInstanceTypeResource<PaymentMode, PaymentModeAttributeType> {
 	@Override
 	public PaymentMode newDelegate() {
@@ -53,9 +53,8 @@ public class PaymentModeResource extends BaseRestInstanceTypeResource<PaymentMod
 		return description;
 	}
 
-	// Workaround to fix the TypeVariable issue on base generic property
 	@PropertySetter("attributeTypes")
 	public void setAttributeTypes(PaymentMode instance, List<PaymentModeAttributeType> attributeTypes) {
-		super.setAttributeTypesBase(instance, attributeTypes);
+		super.baseSetAttributeTypes(instance, attributeTypes);
 	}
 }
