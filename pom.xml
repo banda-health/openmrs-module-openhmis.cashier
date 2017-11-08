@@ -44,8 +44,6 @@
 
 	<modules>
 		<module>api</module>
-		<module>omod_1.x</module>
-		<module>omod_2.x</module>
 		<module>omod</module>
 	</modules>
 
@@ -53,7 +51,11 @@
 		<openMRSVersion>1.9.9</openMRSVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<powermock.version>1.4.10</powermock.version>
-		<javaCompilerVersion>1.8</javaCompilerVersion>
+		<javaCompilerVersion>1.7</javaCompilerVersion>
+		<openHMISCommonsVersion>3.6.0-SNAPSHOT</openHMISCommonsVersion>
+		<openHMISBackboneVersion>2.5.0-SNAPSHOT</openHMISBackboneVersion>
+		<openHMISInventoryVersion>2.5.0-SNAPSHOT</openHMISInventoryVersion>
+		<jasperReportVersion>1.6.0-SNAPSHOT</jasperReportVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -113,23 +115,22 @@
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>openhmis.commons-api</artifactId>
-				<version>3.6.0-SNAPSHOT</version>
+				<version>${openHMISCommonsVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
-				<artifactId>openhmis.commons-api</artifactId>
-				<version>3.6.0-SNAPSHOT</version>
-				<type>test-jar</type>
+				<artifactId>openhmis.commons-tests</artifactId>
+				<version>${openHMISCommonsVersion}</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>openhmis.commons-omod</artifactId>
-				<version>3.6.0-SNAPSHOT</version>
+				<version>${openHMISCommonsVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
@@ -137,7 +138,7 @@
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>openhmis.backboneforms-omod</artifactId>
-				<version>2.5.0-SNAPSHOT</version>
+				<version>${openHMISBackboneVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
@@ -145,7 +146,7 @@
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>openhmis.backboneforms-omod</artifactId>
-				<version>2.5.0-SNAPSHOT</version>
+				<version>${openHMISBackboneVersion}</version>
 				<type>test-jar</type>
 				<scope>provided</scope>
 			</dependency>
@@ -153,39 +154,23 @@
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>openhmis.inventory-api</artifactId>
-				<version>2.5.0-SNAPSHOT</version>
+				<version>${openHMISInventoryVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
-				<artifactId>openhmis.inventory-api</artifactId>
-				<version>2.5.0-SNAPSHOT</version>
+				<artifactId>openhmis.inventory-api-tests</artifactId>
+				<version>${openHMISInventoryVersion}</version>
 				<type>test-jar</type>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>openhmis.inventory-omod_1.x</artifactId>
-				<version>2.5.0-SNAPSHOT</version>
-				<type>jar</type>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>openhmis.inventory-omod_2.x</artifactId>
-				<version>2.5.0-SNAPSHOT</version>
-				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>openhmis.inventory-omod</artifactId>
-				<version>2.5.0-SNAPSHOT</version>
+				<version>${openHMISInventoryVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
@@ -193,7 +178,7 @@
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>jasperreport-api</artifactId>
-				<version>1.5.7</version>
+				<version>${jasperReportVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
@@ -258,7 +243,7 @@
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>legacyui-omod</artifactId>
-				<version>1.3.2-SNAPSHOT</version>
+				<version>1.3.2</version>
 				<scope>provided</scope>
 			</dependency>
 
@@ -298,7 +283,7 @@
 						<dependency>
 							<groupId>org.openmrs.module</groupId>
 							<artifactId>openhmis.commons-tools</artifactId>
-							<version>3.4.0</version>
+							<version>${openHMISCommonsVersion}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -319,7 +304,7 @@
 						<dependency>
 							<groupId>org.openmrs.module</groupId>
 							<artifactId>openhmis.commons-tools</artifactId>
-							<version>3.4.0</version>
+							<version>${openHMISCommonsVersion}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -327,8 +312,8 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
-						<target>1.6</target>
-						<source>1.6</source>
+						<target>${javaCompilerVersion}</target>
+						<source>${javaCompilerVersion}</source>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -421,6 +406,7 @@
 			<id>openmrs-2.0</id>
 			<properties>
 				<openMRSVersion>2.0.5</openMRSVersion>
+				<javaCompilerVersion>1.8</javaCompilerVersion>
 			</properties>
 		</profile>
 	</profiles>
