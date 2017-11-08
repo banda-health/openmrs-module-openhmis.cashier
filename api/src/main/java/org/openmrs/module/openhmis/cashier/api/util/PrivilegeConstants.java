@@ -112,10 +112,10 @@ public class PrivilegeConstants {
 		names.add(org.openmrs.util.PrivilegeConstants.EDIT_ENCOUNTERS);
 		names.add(org.openmrs.util.PrivilegeConstants.EDIT_PATIENTS);
 		names.add(org.openmrs.util.PrivilegeConstants.EDIT_VISITS);
-		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_SUMMARY);
-		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_DEMOGRAPHICS);
-		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_OVERVIEW);
-		names.add(org.openmrs.util.PrivilegeConstants.DASHBOARD_VISITS);
+		names.add(privilegeConstantsCompatibility.DASHBOARD_SUMMARY);
+		names.add(privilegeConstantsCompatibility.DASHBOARD_DEMOGRAPHICS);
+		names.add(privilegeConstantsCompatibility.DASHBOARD_OVERVIEW);
+		names.add(privilegeConstantsCompatibility.DASHBOARD_VISITS);
 		names.add(org.openmrs.util.PrivilegeConstants.VIEW_ADMIN_FUNCTIONS);
 		names.add(privilegeConstantsCompatibility.GET_CONCEPTS);
 		names.add(privilegeConstantsCompatibility.GET_ENCOUNTERS);
