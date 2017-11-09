@@ -34,8 +34,6 @@ import org.openmrs.module.web.extension.LinkExt;
 public class CashierLinkExt extends LinkExt {
 	private static final Log LOG = LogFactory.getLog(CashierLinkExt.class);
 
-	private static final String VIEW_PROVIDERS = "Able to view Provider";
-
 	private ITimesheetService timesheetService;
 	private ProviderService providerService;
 
@@ -50,7 +48,7 @@ public class CashierLinkExt extends LinkExt {
 		currentTimesheet = null;
 
 		if (Context.getAuthenticatedUser() != null
-		        && Context.getAuthenticatedUser().hasPrivilege(VIEW_PROVIDERS)) {
+		        && Context.getAuthenticatedUser().hasPrivilege(org.openmrs.util.PrivilegeConstants.VIEW_PROVIDERS)) {
 			try {
 				this.timesheetService = Context.getService(ITimesheetService.class);
 				this.providerService = Context.getProviderService();

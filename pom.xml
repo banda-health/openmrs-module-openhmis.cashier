@@ -44,6 +44,8 @@
 
 	<modules>
 		<module>api</module>
+		<module>omod_1.x</module>
+		<module>omod_2.x</module>
 		<module>omod</module>
 	</modules>
 
@@ -164,6 +166,22 @@
 				<artifactId>openhmis.inventory-api-tests</artifactId>
 				<version>${openHMISInventoryVersion}</version>
 				<type>test-jar</type>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>openhmis.inventory-omod_1.x</artifactId>
+				<version>${openHMISInventoryVersion}</version>
+				<type>jar</type>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>openhmis.inventory-omod_2.x</artifactId>
+				<version>${openHMISInventoryVersion}</version>
+				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
 

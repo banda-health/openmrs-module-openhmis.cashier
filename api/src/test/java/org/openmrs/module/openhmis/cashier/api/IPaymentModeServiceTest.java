@@ -67,7 +67,7 @@ public class IPaymentModeServiceTest extends IMetadataDataServiceTest<IPaymentMo
 			if (attributeTypes.size() > 1) {
 				attributeType = attributeTypes.get(1);
 
-				//mode.removeAttributeType(attributeType);
+				mode.removeAttributeType(attributeType);
 			}
 		}
 
