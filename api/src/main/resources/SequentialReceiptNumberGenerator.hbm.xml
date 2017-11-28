@@ -30,6 +30,7 @@
 		<property name="cashierPrefix" type="java.lang.String" column="cashier_prefix" length="5" not-null="true"/>
 		<property name="cashPointPrefix" type="java.lang.String" column="cash_point_prefix" length="5" not-null="true"/>
 		<property name="sequencePadding" type="int" column="sequence_padding" not-null="true"/>
+		<property name="includeCheckDigit" type="boolean" column="has_check_digit" not-null="true"/>
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
 	</class>
