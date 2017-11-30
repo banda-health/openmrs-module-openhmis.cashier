@@ -174,7 +174,7 @@ public class SequentialReceiptNumberGenerator implements IReceiptNumberGenerator
 			number = grouping + model.getSeparator() + sequence;
 		}
 
-		if (model.isIncludeCheckDigit()) {
+		if (model.getIncludeCheckDigit()) {
 			number = number + model.getSeparator() + generateCheckDigit(number);
 		}
 
