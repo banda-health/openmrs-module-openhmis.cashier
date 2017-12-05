@@ -29,7 +29,6 @@ import java.util.Set;
 /**
  * Constants class for module privilege constants.
  */
-@Component
 public class PrivilegeConstants {
 
 	private static PrivilegeConstantsCompatibility privilegeConstantsCompatibility;
