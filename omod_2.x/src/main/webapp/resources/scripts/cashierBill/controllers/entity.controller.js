@@ -284,8 +284,10 @@
 			}
 
 		self.loadPaymentModeAttributes = self.loadPaymentModeAttributes || function(uuid) {
+			if (uuid) {
 				CashierBillRestfulService.loadPaymentModeAttributes(CASHIER_MODULE_NAME, uuid, self.onLoadPaymentModeAttributesSuccessful);
 			}
+		};
 
 		self.searchPaymentModePatients = self.searchPaymentModePatients || function(q) {
 				return CashierBillRestfulService.searchPerson(q, 'patient');

@@ -89,7 +89,7 @@ public class ISequentialReceiptNumberGeneratorServiceTest
 		entity.setSequenceType(SequentialReceiptNumberGenerator.SequenceType.DATE_TIME_COUNTER);
 		entity.setSeparator("_");
 		entity.setSequencePadding(8);
-		entity.setIncludeCheckDigit(!entity.isIncludeCheckDigit());
+		entity.setIncludeCheckDigit(!entity.getIncludeCheckDigit());
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class ISequentialReceiptNumberGeneratorServiceTest
 		Assert.assertEquals(expected.getSeparator(), actual.getSeparator());
 		Assert.assertEquals(expected.getSequencePadding(), actual.getSequencePadding());
 		Assert.assertEquals(expected.getSequenceType(), actual.getSequenceType());
-		Assert.assertEquals(expected.isIncludeCheckDigit(), actual.isIncludeCheckDigit());
+		Assert.assertEquals(expected.getIncludeCheckDigit(), actual.getIncludeCheckDigit());
 	}
 
 	/**
