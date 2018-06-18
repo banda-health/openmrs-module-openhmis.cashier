@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>3.4.0</version>
+		<version>4.0.0</version>
 	</parent>
 
 	<artifactId>openhmis.cashier-omod</artifactId>
@@ -315,6 +315,7 @@
 	      <plugin>
 		      <groupId>net.alchim31.maven</groupId>
               <artifactId>yuicompressor-maven-plugin</artifactId>
+			  <version>1.5.1</version>
               <executions>
                   <execution>
                       <goals>

@@ -207,7 +207,7 @@
                     </td>
                     <td>
                         <select ng-model="lineItem.itemPrice" class="form-control input-sm right-justify" style="width:150px"
-                                ng-options="formatItemPrice(price) for price in lineItem.prices"
+                                ng-options="formatItemPrice(price) for price in lineItem.prices track by price.uuid"
                                 ng-change="changeItemQuantity(lineItem)">
                             <option value="" ng-if="false"></option>
                         </select>

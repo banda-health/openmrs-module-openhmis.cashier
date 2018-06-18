@@ -17,7 +17,9 @@ import org.openmrs.Privilege;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.util.JasperReportPrivilegeConstants;
-import org.openmrs.module.openhmis.commons.web.PrivilegeConstantsCompatibility;
+import org.openmrs.module.openhmis.commons.api.compatibility.PrivilegeConstantsCompatibility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,6 +30,9 @@ import java.util.Set;
  * Constants class for module privilege constants.
  */
 public class PrivilegeConstants {
+
+	private static PrivilegeConstantsCompatibility privilegeConstantsCompatibility;
+
 	public static final String MANAGE_BILLS = "Manage Cashier Bills";
 	public static final String ADJUST_BILLS = "Adjust Cashier Bills";
 	public static final String VIEW_BILLS = "View Cashier Bills";
@@ -61,7 +66,10 @@ public class PrivilegeConstants {
 	        TASK_CASHIER_TIMESHEETS_PAGE, TASK_MANAGE_CASHIER_MODULE_PAGE, TASK_VIEW_CASHIER_REPORTS,
 	        APP_ACCESS_CASHIER_TASKS_PAGE };
 
-	protected PrivilegeConstants() {}
+	@Autowired
+	protected PrivilegeConstants(PrivilegeConstantsCompatibility privilegeConstantsCompatibility) {
+		PrivilegeConstants.privilegeConstantsCompatibility = privilegeConstantsCompatibility;
+	}
 
 	/**
 	 * Gets all the privileges defined by the module.
@@ -100,25 +108,23 @@ public class PrivilegeConstants {
 		names.add(org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants.VIEW_METADATA);
 		names.add(JasperReportPrivilegeConstants.VIEW_JASPER_REPORTS);
 
-		PrivilegeConstantsCompatibility privilegeConstantsCompatibility = new PrivilegeConstantsCompatibility();
-
-		names.add(privilegeConstantsCompatibility.getAddEncountersPrivilege());
-		names.add(privilegeConstantsCompatibility.getAddVisitsPrivilege());
-		names.add(privilegeConstantsCompatibility.getEditEncountersPrivilege());
-		names.add(privilegeConstantsCompatibility.getEditPatientsPrivilege());
-		names.add(privilegeConstantsCompatibility.getEditVisitsPrivilege());
-		names.add(privilegeConstantsCompatibility.getDashboardSummaryPrivilege());
-		names.add(privilegeConstantsCompatibility.getDashboardDemographicsPrivilege());
-		names.add(privilegeConstantsCompatibility.getDashboardOverviewPrivilege());
-		names.add(privilegeConstantsCompatibility.getDashboardVisitsPrivilege());
-		names.add(privilegeConstantsCompatibility.getViewAdminFunctionsPrivilege());
-		names.add(privilegeConstantsCompatibility.getViewConceptsPrivilege());
-		names.add(privilegeConstantsCompatibility.getViewEncountersPrivilege());
-		names.add(privilegeConstantsCompatibility.getViewNavigationMenuPrivilege());
-		names.add(privilegeConstantsCompatibility.getViewObsPrivilege());
-		names.add(privilegeConstantsCompatibility.getViewPatientsPrivilege());
-		names.add(privilegeConstantsCompatibility.getViewProvidersPrivilege());
-		names.add(privilegeConstantsCompatibility.getViewVisitPrivilege());
+		names.add(org.openmrs.util.PrivilegeConstants.ADD_ENCOUNTERS);
+		names.add(org.openmrs.util.PrivilegeConstants.ADD_VISITS);
+		names.add(org.openmrs.util.PrivilegeConstants.EDIT_ENCOUNTERS);
+		names.add(org.openmrs.util.PrivilegeConstants.EDIT_PATIENTS);
+		names.add(org.openmrs.util.PrivilegeConstants.EDIT_VISITS);
+		names.add(privilegeConstantsCompatibility.DASHBOARD_SUMMARY);
+		names.add(privilegeConstantsCompatibility.DASHBOARD_DEMOGRAPHICS);
+		names.add(privilegeConstantsCompatibility.DASHBOARD_OVERVIEW);
+		names.add(privilegeConstantsCompatibility.DASHBOARD_VISITS);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_ADMIN_FUNCTIONS);
+		names.add(privilegeConstantsCompatibility.GET_CONCEPTS);
+		names.add(privilegeConstantsCompatibility.GET_ENCOUNTERS);
+		names.add(org.openmrs.util.PrivilegeConstants.VIEW_NAVIGATION_MENU);
+		names.add(privilegeConstantsCompatibility.GET_OBS);
+		names.add(privilegeConstantsCompatibility.GET_PATIENTS);
+		names.add(privilegeConstantsCompatibility.GET_PROVIDERS);
+		names.add(privilegeConstantsCompatibility.GET_VISITS);
 
 		for (String name : names) {
 			privileges.add(service.getPrivilege(name));

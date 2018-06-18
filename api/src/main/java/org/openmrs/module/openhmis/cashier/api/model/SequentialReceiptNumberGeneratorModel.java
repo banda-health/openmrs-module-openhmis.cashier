@@ -113,7 +113,7 @@ public class SequentialReceiptNumberGeneratorModel extends BaseOpenmrsObject {
 		}
 	}
 
-	public boolean isIncludeCheckDigit() {
+	public boolean getIncludeCheckDigit() {
 		return includeCheckDigit;
 	}
 
