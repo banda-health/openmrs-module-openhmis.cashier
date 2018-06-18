@@ -31,7 +31,7 @@
 
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
-			<artifactId>openhmis.inventory-api-tests</artifactId>
+			<artifactId>openhmis.inventory-api</artifactId>
 			<type>test-jar</type>
 		</dependency>
 
