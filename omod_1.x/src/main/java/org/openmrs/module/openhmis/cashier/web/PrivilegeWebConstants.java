@@ -13,7 +13,9 @@
  */
 package org.openmrs.module.openhmis.cashier.web;
 
+import org.openmrs.module.openhmis.commons.api.compatibility.PrivilegeConstantsCompatibility;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Constants class for privileges required by web resources.
@@ -24,5 +26,8 @@ public class PrivilegeWebConstants extends PrivilegeConstants {
 	public static final String BILL_PAGE_PRIVILEDGES = MANAGE_METADATA + "," + VIEW_METADATA;
 	public static final String SETTING_PAGE_PRIVILEGE = MANAGE_METADATA;
 
-	protected PrivilegeWebConstants() {}
+	@Autowired
+	protected PrivilegeWebConstants(PrivilegeConstantsCompatibility privilegeConstantsCompatibility) {
+		super(privilegeConstantsCompatibility);
+	}
 }

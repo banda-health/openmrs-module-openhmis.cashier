@@ -4,13 +4,17 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>openhmis.cashier</artifactId>
-		<version>3.4.0-SNAPSHOT</version>
+		<version>4.1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>openhmis.cashier-omod_1.x</artifactId>
 	<packaging>jar</packaging>
 	<name>OpenHMIS Cashier Module OMOD_1.x</name>
 	<description>OMOD project for the OpenHMIS Cashier module for 1.x platform</description>
+
+	<properties>
+		<openMRSVersion>1.9.9</openMRSVersion>
+	</properties>
 
 	<dependencies>
 		<!-- Begin OpenMRS modules -->
@@ -70,18 +74,21 @@
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
+			<version>${openMRSVersion}</version>
 			<type>jar</type>
 		</dependency>
 
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
 			<artifactId>openmrs-web</artifactId>
+			<version>${openMRSVersion}</version>
 			<type>jar</type>
 		</dependency>
 
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
+			<version>${openMRSVersion}</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -89,6 +96,7 @@
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
 			<artifactId>openmrs-web</artifactId>
+			<version>${openMRSVersion}</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -96,6 +104,7 @@
 		<dependency>
 			<groupId>org.openmrs.test</groupId>
 			<artifactId>openmrs-test</artifactId>
+			<version>${openMRSVersion}</version>
 			<type>pom</type>
 			<scope>test</scope>
 		</dependency>
