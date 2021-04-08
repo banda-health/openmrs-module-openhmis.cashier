@@ -19,7 +19,6 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.io.ByteArrayOutputStream;
-import java.math.BigDecimal;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.Layout;
@@ -48,7 +47,7 @@ public class CashierOptionsServiceGpImplTest {
 		adminService = mock(AdministrationService.class);
 		itemService = mock(IItemDataService.class);
 
-		optionsService = new CashierOptionsServiceGpImpl(adminService, itemService);
+		optionsService = new CashierOptionsServiceGpImpl();
 	}
 
 	/**

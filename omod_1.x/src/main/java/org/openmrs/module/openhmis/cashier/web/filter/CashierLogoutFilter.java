@@ -27,13 +27,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Provider;
 import org.openmrs.User;
-import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.ITimesheetService;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.commons.api.ProviderUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -44,11 +42,6 @@ public class CashierLogoutFilter implements Filter {
 	private static final Log LOG = LogFactory.getLog(CashierLogoutFilter.class);
 	private static final String PROVIDER_ERROR_LOG_MESSAGE = "Could not locate the Provider";
 	private static final Object TIMESHEET_ERROR_LOG_MESSAGE = "Could not locate Timesheet";
-
-	@Autowired
-	private ProviderService providerService;
-	@Autowired
-	private ITimesheetService timesheetService;
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
@@ -73,12 +66,13 @@ public class CashierLogoutFilter implements Filter {
 			return;
 		}
 
-		Provider provider = ProviderUtil.getCurrentProvider(providerService);
+		Provider provider = ProviderUtil.getCurrentProvider(Context.getProviderService());
 		if (provider == null) {
 			LOG.error(PROVIDER_ERROR_LOG_MESSAGE);
 			return;
 		}
 
+		ITimesheetService timesheetService = Context.getService(ITimesheetService.class);
 		Timesheet timesheet = timesheetService.getCurrentTimesheet(provider);
 		if (timesheet == null) {
 			LOG.error(TIMESHEET_ERROR_LOG_MESSAGE);

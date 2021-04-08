@@ -18,10 +18,10 @@ import java.math.BigDecimal;
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.ModuleSettings;
 import org.openmrs.module.openhmis.cashier.api.ICashierOptionsService;
 import org.openmrs.module.openhmis.cashier.api.model.CashierOptions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,20 +33,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/module/openhmis/cashier/options")
 public class CashierOptionsController {
-	private AdministrationService adminService;
-	private ICashierOptionsService cashierOptionsService;
 
-	@Autowired
-	public CashierOptionsController(AdministrationService adminService, ICashierOptionsService cashierOptionsService) {
-		this.adminService = adminService;
-		this.cashierOptionsService = cashierOptionsService;
+	public CashierOptionsController() {
+
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public CashierOptions options() {
-		CashierOptions options = cashierOptionsService.getOptions();
+		CashierOptions options = Context.getService(ICashierOptionsService.class).getOptions();
 
+		AdministrationService adminService = Context.getAdministrationService();
 		String roundingModeProperty = adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY);
 		String roundingItemId = adminService.getGlobalProperty(ModuleSettings.ROUNDING_ITEM_ID);
 		if (StringUtils.isNotEmpty(roundingModeProperty)) {

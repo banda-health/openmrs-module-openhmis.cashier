@@ -26,7 +26,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Provider;
 import org.openmrs.api.APIException;
-import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.jasperreport.JasperReport;
@@ -40,7 +39,6 @@ import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.cashier.web.propertyeditor.EntityPropertyEditor;
 import org.openmrs.module.openhmis.cashier.web.propertyeditor.ProviderPropertyEditor;
 import org.openmrs.module.openhmis.commons.api.ProviderUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -63,19 +61,10 @@ import org.springframework.web.context.request.WebRequest;
 public class CashierController {
 	private static final Log LOG = LogFactory.getLog(CashierController.class);
 
-	private ITimesheetService timesheetService;
-	private ICashPointService cashPointService;
-	private ProviderService providerService;
 	private JasperReportService jasperService;
-	private AdministrationService adminService;
 
-	@Autowired
-	public CashierController(ITimesheetService timesheetService, ICashPointService cashPointService,
-	    ProviderService providerService, AdministrationService adminService) {
-		this.timesheetService = timesheetService;
-		this.cashPointService = cashPointService;
-		this.providerService = providerService;
-		this.adminService = adminService;
+	public CashierController() {
+
 	}
 
 	@InitBinder
@@ -93,6 +82,7 @@ public class CashierController {
 	public void render(@RequestParam(value = "providerId", required = false) Integer providerId,
 	        @RequestParam(value = "returnUrl", required = false) String returnUrl, ModelMap modelMap) {
 		Provider provider;
+		ProviderService providerService = Context.getProviderService();
 		if (providerId != null) {
 			provider = providerService.getProvider(providerId);
 		} else {
@@ -126,7 +116,7 @@ public class CashierController {
 		}
 
 		// Load the current timesheet information
-		Timesheet timesheet = timesheetService.getCurrentTimesheet(provider);
+		Timesheet timesheet = Context.getService(ITimesheetService.class).getCurrentTimesheet(provider);
 		if (timesheet == null) {
 			timesheet = new Timesheet();
 			timesheet.setCashier(provider);
@@ -151,7 +141,7 @@ public class CashierController {
 			return null;
 		}
 
-		timesheetService.save(timesheet);
+		Context.getService(ITimesheetService.class).save(timesheet);
 
 		if (StringUtils.isEmpty(returnUrl)) {
 			returnUrl = "redirect:";
@@ -163,7 +153,7 @@ public class CashierController {
 
 	@ModelAttribute("cashPoints")
 	public List<CashPoint> getCashPoints() {
-		return cashPointService.getAll();
+		return Context.getService(ICashPointService.class).getAll();
 	}
 
 	private void loadShiftReport(ModelMap modelMap) {
@@ -172,7 +162,8 @@ public class CashierController {
 		}
 
 		JasperReport shiftReport = null;
-		String shiftReportId = adminService.getGlobalProperty(ModuleSettings.CASHIER_SHIFT_REPORT_ID_PROPERTY);
+		String shiftReportId = Context.getAdministrationService()
+		        .getGlobalProperty(ModuleSettings.CASHIER_SHIFT_REPORT_ID_PROPERTY);
 		if (StringUtils.isNotEmpty(shiftReportId)) {
 			if (StringUtils.isNumeric(shiftReportId)) {
 				shiftReport = jasperService.getJasperReport(Integer.parseInt(shiftReportId));

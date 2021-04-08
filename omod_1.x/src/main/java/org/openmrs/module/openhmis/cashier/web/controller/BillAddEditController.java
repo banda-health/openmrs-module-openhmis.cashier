@@ -13,6 +13,11 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
@@ -31,17 +36,12 @@ import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.api.util.UrlUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.util.Set;
 
 /**
  * Controller to manage the Bill page.
@@ -52,13 +52,8 @@ public class BillAddEditController {
 
 	private static final Log LOG = LogFactory.getLog(BillAddEditController.class);
 
-	private AdministrationService adminService;
-	private ICashierOptionsService cashOptService;
+	public BillAddEditController() {
 
-	@Autowired
-	public BillAddEditController(AdministrationService adminService, ICashierOptionsService cashOptService) {
-		this.adminService = adminService;
-		this.cashOptService = cashOptService;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -82,6 +77,8 @@ public class BillAddEditController {
 		model.addAttribute("user", Context.getAuthenticatedUser());
 		model.addAttribute("url", buildUrlModelAttribute(request));
 
+		AdministrationService adminService = Context.getAdministrationService();
+
 		boolean showAdjustmentReasonField = Boolean.parseBoolean(adminService.getGlobalProperty(
 		        ModuleSettings.ADJUSTMENT_REASEON_FIELD));
 		model.addAttribute("showAdjustmentReasonField", showAdjustmentReasonField);
@@ -94,7 +91,7 @@ public class BillAddEditController {
 		        ModuleSettings.AUTOFILL_PAYMENT_AMOUNT));
 		model.addAttribute("autofillPaymentAmount", autofillPaymentAmount);
 
-		CashierOptions options = cashOptService.getOptions();
+		CashierOptions options = Context.getService(ICashierOptionsService.class).getOptions();
 		String roundingItemUuid = options.getRoundingItemUuid();
 		model.addAttribute("roundingItemUuid", roundingItemUuid);
 
