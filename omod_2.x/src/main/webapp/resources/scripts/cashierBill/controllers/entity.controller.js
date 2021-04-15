@@ -333,6 +333,7 @@
 
 		self.changePatient = self.changePatient || function() {
 				$scope.selectedPatient = '';
+				$scope.patient = '';
 			}
 
 		self.endVisit = self.endVisit || function() {
