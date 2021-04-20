@@ -286,17 +286,19 @@
 			var url = location.href
 			var urlwithouthash = new URL(url.replace('#', ''));
 			var uuid=urlwithouthash.searchParams.get('patientUuid');
-			var request_params = {'rest_entity_name': uuid};
-			request_params['v'] = "custom:(uuid,patientIdentifier:(uuid,identifier),"+
-			"person:(gender,age,birthdate,birthdateEstimated,personName))"
-			EntityRestFactory.setBaseUrl('patient', 'v1');
-			EntityRestFactory.loadEntities(request_params,
-				function(data){
-					if (data !== undefined){
-						$scope.patient=data;
-						self.selectPatient($scope.patient);
-					}
-				},'');
+			if (uuid !== null){
+				var request_params = {'rest_entity_name': uuid};
+				request_params['v'] = "custom:(uuid,patientIdentifier:(uuid,identifier),"+
+				"person:(gender,age,birthdate,birthdateEstimated,personName))"
+				EntityRestFactory.setBaseUrl('patient', 'v1');
+				EntityRestFactory.loadEntities(request_params,
+					function(data){
+						if (data !== undefined){
+							$scope.patient=data;
+							self.selectPatient($scope.patient);
+						}
+					},'');
+			}
 		}
 
 		self.getPaymentModes = self.getPaymentModes || function() {
