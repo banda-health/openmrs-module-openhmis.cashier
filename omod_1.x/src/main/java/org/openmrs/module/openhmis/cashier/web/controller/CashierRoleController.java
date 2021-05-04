@@ -13,16 +13,16 @@
  */
 package org.openmrs.module.openhmis.cashier.web.controller;
 
+import java.util.Set;
+
 import org.openmrs.Privilege;
 import org.openmrs.api.UserService;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.openhmis.commons.web.controller.RoleCreationControllerBase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Set;
 
 /**
  * Controller to manage the Cashier Role Creation page.
@@ -30,16 +30,14 @@ import java.util.Set;
 @Controller
 @RequestMapping(CashierWebConstants.CASHIER_ROLE_ROOT)
 public class CashierRoleController extends RoleCreationControllerBase {
-	private UserService userService;
 
-	@Autowired
-	public CashierRoleController(UserService userService) {
-		this.userService = userService;
+	public CashierRoleController() {
+
 	}
 
 	@Override
 	public UserService getUserService() {
-		return this.userService;
+		return Context.getUserService();
 	}
 
 	@Override

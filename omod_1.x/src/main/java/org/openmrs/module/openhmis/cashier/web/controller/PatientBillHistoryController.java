@@ -16,10 +16,9 @@ package org.openmrs.module.openhmis.cashier.web.controller;
 import java.util.List;
 
 import org.directwebremoting.util.Logger;
-import org.openmrs.api.PatientService;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.IBillService;
 import org.openmrs.module.openhmis.cashier.api.model.Bill;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,17 +32,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping(value = "/module/openhmis/cashier/portlets/patientBillHistory")
 public class PatientBillHistoryController {
 	private static final Logger LOG = Logger.getLogger(PatientBillHistoryController.class);
-	private IBillService billService;
 
-	@Autowired
-	public PatientBillHistoryController(IBillService billServce, PatientService patientService) {
-		this.billService = billServce;
+	public PatientBillHistoryController() {
+
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public void billHistory(ModelMap model, @RequestParam(value = "patientId", required = true) int patientId) {
 		LOG.warn("In bill history controller");
-		List<Bill> bills = billService.getBillsByPatientId(patientId, null);
+		List<Bill> bills = Context.getService(IBillService.class).getBillsByPatientId(patientId, null);
 		model.addAttribute("bills", bills);
 	}
 }

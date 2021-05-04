@@ -44,7 +44,7 @@ public class CashierOptionsControllerTest {
 		MockitoAnnotations.initMocks(this);
 
 		when(adminService.getGlobalProperty(ModuleSettings.ROUNDING_MODE_PROPERTY)).thenReturn("RM");
-		cashierOptionsController = new CashierOptionsController(adminService, cashierOptionsService);
+		cashierOptionsController = new CashierOptionsController();
 
 	}
 

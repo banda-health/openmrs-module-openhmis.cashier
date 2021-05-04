@@ -16,13 +16,11 @@
 package org.openmrs.module.openhmis.cashier.web.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openmrs.api.AdministrationService;
-import org.openmrs.module.openhmis.cashier.ModuleSettings;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.cashier.api.model.Timesheet;
 import org.openmrs.module.openhmis.cashier.api.util.TimesheetUtil;
 import org.openmrs.module.openhmis.cashier.web.CashierWebConstants;
 import org.openmrs.module.webservices.rest.SimpleObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,11 +34,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(CashierWebConstants.MODULE_SETTINGS_PAGE)
 public class CashierModuleSettingsController {
 
-	private AdministrationService adminService;
+	public CashierModuleSettingsController() {
 
-	@Autowired
-	public CashierModuleSettingsController(AdministrationService adminService) {
-		this.adminService = adminService;
 	}
 
 	@ResponseBody
@@ -59,7 +54,7 @@ public class CashierModuleSettingsController {
 					results.put("cashier", currentTimesheet.getCashier().getName());
 				}
 			} else {
-				results.put("results", adminService.getGlobalProperty(setting));
+				results.put("results", Context.getAdministrationService().getGlobalProperty(setting));
 			}
 		}
 		return results;
